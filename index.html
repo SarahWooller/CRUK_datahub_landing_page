@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUK Data Hub - Together We Are Beating Cancer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="banner">
+            <div class="logo-placeholder">
+                <img src="logo.svg" alt="CRUK Logo" style="width: 200px; height: auto;">
+            </div>
+            <h2 class="strap-line">CRUK Data Hub</h2>
+
+            <div class="header-buttons">
+                <button class="btn">Log in</button>
+                <button class="btn">Register</button>
+                <button class="btn">Help</button>
+            </div>
+        </div>
+        <nav class="thin-navbar">
+            <ul>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Study Discovery</a></li>
+                <li><a href="#">CRUK Data Strategy</a></li>
+                <li><a href="#">How we protect your data</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="left-sidebar-container">
+            <aside class="study-filters">
+                <h3>Study Filters</h3>
+                <ul class="filter-list">
+                    <li>
+                        <span class="filter-category sticky-note-target"
+                              data-tooltip="This set of sites is the NHS list but with 'unknown' added.
+                              We could additionally subdivide each of the sites further. Whether it is worth
+it depends on how many records we end up with in the database.">
+                                 Primary site <i class="info-icon">i</i>
+                        </span>
+
+                        <ul class="nested-filter-list">
+                            <li><label><input type="checkbox" value="Breast"> Breast</label></li>
+                            <li><label><input type="checkbox" value="Central Nervous System"> Central Nervous System</label></li>
+                            <li><label><input type="checkbox" value="Colorectal"> Colorectal</label></li>
+                            <li><label><input type="checkbox" value="Gynaecological"> Gynaecological</label></li>
+                            <li><label><input type="checkbox" value="Haematological"> Haematological</label></li>
+                            <li><label><input type="checkbox" value="Head and Neck"> Head and Neck</label></li>
+                            <li><label><input type="checkbox" value="Liver"> Liver</label></li>
+                            <li><label><input type="checkbox" value="Lung"> Lung</label></li>
+                            <li><label><input type="checkbox" value="Sarcoma"> Sarcoma</label></li>
+                            <li><label><input type="checkbox" value="Skin"> Skin</label></li>
+                            <li><label><input type="checkbox" value="Unknown"> Unknown</label></li>
+                            <li><label><input type="checkbox" value="Upper GI"> Upper GI</label></li>
+                            <li><label><input type="checkbox" value="Urological"> Urological</label></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span class="filter-category">In Vitro Study</span>
+                        <ul class="nested-filter-list">
+                            <li>
+                                <span class="filter-category">Cell Line Study</span>
+                                <ul class="nested-filter-list">
+                                    <li>
+                                        <span class="filter-category">Cell Line Type</span>
+                                        <ul class="nested-filter-list">
+                                            <li><label><input type="checkbox" value="Adherent"> Adherent</label></li>
+                                            <li><label><input type="checkbox" value="Suspension"> Suspension</label></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <span class="filter-category">Cell Source</span>
+                                        <ul class="nested-filter-list">
+                                            <li><label><input type="checkbox" value="Human"> Human</label></li>
+                                            <li><label><input type="checkbox" value="Mouse"> Mouse</label></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <span class="filter-category">Genetic Modification</span>
+                                        <ul class="nested-filter-list">
+                                            <li><label><input type="checkbox" value="Edited"> Edited</label></li>
+                                            <li><label><input type="checkbox" value="Wild-type"> Wild-type</label></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="filter-category">Organ-on-a-Chip Study</span>
+                                <ul class="nested-filter-list">
+                                    <li>
+                                        <span class="filter-category">Cell Source</span>
+                                        <ul class="nested-filter-list">
+                                            <li><label><input type="checkbox" value="Cell line"> Cell line</label></li>
+                                            <li><label><input type="checkbox" value="Mouse"> Mouse</label></li>
+                                            <li><label><input type="checkbox" value="Patient"> Patient</label></li>
+                                            <li><label><input type="checkbox" value="induced Pluripotent Stem Cell"> induced Pluripotent Stem Cell</label></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <span class="filter-category">OOAC Platform/Type</span>
+                                        <ul class="nested-filter-list">
+                                            <li><label><input type="checkbox" value="Multi-organ"> Multi-organ</label></li>
+                                            <li><label><input type="checkbox" value="Organ"> Organ</label></li>
+                                            <li><label><input type="checkbox" value="Tumour"> Tumour</label></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="filter-category">Organoid Study</span>
+                                <ul class="nested-filter-list">
+                                    <li>
+                                        <span class="filter-category">Organoid Source</span>
+                                        <ul class="nested-filter-list">
+                                            <li><label><input type="checkbox" value="Cell line"> Cell line</label></li>
+                                            <li><label><input type="checkbox" value="Induced Pluripotent Stem Cell"> Induced Pluripotent Stem Cell</label></li>
+                                            <li><label><input type="checkbox" value="Mouse"> Mouse</label></li>
+                                            <li><label><input type="checkbox" value="Patient"> Patient</label></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span class="filter-category">Mouse study</span>
+                        <ul class="nested-filter-list">
+                            <li>
+                                <span class="filter-category">Biobank Samples</span>
+                                <ul class="nested-filter-list">
+                                    <li><label><input type="checkbox" value="Bloods"> Bloods</label></li>
+                                    <li><label><input type="checkbox" value="Cells"> Cells</label></li>
+                                    <li><label><input type="checkbox" value="DNA/RNA"> DNA/RNA</label></li>
+                                    <li><label><input type="checkbox" value="Other Fluids"> Other Fluids</label></li>
+                                    <li><label><input type="checkbox" value="Organoids"> Organoids</label></li>
+                                    <li><label><input type="checkbox" value="Tissues"> Tissues</label></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="filter-category">Biopsy & Lab Results</span>
+                                <ul class="nested-filter-list">
+                                    <li><label><input type="checkbox" value="Biomarkers"> Biomarkers</label></li>
+                                    <li><label><input type="checkbox" value="Flow Cytometry"> Flow Cytometry</label></li>
+                                    <li><label><input type="checkbox" value="Immunohistochemistry"> Immunohistochemistry</label></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="filter-category">Imaging Data</span>
+                                <ul class="nested-filter-list">
+                                    <li><label><input type="checkbox" value="Bioluminescence Imaging"> Bioluminescence Imaging</label></li>
+                                    <li><label><input type="checkbox" value="Bone Scans"> Bone Scans</label></li>
+                                    <li><label><input type="checkbox" value="Computed Tomography"> Computed Tomography</label></li>
+                                    <li><label><input type="checkbox" value="Fluorescence Imaging"> Fluorescence Imaging</label></li>
+                                    <li><label><input type="checkbox" value="Histology slides"> Histology slides</label></li>
+                                    <li><label><input type="checkbox" value="Imaging Mass Cytometry"> Imaging Mass Cytometry</label></li>
+                                    <li><label><input type="checkbox" value="Magnetic Resonance Imaging"> Magnetic Resonance Imaging</label></li>
+                                    <li><label><input type="checkbox" value="Positron Emission Tomography"> Positron Emission Tomography</label></li>
+                                    <li><label><input type="checkbox" value="Tomosynthesis"> Tomosynthesis</label></li>
+                                    <li><label><input type="checkbox" value="Ultrasound"> Ultrasound</label></li>
+                                    <li><label><input type="checkbox" value="X-rays"> X-rays</label></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="filter-category">Longitudinal Follow up</span>
+                                <ul class="nested-filter-list">
+                                    <li><label><input type="checkbox" value="Behavioural data"> Behavioural data</label></li>
+                                    <li><label><input type="checkbox" value="Clinical observations"> Clinical observations</label></li>
+                                    <li><label><input type="checkbox" value="Response outcomes"> Response outcomes</label></li>
+                                    <li><label><input type="checkbox" value="Side effects"> Side effects</label></li>
+                                    <li><label><input type="checkbox" value="Survival data"> Survival data</label></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="filter-category">Multi-omic Data</span>
+
+                                <ul class="nested-filter-list">
+
+                                    <li><label><input type="checkbox" value="Circulating tumour cells"> Circulating tumour cells</label></li>
+                                    <li><label><input type="checkbox" value="Circulating tumour DNA"> Circulating tumour DNA</label></li>
+                                    <li><label><input type="checkbox" value="Copy Number Variations">Copy Number Variations</label>
+                                        <span class="sticky-note-target"
+                              data-tooltip="We could broaden this category out to include cytogenetics,
+                              because for modern methods there's a lot of overlap, or we could include a separate cytogenetics category.">
+                                            <i class="info-icon">i</i></label></span></li>
+                                    <li><label><input type="checkbox" value="Epigenetic Data"> Epigenetic Data</label></li>
+                                    <li><label><input type="checkbox" value="Exosomes/Genomes"> Exosomes/Genomes</label></li>
+                                    <li><label><input type="checkbox" value="Fusion Genes"> Fusion Genes</label></li>
+                                    <li><label><input type="checkbox" value="Germline Mutations"> Germline Mutations</label></li>
+                                    <li><label><input type="checkbox" value="Metabolomics"> Metabolomics</label></li>
+                                    <li><label><input type="checkbox" value="Protein expression profiles"> Protein expression profiles</label></li>
+                                    <li><label><input type="checkbox" value="RNA Sequence Expression Profile"> RNA Sequence Expression Profile</label></li>
+                                    <li><label><input type="checkbox" value="Single-cell"> Single-cell</label></li>
+                                    <li><label><input type="checkbox" value="Somatic Mutations"> Somatic Mutations</label></li>
+                                    <li><label><input type="checkbox" value="Spatial Biology Data"> Spatial Biology Data</label></li>
+                                </ul>
+                                <span class="sticky-note-target"
+                                      data-tooltip="It is also useful to bio-informaticians to know whether
+                              or not raw data is available. This would require sub-division of multi-omic data
+                               into raw and processed, for each of the study types"><i class="info-icon">i</i></span>
+
+                            </li>
+                            <li>
+                                <span class="filter-category">Treatments</span>
+                                <ul class="nested-filter-list">
+                                    <li><label><input type="checkbox" value="Medication"> Medication</label></li>                                    <li><label><input type="checkbox" value="Medication"> Medication</label></li>
+                                    <li><label><input type="checkbox" value="Clinical Trials"> Clinical Trials</label></li>
+                                    <li><label><input type="checkbox" value="Organ resection and other ablations"> Organ resection and other ablations</label></li>
+                                    <li><label><input type="checkbox" value="Radiotherapies"> Radiotherapies</label></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="filter-category">Tumour Model</span>
+                                <ul class="nested-filter-list">
+                                    <li><label><input type="checkbox" value="Genetically engineered mouse model"> Genetically engineered mouse model</label></li>
+                                    <li><label><input type="checkbox" value="Patient-Derived xenograft"> Patient-Derived xenograft</label></li>
+                                    <li><label><input type="checkbox" value="Syngeneic"> Syngeneic</label></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span class="filter-category">Patient study</span>
+                        <ul class="nested-filter-list">
+                            <li>
+                                <span class="filter-category">Background</span>
+                                <ul class="nested-filter-list">
+                                    <li><label><input type="checkbox" value="Demographic"> Demographic</label></li>
+                                    <li><label><input type="checkbox" value="Family history"> Family history</label></li>
+                                    <li><label><input type="checkbox" value="Lifestyle"> Lifestyle</label></li>
+                                    <li><label><input type="checkbox" value="Quality of life (eg Education and/or employment)"> Quality of life (eg Education and/or employment)</label></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="filter-category">Biobank Samples</span>
+                                <ul class="nested-filter-list">
+                                    <li><label><input type="checkbox" value="Bloods"> Bloods</label></li>
+                                    <li><label><input type="checkbox" value="Cells"> Cells</label></li>
+                                    <li><label><input type="checkbox" value="DNA/RNA"> DNA/RNA</label></li>
+                                    <li><label><input type="checkbox" value="Other Fluids"> Other Fluids</label></li>
+                                    <li><label><input type="checkbox" value="Organoids"> Organoids</label></li>
+                                    <li><label><input type="checkbox" value="Primary cell lines"> Primary cell lines</label></li>
+                                    <li><label><input type="checkbox" value="Tissues"> Tissues</label></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="filter-category">Biopsy Reports and Lab Results</span>
+                                <ul class="nested-filter-list">
+                                    <li><label><input type="checkbox" value="Biomarkers"> Biomarkers</label></li>
+                                    <li><label><input type="checkbox" value="Complete blood count"> Complete blood count</label></li>
+                                    <li><label><input type="checkbox" value="H&E-stained tissue microarrays"> H&E-stained tissue microarrays</label></li>
+                                    <li><label><input type="checkbox" value="Immunohistochemistry"> Immunohistochemistry</label></li>
+                                    <li><label><input type="checkbox" value="Kidney function tests"> Kidney function tests</label></li>
+                                    <li><label><input type="checkbox" value="Liver function tests"> Liver function tests</label></li>
+                                    <li><label><input type="checkbox" value="Other bodily fluid analyses"> Other bodily fluid analyses</label></li>
+                                    <li><label><input type="checkbox" value="Tumour details"> Tumour details</label></li>
+                                    <li><label><input type="checkbox" value="Urine tests"> Urine tests</label></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="filter-category">Imaging Data</span>
+                                <ul class="nested-filter-list">
+                                    <li><label><input type="checkbox" value="Bone Scans"> Bone Scans</label></li>
+                                    <li><label><input type="checkbox" value="Computed Tomography"> Computed Tomography</label></li>
+                                    <li><label><input type="checkbox" value="Imaging Mass Cytometry"> Imaging Mass Cytometry</label></li>
+                                    <li><label><input type="checkbox" value="Magnetic Resonance Imaging"> Magnetic Resonance Imaging</label></li>
+                                    <li><label><input type="checkbox" value="Mammography"> Mammography</label></li>
+                                    <li><label><input type="checkbox" value="Positron Emission Tomography"> Positron Emission Tomography</label></li>
+                                    <li><label><input type="checkbox" value="Tomosynthesis"> Tomosynthesis</label></li>
+                                    <li><label><input type="checkbox" value="Ultrasound"> Ultrasound</label></li>
+                                    <li><label><input type="checkbox" value="X-rays"> X-rays</label></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="filter-category">Longitudinal Follow up</span>
+                                <ul class="nested-filter-list">
+                                    <li><label><input type="checkbox" value="Patient-Reported Outcomes"> Patient-Reported Outcomes</label></li>
+                                    <li><label><input type="checkbox" value="Response outcomes"> Response outcomes</label></li>
+                                    <li><label><input type="checkbox" value="Side effects"> Side effects</label></li>
+                                    <li><label><input type="checkbox" value="Survival data"> Survival data</label></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="filter-category">Multi-omic Data</span>
+                                <ul class="nested-filter-list">
+                                    <li><label><input type="checkbox" value="Circulating tumour cells"> Circulating tumour cells</label></li>
+                                    <li><label><input type="checkbox" value="Circulating tumour DNA"> Circulating tumour DNA</label></li>
+                                    <li><label><input type="checkbox" value="Copy Number Variations"> Copy Number Variations</label></li>
+                                    <li><label><input type="checkbox" value="Epigenetic Data"> Epigenetic Data</label></li>
+                                    <li><label><input type="checkbox" value="Exosomes/Genomes"> Exosomes/Genomes</label></li>
+                                    <li><label><input type="checkbox" value="Fusion Genes"> Fusion Genes</label></li>
+                                    <li><label><input type="checkbox" value="Germline Mutations"> Germline Mutations</label></li>
+                                    <li><label><input type="checkbox" value="Metabolomics"> Metabolomics</label></li>
+                                    <li><label><input type="checkbox" value="Protein expression profiles"> Protein expression profiles</label></li>
+                                    <li><label><input type="checkbox" value="RNA Sequence Expression Profile"> RNA Sequence Expression Profile</label></li>
+                                    <li><label><input type="checkbox" value="Single-cell"> Single-cell</label></li>
+                                    <li><label><input type="checkbox" value="Somatic Mutations"> Somatic Mutations</label></li>
+                                    <li><label><input type="checkbox" value="Spatial Biology Data"> Spatial Biology Data</label></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="filter-category">Treatments</span>
+                                <ul class="nested-filter-list">
+                                    <li><label><input type="checkbox" value="Medication"> Medication</label></li>
+                                    <li><label><input type="checkbox" value="Organ resection and other ablations"> Organ resection and other ablations</label></li>
+                                    <li><label><input type="checkbox" value="Radiotherapies"> Radiotherapies</label></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <span class="filter-category">Population Study</span>
+                        <ul class="nested-filter-list">
+                            <li>
+                                <span class="filter-category">Data Sources</span>
+                                <ul class="nested-filter-list">
+                                    <li><label><input type="checkbox" value="Administrative data (e.g., insurance claims)"> Administrative data (e.g., insurance claims)</label></li>
+                                    <li><label><input type="checkbox" value="Biobanks (population cohorts)"> Biobanks (population cohorts)</label></li>
+                                    <li><label><input type="checkbox" value="Cancer registries"> Cancer registries</label></li>
+                                    <li><label><input type="checkbox" value="Clinical Trials"> Clinical Trials</label></li>
+                                    <li><label><input type="checkbox" value="Electronic Health Records (EHR)"> Electronic Health Records (EHR)</label></li>
+                                    <li><label><input type="checkbox" value="Environmental monitoring data"> Environmental monitoring data</label></li>
+                                    <li><label><input type="checkbox" value="National health surveys"> National health surveys</label></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="filter-category">Interventions/Policies</span>
+                                <ul class="nested-filter-list">
+                                    <li><label><input type="checkbox" value="Health education campaigns"> Health education campaigns</label></li>
+                                    <li><label><input type="checkbox" value="Policy changes"> Policy changes</label></li>
+                                    <li><label><input type="checkbox" value="Prevention programs"> Prevention programs</label></li>
+                                    <li><label><input type="checkbox" value="Screening programs"> Screening programs</label></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="filter-category">Outcomes Measured</span>
+                                <ul class="nested-filter-list">
+                                    <li><label><input type="checkbox" value="Education/Employment"> Education/Employment</label></li>
+                                    <li><label><input type="checkbox" value="Incidence"> Incidence</label></li>
+                                    <li><label><input type="checkbox" value="Morbidity/Mortality"> Morbidity/Mortality</label></li>
+                                    <li><label><input type="checkbox" value="Social well-being"> Social well-being</label></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="filter-category">Population Demographics</span>
+                                <ul class="nested-filter-list">
+                                    <li><label><input type="checkbox" value="Age"> Age</label></li>
+                                    <li><label><input type="checkbox" value="Ethnicity"> Ethnicity</label></li>
+                                    <li><label><input type="checkbox" value="Geographic location"> Geographic location</label></li>
+                                    <li><label><input type="checkbox" value="Sex"> Sex</label></li>
+                                    <li><label><input type="checkbox" value="Socioeconomic Status"> Socioeconomic Status</label></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="filter-category">Risk Factors</span>
+                                <ul class="nested-filter-list">
+                                    <li><label><input type="checkbox" value="Environmental"> Environmental</label></li>
+                                    <li><label><input type="checkbox" value="Genetic"> Genetic</label></li>
+                                    <li><label><input type="checkbox" value="Infections"> Infections</label></li>
+                                    <li><label><input type="checkbox" value="Lifestyle"> Lifestyle</label></li>
+                                    <li><label><input type="checkbox" value="Medical history"> Medical history</label></li>
+                                    <li><label><input type="checkbox" value="Occupational"> Occupational</label></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <span class="filter-category">Study Design</span>
+                                <ul class="nested-filter-list">
+                                    <li><label><input type="checkbox" value="Case-control study"> Case-control study</label></li>
+                                    <li><label><input type="checkbox" value="Cohort study"> Cohort study</label></li>
+                                    <li><label><input type="checkbox" value="Cross-sectional study"> Cross-sectional study</label></li>
+                                    <li><label><input type="checkbox" value="Ecological study"> Ecological study</label></li>
+                                    <li><label><input type="checkbox" value="Intervention study"> Intervention study</label></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </aside>
+
+            <div class="video-promo-box">
+                <h3>We are making our data fairer</h3>
+                <div class="video-wrapper">
+                    <video controls muted autoplay loop playsinline preload="metadata">
+                        <source src="welcome.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+
+        <section class="studies-section">
+            <div class="search-section">
+                <input type="search" id="search-bar" placeholder="Search for studies...">
+            </div>
+            <h1 class="section-heading">Unleashing the power of big data</h1>
+            <p class="intro-text">
+                Welcome to the CRUK Data Hub, your gateway to data produced by research funded through Cancer Research UK.
+                Here, you can explore our groundbreaking work,
+ and researchers can gain access to the data in a way which puts patient needs front and centre.
+            </p>
+
+            <div class="studies-table-container">
+                <table class="studies-table">
+                    <thead>
+                        <tr>
+                            <th data-sort="studyTitle">Study Title <span class="sort-indicator"></span></th>
+                            <th data-sort="leadResearcherInstitute">Lead Researcher/Institute <span class="sort-indicator"></span></th>
+                            <th data-sort="dateAdded">Date added <span class="sort-indicator"></span></th>
+                            <th>Explore</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studies-table-body">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
