@@ -1,4 +1,4 @@
-/* style2.css - Option 2: Bold and Engaging with Gradient Accents */
+/* style.css - Option 2: Bold and Engaging with Gradient Accents */
 
 /* General Styling & Resets */
 :root {
@@ -602,4 +602,19 @@ body {
     border-color: #666;
     color: #666;
     background-color: #fff;
+}
+
+.watermark {
+    position: fixed; /* Keeps the watermark in place when scrolling */
+    top: 50%; /* Position vertically in the middle */
+    left: 50%; /* Position horizontally in the middle */
+    transform: translate(-50%, -50%) rotate(-45deg); /* Center and rotate */
+    font-size: 6vw; /* Slightly smaller font size, scales with viewport width */
+    color: rgba(0, 0, 0, 0.1); /* Faint black color (10% opacity) */
+    pointer-events: none; /* Allows clicks/selection through the watermark */
+    text-align: center; /* Center the text if it wraps */
+    width: 70%; /* Give it a width so it can wrap */
+    z-index: 9999; /* Ensures the watermark is above other content */
+    font-weight: bold; /* Make the text bold */
+    text-transform: uppercase; /* Optional: Make text uppercase */
 }
