@@ -10,6 +10,11 @@
     --cruk-light-bg: #F0F2F5; /* Slightly off-white background */
     --cruk-dark-text: #2A2A2A;
     --cruk-border-strong: #AAB7C4; /* Stronger grey for borders */
+    --brand: #0a66c2;
+    --bg: #ffffff;
+    --muted: #f5f7fa;
+    --text: #1f2937;
+    --border: #e5e7eb;
 }
 
 * {
@@ -17,6 +22,8 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+
 
 body {
     font-family: 'Poppins', 'Source Sans Pro', sans-serif; /* Bolder, modern sans-serif */
@@ -27,6 +34,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+* { box-sizing: border-box; }
 
 /* Header & Banner */
 .main-header {
@@ -121,68 +129,31 @@ body {
     /* Removed individual study-filters flex property as it's now handled by this container */
 }
 
+body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: var(--text); margin: 0; }
+.container { padding: 24px; }
+#filterButton { padding: 10px 16px; background: var(--brand); color: #fff; border: 0; border-radius: 8px; cursor: pointer; font-weight: 600; display: inline-block; }
+.filter-helper { font-size: 14px; color: #4b5563; margin-top: 6px; max-width: 400px; }
+#selectedChips { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { background: var(--muted); border: 1px solid var(--border); border-radius: 999px; padding: 6px 10px; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; }
+.chip button { border: 0; background: transparent; cursor: pointer; font-size: 14px; }
+#overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.25); opacity: 0; pointer-events: none; transition: opacity .25s ease; }
+#overlay.open { opacity: 1; pointer-events: auto; }
+#filterPanel { position: fixed; top: 0; right: -420px; width: 380px; max-width: calc(100% - 40px); height: 100dvh; background: var(--bg); box-shadow: -2px 0 20px rgba(0,0,0,.15); transition: right .25s ease; padding: 16px; display: flex; flex-direction: column; gap: 12px; z-index: 999;}
+#filterPanel.open { right: 0; }
+.panel-header { display: flex; align-items: center; justify-content: space-between; }
+.panel-title { font-size: 18px; font-weight: 700; }
+.icon-btn { border: 1px solid var(--border); background: var(--bg); border-radius: 8px; padding: 6px 10px; cursor: pointer; }
+.breadcrumb { font-size: 13px; color: #6b7280; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.crumb { cursor: pointer; text-decoration: underline; }
+.crumb.current { text-decoration: none; cursor: default; color: #374151; font-weight: 600; }
+.list { list-style: none; padding: 0; margin: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.list-item { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-bottom: 1px solid var(--border); background: #fff; cursor: pointer; }
+.list-item:last-child { border-bottom: none; }
+.list-item:hover { background: #f9fafb; }
+.panel-footer { margin-top: auto; display: flex; gap: 8px; }
+.btn-secondary { border: 1px solid var(--border); background: var(--bg); border-radius: 8px; padding: 10px 12px; cursor: pointer; }
+.btn-primary { background: var(--brand); color: #fff; border: 0; border-radius: 8px; padding: 10px 12px; cursor: pointer; }
 
-/* Study Filters Sidebar (Existing, now within left-sidebar-container) */
-.study-filters {
-    /* flex: 0 0 300px; Removed, as flex is now on parent .left-sidebar-container */
-    width: 100%; /* Make it fill the width of its parent (.left-sidebar-container) */
-    background-color: var(--cruk-white);
-    padding: 30px;
-    border-radius: 10px; /* More rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* More prominent shadow */
-    border: 1px solid var(--cruk-border-strong);
-}
-
-.study-filters h3 {
-    font-size: 1.5em; /* Bolder font */
-    color: var(--cruk-blue);
-    margin-bottom: 25px;
-    border-bottom: 3px solid var(--cruk-blue); /* Thicker divider */
-    padding-bottom: 12px;
-}
-
-.filter-list {
-    list-style: none;
-}
-
-.filter-list li {
-    margin-bottom: 12px;
-}
-
-.filter-category {
-    font-weight: 700; /* Bolder */
-    color: var(--cruk-dark-text);
-    cursor: pointer;
-    display: block;
-    padding: 6px 0;
-    font-size: 1.1em; /* Larger font */
-}
-
-.nested-filter-list {
-    list-style: none;
-    margin-left: 20px;
-    border-left: 3px solid var(--cruk-border-strong); /* Thicker line */
-    padding-left: 15px;
-    margin-top: 8px;
-}
-
-.nested-filter-list li {
-    margin-bottom: 6px;
-}
-
-.study-filters label {
-    display: flex;
-    align-items: center;
-    font-size: 1em; /* Slightly larger for options */
-    cursor: pointer;
-    color: var(--cruk-dark-text);
-}
-
-.study-filters input[type="checkbox"] {
-    margin-right: 10px;
-    transform: scale(1.2); /* Larger checkboxes */
-    accent-color: var(--cruk-blue);
-}
 
 /* New: Video Promo Box Styling */
 .video-promo-box {
