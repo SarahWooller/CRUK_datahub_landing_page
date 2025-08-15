@@ -131,7 +131,11 @@ body {
 
 body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: var(--text); margin: 0; }
 .container { padding: 24px; }
-#filterButton { padding: 10px 16px; background: var(--brand); color: #fff; border: 0; border-radius: 8px; cursor: pointer; font-weight: 600; display: inline-block; }
+.hidden {
+  display: none;
+}
+#filterButton { padding: 20px 32px; background: linear-gradient(to right, var(--cruk-pink), #FF4D9B); /* Gradient pink button */
+    color: var(--cruk-white); border: 0; border-radius: 8px; cursor: pointer; font-weight: 600; display: inline-block; }
 .filter-helper { font-size: 14px; color: #4b5563; margin-top: 6px; max-width: 400px; }
 #selectedChips { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
 .chip { background: var(--muted); border: 1px solid var(--border); border-radius: 999px; padding: 6px 10px; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; }
@@ -142,6 +146,27 @@ body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-seri
 #filterPanel.open { right: 0; }
 .panel-header { display: flex; align-items: center; justify-content: space-between; }
 .panel-title { font-size: 18px; font-weight: 700; }
+.filter-logic-group {
+  display: inline-flex;
+  gap: 10px;
+}
+
+.toggle-btn {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  font-weight: bold;
+}
+
+.toggle-btn.active {
+  background-color: #007bff;
+  color: white;
+  transform: translateY(-2px); /* Makes the button "pop up" */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
 .icon-btn { border: 1px solid var(--border); background: var(--bg); border-radius: 8px; padding: 6px 10px; cursor: pointer; }
 .breadcrumb { font-size: 13px; color: #6b7280; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
 .crumb { cursor: pointer; text-decoration: underline; }
