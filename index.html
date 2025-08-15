@@ -12,7 +12,9 @@
     <header class="main-header">
         <div class="banner">
             <div class="logo-placeholder">
-                <img src="logo.svg" alt="CRUK Logo" style="width: 200px; height: auto;">
+                <p><a href="https://www.cancerresearchuk.org/">
+                    <img src="logo.svg" alt="CRUK Logo" style="width: 200px; height: auto;">
+                </a></p>
             </div>
             <h2 class="strap-line">CRUK Data Hub</h2>
 
@@ -26,7 +28,7 @@
             <ul>
                 <li><a href="#">About</a></li>
                 <li><a href="#">Study Discovery</a></li>
-                <li><a href="#">CRUK Data Strategy</a></li>
+                <li><a href="https://www.cancerresearchuk.org/funding-for-researchers/research-opportunities-in-data-science?_gl=1*j2h94s*_gcl_aw*R0NMLjE3NTIwNjY3ODcuQ2p3S0NBandwcmpEQmhCVEVpd0ExbTFkMG9kQ3M5bktReW14VlplOW5FUWJ4R0l2X0E4ekdieVpTaVZaWUNBUm1hZ09BN2t1anhNbTlCb0NNSm9RQXZEX0J3RQ..*_gcl_dc*R0NMLjE3NTIwNjY3ODcuQ2p3S0NBandwcmpEQmhCVEVpd0ExbTFkMG9kQ3M5bktReW14VlplOW5FUWJ4R0l2X0E4ekdieVpTaVZaWUNBUm1hZ09BN2t1anhNbTlCb0NNSm9RQXZEX0J3RQ..*_gcl_au*NTU0Mjk1Mzc0LjE3NDg4NjEwMTc.*_ga*MTg1NjY3MDg4OC4xNzQxMDA5MjYx*_ga_58736Z2GNN*czE3NTUyNTE1NTAkbzY0JGcxJHQxNzU1MjUxNjQ4JGo1MCRsMCRoMA..">CRUK Data Strategy</a></li>
                 <li><a href="#">How we protect your data</a></li>
             </ul>
         </nav>
@@ -43,11 +45,20 @@
           <aside id="filterPanel">
             <div class="panel-header">
               <div class="panel-title">Keyword Filters</div>
+
               <div style="display:flex; gap:8px;">
+
                 <button id="backBtn" class="icon-btn">◀</button>
                 <button id="closeBtn" class="icon-btn">✕</button>
               </div>
+
             </div>
+              <p>
+                    <div class="filter-logic-group">
+                  <button id="andBtn" class="toggle-btn active">add with AND</button>
+                  <button id="orBtn" class="toggle-btn">add with OR</button>
+                </div>
+                </p>
             <div id="breadcrumb" class="breadcrumb"></div>
             <ul id="choices" class="list"></ul>
             <div class="panel-footer">

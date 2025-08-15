@@ -1,3 +1,4 @@
+
     const keywordsRaw = [
   // Modified Primary site structure to include a nested category
    {
@@ -405,15 +406,34 @@
     const clearBtn = document.getElementById('clearBtn');
     const doneBtn = document.getElementById('doneBtn');
     const chipsEl = document.getElementById('selectedChips');
+    const andBtn = document.getElementById('andBtn');
+    const orBtn = document.getElementById('orBtn');
     let path = [];
+    let filterLogic = 'AND';
     const selected = new Set();
     function getNodeFromPath(root, pth){return pth.reduce((node, key) => (node && typeof node === 'object') ? node[key] : undefined, root);}
     function isLeaf(node){return Array.isArray(node);}
     function openPanel(){panel.classList.add('open');overlay.classList.add('open');render();}
     function closePanel(){panel.classList.remove('open');overlay.classList.remove('open');}
     function updateFilterButtonCount(){filterButton.textContent = `STUDY FILTERS (${selected.size})`;}
-    function renderChips(){chipsEl.innerHTML = '';[...selected].forEach(value => {const span=document.createElement('span');span.className='chip';span.innerHTML = `${value} <button>×</button>`;span.querySelector('button').addEventListener('click', () => {selected.delete(value);updateFilterButtonCount();render();renderChips();});chipsEl.appendChild(span);});}
-    function renderBreadcrumb(){breadcrumbEl.innerHTML='';const home=document.createElement('span');home.textContent='Home';home.className=path.length?'crumb':'crumb current';if(path.length)home.addEventListener('click',()=>{path=[];render();});breadcrumbEl.appendChild(home);path.forEach((key,idx)=>{const sep=document.createElement('span');sep.textContent='›';sep.style.margin='0 4px';breadcrumbEl.appendChild(sep);const crumb=document.createElement('span');crumb.textContent=key;const isCurrent=idx===path.length-1;crumb.className=isCurrent?'crumb current':'crumb';if(!isCurrent){crumb.addEventListener('click',()=>{path=path.slice(0,idx+1);render();});}breadcrumbEl.appendChild(crumb);});}
+    function renderChips() {
+  chipsEl.innerHTML = '';
+  [...selected].forEach(value => {
+    const span = document.createElement('span');
+    span.className = 'chip';
+
+    // This is the main change: add the logic prefix
+    span.innerHTML = `${filterLogic}: ${value} <button>×</button>`;
+
+    span.querySelector('button').addEventListener('click', () => {
+      selected.delete(value);
+      updateFilterButtonCount();
+      render();
+      renderChips();
+    });
+    chipsEl.appendChild(span);
+  });
+}function renderBreadcrumb(){breadcrumbEl.innerHTML='';const home=document.createElement('span');home.textContent='Home';home.className=path.length?'crumb':'crumb current';if(path.length)home.addEventListener('click',()=>{path=[];render();});breadcrumbEl.appendChild(home);path.forEach((key,idx)=>{const sep=document.createElement('span');sep.textContent='›';sep.style.margin='0 4px';breadcrumbEl.appendChild(sep);const crumb=document.createElement('span');crumb.textContent=key;const isCurrent=idx===path.length-1;crumb.className=isCurrent?'crumb current':'crumb';if(!isCurrent){crumb.addEventListener('click',()=>{path=path.slice(0,idx+1);render();});}breadcrumbEl.appendChild(crumb);});}
     function renderChoices(){
       choicesEl.innerHTML = '';
       const node = getNodeFromPath(ROOT, path) ?? ROOT;
@@ -491,6 +511,20 @@ function render(){renderBreadcrumb();renderChoices();updateFilterButtonCount();}
     window.addEventListener('keydown',e=>{if(e.key==='Escape'&&panel.classList.contains('open'))closePanel();});
     render();renderChips();
 
+
+andBtn.addEventListener('click', () => {
+  filterLogic = 'AND';
+  andBtn.classList.add('active');
+  orBtn.classList.remove('active');
+  renderChips(); // Re-render the chips to reflect the change
+});
+
+orBtn.addEventListener('click', () => {
+  filterLogic = 'OR';
+  orBtn.classList.add('active');
+  andBtn.classList.remove('active');
+  renderChips(); // Re-render the chips to reflect the change
+});
 
 document.addEventListener('DOMContentLoaded', () => {
     // Mock Data for 50 Cancer Studies
