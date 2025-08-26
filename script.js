@@ -1,5 +1,4 @@
-
-    const keywordsRaw = [
+const keywordsRaw = [
   // Modified Primary site structure to include a nested category
    {
     "Cancer Site - ICD-O": {
@@ -402,39 +401,32 @@
     }
   }
 ];
-    const ROOT = keywordsRaw.reduce((acc, obj) => Object.assign(acc, obj), {});
-    const filterButton = document.getElementById('filterButton');
-    const overlay = document.getElementById('overlay');
-    const panel = document.getElementById('filterPanel');
-    const breadcrumbEl = document.getElementById('breadcrumb');
-    const choicesEl = document.getElementById('choices');
-    const closeBtn = document.getElementById('closeBtn');
-    const backBtn = document.getElementById('backBtn');
-    const clearBtn = document.getElementById('clearBtn');
-    const doneBtn = document.getElementById('doneBtn');
-    const chipsEl = document.getElementById('selectedChips');
-    const andBtn = document.getElementById('andBtn');
-    const orBtn = document.getElementById('orBtn');
-    let path = [];
-    let filterLogic = 'AND';
-    const selected = new Set();
-    function getNodeFromPath(root, pth){return pth.reduce((node, key) => (node && typeof node === 'object') ? node[key] : undefined, root);}
-    function isLeaf(node){return Array.isArray(node);}
-    function openPanel(){panel.classList.add('open');overlay.classList.add('open');render();}
-    function closePanel(){panel.classList.remove('open');overlay.classList.remove('open');}
-    function updateFilterButtonCount(){filterButton.textContent = `STUDY FILTERS (${selected.size})`;}
-    function renderChips() {
+const ROOT = keywordsRaw.reduce((acc, obj) => Object.assign(acc, obj), {});
+const filterPanel = document.getElementById('filterPanel');
+const breadcrumbEl = document.getElementById('breadcrumb');
+const choicesEl = document.getElementById('choices');
+
+const backBtn = document.getElementById('backBtn');
+const clearBtn = document.getElementById('clearBtn');
+const chipsEl = document.getElementById('selectedChips');
+const andBtn = document.getElementById('andBtn');
+const orBtn = document.getElementById('orBtn');
+let path = [];
+
+const selected = new Set();
+function getNodeFromPath(root, pth){return pth.reduce((node, key) => (node && typeof node === 'object') ? node[key] : undefined, root);}
+function isLeaf(node){return Array.isArray(node);}
+
+function renderChips() {
   chipsEl.innerHTML = '';
   [...selected].forEach(value => {
     const span = document.createElement('span');
     span.className = 'chip';
 
-    // This is the main change: add the logic prefix
-    span.innerHTML = `${filterLogic}: ${value} <button>×</button>`;
+    span.innerHTML = `${value} <button>×</button>`;
 
     span.querySelector('button').addEventListener('click', () => {
       selected.delete(value);
-      updateFilterButtonCount();
       render();
       renderChips();
     });
@@ -449,7 +441,6 @@
         Object.keys(node).forEach(key => {
           const value = node[key];
 
-          // Skip numeric keys from arrays appearing as objects
           if (Array.isArray(node) && !isNaN(key)) return;
 
           const li = document.createElement('li');
@@ -461,7 +452,6 @@
           cb.addEventListener('change', () => {
             if (cb.checked) selected.add(key);
             else selected.delete(key);
-            updateFilterButtonCount();
             renderChips();
           });
 
@@ -495,7 +485,6 @@
           cb.addEventListener('change', () => {
             if (cb.checked) selected.add(item);
             else selected.delete(item);
-            updateFilterButtonCount();
             renderChips();
           });
 
@@ -508,32 +497,15 @@
       }
     }
 
-function render(){renderBreadcrumb();renderChoices();updateFilterButtonCount();}
-    filterButton.addEventListener('click',()=>{panel.classList.contains('open')?closePanel():openPanel();});
-    overlay.addEventListener('click',closePanel);
-    closeBtn.addEventListener('click',closePanel);
+function render(){renderBreadcrumb();renderChoices();}
     backBtn.addEventListener('click',()=>{if(path.length){path.pop();render();}});
-    clearBtn.addEventListener('click',()=>{selected.clear();updateFilterButtonCount();renderChips();render();});
-    doneBtn.addEventListener('click',closePanel);
-    window.addEventListener('keydown',e=>{if(e.key==='Escape'&&panel.classList.contains('open'))closePanel();});
-    render();renderChips();
+    clearBtn.addEventListener('click',()=>{selected.clear();renderChips();render();});
+    window.addEventListener('keydown',e=>{if(e.key==='Escape'){}
+    });
 
-
-andBtn.addEventListener('click', () => {
-  filterLogic = 'AND';
-  andBtn.classList.add('active');
-  orBtn.classList.remove('active');
-  renderChips(); // Re-render the chips to reflect the change
-});
-
-orBtn.addEventListener('click', () => {
-  filterLogic = 'OR';
-  orBtn.classList.add('active');
-  andBtn.classList.remove('active');
-  renderChips(); // Re-render the chips to reflect the change
-});
-
+    // START OF NEW CODE
 document.addEventListener('DOMContentLoaded', () => {
+    render();renderChips();
     // Mock Data for 50 Cancer Studies
     const studiesData = [];
     const titles = [
@@ -645,7 +617,6 @@ document.addEventListener('DOMContentLoaded', () => {
             3. Add to library
         `;
         alert(options); // Using alert for mock-up
-        // In a real application, you would show a modal or navigate
     }
 
     // Initial render of the table
@@ -726,8 +697,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const selectedFilters = Array.from(document.querySelectorAll('.study-filters input[type="checkbox"]:checked'))
                                        .map(cb => cb.value);
             console.log('Selected Filters:', selectedFilters);
-            // In a full implementation, you would filter the studiesData array here
-            // and then call renderTable(filteredData);
         });
     });
 });
+
