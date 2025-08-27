@@ -1,7 +1,6 @@
 const keywordsRaw = [
-  // Modified Primary site structure to include a nested category
-   {
-    "Cancer Site - ICD-O": {
+
+   {"Cancer ICD-0 topography":  {
         "Lip, oral cavity and pharynx": {
         "C00 LIP": ["C00.0 External upper lip", "C00.1 External lower lip", "C00.2 External lip, NOS", "C00.3 Mucosa of upper lip", "C00.4 Mucosa of lower lip", "C00.5 Mucosa of lip, NOS", "C00.6 Commissure of lip", "C00.8 Overlapping lesion of lip", "C00.9 Lip, NOS"],
          "C01 BASE OF TONGUE": ["C01.9 Base of tongue, NOS"],
@@ -190,12 +189,50 @@ const keywordsRaw = [
 
     }
   },
+  { "Cancer ICD-O histology":   [
+        "801-804 Epithelial neoplasms, NOS",
+        "805-808 Squamous cell neoplasms",
+        "809-811 Basal cell neoplasms",
+        "812-813 Transitional cell papillomas and carcinomas",
+        "814-838 Adenomas and adenocarcinomas",
+        "839-842 Adnexal and skin appendage neoplasms",
+        "844-849 Cystic, mucinous and serous neoplasms",
+        "850-854 Ductal and lobular neoplasms",
+        "856-857 Complex epithelial neoplasms",
+        "859-867 Specialized gonadal neoplasms",
+        "868-871 Paragangliomas and glomus tumors",
+        "872-879 Nevi and melanomas",
+        "881-883 Fibromatous neoplasms",
+        "885-888 Lipomatous neoplasms",
+        "889-892 Myomatous neoplasms",
+        "893-899 Complex mixed and stromal neoplasms",
+        "900-903 Fibroepithelial neoplasms",
+        "906-909 Germ cell neoplasms",
+        "912-916 Blood vessel tumors",
+        "918-924 Osseous and chondromatous neoplasms",
+        "927-934 Odontogenic tumors",
+        "935-937 Miscellaneous tumors",
+        "938-948 Gliomas",
+        "949-952 Neuroepitheliomatous neoplasms",
+        "954-957 Nerve sheath tumors",
+        "959-972 Hodgkin and non-Hodgkin lymphomas",
+        "965-966 Hodgkin lymphomas",
+        "967-972 Non-hodgkin lymphomas",
+        "967-969 Mature B-cell lymphomas",
+        "970-971 Mature T- and NK-cell lymphomas",
+        "980-994 Leukemias",
+        "981-983 Lymphoid leukemias",
+        "984-993 Myeloid leukemias",
+        "995-996 Myeloproliferative neoplasms",
+        "998-999 Myelodysplastic syndromes"
+    ]
+
+    },
   {
-    "CRUK cancer terms": {
-        "CRUK cancers":
+    "CRUK cancer terms":
         ["Acute lymphoblastic leukaemia (ALL)", "Acute lymphoblastic leukaemia (ALL) in children", "Acute myeloid leukaemia (AML)", "Adrenal gland tumours", "Ampullary cancer", "Anal cancer", "Basal cell skin cancer", "Bile duct cancer", "Bladder cancer", "Blood cancers", "Bone cancer", "Bowel cancer", "Brain tumours", "Brain tumours in children", "Breast cancer", "Breast cancer in men", "Cancer of unknown primary (CUP)", "Cancer spread to bone", "Cancer spread to brain", "Cancer spread to liver", "Cancer spread to lung", "Carcinoid", "Cervical cancer", "Children's cancers", "Cholangiocarcinoma", "Chronic lymphocytic leukaemia (CLL)", "Chronic myeloid leukaemia (CML)", "Chronic myelomonocytic leukaemia (CMML)", "Colorectal cancer", "Ear cancer", "Endometrial cancer", "Essential Thrombocythaemia (ET)", "Eye cancer", "Follicular dendritic cell sarcoma", "Gallbladder cancer", "Gastric cancer", "Gastro oesophageal junction cancers", "Germ cell tumours", "Gestational trophoblastic disease (GTD)", "Hairy cell leukaemia", "Head and neck cancer", "Hodgkin lymphoma", "Invasive mole and choriocarcinomas", "Juvenile myelomonocytic leukaemia (JMML)", "Kaposi's sarcoma", "Kidney cancer", "Large bowel and rectal neuroendocrine tumours", "Laryngeal cancer", "Leukaemia", "Liver cancer", "Lung cancer", "Lung neuroendocrine tumours (NETs)", "Lymphoma", "Malignant schwannoma", "Mediastinal germ cell tumours", "Melanoma skin cancer", "Men's cancer", "Merkel cell skin cancer", "Mesothelioma", "Mouth and oropharyngeal cancer", "Myelodysplastic syndromes (MDS)", "Myelofibrosis", "Myeloma", "Myeloproliferative neoplasms", "Nasal and paranasal sinus cancer", "Nasopharyngeal cancer", "Neuroblastoma", "Neuroendocrine tumours", "Neuroendocrine tumours of the pancreas", "Non-Hodgkin lymphoma", "Non-Hodgkin lymphoma in children", "Oesophageal cancer", "Other conditions", "Ovarian cancer", "Pancreatic cancer", "Penile cancer", "Persistent trophoblastic disease and choriocarcinoma", "Phaeochromocytoma", "Placental site trophoblastic tumour and epithelioid trophoblastic tumour", "Polycythaemia vera (PV)", "Prostate cancer", "Pseudomyxoma peritonei", "Rare cancer", "Rectal cancer", "Retinoblastoma", "Salivary gland cancer", "Secondary cancer", "Signet cell cancer", "Skin cancer (including basal cell and squamous cell skin cancers)", "Small bowel cancer", "Small bowel neuroendocrine tumours (NETs)", "Soft tissue sarcoma", "Spinal cord tumours", "Squamous cell skin cancer", "Stomach cancer", "Stomach neuroendocrine tumours (NETs)", "Testicular cancer", "Thymus gland tumours", "Thyroid cancer", "Tongue cancer", "Tonsil cancer", "Tumours of the adrenal gland", "Unknown primary cancer", "Upper urinary tract urothelial cancer", "Uterine cancer", "Vaginal cancer", "Vulval cancer", "Wilms tumour", "Womb cancer", "Women's cancers (gynaecological cancer)"
     ]
-    }
+
   },
   {
     "In Vitro Study": {
