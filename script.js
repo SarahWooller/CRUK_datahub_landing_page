@@ -200,60 +200,83 @@ const keywordsRaw = [
 const ROOT = keywordsRaw.reduce((acc, obj) => Object.assign(acc, obj), {});
 const filterPanel = document.getElementById('filterPanel');
 const breadcrumbEl = document.getElementById('breadcrumb');
-const choicesEl = document.getElementById('choices');
+const choicesContainer = document.getElementById('choices-container');
+let choicesEl = document.getElementById('choices');
 
 const backBtn = document.getElementById('backBtn');
 const clearBtn = document.getElementById('clearBtn');
 const chipsEl = document.getElementById('selectedChips');
-const andBtn = document.getElementById('andBtn');
-const orBtn = document.getElementById('orBtn');
-let path = [];
 
+let path = [];
 const selected = new Map();
+let isAnimating = false; // Moved to global scope
 
 function getFullPath(keyword) {
     const fullPathArray = [...path, keyword];
     return fullPathArray.join(' > ');
 }
-function getNodeFromPath(root, pth){return pth.reduce((node, key) => (node && typeof node === 'object') ? node[key] : undefined, root);}
-function isLeaf(node){return Array.isArray(node);}
 
-function renderChips() {
-  chipsEl.innerHTML = '';
-  // Iterate over the Map entries
-  for (const [keyword, fullPath] of selected.entries()) {
-    const span = document.createElement('span');
-    span.className = 'chip';
-
-    // Display the full path
-    span.innerHTML = `${fullPath} <button>×</button>`;
-
-    span.querySelector('button').addEventListener('click', () => {
-      // Use the keyword as the key to delete
-      selected.delete(keyword);
-      render();
-      renderChips();
-    });
-    chipsEl.appendChild(span);
-  }
+function getNodeFromPath(root, pth) {
+    return pth.reduce((node, key) => (node && typeof node === 'object') ? node[key] : undefined, root);
 }
 
+function isLeaf(node) {
+    return Array.isArray(node);
+}
 
-function renderBreadcrumb(){breadcrumbEl.innerHTML='';const home=document.createElement('span');home.textContent='Home';home.className=path.length?'crumb':'crumb current';if(path.length)home.addEventListener('click',()=>{path=[];render();});breadcrumbEl.appendChild(home);path.forEach((key,idx)=>{const sep=document.createElement('span');sep.textContent='›';sep.style.margin='0 4px';breadcrumbEl.appendChild(sep);const crumb=document.createElement('span');crumb.textContent=key;const isCurrent=idx===path.length-1;crumb.className=isCurrent?'crumb current':'crumb';if(!isCurrent){crumb.addEventListener('click',()=>{path=path.slice(0,idx+1);render();});}breadcrumbEl.appendChild(crumb);});}
+function renderChips() {
+    chipsEl.innerHTML = '';
+    for (const [keyword, fullPath] of selected.entries()) {
+        const span = document.createElement('span');
+        span.className = 'chip';
+        span.innerHTML = `${fullPath} <button>×</button>`;
+        span.querySelector('button').addEventListener('click', () => {
+            selected.delete(keyword);
+            renderChips();
+            render(); // Rerender to reflect the change
+        });
+        chipsEl.appendChild(span);
+    }
+}
 
-function renderChoices() {
-    choicesEl.innerHTML = '';
-    const node = getNodeFromPath(ROOT, path) ?? ROOT;
+function renderBreadcrumb() {
+    breadcrumbEl.innerHTML = '';
+    const home = document.createElement('span');
+    home.textContent = 'Home';
+    home.className = path.length ? 'crumb' : 'crumb current';
+    if (path.length) home.addEventListener('click', () => {
+        path = [];
+        render();
+    });
+    breadcrumbEl.appendChild(home);
+    path.forEach((key, idx) => {
+        const sep = document.createElement('span');
+        sep.textContent = '›';
+        sep.style.margin = '0 4px';
+        breadcrumbEl.appendChild(sep);
+        const crumb = document.createElement('span');
+        crumb.textContent = key;
+        const isCurrent = idx === path.length - 1;
+        crumb.className = isCurrent ? 'crumb current' : 'crumb';
+        if (!isCurrent) {
+            crumb.addEventListener('click', () => {
+                path = path.slice(0, idx + 1);
+                render();
+            });
+        }
+        breadcrumbEl.appendChild(crumb);
+    });
+}
 
+// Renamed and refactored to populate a given element, not the global choicesEl
+function populateChoices(element, node) {
+    element.innerHTML = '';
     if (node && typeof node === 'object' && !Array.isArray(node)) {
         Object.keys(node).forEach(key => {
             const value = node[key];
-
             if (Array.isArray(node) && !isNaN(key)) return;
-
             const li = document.createElement('li');
             li.className = 'list-item';
-
             const cb = document.createElement('input');
             cb.type = 'checkbox';
             cb.checked = selected.has(key);
@@ -265,11 +288,8 @@ function renderChoices() {
                 }
                 renderChips();
             });
-
             const label = document.createElement('span');
             label.textContent = key;
-
-            // Start of new code for hover functionality
             const isBranch = typeof value === 'object';
             if (isBranch) {
                 const expandSpan = document.createElement('span');
@@ -277,21 +297,17 @@ function renderChoices() {
                 expandSpan.className = "expand-text";
                 label.appendChild(expandSpan);
             }
-            // End of new code
-
             label.addEventListener('click', () => {
                 if (isBranch) {
-                    path.push(key);
-                    render();
+                    transitionToNewChoices(key);
                 } else {
                     cb.checked = !cb.checked;
                     cb.dispatchEvent(new Event('change'));
                 }
             });
-
             li.appendChild(cb);
             li.appendChild(label);
-            choicesEl.appendChild(li);
+            element.appendChild(li);
         });
     }
 
@@ -300,7 +316,6 @@ function renderChoices() {
             if (typeof item === 'object') return;
             const li = document.createElement('li');
             li.className = 'list-item';
-
             const cb = document.createElement('input');
             cb.type = 'checkbox';
             cb.checked = selected.has(item);
@@ -312,21 +327,108 @@ function renderChoices() {
                 }
                 renderChips();
             });
-
             const label = document.createElement('span');
             label.textContent = item;
             li.appendChild(cb);
             li.appendChild(label);
-            choicesEl.appendChild(li);
+            element.appendChild(li);
         });
     }
 }
 
-function render(){renderBreadcrumb();renderChoices();}
-    backBtn.addEventListener('click',()=>{if(path.length){path.pop();render();}});
-    clearBtn.addEventListener('click',()=>{selected.clear();renderChips();render();});
-    window.addEventListener('keydown',e=>{if(e.key==='Escape'){}
+// New function to handle the forward transition
+// New function to handle the forward transition
+function transitionToNewChoices(newKey) {
+  if (isAnimating) return;
+  isAnimating = true;
+
+  const oldChoicesEl = choicesEl;
+  oldChoicesEl.classList.add('slide-out');
+
+  // Create the new list element and apply the initial state
+  const newChoicesEl = document.createElement('ul');
+  newChoicesEl.id = 'choices';
+  newChoicesEl.className = 'list slide-in';
+
+  // Populate the new element before it's visible
+  path.push(newKey);
+  renderBreadcrumb();
+  choicesContainer.style.setProperty('--indentation-level', path.length);
+  populateChoices(newChoicesEl, getNodeFromPath(ROOT, path));
+
+  choicesContainer.appendChild(newChoicesEl);
+
+  // This is the key part:
+  setTimeout(() => {
+    newChoicesEl.classList.remove('slide-in'); // This single change triggers the transition
+  }, 10);
+
+  // Listen for the old element to finish its transition
+  oldChoicesEl.addEventListener('transitionend', () => {
+    oldChoicesEl.remove();
+    isAnimating = false;
+  }, { once: true });
+
+  choicesEl = newChoicesEl;
+}
+
+// Function to handle the back transition
+function transitionBack() {
+    if (isAnimating) return;
+    isAnimating = true;
+    const oldChoicesEl = choicesEl;
+    const tempPath = [...path];
+    tempPath.pop();
+    choicesContainer.style.setProperty('--indentation-level', tempPath.length);
+    const newChoicesEl = document.createElement('ul');
+    newChoicesEl.id = 'choices';
+    newChoicesEl.className = 'list slide-in-back';
+    populateChoices(newChoicesEl, getNodeFromPath(ROOT, tempPath));
+    choicesContainer.appendChild(newChoicesEl);
+    void newChoicesEl.offsetWidth; // Force reflow
+    newChoicesEl.classList.remove('slide-in-back'); // This triggers the animation
+    oldChoicesEl.classList.add('slide-out-back');
+    oldChoicesEl.addEventListener('transitionend', () => {
+        oldChoicesEl.remove();
+        isAnimating = false;
+        path.pop();
+        renderBreadcrumb();
+    }, {
+        once: true
     });
+    choicesEl = newChoicesEl;
+}
+
+// Initial render function
+function render() {
+    renderBreadcrumb();
+    const node = getNodeFromPath(ROOT, path) ?? ROOT;
+    choicesContainer.style.setProperty('--indentation-level', path.length);
+    populateChoices(choicesEl, node);
+}
+
+// Event Listeners
+document.addEventListener('DOMContentLoaded', () => {
+    render();
+    renderChips();
+});
+
+backBtn.addEventListener('click', () => {
+    if (path.length > 0) {
+        transitionBack();
+    }
+});
+
+clearBtn.addEventListener('click', () => {
+    selected.clear();
+    renderChips();
+    render();
+});
+
+
+clearBtn.addEventListener('click',()=>{selected.clear();renderChips();render();});
+window.addEventListener('keydown',e=>{if(e.key==='Escape'){}
+});
 
     // START OF NEW CODE
 document.addEventListener('DOMContentLoaded', () => {
