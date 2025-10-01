@@ -47,7 +47,7 @@ const keywordsRaw = [
       ],
        "Animal description": [
         "include all",
-        "Geneticinclude ally engineered",
+        "Genetically engineered",
         "Immuno-compromised",
         "Patient-Derived xenograft",
         "Syngeneic"
@@ -73,8 +73,8 @@ const keywordsRaw = [
         "Magnetic Resonance Imaging",
         "Medical photography",
         "Microscopy",
-        "Nuclear medicine imaging procedure",
-        "Radiographic imaging procedure",
+        "Nuclear medicine imaging",
+        "Radiographic imaging",
         "Ultrasonography"
       ],
       "Longitudinal Follow up": [
@@ -152,8 +152,8 @@ const keywordsRaw = [
         "Magnetic Resonance Imaging",
         "Medical photography",
         "Microscopy",
-        "Nuclear medicine imaging procedure",
-        "Radiographic imaging procedure",
+        "Nuclear medicine imaging",
+        "Radiographic imaging",
         "Ultrasonography"
       ],
       "Longitudinal Follow up": [
