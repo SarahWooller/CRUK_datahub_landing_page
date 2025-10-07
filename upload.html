@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUK Data Hub - Data Form Builder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/upload.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="banner">
+            <div class="logo-placeholder">
+                <a href="https://www.cancerresearchuk.org/">
+                    <img src="cruk-logo-placeholder.png" alt="CRUK Logo" style="width: 200px; height: auto;">
+                </a>
+            </div>
+
+        </div>
+        </header>
+
+    <main class="main-content">
+        <nav id="leftNav">
+            <ul>
+                <li class="nav-item"><a href="#">Welcome and form builder</a></li>
+                <li class="nav-item"><a href="#">Summary</a></li>
+                <li class="nav-item current"><a href="#">CRUK filters</a></li>
+                <li class="nav-item"><a href="#">Documentation</a></li>
+                <li class="nav-item"><a href="#">Coverage</a></li>
+                <li class="nav-item"><a href="#">Provenance</a></li>
+                <li class="nav-item"><a href="#">Accessibility</a></li>
+                <li class="nav-item"><a href="#">Enrichment and linkage</a></li>
+                <li class="nav-item"><a href="#">Structural metadata</a></li>
+                <li class="nav-item"><a href="#">Observations</a></li>
+                <li class="nav-item"><a href="#">Demographic frequency</a></li>
+            </ul>
+        </nav>
+
+        <div class="main-panel-container">
+            <aside id="filterPanel">
+                <div class="panel-header">
+                    <div class="panel-title">CRUK Filters</div>
+                    <div style="display:flex; gap:8px;">
+                        <button id="backBtn" class="icon-btn">◀</button>
+                    </div>
+                </div>
+
+                <div id="selectedChips"></div>
+
+                <p>
+                    To help researchers find relevant datasets, the data hub can be filtered
+                    according to the cancers that it covers and the data types that it includes.
+                    It is therefore important that you categorise your dataset correctly.
+                    Please identify the cancers covered using the terms:
+                    Cancer ICD-O topography, Cancer ICD-O histology and CRUK cancer terms.
+                    These categories can be expanded by clicking on the words.
+                    Tick all the boxes that apply. Ticking a category will include all the sub-categories.
+                    Your dataset will be included in any query which includes any of the cancer types clicked.
+                    Now identify the data-types included using the terms:
+                    In Vitro Study, Animal Model, and Patient Study
+                    Again these categories can be expanded by clicking on the words.
+                    Your dataset will be included in all queries that are not looking for additional datatypes.
+                </p>
+
+                <div id="breadcrumb" class="breadcrumb"></div>
+                <div id="choices-container">
+                    <ul id="choices" class="list"></ul>
+                </div>
+                <div class="panel-footer">
+                    <button id="NextBtn" class="btn-secondary">Next > </button>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <script src="assets/upload.js"></script>
+</body>
+</html>
