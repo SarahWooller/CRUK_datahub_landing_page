@@ -121,6 +121,21 @@ body {
     box-sizing: border-box;
 }
 
+.large-image-box {
+    box-sizing: border-box;
+    width: calc(100%) !important;
+    /* Ensures the image never exceeds the width of its parent container */
+}
+
+.large-image-box img{
+    max-width: 100%;
+    /* Maintains the image's aspect ratio */
+    height: auto;
+    /* Ensures the image is treated as a block element */
+    display: block;
+
+}
+
 /* Image Gallery Layout */
 .image-gallery {
     display: flex;
@@ -128,6 +143,7 @@ body {
     gap: 10px;
     margin: 20px 0;
 }
+
 
 /* HIGHLY SPECIFIC RULE: Ensures this width is prioritized */
 /* NOTE: The width calculation is based on the new 60% content area */
