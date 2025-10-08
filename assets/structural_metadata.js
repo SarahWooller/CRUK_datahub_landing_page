@@ -3,8 +3,9 @@
 // Structure the raw data into a more accessible JavaScript object.
 // The key is the table name, and the value contains the description and an array of its columns.
 const metadata = {
-    "CLIENT": {
-        "description": "Client-level object; a container for this client's episodes.",
+    "Patient Demographics & Background Environment": {
+        "description": "Data-stamped Demographic, Environmental, and Comorbidity Data. Updated at six-monthly intervals",
+        "size": "40000",
         "columns": [
             { "Field": "ClientID", "Label": "ClientID", "Type": "string", "Nullable": "false" },
             { "Field": "Classification", "Label": "Classification", "Type": "string", "Nullable": "false" }
@@ -12,6 +13,7 @@ const metadata = {
     },
     "EPISODE": {
         "description": "Episode information. The key of this object is the episode ID.",
+        "size" : "2000",
         "columns": [
             { "Field": "Episode ID", "Label": "Episode ID", "Type": "string", "Nullable": "false" },
             { "Field": "IntervalCancerType", "Label": "IntervalCancerType", "Type": "string,null", "Nullable": "false" },
@@ -29,8 +31,9 @@ const metadata = {
             { "Field": "StudyList", "Label": "Comma-separated Study Instance UIDs", "Type": "string,null", "Nullable": "false" }
         ]
     },
-    "SCREENING": {
-        "description": "Contains screening film side-dependent information.",
+    "Biobank records": {
+        "description": "Contains metadata associated with processing of biobank samples.",
+        "size": "400",
         "columns": [
             { "Field": "diagnosticsetoutcome", "Label": "diagnosticsetoutcome", "Type": "string,null", "Nullable": "false" },
             { "Field": "Opinion", "Label": "Opinion", "Type": "string,null", "Nullable": "false" }
@@ -90,6 +93,7 @@ function renderMetadata() {
             <span class="toggle-icon">+</span>
             <span class="table-name">${tableName}</span>
             <p class="table-description">${data.description}</p>
+            <p class="table-size">${data.size} complete records</p>
         `;
         header.addEventListener('click', function() {
             const content = this.nextElementSibling;
