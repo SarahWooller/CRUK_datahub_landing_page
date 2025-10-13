@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRUK Data Hub - Together We Are Beating Cancer </title>
     <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/dev_note.css">
 </head>
 <body>
 <div class="watermark">Provisional page only - not endorsed by CRUK</div>
@@ -19,8 +20,7 @@
             <h2 class="strap-line">CRUK Data Hub</h2>
 
             <div class="header-buttons">
-                <button class="btn">Log in</button>
-                <button class="btn">Register</button>
+                <button class="btn">Sign in</button>
                 <button class="btn">Help</button>
             </div>
         </div>
@@ -35,6 +35,7 @@
     </header>
 
     <main class="main-content">
+
         <div class="left-sidebar-container">
           <div class="container">
 
@@ -44,6 +45,7 @@
 
           <aside id="filterPanel">
             <div class="panel-header">
+
               <div class="panel-title">Study Filters</div>
               <div style="display:flex; gap:8px;">
                 <button id="backBtn" class="icon-btn">◀</button>
@@ -51,6 +53,13 @@
               </div>
 
 
+            </div>
+              <div class="dev-note">
+                <p>The filters need wiring so that ALL the data criteria are included and ANY of the cancer criteria, as below: </p>
+                <p>(((any selected of topography) and (any selected of histology)) </p>
+                <p> or (any selected of CRUK cancer terms)) </p>
+                <p> and </p>
+                <p>((all selected of Animal Model ) and (all selected of In Vitro Study) and (all selected of Patient study))</p>
             </div>
               <div id="selectedChips"></div>
               <div id="selectedChips"></div>
@@ -75,8 +84,17 @@
         </div>
 
         <section class="studies-section">
+            <div style="margin-bottom: 20px;">
+                <button class="keyword-button" id="toggleDevNotes">
+                    Hide Developer Notes
+                </button>
+        </div>
             <div class="search-section">
-                <input type="search" id="search-bar" placeholder="Search for studies...">
+                <input type="search" id="search-bar" placeholder="Search selected studies...">
+                <p></p>
+                <input type="checkbox" id="deep_search" >
+                <label for="deep_search"> Deep Search <i> - may be slow</i></label><br>
+
             </div>
             <h1 class="section-heading">Unleashing the power of big data</h1>
             <p class="intro-text">
@@ -103,6 +121,7 @@
     </main>
 
     <script src="assets/script.js"></script>
+    <script src="assets/dev_note.js"></script>
 </body>
 <div class="watermark">Provisional page only - not endorsed by CRUK</div>
 
