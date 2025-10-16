@@ -6,9 +6,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const dummyNames = [
         "Keywords",
         "Summary",
-        "Documentation",
         "Structural Metadata",
+        "Documentation",
         "Data Access Request",
+        "Entity Relationship Diagrams",
         "Provenance",
         "Observations"
      ];
@@ -55,8 +56,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to populate the Left Navigation Bar
     dummyNames.forEach(name => {
+        // 1. Create the <li> element
         const listItem = document.createElement('li');
-        listItem.textContent = name;
+        // 2. Create the <a> element
+        const anchor = document.createElement('a');
+        // 3. Create the href value:
+        //    Convert the name to a valid slug/ID: lowercase, replace spaces with hyphens, etc.
+        //    Example: "Structural Metadata" becomes "#structural-metadata"
+        const slug = name.toLowerCase().replace(/\s+/g, '-');
+        anchor.href = `#${slug}`;
+
+        // 4. Set the text content of the link
+        anchor.textContent = name;
+
+        // 5. Append the link to the list item
+        listItem.appendChild(anchor);
+
+        // 6. Append the list item to the list container
         nameList.appendChild(listItem);
     });
 

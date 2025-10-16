@@ -35,10 +35,33 @@ const metadata = {
         "description": "Contains metadata associated with processing of biobank samples.",
         "size": "400",
         "columns": [
-            { "Field": "diagnosticsetoutcome", "Label": "diagnosticsetoutcome", "Type": "string,null", "Nullable": "false" },
-            { "Field": "Opinion", "Label": "Opinion", "Type": "string,null", "Nullable": "false" }
+            { "Field": "Material Type", "Label": "tissue available", "Type":
+            "['DNA', 'Plasma', 'Serum', 'Tissue specimen', 'Urine']", "Nullable": "false" },
+            { "Field": "Extraction Procedure", "Label": "Method of extracting tissue",
+            "Type": "['Surgical Procedure','na']", "Nullable": "true" }
+        ]
+    },
+
+    "Urine Protocol": {
+        "description": "Observations and tests accompanying urine samples.",
+        "columns": [
+            { 'Field': "Sample Type", "Label": "Collection method used", "Type": "['Mid-Stream', 'Catheterized', '24 hour collection']", "Nullable": "false" },
+            { 'Field': "Collection Time", "Label": "Date and time of sample acquisition", "Type": "Datetime", "Nullable": "false" },
+            { 'Field': "Volume", "Label": "Total volume of urine collected (mL)", "Type": "Numeric", "Nullable": "false" },
+            { 'Field': "Processing", "Label": "Steps taken before analysis", "Type": "String", "Nullable": "true" },
+            { 'Field': "Additives", "Label": "Preservatives or substances added", "Type": "String", "Nullable": "true" },
+            { 'Field': "Color", "Label": "Visual assessment of urine color", "Type": "Categorical String", "Nullable": "false" },
+            { 'Field': "Clarity/Appearance", "Label": "Visual assessment of turbidity", "Type": "Categorical String", "Nullable": "false" },
+            { 'Field': "pH", "Label": "Chemical measure of acidity/alkalinity", "Type": "Numeric", "Nullable": "false" },
+            { 'Field': "Specific Gravity", "Label": "Measure of solute concentration", "Type": "Numeric", "Nullable": "false" },
+            { 'Field': "Protein", "Label": "Dipstick or quantitative protein level", "Type": "Ordinal String", "Nullable": "false" },
+            { 'Field': "Blood/Hemoglobin", "Label": "Dipstick result for blood", "Type": "Ordinal String", "Nullable": "false" },
+            { 'Field': "Leukocyte Esterase", "Label": "Dipstick result for white blood cells", "Type": "Boolean/Categorical", "Nullable": "false" },
+            { 'Field': "Nitrites", "Label": "Dipstick result for bacteria", "Type": "Boolean/Categorical", "Nullable": "false" }
         ]
     }
+
+
 };
 
 // Function to generate the HTML for the columns table
