@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viewer for UKCRC filters (for potential inclusion into cruk datahub)</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles to enhance the look and feel */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+            padding: 20px;
+        }
+
+        /* Use a larger base font size */
+        .viewer-container {
+            font-size: 1.125rem; /* Equivalent to text-lg */
+        }
+
+        /* Styling for the details/summary (collapsible elements) */
+        details.json-entry {
+            border-left: 3px solid #3b82f6; /* Blue border for objects/arrays */
+            margin-left: 10px;
+        }
+
+        summary {
+            cursor: pointer;
+            padding: 4px 8px;
+            margin: 2px 0;
+            user-select: none;
+            outline: none;
+            transition: background-color 0.15s;
+        }
+
+        summary:hover {
+            background-color: #e5e7eb;
+            border-radius: 4px;
+        }
+
+        /* Style for array items */
+        .list-item {
+            color: #10b981; /* Green for list content */
+            padding-left: 20px;
+            margin: 2px 0;
+            border-left: 1px dashed #d1d5db;
+        }
+
+        /* Key styling */
+        .json-key {
+            color: #f59e0b; /* Amber for keys */
+            font-weight: 600;
+        }
+
+        /* Value styling (if not an object/array) */
+        .json-value {
+            color: #ef4444; /* Red for simple values */
+        }
+
+        /* Triangle indicator styling */
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        summary::before {
+            content: "▸";
+            display: inline-block;
+            margin-right: 8px;
+            transition: transform 0.15s;
+        }
+        details[open] > summary::before {
+            content: "▾";
+        }
+    </style>
+</head>
+<body>
+
+    <div class="max-w-4xl mx-auto p-6 bg-white shadow-xl rounded-xl viewer-container">
+        <h1 class="text-3xl font-bold mb-4 text-gray-800">Viewer for UKCRC filters (for potential inclusion into cruk datahub)</h1>
+        <h2>For consideration</h2>
+        <!-- Toggle Button Added Here -->
+        <button 
+            id="toggle-button" 
+            onclick="toggleData()" 
+            class="px-6 py-2 mb-4 rounded-full text-white shadow-lg transition duration-200"
+        >
+            Showing all filters (Click to switch)
+        </button>
+
+        <div id="json-output" class="p-4 bg-gray-50 rounded-lg">
+            <!-- Dynamic content will be inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // --- 1. Define the Dictionary/Data ---
+        // Data set A:
+        const dictionaryData_A = {"Material Type": ["Buffy coat", "DNA", "Peripheral blood mononuclear cells (PBMC)", "Plasma", "RNA", "Saliva", "Serum", "Tissue specimen", "Urine", "Whole blood"], "Macroscopic Assessment": ["Affected", "Non-affected", "Not applicable"], "Storage Temperature": ["-60\u00b0C to -85\u00b0C", "Liquid nitrogen liquid phase", "RT", "Under -85\u00b0C"], "Preservation Type": ["Paraffin"], "Extraction Procedure": ["Biopsy (procedure)", "Surgical procedure (procedure)"], "Associated Data": ["Biomarker datasets", "Clinical records", "Cold ischemic time", "Donor Ethnicity", "Followup records", "Freezer temperature logs", "Genealogical records", "Genomic datasets", "Imaging data", "National registries", "Pathology records", "Physiological/biochemical measurements", "Primary care records", "Psychological data", "Quality indicators", "Survey data", "Treatment records", "Warm ischemic time"], "Timeframe": ["0 - 3 months", "3 - 6 months", "> 6 months", "Immediate"], "Donor Count": ["1 - 10", "1001 - 3000", "101 - 500", "11 - 100", "3001 - 5000", "5001 - 10000", "501 - 1000"], "Sex": ["Female", "Male", "Undifferentiated", "Unknown"], "Age Range": ["Adult (> 40 years)", "Data not recorded", "Young adult (18 - 40 years)"], "Biobank Services": ["Ability to recontact", "Access to the full pathology archive", "Cell culture", "Data analytics", "Digital imaging", "Immunohistochemistry - scoring", "Immunohistochemistry - staining", "Nucleic acid extraction", "Tissue micro array creation"], "Networks": ["CRUK Barts Centre", "Confederation of Cancer Biobanks", "Scientist.com", "The Scottish Biorepository Network"], "Collection Type": ["Case-control", "Clinical Trial", "Cohort", "Disease specific"], "Consent Restriction": ["No Commercial restriction", "No DNA restriction", "No Other animal work", "No Outside EU access", "No Xenograft", "No restrictions"], "Collection Status": ["Completed", "In progress"], "Access Condition": ["Access restricted at present", "Closed to access", "Open in response to specific calls", "Open only through collaboration", "Open to applicants"], "Country": ["England", "Scotland", "Wales"], "County": ["Greater London", "Hampshire", "Lancashire", "Leicestershire", "Oxfordshire", "Surrey", "Warwickshire", "West Yorkshire"]};
+
+        // Data set B (The original data): keys map to lists of strings
+        const dictionaryData_B = {"Material Type": ["Body Cavity Fluid", "Bone", "Bone marrow aspirate", "Buffy coat", "Cancer cell lines", "Cerebrospinal fluid", "Cord blood", "DNA", "Dried whole blood (e.g. Guthrie cards) DWB", "Faeces", "Immortalized cell lines", "PM tissue", "Peripheral blood mononuclear cells (PBMC)", "Placenta", "Plasma", "Pleural fluid PFL", "Primary cells", "RNA", "Red blood cells", "Saliva", "Serum", "Sputum", "Stem cells and iPS cells", "Swab", "Sweat", "Synovial fluid", "Teeth", "Tissue specimen", "Umbilical cord", "Urine", "Whole blood", "Whole bone marrow", "cDNA/mRNA", "microRNA"], "Macroscopic Assessment": ["Affected", "Non-affected", "Not applicable"], "Storage Temperature": ["-18\u00b0C to -35\u00b0C", "-60\u00b0C to -85\u00b0C", "2\u00b0C to 10\u00b0C", "Liquid nitrogen liquid phase", "Liquid nitrogen vapor phase", "Other", "RT", "Under -85\u00b0C"], "Preservation Type": ["Paraffin"], "Extraction Procedure": ["Biopsy (procedure)", "Surgical procedure (procedure)"], "Associated Data": ["Biomarker datasets", "Clinical records", "Cold ischemic time", "Donor Ethnicity", "Followup records", "Freezer temperature logs", "Genealogical records", "Genomic datasets", "Imaging data", "National registries", "Pathology records", "Physiological/biochemical measurements", "Primary care records", "Psychological data", "Quality indicators", "Survey data", "Treatment records", "Warm ischemic time"], "Timeframe": ["0 - 3 months", "3 - 6 months", "> 6 months", "Immediate"], "Donor Count": ["1 - 10", "100001 - 500000", "10001 - 50000", "1001 - 3000", "101 - 500", "11 - 100", "3001 - 5000", "50001 - 100000", "5001 - 10000", "501 - 1000", "> 500000"], "Sex": ["Female", "Male", "Undifferentiated", "Unknown"], "Age Range": ["Adolescent (12 - 18 years)", "Adult (> 40 years)", "Child (6 - 12 years)", "Data not recorded", "Fetus", "Infant (1 month - 2 years)", "Neonate (0 - 1 month)", "Young adult (18 - 40 years)", "Young child (2 - 6 years)"], "Biobank Services": ["Ability to recontact", "Access to the full pathology archive", "Cell culture", "Data analytics", "Digital imaging", "Human functional tissue assays", "Immunohistochemistry - scoring", "Immunohistochemistry - staining", "Nucleic acid extraction", "Tissue micro array creation"], "Networks": ["Bone Cancer Research Trust", "CRUK Barts Centre", "Confederation of Cancer Biobanks", "IMID-Bio-UK", "Scientist.com", "The Scottish Biorepository Network"], "Collection Type": ["", "Birth cohort", "Case-control", "Clinical Trial", "Cohort", "Cross-sectional", "Disease specific", "Longitudinal", "Population-based", "Twin-study"], "Consent Restriction": ["No Commercial restriction", "No DNA restriction", "No Other animal work", "No Outside EU access", "No Xenograft", "No restrictions"], "Collection Status": ["Completed", "In progress", "Not-started", "Paused"], "Access Condition": ["Access restricted at present", "Closed to access", "Data access only", "Open in response to specific calls", "Open only through collaboration", "Open to applicants"], "Country": ["England", "Northern Ireland", "Scotland", "Wales"], "County": ["Avon", "Bristol", "Cambridgeshire", "Cardiff", "Cheshire", "Devon", "East Sussex", "Essex", "Gloucestershire", "Greater London", "Greater Manchester", "Hampshire", "Lancashire", "Leicestershire", "Merseyside", "Midlothian", "North Yorkshire", "Northamptonshire", "Northumberland", "Nottinghamshire", "Oxfordshire", "Shropshire", "South Yorkshire", "Surrey", "Tyne and Wear", "Warwickshire", "West Midlands", "West Yorkshire"]};
+
+        // Initial state
+        let currentData = dictionaryData_A;
+        let currentDataName = 'All UKCRC filters';
+
+
+        // --- 2. Recursive Rendering Function ---
+
+        /**
+         * Renders the given value (which can be a dictionary, an array, or a primitive)
+         * into a corresponding HTML element.
+         * @param {string} key - The key of the current item.
+         * @param {*} value - The value of the current item.
+         * @returns {HTMLElement} The generated element.
+         */
+        function renderValue(key, value) {
+            const type = Array.isArray(value) ? 'array' : typeof value;
+
+            if (type === 'object' && value !== null) {
+                // Handle nested dictionaries (objects)
+                const details = document.createElement('details');
+                details.className = 'json-entry ml-4 my-1';
+                // Open the root element by default
+                if (key === 'ROOT') {
+                    details.open = true;
+                }
+
+                const summary = document.createElement('summary');
+                summary.innerHTML = `<span class="json-key">${key}</span>: {${Object.keys(value).length} entries}`;
+                summary.className = 'bg-gray-100 hover:bg-gray-200 rounded-md';
+                details.appendChild(summary);
+
+                for (const subKey in value) {
+                    details.appendChild(renderValue(subKey, value[subKey]));
+                }
+                return details;
+
+            } else if (type === 'array') {
+                // Handle lists of strings (arrays)
+                const details = document.createElement('details');
+                details.className = 'json-entry ml-4 my-1';
+                
+                const summary = document.createElement('summary');
+                summary.innerHTML = `<span class="json-key">${key}</span>: [${value.length} items]`;
+                summary.className = 'bg-gray-100 hover:bg-gray-200 rounded-md';
+                
+                // If all items in the array are simple strings/primitives, we will open the array by default
+                const allPrimitives = value.every(item => typeof item !== 'object' || item === null);
+                if (allPrimitives) {
+                    details.open = true;
+                }
+                
+                details.appendChild(summary);
+
+                const ul = document.createElement('ul');
+                ul.className = 'list-none pl-4';
+                value.forEach((item, index) => {
+                    // Check if the array item itself is an object or another array
+                    if (typeof item === 'object' && item !== null) {
+                         // Recursively render nested array/object within the list
+                         // Use 'renderValue' and set the key to the array index
+                         ul.appendChild(renderValue(`[${index}]`, item));
+                    } else {
+                        // Handle simple string/primitive items
+                        const li = document.createElement('li');
+                        li.className = 'list-item';
+                        // Display array index and the string value
+                        li.innerHTML = `<span class="text-blue-500 font-mono">${index}</span>: ${item}`;
+                        ul.appendChild(li);
+                    }
+                });
+                details.appendChild(ul);
+                return details;
+
+            } else {
+                // Handle primitive values (string, number, boolean)
+                const div = document.createElement('div');
+                div.className = 'ml-4 py-1 px-2 border-l border-gray-300';
+                div.innerHTML = `<span class="json-key">${key}</span>: <span class="json-value font-mono">${String(value)}</span>`;
+                return div;
+            }
+        }
+
+        /**
+         * Updates the visual state and text of the toggle button.
+         */
+        function updateButton() {
+            const button = document.getElementById('toggle-button');
+            if (!button) return;
+            button.textContent = `Showing Data: ${currentDataName} (Click to switch)`;
+            // Toggle colors based on current state for visual feedback
+            button.className = (currentDataName === 'All UKCRC filters')
+                ? 'px-6 py-2 mb-4 rounded-full text-white shadow-lg transition duration-200 bg-blue-600 hover:bg-blue-700'
+                : 'px-6 py-2 mb-4 rounded-full text-white shadow-lg transition duration-200 bg-gray-600 hover:bg-gray-700';
+        }
+        
+        /**
+         * Switches the current data set, updates the button, and re-renders the viewer.
+         */
+        function toggleData() {
+            if (currentDataName === 'All UKCRC filters') {
+                currentData = dictionaryData_A;
+                currentDataName = 'CRUK Barts Centre filters';
+            } else {
+                currentData = dictionaryData_B;
+                currentDataName = 'All UKCRC filters';
+            }
+            updateButton();
+            initializeViewer(currentData);
+        }
+
+        /**
+         * Initializes the JSON viewer by rendering the given data into the output container.
+         * @param {Object} data - The dictionary object to render.
+         */
+        function initializeViewer(data) {
+            const outputElement = document.getElementById('json-output');
+            outputElement.innerHTML = ''; // Clear existing content
+
+            // The root of the dictionary is treated as a special object container ('ROOT')
+            const rootElement = renderValue('ROOT', data);
+            
+            // Append the contents of the 'ROOT' details element directly to the output
+            const children = Array.from(rootElement.children);
+            children.forEach(child => {
+                // Skip the root summary tag so the top level is not collapsible
+                if (child.tagName !== 'SUMMARY') { 
+                    outputElement.appendChild(child);
+                }
+            });
+
+        }
+
+        // --- 3. Run on Load ---
+        window.onload = () => {
+            initializeViewer(currentData);
+            updateButton();
+        }
+    </script>
+
+</body>
+</html>
