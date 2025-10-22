@@ -9,6 +9,25 @@ const keywordsRaw = [
     ]
 
   },
+  {"Accessibility":
+      ["Access restricted at present", "Closed to access", "Open in response to specific calls", "Open only through collaboration", "Open to applicants"
+      ]
+  },
+  {"Biobank Samples":
+        {
+        "Material type": [
+        "include all",
+        "Bloods ",
+        "Cells - eg cell lines",
+        "Genetic material",
+        "Other Fluids - eg urine",
+        "Organoids",
+        "Tissues - eg Bone marrow aspirate",
+        "Other - eg swab"
+        ],
+        "State": ["Malignant", "Normal", "Pre-cancerous"]
+      }
+  },
   {
     "In Vitro Study": {
         "include all":[],
@@ -51,14 +70,6 @@ const keywordsRaw = [
         "Immuno-compromised",
         "Patient-Derived xenograft",
         "Syngeneic"
-      ],
-      "Biobank Samples": [
-        "include all",
-        "Bloods",
-        "Cells",
-        "DNA/RNA",
-        "Other Fluids",
-        "Tissues"
       ],
       "Biopsy & Lab Results": [
         "include all",
@@ -122,16 +133,6 @@ const keywordsRaw = [
         "Family history",
         "Lifestyle",
         "Quality of life (eg Education and/or employment)"
-      ],
-      "Biobank Samples": [
-        "include all",
-        "Bloods",
-        "Cells",
-        "DNA/RNA",
-        "Other Fluids",
-        "Organoids",
-        "Primary cell lines",
-        "Tissues"
       ],
       "Biopsy Reports and Lab Results": [
         "include all",
