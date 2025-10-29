@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Filter Selection</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+
+    <!-- CSS (Equivalent to style.css) -->
+    <style>
+        /* CRUK Red used for primary accents: #E4002B */
+        .cruk-red {
+            background-color: #E4002B;
+        }
+        .text-cruk-red { /* Define custom text color for non-background use */
+            color: #E4002B;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f8f8;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+        /* Style for the scrollbar to make it cleaner */
+        .filter-scroll::-webkit-scrollbar {
+            width: 8px;
+        }
+        .filter-scroll::-webkit-scrollbar-thumb {
+            background-color: #d1d5db; /* gray-300 */
+            border-radius: 4px;
+        }
+        /* Custom styling for CRUK-themed checkboxes */
+        .cruk-red-checkbox {
+            color: #E4002B;
+            /* Force Tailwind forms style to use custom color */
+            --tw-ring-color: #E4002B;
+            --tw-ring-offset-color: #fff;
+        }
+        .cruk-red-checkbox:checked {
+            border-color: #E4002B;
+            background-color: #E4002B;
+        }
+        .toggle-btn svg {
+            transition: transform 0.2s;
+            /* Default state (collapsed) is 0deg rotation (pointing right) */
+            transform: rotate(0deg);
+        }
+        /* Expanded state uses CSS to rotate the arrow down */
+        .toggle-btn[data-expanded="true"] svg {
+            transform: rotate(90deg);
+        }
+        /* Style for the placeholder message when panels are hidden */
+        .hidden-message {
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+    <!-- Main container to hold the filter boxes -->
+    <div id="filter-container" class="w-full min-h-[85vh] flex flex-col">
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">Select Study Filters</h1>
+
+        <!-- --- Filter Navigation Bar --- -->
+        <div id="filter-navbar" class="flex flex-col sm:flex-row bg-white rounded-t-xl shadow-lg border-b border-gray-300 mb-4 overflow-hidden">
+            <!-- Filter Category Buttons (Active state handled by JS) -->
+            <button id="nav-cancer" data-panel-target="cancer-type-panel" class="nav-button flex-1 px-4 py-3 text-lg font-medium border-b-4 sm:border-b-0 sm:border-r text-gray-600 hover:bg-gray-50 transition duration-150">
+                Cancer Type <span id="cancer-type-count" class="text-xs opacity-80 font-normal ml-2">(0 Selected)</span>
+            </button>
+            <button id="nav-data" data-panel-target="data-type-panel" class="nav-button flex-1 px-4 py-3 text-lg font-medium border-b-4 sm:border-b-0 sm:border-r text-gray-600 hover:bg-gray-50 transition duration-150">
+                Data Type <span id="data-type-count" class="text-xs opacity-80 font-normal ml-2">(0 Selected)</span>
+            </button>
+            <button id="nav-access" data-panel-target="accessibility-panel" class="nav-button flex-1 px-4 py-3 text-lg font-medium border-b-4 sm:border-b-0 sm:border-r text-gray-600 hover:bg-gray-50 transition duration-150">
+                Accessibility <span id="accessibility-count" class="text-xs opacity-80 font-normal ml-2">(0 Selected)</span>
+            </button>
+
+            <!-- Action Buttons - Always visible in the navbar -->
+            <div class="flex-shrink-0 flex sm:flex-row flex-col">
+                <button id="clear-filters-button" class="px-4 py-3 font-medium text-sm sm:text-lg text-gray-500 hover:bg-red-50 hover:text-cruk-red transition duration-150 border-t sm:border-t-0 sm:border-l">
+                    Clear Filters
+                </button>
+                <button id="find-studies-button" class="cruk-red text-white font-bold py-3 px-8 shadow-md hover:bg-red-700 transition duration-150 border-t sm:border-t-0">
+                    Find Studies (<span id="total-selected-count">0</span>)
+                </button>
+            </div>
+        </div>
+        <!-- --- End Navigation Bar --- -->
+
+        <!-- --- Filter Content Panels (Only one is visible at a time) --- -->
+        <div id="panel-content-area" class="grid grid-cols-1 md:grid-cols-3 gap-4 flex-grow">
+            <!-- Panel 1: Cancer Type Content -->
+            <div id="cancer-type-panel" class="md:col-span-3 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col">
+                <div class="p-3 sm:p-4 text-gray-600 flex-grow overflow-hidden">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-3">Cancer Type Selection</h2>
+                    <p class="text-sm italic text-gray-500 mb-3">
+                        Filter by official pathology classifications (ICD-O) or patient-friendly CRUK terminology.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+                        <!-- Column 1 & 2: ICD-O Grouping (Spans two columns on medium screens and above) -->
+                        <div class="md:col-span-2 border p-3 rounded-lg bg-gray-100">
+                            <h3 class="text-base font-semibold text-gray-800 mb-3 border-b pb-1">ICD-O Classification</h3>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="bg-white p-3 rounded-md shadow-inner border border-gray-200">
+                                    <h4 class="text-sm font-bold text-gray-700 mb-2">Histology (Nested)</h4>
+                                    <div id="icdo-histology-list" class="h-40 overflow-y-auto filter-scroll space-y-1 text-sm pr-2">
+                                        <!-- Content injected here by JavaScript -->
+                                    </div>
+                                </div>
+
+                                <div class="bg-white p-3 rounded-md shadow-inner border border-gray-200">
+                                    <h4 class="text-sm font-bold text-gray-700 mb-2">Topography (Nested)</h4>
+                                    <div id="icdo-topography-list" class="h-40 overflow-y-auto filter-scroll space-y-1 text-sm pr-2">
+                                        <!-- Content injected here by JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Column 3: CRUK Cancer Terms (Single Column) -->
+                        <div class="border p-3 rounded-lg bg-gray-50">
+                            <h3 class="text-base font-semibold text-gray-800 mb-3 border-b pb-1">CRUK Cancer Terms</h3>
+                            <div id="cruk-terms-list" class="h-40 overflow-y-auto filter-scroll space-y-1 text-sm pr-2">
+                                <!-- Content injected here by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Panel 2: Data Type Content -->
+            <div id="data-type-panel" class="md:col-span-3 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col hidden">
+                <div class="p-3 sm:p-4 text-gray-600 flex-grow overflow-hidden">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-3">Data Type Selection</h2>
+                    <p class="text-sm italic text-gray-500 mb-2">
+                        Select one or more modalities to include in your search.
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+
+                        <!-- Data Type 1: Biobank Samples -->
+                        <div class="border p-3 rounded-lg bg-gray-50">
+                            <h4 class="text-sm font-bold text-gray-700 mb-2 border-b pb-1">Biobank Samples</h4>
+                            <div id="biobank-samples-list" class="h-40 overflow-y-auto filter-scroll space-y-1 text-sm pr-2">
+                                <!-- Content injected here by JavaScript -->
+                            </div>
+                        </div>
+
+                        <!-- Data Type 2: In Vitro Studies -->
+                        <div class="border p-3 rounded-lg bg-gray-50">
+                            <h4 class="text-sm font-bold text-gray-700 mb-2 border-b pb-1">In Vitro Studies</h4>
+                            <div id="invitro-studies-list" class="h-40 overflow-y-auto filter-scroll space-y-1 text-sm pr-2">
+                                <!-- Content injected here by JavaScript -->
+                            </div>
+                        </div>
+
+                        <!-- Data Type 3: Animal Studies -->
+                        <div class="border p-3 rounded-lg bg-gray-50">
+                            <h4 class="text-sm font-bold text-gray-700 mb-2 border-b pb-1">Animal Studies</h4>
+                            <div id="animal-studies-list" class="h-40 overflow-y-auto filter-scroll space-y-1 text-sm pr-2">
+                                <!-- Content injected here by JavaScript -->
+                            </div>
+                        </div>
+
+                        <!-- Data Type 4: Patient Studies -->
+                        <div class="border p-3 rounded-lg bg-gray-50">
+                            <h4 class="text-sm font-bold text-gray-700 mb-2 border-b pb-1">Patient Studies</h4>
+                            <div id="patient-studies-list" class="h-40 overflow-y-auto filter-scroll space-y-1 text-sm pr-2">
+                                <!-- Content injected here by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 3: Accessibility Content -->
+            <div id="accessibility-panel" class="md:col-span-3 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col hidden">
+                <div class="p-3 sm:p-4 text-gray-600 flex-grow overflow-hidden">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-3">Accessibility and Source</h2>
+                    <p class="text-sm italic text-gray-500 mb-2">
+                        Filter by data access level and source.
+                    </p>
+                    <div class="h-32 overflow-y-auto pr-2 filter-scroll border p-3 rounded-lg">
+                        <div class="text-sm text-gray-400">Placeholder for Accessibility list</div>
+                        <!-- You can expand this section later with data binding -->
+                        <div class="space-y-2 mt-2">
+                             <div class="flex items-center">
+                                <input type="checkbox" id="access-open" class="rounded cruk-red-checkbox mr-2 w-4 h-4 cursor-pointer" data-filter-group="access">
+                                <label for="access-open" class="text-gray-700 select-none flex-grow cursor-pointer text-sm">
+                                    Open Access Data (500)
+                                </label>
+                            </div>
+                             <div class="flex items-center">
+                                <input type="checkbox" id="access-controlled" class="rounded cruk-red-checkbox mr-2 w-4 h-4 cursor-pointer" data-filter-group="access">
+                                <label for="access-controlled" class="text-gray-700 select-none flex-grow cursor-pointer text-sm">
+                                    Controlled Access Data (1,200)
+                                </label>
+                            </div>
+                             <div class="flex items-center">
+                                <input type="checkbox" id="access-internal" class="rounded cruk-red-checkbox mr-2 w-4 h-4 cursor-pointer" data-filter-group="access">
+                                <label for="access-internal" class="text-gray-700 select-none flex-grow cursor-pointer text-sm">
+                                    Internal/Restricted Data (300)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hidden Message Area - Visible when panels are hidden -->
+            <div id="hidden-message-area" class="md:col-span-3 bg-white rounded-xl shadow-lg border border-gray-200 hidden-message text-gray-500 text-lg italic hidden">
+                <p id="feedback-message">
+                    Select a category above to start filtering, or click 'Find Studies' to search with the current filters.
+                </p>
+            </div>
+
+        </div>
+        <!-- --- End Filter Content Panels --- -->
+
+    </div>
+
+    <!-- JavaScript (Equivalent to script.js) -->
+    <script>
+        // Data Constant: Filter examples structured in JSON format
+        const filterData = {
+            cancerTypes: {
+                icdOHistology: [
+                    {
+                        id: 'h_all',
+                        label: 'Include All Histologies',
+                        count: 600,
+                        children: [
+                            {
+                                id: 'h_800',
+                                label: '800 Neoplasms, NOS',
+                                count: 350,
+                                children: [
+                                    { id: 'h_8000_0', label: '8000/0 Neoplasm, benign', count: 50 },
+                                    { id: 'h_8000_1', label: '8000/1 Neoplasm, uncertain', count: 30 },
+                                    { id: 'h_8000_3', label: '8000/3 Neoplasm, malignant', count: 150 },
+                                    { id: 'h_8000_6', label: '8000/6 Neoplasm, metastatic', count: 70 },
+                                    { id: 'h_8000_9', label: '8000/9 Neoplasm, malignant, uncertain', count: 50 },
+                                ]
+                            },
+                            { id: 'h_8140', label: '8140/3 - Adenocarcinoma, NOS', count: 85 },
+                            { id: 'h_8500', label: '8500/3 - Infiltrating duct carcinoma', count: 70 },
+                            { id: 'h_9590', label: '9590/3 - Lymphoma, NOS', count: 50 },
+                        ]
+                    }
+                ],
+                icdOTopography: [
+                    {
+                        id: 't_all', label: 'All Topography Sites', count: 400, children: [
+                            {
+                                id: 't1', label: 'C00-C14 Lip, Oral Cavity and Pharynx', count: 180, children: [
+                                    { id: 't1_1', label: 'C00 Lip', count: 90 },
+                                    { id: 't1_2', label: 'C01 Tongue Base', count: 50 },
+                                    { id: 't1_3', label: 'C04 Floor of mouth', count: 40 }
+                                ]
+                            },
+                            {
+                                id: 't2', label: 'C15-C26 Digestive Organs', count: 150, children: [
+                                    { id: 't2_1', label: 'C18 Colon', count: 100 },
+                                    { id: 't2_2', label: 'C25 Pancreas', count: 50 },
+                                ]
+                            },
+                            { id: 't3', label: 'C50 Breast', count: 70 }, // Flat item at this level
+                            { id: 't4', label: 'C34 Bronchus and lung', count: 90 },
+                            { id: 't5', label: 'C71 Brain', count: 60 }
+                        ]
+                    }
+                ],
+                crukTerms: [
+                    { id: 'c1', label: 'Breast Cancer', count: 24 },
+                    { id: 'c2', label: 'Lung Cancer', count: 18 },
+                    { id: 'c3', label: 'Colorectal Cancer', count: 12 },
+                    { id: 'c4', label: 'Prostate Cancer', count: 10 },
+                    { id: 'c5', label: 'Blood Cancer', count: 8 },
+                    { id: 'c6', label: 'Brain Tumours', count: 7 },
+                    { id: 'c7', label: 'Ovarian Cancer', count: 5 },
+                    { id: 'c8', label: 'Melanoma', count: 4 },
+                    { id: 'c9', label: 'Thyroid Cancer', count: 3 },
+                    { id: 'c10', label: 'Kidney Cancer', count: 2 },
+                ]
+            },
+            dataType: {
+                biobankSamples: [
+                    { id: 'bb_all', label: 'Biobank Samples', count: 980, children: [
+                        { id: 'bb_material', label: 'Material Type', count: 700, children: [
+                            { id: 'bb_m_all', label: 'include all', count: 700 },
+                            { id: 'bb_m1', label: 'Bloods', count: 250 },
+                            { id: 'bb_m2', label: 'Cells - eg cell lines', count: 180 },
+                            { id: 'bb_m3', label: 'Genetic material', count: 150 },
+                            { id: 'bb_m4', label: 'Other Fluids - eg urine', count: 50 },
+                            { id: 'bb_m5', label: 'Organoids', count: 30 },
+                            { id: 'bb_m6', label: 'Tissues - eg Bone marrow aspirate', count: 40 },
+                            { id: 'bb_m7', label: 'Other - eg swab', count: 20 }
+                        ]},
+                        { id: 'bb_state', label: 'State', count: 980, children: [
+                            { id: 'bb_s1', label: 'Malignant', count: 500 },
+                            { id: 'bb_s2', label: 'Normal', count: 350 },
+                            { id: 'bb_s3', label: 'Pre-cancerous', count: 130 }
+                        ]}
+                    ]}
+                ],
+                inVitroStudy: [
+                    { id: 'iv_all', label: 'In Vitro Studies', count: 450, children: [
+                        { id: 'iv_model', label: 'Model', count: 400, children: [
+                            { id: 'iv_m_all', label: 'include all', count: 400 },
+                            { id: 'iv_m1', label: 'Organ on a Chip', count: 120 },
+                            { id: 'iv_m2', label: '3D organoid (including on a chip)', count: 200 },
+                            { id: 'iv_m3', label: 'Organ slice', count: 80 }
+                        ]},
+                        { id: 'iv_cell', label: 'Cell Source', count: 450, children: [
+                            { id: 'iv_c_all', label: 'include all', count: 450 },
+                            { id: 'iv_c1', label: 'Immortalised cell-line', count: 150 },
+                            { id: 'iv_c2', label: 'Patient derived', count: 250 },
+                            { id: 'iv_c3', label: 'Animal', count: 50 }
+                        ]}
+                    ]},
+                    { id: 'iv_treatment', label: 'Treatment', count: 350, children: [
+                        { id: 'iv_t_all', label: 'include all', count: 350 },
+                        { id: 'iv_t1', label: 'Cell and cell-derived treatment', count: 100 },
+                        { id: 'iv_t2', label: 'Gene knock-down', count: 50 },
+                        { id: 'iv_t3', label: 'Medication', count: 150 },
+                        { id: 'iv_t4', label: 'Radiation', count: 50 }
+                    ]}
+                ],
+                animalModel: [
+                    { id: 'am_all', label: 'Animal Studies', count: 300, children: [
+                        { id: 'am_animal', label: 'Animal', count: 300, children: [
+                            { id: 'am_a_all', label: 'include all', count: 300 },
+                            { id: 'am_a1', label: 'Chicken', count: 20 },
+                            { id: 'am_a2', label: 'Dog', count: 30 },
+                            { id: 'am_a3', label: 'Fruit fly', count: 50 },
+                            { id: 'am_a4', label: 'Mouse', count: 150 },
+                            { id: 'am_a5', label: 'Rabbit', count: 20 },
+                            { id: 'am_a6', label: 'Rat', count: 30 }
+                        ]},
+                        { id: 'am_type', label: 'Model Type', count: 280, children: [
+                            { id: 'am_t1', label: 'Xenograft', count: 150 },
+                            { id: 'am_t2', label: 'PDX', count: 80 },
+                            { id: 'am_t3', label: 'Genetically Engineered', count: 50 }
+                        ]}
+                    ]}
+                ],
+                patientStudies: [
+                    { id: 'ps_all', label: 'Patient Studies', count: 2500, children: [
+                        { id: 'ps_design', label: 'Study Design', count: 2500, children: [
+                            { id: 'ps_d1', label: 'Observational', count: 1500 },
+                            { id: 'ps_d2', label: 'Clinical Trial', count: 800 },
+                            { id: 'ps_d3', label: 'Cohort', count: 200 }
+                        ]},
+                        { id: 'ps_stage', label: 'Disease Stage', count: 2500, children: [
+                            { id: 'ps_s1', label: 'Early Stage', count: 1200 },
+                            { id: 'ps_s2', label: 'Late Stage', count: 800 },
+                            { id: 'ps_s3', label: 'Recurrent', count: 500 }
+                        ]}
+                    ]}
+                ]
+            }
+        };
+
+        // All panels that can be displayed
+        const PANEL_IDS = ['cancer-type-panel', 'data-type-panel', 'accessibility-panel'];
+
+        // Function to create a filter list item HTML string for flat lists
+        const createFilterItem = (item, groupName, dataGroup) => {
+            return `
+                <div class="flex items-center group hover:bg-red-50 p-1 -m-1 rounded transition duration-100">
+                    <input type="checkbox" id="${groupName}-${item.id}" class="rounded cruk-red-checkbox mr-2 w-4 h-4 cursor-pointer" data-filter-group="${dataGroup}">
+                    <label for="${groupName}-${item.id}" class="text-gray-700 select-none flex-grow cursor-pointer">
+                        ${item.label}
+                        <span class="text-xs text-gray-500 ml-1">(${item.count})</span>
+                    </label>
+                </div>
+            `;
+        };
+
+        // Recursive function to render nested filter items for topography and histology
+        const renderNestedFilters = (items, groupName, dataGroup, level = 0) => {
+            return items.map(item => {
+                const hasChildren = item.children && item.children.length > 0;
+                // Set initial state to collapsed (false) and display to none for nested children
+                const isInitiallyExpanded = false;
+                const initialDisplay = 'none';
+
+                // Indentation is applied to the main item row (the flex div)
+                const rowIndentStyle = level > 0 ? `padding-left: ${level * 1.25}rem;` : '';
+
+                let chevronElement;
+                if (hasChildren) {
+                    // Item has children, so it is an expandable layer. Render a clickable chevron/toggle button.
+                    chevronElement = `
+                        <button type="button" class="toggle-btn w-4 h-4 flex items-center justify-center text-gray-500 hover:text-red-700 transition duration-100 mr-1" data-target="${groupName}-${item.id}-children" data-expanded="${isInitiallyExpanded}">
+                            <!-- Chevron icon, rotated by CSS based on data-expanded attribute -->
+                            <svg class="w-3 h-3 transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </button>
+                    `;
+                } else {
+                    // Item has no children (leaf node). Render a blank spacer for consistent alignment.
+                    chevronElement = `<span class="w-4 h-4 mr-1"></span>`;
+                }
+
+
+                return `
+                    <div class="flex flex-col">
+                        <div class="flex items-center group hover:bg-red-50 p-1 -m-1 rounded transition duration-100" style="${rowIndentStyle}">
+                            ${chevronElement}
+
+                            <input type="checkbox" id="${groupName}-${item.id}" class="rounded cruk-red-checkbox mr-2 w-4 h-4 cursor-pointer" data-filter-group="${dataGroup}">
+                            <label for="${groupName}-${item.id}" class="text-gray-700 select-none flex-grow cursor-pointer text-sm">
+                                ${item.label}
+                                <span class="text-xs text-gray-500 ml-1">(${item.count})</span>
+                            </label>
+                        </div>
+                        ${hasChildren ? `
+                            <!-- Nested content container, only rendered if children exist. Initially hidden. -->
+                            <div id="${groupName}-${item.id}-children" class="nested-list space-y-1" style="display: ${initialDisplay};">
+                                ${renderNestedFilters(item.children, groupName, dataGroup, level + 1)}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        };
+
+
+        // Function to render filters dynamically
+        const renderFilters = () => {
+            const { icdOHistology, icdOTopography, crukTerms } = filterData.cancerTypes;
+            const { biobankSamples, inVitroStudy, animalModel, patientStudies } = filterData.dataType;
+
+            // 1. Render ICD-O Histology (Now Nested)
+            const histologyContainer = document.getElementById('icdo-histology-list');
+            histologyContainer.innerHTML = renderNestedFilters(icdOHistology, 'histo', 'cancer-type');
+
+            // 2. Render ICD-O Topography (Nested)
+            const topographyContainer = document.getElementById('icdo-topography-list');
+            topographyContainer.innerHTML = renderNestedFilters(icdOTopography, 'topo', 'cancer-type');
+
+            // 3. Render CRUK Terms (Flat)
+            const crukContainer = document.getElementById('cruk-terms-list');
+            crukContainer.innerHTML = crukTerms.map(item => createFilterItem(item, 'cruk', 'cancer-type')).join('');
+
+            // 4. Render Data Types (NEW)
+            document.getElementById('biobank-samples-list').innerHTML = renderNestedFilters(biobankSamples, 'bb', 'data-type');
+            document.getElementById('invitro-studies-list').innerHTML = renderNestedFilters(inVitroStudy, 'iv', 'data-type');
+            document.getElementById('animal-studies-list').innerHTML = renderNestedFilters(animalModel, 'am', 'data-type');
+            document.getElementById('patient-studies-list').innerHTML = renderNestedFilters(patientStudies, 'ps', 'data-type');
+        };
+
+        // Function to update the selected counts
+        const updateCounts = () => {
+            const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+            let totalSelected = 0;
+            let cancerTypeSelected = 0;
+            let dataTypeSelected = 0;
+            let accessibilitySelected = 0;
+
+            allCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    totalSelected++;
+                    const group = checkbox.getAttribute('data-filter-group');
+                    if (group === 'cancer-type') {
+                        cancerTypeSelected++;
+                    } else if (group === 'data-type') {
+                        dataTypeSelected++;
+                    } else if (group === 'access') {
+                        accessibilitySelected++;
+                    }
+                }
+            });
+
+            // Update display counts on the nav buttons
+            document.getElementById('cancer-type-count').textContent = `(${cancerTypeSelected} Selected)`;
+            document.getElementById('data-type-count').textContent = `(${dataTypeSelected} Selected)`;
+            document.getElementById('accessibility-count').textContent = `(${accessibilitySelected} Selected)`;
+            document.getElementById('total-selected-count').textContent = totalSelected;
+
+            // Disable Find Studies button if no filters are selected
+            document.getElementById('find-studies-button').classList.toggle('opacity-50', totalSelected === 0);
+        };
+
+        // --- NEW/UPDATED FUNCTIONALITY FOR HIDING PANELS ---
+
+        // Function to hide all panels, deactivate nav buttons, and show the introductory message
+        const hideAllPanelsAndDeactivateNav = (message) => {
+            // 1. Hide all content panels
+            PANEL_IDS.forEach(id => {
+                const panel = document.getElementById(id);
+                if (panel) {
+                    panel.classList.add('hidden');
+                }
+            });
+
+            // 2. Deactivate all nav filter buttons' active state
+            document.querySelectorAll('.nav-button').forEach(button => {
+                // Remove active styling
+                button.classList.remove('bg-gray-100', 'text-cruk-red', 'border-b-4', 'border-[#E4002B]');
+                // Add inactive styling
+                button.classList.add('text-gray-600', 'hover:bg-gray-50');
+            });
+
+            // 3. Show the feedback message area
+            const messageArea = document.getElementById('hidden-message-area');
+            const feedbackMessage = document.getElementById('feedback-message');
+            if (messageArea && feedbackMessage) {
+                feedbackMessage.textContent = message || "Select a category above to start filtering, or click 'Find Studies' to search with the current filters.";
+                messageArea.classList.remove('hidden');
+            }
+        };
+
+        // Function to handle panel visibility and active button state
+        const showPanel = (panelId) => {
+            // Hide all panels and deactivate nav buttons first (using the new utility function)
+            hideAllPanelsAndDeactivateNav();
+
+            // 1. Show the requested panel
+            const targetPanel = document.getElementById(panelId);
+            if (targetPanel) {
+                targetPanel.classList.remove('hidden');
+            }
+
+            // 2. Hide the feedback message area
+            const messageArea = document.getElementById('hidden-message-area');
+            if (messageArea) {
+                messageArea.classList.add('hidden');
+            }
+
+            // 3. Activate the corresponding button
+            // Get the button ID from the panel ID (e.g., 'cancer-type-panel' -> 'nav-cancer')
+            const buttonType = panelId.split('-')[0];
+            const targetButton = document.getElementById(`nav-${buttonType}`);
+
+            if (targetButton) {
+                targetButton.classList.add('bg-gray-100', 'text-cruk-red', 'border-b-4', 'border-[#E4002B]'); // Active styling
+                targetButton.classList.remove('text-gray-600', 'hover:bg-gray-50'); // Remove inactive styling
+            }
+        };
+
+        // Function to clear all checkboxes and hide panels
+        const clearAllFilters = () => {
+            document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            updateCounts();
+            hideAllPanelsAndDeactivateNav("All filters have been cleared. Select a category above to start a new search.");
+        };
+
+
+        // Function to set up the expand/collapse toggles for nested lists
+        const setupToggles = () => {
+            document.querySelectorAll('.toggle-btn').forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetId = button.getAttribute('data-target');
+                    const targetElement = document.getElementById(targetId);
+                    const isExpanded = button.getAttribute('data-expanded') === 'true';
+
+                    if (isExpanded) {
+                        targetElement.style.display = 'none';
+                        button.setAttribute('data-expanded', 'false');
+                    } else {
+                        targetElement.style.display = 'block';
+                        button.setAttribute('data-expanded', 'true');
+                    }
+                });
+            });
+        };
+
+        // Initialize Application
+        window.onload = function() {
+            renderFilters();
+            updateCounts(); // Initialize count to 0
+            setupToggles(); // Setup expand/collapse functionality
+
+            // Initial display: Show the introductory message (panels are hidden by default via CSS/JS)
+            hideAllPanelsAndDeactivateNav();
+
+            // Add event listeners for navigation buttons
+            document.getElementById('nav-cancer').addEventListener('click', () => showPanel('cancer-type-panel'));
+            document.getElementById('nav-data').addEventListener('click', () => showPanel('data-type-panel'));
+            document.getElementById('nav-access').addEventListener('click', () => showPanel('accessibility-panel'));
+
+            // Action button listeners
+            document.getElementById('clear-filters-button').addEventListener('click', clearAllFilters);
+            document.getElementById('find-studies-button').addEventListener('click', () => {
+                const totalFilters = document.getElementById('total-selected-count').textContent;
+                hideAllPanelsAndDeactivateNav(`Search initiated with ${totalFilters} filters applied. Results would appear here.`);
+                // In a real application, this would trigger the API call
+            });
+
+            // Add event listeners to all checkboxes for dynamic updating
+            const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+            allCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateCounts);
+            });
+        };
+
+    </script>
