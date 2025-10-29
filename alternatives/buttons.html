@@ -53,13 +53,27 @@
         .toggle-btn[data-expanded="true"] svg {
             transform: rotate(90deg);
         }
-        /* Style for the placeholder message when panels are hidden */
-        .hidden-message {
-            min-height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
+        /* Style for the filter chips */
+        .filter-chip {
+            white-space: nowrap;
+        }
+        .filter-chip-cancer {
+            background-color: #ffcccb; /* Light red/pink for OR group (Cancer) */
+            color: #E4002B;
+            border: 1px solid #E4002B;
+        }
+        .filter-chip-and {
+            background-color: #e0f2fe; /* Light blue for AND groups (Data/Access) */
+            color: #1e40af;
+            border: 1px solid #93c5fd;
+        }
+        #selected-filters-area {
+            /* Initial state for collapse/expand transition */
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            opacity: 0;
+            overflow: hidden;
         }
     </style>
 </head>
@@ -69,7 +83,8 @@
         <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">Select Study Filters</h1>
 
         <!-- --- Filter Navigation Bar --- -->
-        <div id="filter-navbar" class="flex flex-col sm:flex-row bg-white rounded-t-xl shadow-lg border-b border-gray-300 mb-4 overflow-hidden">
+        <!-- Note: rounded-b-xl removed here to let the chip area handle the bottom border/shadow -->
+        <div id="filter-navbar" class="flex flex-col sm:flex-row bg-white rounded-t-xl shadow-lg border-b border-gray-300 overflow-hidden">
             <!-- Filter Category Buttons (Active state handled by JS) -->
             <button id="nav-cancer" data-panel-target="cancer-type-panel" class="nav-button flex-1 px-4 py-3 text-lg font-medium border-b-4 sm:border-b-0 sm:border-r text-gray-600 hover:bg-gray-50 transition duration-150">
                 Cancer Type <span id="cancer-type-count" class="text-xs opacity-80 font-normal ml-2">(0 Selected)</span>
@@ -93,9 +108,27 @@
         </div>
         <!-- --- End Navigation Bar --- -->
 
+        <!-- --- Filter Chip Area (NEW) --- -->
+        <!-- This area will show the selected filters as removable chips -->
+        <div id="selected-filters-area" class="bg-white rounded-b-xl shadow-lg border-b border-l border-r border-gray-300 transition duration-300 ease-in-out">
+            <div class="flex items-start flex-wrap gap-2 text-sm" id="filter-chip-list">
+                <!-- Chips will be inserted here by JavaScript -->
+            </div>
+            <!-- Logic summary for user clarity -->
+            <p id="logic-summary" class="text-xs text-gray-500 mt-2 hidden px-1">
+                Logic: (Cancer Filters are OR-ed) AND (Data Type Filters are AND-ed) AND (Accessibility Filters are AND-ed)
+            </p>
+        </div>
+        <!-- --- End Filter Chip Area --- -->
+
+
         <!-- --- Filter Content Panels (Only one is visible at a time) --- -->
-        <div id="panel-content-area" class="grid grid-cols-1 md:grid-cols-3 gap-4 flex-grow">
+        <!-- Note: mt-0 is used here as the chip area handles the necessary mb-4 spacing -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 flex-grow mt-4">
+            <!-- This container holds the panels and ensures they stretch correctly -->
+
             <!-- Panel 1: Cancer Type Content -->
+            <!-- Initially shown, but will be controlled by JS -->
             <div id="cancer-type-panel" class="md:col-span-3 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col">
                 <div class="p-3 sm:p-4 text-gray-600 flex-grow overflow-hidden">
                     <h2 class="text-2xl font-bold text-gray-800 mb-3">Cancer Type Selection</h2>
@@ -192,7 +225,7 @@
                     </p>
                     <div class="h-32 overflow-y-auto pr-2 filter-scroll border p-3 rounded-lg">
                         <div class="text-sm text-gray-400">Placeholder for Accessibility list</div>
-                        <!-- You can expand this section later with data binding -->
+                        <!-- Checkboxes here use data-filter-group="access" -->
                         <div class="space-y-2 mt-2">
                              <div class="flex items-center">
                                 <input type="checkbox" id="access-open" class="rounded cruk-red-checkbox mr-2 w-4 h-4 cursor-pointer" data-filter-group="access">
@@ -217,13 +250,6 @@
                 </div>
             </div>
 
-            <!-- Hidden Message Area - Visible when panels are hidden -->
-            <div id="hidden-message-area" class="md:col-span-3 bg-white rounded-xl shadow-lg border border-gray-200 hidden-message text-gray-500 text-lg italic hidden">
-                <p id="feedback-message">
-                    Select a category above to start filtering, or click 'Find Studies' to search with the current filters.
-                </p>
-            </div>
-
         </div>
         <!-- --- End Filter Content Panels --- -->
 
@@ -234,6 +260,7 @@
         // Data Constant: Filter examples structured in JSON format
         const filterData = {
             cancerTypes: {
+                // RESTRUCTURED to be nested based on user request
                 icdOHistology: [
                     {
                         id: 'h_all',
@@ -245,126 +272,128 @@
                                 label: '800 Neoplasms, NOS',
                                 count: 350,
                                 children: [
-                                    { id: 'h_8000_0', label: '8000/0 Neoplasm, benign', count: 50 },
-                                    { id: 'h_8000_1', label: '8000/1 Neoplasm, uncertain', count: 30 },
-                                    { id: 'h_8000_3', label: '8000/3 Neoplasm, malignant', count: 150 },
-                                    { id: 'h_8000_6', label: '8000/6 Neoplasm, metastatic', count: 70 },
-                                    { id: 'h_8000_9', label: '8000/9 Neoplasm, malignant, uncertain', count: 50 },
+                                    // Added category property for clarity in chip labeling
+                                    { id: 'h_8000_0', label: '8000/0 Neoplasm, benign', count: 50, category: 'Histology' },
+                                    { id: 'h_8000_1', label: '8000/1 Neoplasm, uncertain', count: 30, category: 'Histology' },
+                                    { id: 'h_8000_3', label: '8000/3 Neoplasm, malignant', count: 150, category: 'Histology' },
+                                    { id: 'h_8000_6', label: '8000/6 Neoplasm, metastatic', count: 70, category: 'Histology' },
+                                    { id: 'h_8000_9', label: '8000/9 Neoplasm, malignant, uncertain', count: 50, category: 'Histology' },
                                 ]
                             },
-                            { id: 'h_8140', label: '8140/3 - Adenocarcinoma, NOS', count: 85 },
-                            { id: 'h_8500', label: '8500/3 - Infiltrating duct carcinoma', count: 70 },
-                            { id: 'h_9590', label: '9590/3 - Lymphoma, NOS', count: 50 },
+                            { id: 'h_8140', label: '8140/3 - Adenocarcinoma, NOS', count: 85, category: 'Histology' },
+                            { id: 'h_8500', label: '8500/3 - Infiltrating duct carcinoma', count: 70, category: 'Histology' },
+                            { id: 'h_9590', label: '9590/3 - Lymphoma, NOS', count: 50, category: 'Histology' },
                         ]
                     }
                 ],
+                // Nested structure for Topography (kept as is)
                 icdOTopography: [
                     {
                         id: 't_all', label: 'All Topography Sites', count: 400, children: [
                             {
                                 id: 't1', label: 'C00-C14 Lip, Oral Cavity and Pharynx', count: 180, children: [
-                                    { id: 't1_1', label: 'C00 Lip', count: 90 },
-                                    { id: 't1_2', label: 'C01 Tongue Base', count: 50 },
-                                    { id: 't1_3', label: 'C04 Floor of mouth', count: 40 }
+                                    { id: 't1_1', label: 'C00 Lip', count: 90, category: 'Topography' },
+                                    { id: 't1_2', label: 'C01 Tongue Base', count: 50, category: 'Topography' },
+                                    { id: 't1_3', label: 'C04 Floor of mouth', count: 40, category: 'Topography' }
                                 ]
                             },
                             {
                                 id: 't2', label: 'C15-C26 Digestive Organs', count: 150, children: [
-                                    { id: 't2_1', label: 'C18 Colon', count: 100 },
-                                    { id: 't2_2', label: 'C25 Pancreas', count: 50 },
+                                    { id: 't2_1', label: 'C18 Colon', count: 100, category: 'Topography' },
+                                    { id: 't2_2', label: 'C25 Pancreas', count: 50, category: 'Topography' },
                                 ]
                             },
-                            { id: 't3', label: 'C50 Breast', count: 70 }, // Flat item at this level
-                            { id: 't4', label: 'C34 Bronchus and lung', count: 90 },
-                            { id: 't5', label: 'C71 Brain', count: 60 }
+                            { id: 't3', label: 'C50 Breast', count: 70, category: 'Topography' }, // Flat item at this level
+                            { id: 't4', label: 'C34 Bronchus and lung', count: 90, category: 'Topography' },
+                            { id: 't5', label: 'C71 Brain', count: 60, category: 'Topography' }
                         ]
                     }
                 ],
                 crukTerms: [
-                    { id: 'c1', label: 'Breast Cancer', count: 24 },
-                    { id: 'c2', label: 'Lung Cancer', count: 18 },
-                    { id: 'c3', label: 'Colorectal Cancer', count: 12 },
-                    { id: 'c4', label: 'Prostate Cancer', count: 10 },
-                    { id: 'c5', label: 'Blood Cancer', count: 8 },
-                    { id: 'c6', label: 'Brain Tumours', count: 7 },
-                    { id: 'c7', label: 'Ovarian Cancer', count: 5 },
-                    { id: 'c8', label: 'Melanoma', count: 4 },
-                    { id: 'c9', label: 'Thyroid Cancer', count: 3 },
-                    { id: 'c10', label: 'Kidney Cancer', count: 2 },
+                    { id: 'c1', label: 'Breast Cancer', count: 24, category: 'CRUK Term' },
+                    { id: 'c2', label: 'Lung Cancer', count: 18, category: 'CRUK Term' },
+                    { id: 'c3', label: 'Colorectal Cancer', count: 12, category: 'CRUK Term' },
+                    { id: 'c4', label: 'Prostate Cancer', count: 10, category: 'CRUK Term' },
+                    { id: 'c5', label: 'Blood Cancer', count: 8, category: 'CRUK Term' },
+                    { id: 'c6', label: 'Brain Tumours', count: 7, category: 'CRUK Term' },
+                    { id: 'c7', label: 'Ovarian Cancer', count: 5, category: 'CRUK Term' },
+                    { id: 'c8', label: 'Melanoma', count: 4, category: 'CRUK Term' },
+                    { id: 'c9', label: 'Thyroid Cancer', count: 3, category: 'CRUK Term' },
+                    { id: 'c10', label: 'Kidney Cancer', count: 2, category: 'CRUK Term' },
                 ]
             },
             dataType: {
                 biobankSamples: [
                     { id: 'bb_all', label: 'Biobank Samples', count: 980, children: [
                         { id: 'bb_material', label: 'Material Type', count: 700, children: [
-                            { id: 'bb_m_all', label: 'include all', count: 700 },
-                            { id: 'bb_m1', label: 'Bloods', count: 250 },
-                            { id: 'bb_m2', label: 'Cells - eg cell lines', count: 180 },
-                            { id: 'bb_m3', label: 'Genetic material', count: 150 },
-                            { id: 'bb_m4', label: 'Other Fluids - eg urine', count: 50 },
-                            { id: 'bb_m5', label: 'Organoids', count: 30 },
-                            { id: 'bb_m6', label: 'Tissues - eg Bone marrow aspirate', count: 40 },
-                            { id: 'bb_m7', label: 'Other - eg swab', count: 20 }
+                            { id: 'bb_m_all', label: 'include all', count: 700, category: 'Biobank' },
+                            { id: 'bb_m1', label: 'Bloods', count: 250, category: 'Biobank' },
+                            { id: 'bb_m2', label: 'Cells - eg cell lines', count: 180, category: 'Biobank' },
+                            { id: 'bb_m3', label: 'Genetic material', count: 150, category: 'Biobank' },
+                            { id: 'bb_m4', label: 'Other Fluids - eg urine', count: 50, category: 'Biobank' },
+                            { id: 'bb_m5', label: 'Organoids', count: 30, category: 'Biobank' },
+                            { id: 'bb_m6', label: 'Tissues - eg Bone marrow aspirate', count: 40, category: 'Biobank' },
+                            { id: 'bb_m7', label: 'Other - eg swab', count: 20, category: 'Biobank' }
                         ]},
                         { id: 'bb_state', label: 'State', count: 980, children: [
-                            { id: 'bb_s1', label: 'Malignant', count: 500 },
-                            { id: 'bb_s2', label: 'Normal', count: 350 },
-                            { id: 'bb_s3', label: 'Pre-cancerous', count: 130 }
+                            { id: 'bb_s1', label: 'Malignant', count: 500, category: 'Biobank' },
+                            { id: 'bb_s2', label: 'Normal', count: 350, category: 'Biobank' },
+                            { id: 'bb_s3', label: 'Pre-cancerous', count: 130, category: 'Biobank' }
                         ]}
                     ]}
                 ],
                 inVitroStudy: [
                     { id: 'iv_all', label: 'In Vitro Studies', count: 450, children: [
                         { id: 'iv_model', label: 'Model', count: 400, children: [
-                            { id: 'iv_m_all', label: 'include all', count: 400 },
-                            { id: 'iv_m1', label: 'Organ on a Chip', count: 120 },
-                            { id: 'iv_m2', label: '3D organoid (including on a chip)', count: 200 },
-                            { id: 'iv_m3', label: 'Organ slice', count: 80 }
+                            { id: 'iv_m_all', label: 'include all', count: 400, category: 'In Vitro' },
+                            { id: 'iv_m1', label: 'Organ on a Chip', count: 120, category: 'In Vitro' },
+                            { id: 'iv_m2', label: '3D organoid (including on a chip)', count: 200, category: 'In Vitro' },
+                            { id: 'iv_m3', label: 'Organ slice', count: 80, category: 'In Vitro' }
                         ]},
                         { id: 'iv_cell', label: 'Cell Source', count: 450, children: [
-                            { id: 'iv_c_all', label: 'include all', count: 450 },
-                            { id: 'iv_c1', label: 'Immortalised cell-line', count: 150 },
-                            { id: 'iv_c2', label: 'Patient derived', count: 250 },
-                            { id: 'iv_c3', label: 'Animal', count: 50 }
+                            { id: 'iv_c_all', label: 'include all', count: 450, category: 'In Vitro' },
+                            { id: 'iv_c1', label: 'Immortalised cell-line', count: 150, category: 'In Vitro' },
+                            { id: 'iv_c2', label: 'Patient derived', count: 250, category: 'In Vitro' },
+                            { id: 'iv_c3', label: 'Animal', count: 50, category: 'In Vitro' }
                         ]}
                     ]},
                     { id: 'iv_treatment', label: 'Treatment', count: 350, children: [
-                        { id: 'iv_t_all', label: 'include all', count: 350 },
-                        { id: 'iv_t1', label: 'Cell and cell-derived treatment', count: 100 },
-                        { id: 'iv_t2', label: 'Gene knock-down', count: 50 },
-                        { id: 'iv_t3', label: 'Medication', count: 150 },
-                        { id: 'iv_t4', label: 'Radiation', count: 50 }
+                        { id: 'iv_t_all', label: 'include all', count: 350, category: 'In Vitro' },
+                        { id: 'iv_t1', label: 'Cell and cell-derived treatment', count: 100, category: 'In Vitro' },
+                        { id: 'iv_t2', label: 'Gene knock-down', count: 50, category: 'In Vitro' },
+                        { id: 'iv_t3', label: 'Medication', count: 150, category: 'In Vitro' },
+                        { id: 'iv_t4', label: 'Radiation', count: 50, category: 'In Vitro' }
                     ]}
                 ],
                 animalModel: [
                     { id: 'am_all', label: 'Animal Studies', count: 300, children: [
                         { id: 'am_animal', label: 'Animal', count: 300, children: [
-                            { id: 'am_a_all', label: 'include all', count: 300 },
-                            { id: 'am_a1', label: 'Chicken', count: 20 },
-                            { id: 'am_a2', label: 'Dog', count: 30 },
-                            { id: 'am_a3', label: 'Fruit fly', count: 50 },
-                            { id: 'am_a4', label: 'Mouse', count: 150 },
-                            { id: 'am_a5', label: 'Rabbit', count: 20 },
-                            { id: 'am_a6', label: 'Rat', count: 30 }
+                            { id: 'am_a_all', label: 'include all', count: 300, category: 'Animal Model' },
+                            { id: 'am_a1', label: 'Chicken', count: 20, category: 'Animal Model' },
+                            { id: 'am_a2', label: 'Dog', count: 30, category: 'Animal Model' },
+                            { id: 'am_a3', label: 'Fruit fly', count: 50, category: 'Animal Model' },
+                            { id: 'am_a4', label: 'Mouse', count: 150, category: 'Animal Model' },
+                            { id: 'am_a5', label: 'Rabbit', count: 20, category: 'Animal Model' },
+                            { id: 'am_a6', label: 'Rat', count: 30, category: 'Animal Model' }
                         ]},
                         { id: 'am_type', label: 'Model Type', count: 280, children: [
-                            { id: 'am_t1', label: 'Xenograft', count: 150 },
-                            { id: 'am_t2', label: 'PDX', count: 80 },
-                            { id: 'am_t3', label: 'Genetically Engineered', count: 50 }
+                            { id: 'am_t1', label: 'Xenograft', count: 150, category: 'Animal Model' },
+                            { id: 'am_t2', label: 'PDX', count: 80, category: 'Animal Model' },
+                            { id: 'am_t3', label: 'Genetically Engineered', count: 50, category: 'Animal Model' }
                         ]}
                     ]}
                 ],
                 patientStudies: [
                     { id: 'ps_all', label: 'Patient Studies', count: 2500, children: [
                         { id: 'ps_design', label: 'Study Design', count: 2500, children: [
-                            { id: 'ps_d1', label: 'Observational', count: 1500 },
-                            { id: 'ps_d2', label: 'Clinical Trial', count: 800 },
-                            { id: 'ps_d3', label: 'Cohort', count: 200 }
+                            { id: 'ps_d1', label: 'Observational', count: 1500, category: 'Patient Study' },
+                            { id: 'ps_d2', label: 'Clinical Trial', count: 800, category: 'Patient Study' },
+                            { id: 'ps_d3', label: 'Cohort', count: 200, category: 'Patient Study' }
                         ]},
                         { id: 'ps_stage', label: 'Disease Stage', count: 2500, children: [
-                            { id: 'ps_s1', label: 'Early Stage', count: 1200 },
-                            { id: 'ps_s2', label: 'Late Stage', count: 800 },
-                            { id: 'ps_s3', label: 'Recurrent', count: 500 }
+                            { id: 'ps_s1', label: 'Early Stage', count: 1200, category: 'Patient Study' },
+                            { id: 'ps_s2', label: 'Late Stage', count: 800, category: 'Patient Study' },
+                            { id: 'ps_s3', label: 'Recurrent', count: 500, category: 'Patient Study' }
                         ]}
                     ]}
                 ]
@@ -373,6 +402,82 @@
 
         // All panels that can be displayed
         const PANEL_IDS = ['cancer-type-panel', 'data-type-panel', 'accessibility-panel'];
+
+        // Helper function to find a filter item's label and category by its checkbox ID
+        // Note: This relies on the convention that checkbox ID is ${groupName}-${item.id}
+        const findFilterDetails = (id) => {
+            const parts = id.split('-');
+            if (parts.length < 2) return null; // Invalid ID format
+
+            // The group name is the part before the first hyphen, e.g., 'cruk'
+            const groupPrefix = parts[0];
+            const itemId = parts.slice(1).join('-');
+
+            // Map the checkbox prefix back to a user-friendly category label
+            const categoryMap = {
+                'access': 'Accessibility',
+                'cruk': 'CRUK Term',
+                'histo': 'Histology',
+                'topo': 'Topography',
+                'bb': 'Biobank',
+                'iv': 'In Vitro',
+                'am': 'Animal Model',
+                'ps': 'Patient Study'
+            };
+
+            // Function to recursively search through nested data structures
+            const recursiveSearch = (data, targetId) => {
+                if (!Array.isArray(data)) return null;
+
+                for (const item of data) {
+                    // Check if this item is the target
+                    if (item.id === targetId) {
+                        return {
+                            id: item.id,
+                            label: item.label,
+                            category: item.category || categoryMap[groupPrefix] || 'Filter',
+                            fullId: `${groupPrefix}-${item.id}`
+                        };
+                    }
+                    // Search children if they exist
+                    if (item.children) {
+                        const found = recursiveSearch(item.children, targetId);
+                        if (found) return found;
+                    }
+                }
+                return null;
+            };
+
+            // Search the data structure based on the filter group
+            let searchResult = null;
+            if (['histo', 'topo', 'cruk'].includes(groupPrefix)) {
+                // Combine all cancer types into one array for easier searching
+                const allCancerItems = filterData.cancerTypes.icdOHistology
+                    .concat(filterData.cancerTypes.icdOTopography)
+                    .concat(filterData.cancerTypes.crukTerms);
+                searchResult = recursiveSearch(allCancerItems, itemId);
+            } else if (['bb', 'iv', 'am', 'ps'].includes(groupPrefix)) {
+                 // Combine all data types
+                 const allDataItems = filterData.dataType.biobankSamples
+                    .concat(filterData.dataType.inVitroStudy)
+                    .concat(filterData.dataType.animalModel)
+                    .concat(filterData.dataType.patientStudies);
+                 searchResult = recursiveSearch(allDataItems, itemId);
+            } else if (groupPrefix === 'access') {
+                // Handle hardcoded accessibility elements
+                const accessItems = [
+                    { id: 'open', label: 'Open Access Data', category: 'Accessibility' },
+                    { id: 'controlled', label: 'Controlled Access Data', category: 'Accessibility' },
+                    { id: 'internal', label: 'Internal/Restricted Data', category: 'Accessibility' }
+                ];
+                searchResult = accessItems.find(item => item.id === itemId);
+                if (searchResult) {
+                     searchResult.fullId = `${groupPrefix}-${searchResult.id}`;
+                }
+            }
+
+            return searchResult;
+        };
 
         // Function to create a filter list item HTML string for flat lists
         const createFilterItem = (item, groupName, dataGroup) => {
@@ -460,6 +565,76 @@
             document.getElementById('patient-studies-list').innerHTML = renderNestedFilters(patientStudies, 'ps', 'data-type');
         };
 
+        // Function to remove a filter when a chip is clicked
+        const removeFilter = (checkboxId) => {
+            const checkbox = document.getElementById(checkboxId);
+            if (checkbox) {
+                checkbox.checked = false;
+                // Since this changes the state, we must update the UI
+                updateCounts();
+            }
+        };
+
+        // Function to generate and display the filter chips
+        const updateChips = () => {
+            const allCheckboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            const chipListContainer = document.getElementById('filter-chip-list');
+            const filterArea = document.getElementById('selected-filters-area');
+            const logicSummary = document.getElementById('logic-summary');
+            chipListContainer.innerHTML = '';
+
+            // If no filters are selected, collapse and hide the chip area
+            if (allCheckboxes.length === 0) {
+                // Apply hidden state styles
+                filterArea.style.maxHeight = '0';
+                filterArea.style.paddingTop = '0';
+                filterArea.style.paddingBottom = '0';
+                filterArea.style.opacity = '0';
+                logicSummary.classList.add('hidden');
+                return;
+            }
+
+            // If filters are selected, show the area with transition styles
+            filterArea.style.maxHeight = '500px';
+            filterArea.style.paddingTop = '0.75rem'; // p-3
+            filterArea.style.paddingBottom = '0.75rem'; // p-3
+            filterArea.style.opacity = '1';
+            logicSummary.classList.remove('hidden');
+
+            allCheckboxes.forEach(checkbox => {
+                const group = checkbox.getAttribute('data-filter-group');
+                const checkboxId = checkbox.id;
+
+                let details = findFilterDetails(checkboxId);
+
+                // Fallback for cases where data is not perfectly matched (e.g. placeholder access data)
+                if (!details) {
+                    details = {
+                        label: checkbox.parentElement.querySelector('label')?.textContent.split('(')[0].trim() || 'Unknown Filter',
+                        category: group === 'cancer-type' ? 'Cancer Filter' : group === 'data-type' ? 'Data Filter' : 'Access Filter',
+                        fullId: checkboxId
+                    };
+                }
+
+                // Determine CSS class based on logic grouping (Cancer is OR, others are AND)
+                const chipClass = group === 'cancer-type' ? 'filter-chip-cancer' : 'filter-chip-and';
+
+                // Use `details.category` for the filter group label (e.g., 'Histology' or 'Biobank')
+                const chipHtml = `
+                    <div class="filter-chip ${chipClass} inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold shadow-sm">
+                        <span class="mr-1 opacity-75">${details.category}:</span>
+                        <span class="font-bold">${details.label}</span>
+                        <button type="button" class="ml-2 h-4 w-4 rounded-full flex items-center justify-center hover:bg-white hover:bg-opacity-50 transition duration-150"
+                                data-checkbox-id="${checkboxId}" onclick="removeFilter('${checkboxId}')" aria-label="Remove filter ${details.label}">
+                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        </button>
+                    </div>
+                `;
+                chipListContainer.insertAdjacentHTML('beforeend', chipHtml);
+            });
+        };
+
+
         // Function to update the selected counts
         const updateCounts = () => {
             const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
@@ -490,13 +665,14 @@
 
             // Disable Find Studies button if no filters are selected
             document.getElementById('find-studies-button').classList.toggle('opacity-50', totalSelected === 0);
+
+            // NEW: Update the filter chips display
+            updateChips();
         };
 
-        // --- NEW/UPDATED FUNCTIONALITY FOR HIDING PANELS ---
-
-        // Function to hide all panels, deactivate nav buttons, and show the introductory message
-        const hideAllPanelsAndDeactivateNav = (message) => {
-            // 1. Hide all content panels
+        // Function to handle panel visibility and active button state
+        const showPanel = (panelId) => {
+            // 1. Hide all panels
             PANEL_IDS.forEach(id => {
                 const panel = document.getElementById(id);
                 if (panel) {
@@ -504,41 +680,19 @@
                 }
             });
 
-            // 2. Deactivate all nav filter buttons' active state
+            // 2. Deactivate all nav buttons' active state
             document.querySelectorAll('.nav-button').forEach(button => {
-                // Remove active styling
                 button.classList.remove('bg-gray-100', 'text-cruk-red', 'border-b-4', 'border-[#E4002B]');
-                // Add inactive styling
                 button.classList.add('text-gray-600', 'hover:bg-gray-50');
             });
 
-            // 3. Show the feedback message area
-            const messageArea = document.getElementById('hidden-message-area');
-            const feedbackMessage = document.getElementById('feedback-message');
-            if (messageArea && feedbackMessage) {
-                feedbackMessage.textContent = message || "Select a category above to start filtering, or click 'Find Studies' to search with the current filters.";
-                messageArea.classList.remove('hidden');
-            }
-        };
-
-        // Function to handle panel visibility and active button state
-        const showPanel = (panelId) => {
-            // Hide all panels and deactivate nav buttons first (using the new utility function)
-            hideAllPanelsAndDeactivateNav();
-
-            // 1. Show the requested panel
+            // 3. Show the requested panel
             const targetPanel = document.getElementById(panelId);
             if (targetPanel) {
                 targetPanel.classList.remove('hidden');
             }
 
-            // 2. Hide the feedback message area
-            const messageArea = document.getElementById('hidden-message-area');
-            if (messageArea) {
-                messageArea.classList.add('hidden');
-            }
-
-            // 3. Activate the corresponding button
+            // 4. Activate the corresponding button
             // Get the button ID from the panel ID (e.g., 'cancer-type-panel' -> 'nav-cancer')
             const buttonType = panelId.split('-')[0];
             const targetButton = document.getElementById(`nav-${buttonType}`);
@@ -549,13 +703,13 @@
             }
         };
 
-        // Function to clear all checkboxes and hide panels
+        // Function to clear all checkboxes and reset counts
         const clearAllFilters = () => {
             document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
                 checkbox.checked = false;
             });
-            updateCounts();
-            hideAllPanelsAndDeactivateNav("All filters have been cleared. Select a category above to start a new search.");
+            updateCounts(); // This now also clears the chips
+            console.log("All filters cleared");
         };
 
 
@@ -580,31 +734,29 @@
 
         // Initialize Application
         window.onload = function() {
+            // Make removeFilter globally accessible for inline onclick
+            window.removeFilter = removeFilter;
+
             renderFilters();
-            updateCounts(); // Initialize count to 0
+            updateCounts(); // Initialize count and chips
             setupToggles(); // Setup expand/collapse functionality
 
-            // Initial display: Show the introductory message (panels are hidden by default via CSS/JS)
-            hideAllPanelsAndDeactivateNav();
+            // Initial display: Show the first panel (Cancer Type) and activate its button
+            showPanel('cancer-type-panel');
 
-            // Add event listeners for navigation buttons
+            // Add event listeners for new navigation buttons
             document.getElementById('nav-cancer').addEventListener('click', () => showPanel('cancer-type-panel'));
             document.getElementById('nav-data').addEventListener('click', () => showPanel('data-type-panel'));
             document.getElementById('nav-access').addEventListener('click', () => showPanel('accessibility-panel'));
-
-            // Action button listeners
             document.getElementById('clear-filters-button').addEventListener('click', clearAllFilters);
-            document.getElementById('find-studies-button').addEventListener('click', () => {
-                const totalFilters = document.getElementById('total-selected-count').textContent;
-                hideAllPanelsAndDeactivateNav(`Search initiated with ${totalFilters} filters applied. Results would appear here.`);
-                // In a real application, this would trigger the API call
-            });
 
             // Add event listeners to all checkboxes for dynamic updating
             const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
             allCheckboxes.forEach(checkbox => {
+                // Ensure updateCounts runs whenever a filter selection changes
                 checkbox.addEventListener('change', updateCounts);
             });
         };
-
     </script>
+</body>
+</html>
