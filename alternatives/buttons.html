@@ -128,8 +128,8 @@
             <!-- This container holds the panels and ensures they stretch correctly -->
 
             <!-- Panel 1: Cancer Type Content -->
-            <!-- Initially shown, but will be controlled by JS -->
-            <div id="cancer-type-panel" class="md:col-span-3 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col">
+            <!-- Initially hidden for the new behavior -->
+            <div id="cancer-type-panel" class="md:col-span-3 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col hidden">
                 <div class="p-3 sm:p-4 text-gray-600 flex-grow overflow-hidden">
                     <h2 class="text-2xl font-bold text-gray-800 mb-3">Cancer Type Selection</h2>
                     <p class="text-sm italic text-gray-500 mb-3">
@@ -402,9 +402,9 @@
 
         // All panels that can be displayed
         const PANEL_IDS = ['cancer-type-panel', 'data-type-panel', 'accessibility-panel'];
+        let activePanelId = null; // NEW: Track which panel is currently open
 
         // Helper function to find a filter item's label and category by its checkbox ID
-        // Note: This relies on the convention that checkbox ID is ${groupName}-${item.id}
         const findFilterDetails = (id) => {
             const parts = id.split('-');
             if (parts.length < 2) return null; // Invalid ID format
@@ -670,36 +670,61 @@
             updateChips();
         };
 
-        // Function to handle panel visibility and active button state
-        const showPanel = (panelId) => {
-            // 1. Hide all panels
-            PANEL_IDS.forEach(id => {
-                const panel = document.getElementById(id);
-                if (panel) {
-                    panel.classList.add('hidden');
+        // NEW: Function to hide the currently active panel and deactivate its button
+        const hideActivePanel = () => {
+            if (activePanelId) {
+                const targetPanel = document.getElementById(activePanelId);
+                if (targetPanel) {
+                    targetPanel.classList.add('hidden');
                 }
-            });
 
-            // 2. Deactivate all nav buttons' active state
+                // Deactivate the corresponding button
+                const buttonType = activePanelId.split('-')[0];
+                const targetButton = document.getElementById(`nav-${buttonType}`);
+                if (targetButton) {
+                    targetButton.classList.remove('bg-gray-100', 'text-cruk-red', 'border-b-4', 'border-[#E4002B]');
+                    targetButton.classList.add('text-gray-600', 'hover:bg-gray-50');
+                }
+                activePanelId = null;
+            }
+        };
+
+        // Function to handle panel visibility and active button state (now handles toggle behavior)
+        const showPanel = (panelId) => {
+            const targetPanel = document.getElementById(panelId);
+            const buttonType = panelId.split('-')[0];
+            const targetButton = document.getElementById(`nav-${buttonType}`);
+
+            // Check if the user is clicking the already active panel to hide it (TOGGLE behavior)
+            if (activePanelId === panelId) {
+                // Hide the currently active panel
+                targetPanel.classList.add('hidden');
+                // Deactivate the button
+                targetButton.classList.remove('bg-gray-100', 'text-cruk-red', 'border-b-4', 'border-[#E4002B]');
+                targetButton.classList.add('text-gray-600', 'hover:bg-gray-50');
+                activePanelId = null; // Reset tracker
+                return;
+            }
+
+            // 1. Hide all panels and deactivate all nav buttons (including the old active one)
+            PANEL_IDS.forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
             document.querySelectorAll('.nav-button').forEach(button => {
                 button.classList.remove('bg-gray-100', 'text-cruk-red', 'border-b-4', 'border-[#E4002B]');
                 button.classList.add('text-gray-600', 'hover:bg-gray-50');
             });
 
-            // 3. Show the requested panel
-            const targetPanel = document.getElementById(panelId);
+            // 2. Show the requested panel
             if (targetPanel) {
                 targetPanel.classList.remove('hidden');
             }
 
-            // 4. Activate the corresponding button
-            // Get the button ID from the panel ID (e.g., 'cancer-type-panel' -> 'nav-cancer')
-            const buttonType = panelId.split('-')[0];
-            const targetButton = document.getElementById(`nav-${buttonType}`);
-
+            // 3. Activate the corresponding button and update tracker
             if (targetButton) {
                 targetButton.classList.add('bg-gray-100', 'text-cruk-red', 'border-b-4', 'border-[#E4002B]'); // Active styling
                 targetButton.classList.remove('text-gray-600', 'hover:bg-gray-50'); // Remove inactive styling
+                activePanelId = panelId; // Set the new active panel
             }
         };
 
@@ -709,6 +734,7 @@
                 checkbox.checked = false;
             });
             updateCounts(); // This now also clears the chips
+            hideActivePanel(); // NEW: Hide panel on clear
             console.log("All filters cleared");
         };
 
@@ -741,14 +767,23 @@
             updateCounts(); // Initialize count and chips
             setupToggles(); // Setup expand/collapse functionality
 
-            // Initial display: Show the first panel (Cancer Type) and activate its button
-            showPanel('cancer-type-panel');
+            // Initial display: Ensure no panel is showing to begin with.
+            document.getElementById('cancer-type-panel').classList.add('hidden');
+            document.querySelectorAll('.nav-button').forEach(button => {
+                button.classList.remove('bg-gray-100', 'text-cruk-red', 'border-b-4', 'border-[#E4002B]');
+                button.classList.add('text-gray-600', 'hover:bg-gray-50');
+            });
+            activePanelId = null; // Explicitly set to null initially
+
 
             // Add event listeners for new navigation buttons
             document.getElementById('nav-cancer').addEventListener('click', () => showPanel('cancer-type-panel'));
             document.getElementById('nav-data').addEventListener('click', () => showPanel('data-type-panel'));
             document.getElementById('nav-access').addEventListener('click', () => showPanel('accessibility-panel'));
+
+            // Add listeners for action buttons to clear filters AND hide panel
             document.getElementById('clear-filters-button').addEventListener('click', clearAllFilters);
+            document.getElementById('find-studies-button').addEventListener('click', hideActivePanel); // NEW: Hide panel on submit
 
             // Add event listeners to all checkboxes for dynamic updating
             const allCheckboxes = document.querySelectorAll('input[type="checkbox"]');
