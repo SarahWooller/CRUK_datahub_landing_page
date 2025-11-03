@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Filter Selection</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="p-4 sm:p-8">
+    <!-- Main container to hold the filter boxes -->
+    <div id="filter-container" class="w-full min-h-[85vh] flex flex-col">
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">Select Study Filters</h1>
+
+        <!-- --- Filter Navigation Bar --- -->
+        <div id="filter-navbar" class="flex flex-col sm:flex-row bg-white rounded-t-xl shadow-lg border-b border-gray-300 overflow-hidden">
+            <!-- Filter Category Buttons (Active state handled by JS) -->
+            <button id="nav-cancer" data-panel-target="cancer-type-panel" class="nav-button flex-1 px-4 py-3 text-lg font-medium border-b-4 sm:border-b-0 sm:border-r text-gray-600 hover:bg-gray-50 transition duration-150">
+                Cancer Type <span id="cancer-type-count" class="text-xs opacity-80 font-normal ml-2">(0 Selected)</span>
+            </button>
+            <button id="nav-data" data-panel-target="data-type-panel" class="nav-button flex-1 px-4 py-3 text-lg font-medium border-b-4 sm:border-b-0 sm:border-r text-gray-600 hover:bg-gray-50 transition duration-150">
+                Data Type <span id="data-type-count" class="text-xs opacity-80 font-normal ml-2">(0 Selected)</span>
+            </button>
+            <button id="nav-access" data-panel-target="accessibility-panel" class="nav-button flex-1 px-4 py-3 text-lg font-medium border-b-4 sm:border-b-0 sm:border-r text-gray-600 hover:bg-gray-50 transition duration-150">
+                Accessibility <span id="accessibility-count" class="text-xs opacity-80 font-normal ml-2">(0 Selected)</span>
+            </button>
+
+            <!-- Action Buttons - Always visible in the navbar -->
+            <div class="flex-shrink-0 flex sm:flex-row flex-col">
+                <button id="clear-filters-button" class="px-4 py-3 font-medium text-sm sm:text-lg text-gray-500 hover:bg-red-50 hover:text-cruk-red transition duration-150 border-t sm:border-t-0 sm:border-l">
+                    Clear Filters
+                </button>
+                <button id="find-studies-button" class="cruk-red text-white font-bold py-3 px-8 shadow-md hover:bg-red-700 transition duration-150 border-t sm:border-t-0">
+                    Find Studies (<span id="total-selected-count">0</span>)
+                </button>
+            </div>
+        </div>
+        <!-- --- End Navigation Bar --- -->
+
+        <!-- --- Filter Chip Area (NEW) --- -->
+        <div id="selected-filters-area" class="bg-white rounded-b-xl shadow-lg border-b border-l border-r border-gray-300 transition duration-300 ease-in-out">
+            <div class="flex items-start flex-wrap gap-2 text-sm" id="filter-chip-list">
+                <!-- Chips will be inserted here by JavaScript -->
+            </div>
+            <!-- Logic summary for user clarity -->
+            <p id="logic-summary" class="text-xs text-gray-500 mt-2 hidden px-1">
+                Logic: (Cancer Filters are OR-ed) AND (Data Type Filters are AND-ed) AND (Accessibility Filters are AND-ed)
+            </p>
+        </div>
+        <!-- --- End Filter Chip Area --- -->
+
+
+        <!-- --- Filter Content Panels (Only one is visible at a time) --- -->
+        <!-- Main panels no longer have max-h-32 or overflow-y-auto, allowing them to size correctly around constrained inner content -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+
+            <!-- Panel 1: Cancer Type Content -->
+            <div id="cancer-type-panel" class="md:col-span-3 bg-white rounded-xl shadow-lg border border-gray-200 flex flex-col hidden">
+                <div class="p-3 sm:p-4 text-gray-600 flex-grow overflow-hidden">
+
+                    <!-- MODIFIED: Wrapped h2 and p in a flex container for same-line display -->
+                    <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between mb-3">
+                        <h2 class="text-2xl font-bold text-gray-800 mb-1 sm:mb-0">Cancer Type Selection</h2>
+                        <p class="text-sm italic text-gray-500">
+                            Filter by official pathology classifications (ICD-O) or patient-friendly CRUK terminology.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+                        <!-- Column 1 & 2: ICD-O Grouping (Spans two columns on medium screens and above) -->
+                        <div class="md:col-span-2 border p-3 rounded-lg bg-gray-100">
+                            <h3 class="text-base font-semibold text-gray-800 mb-3 border-b pb-1">ICD-O Classification</h3>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="bg-white p-3 rounded-md shadow-inner border border-gray-200">
+                                    <h4 class="text-sm font-bold text-gray-700 mb-2">Histology (Nested)</h4>
+                                    <!-- Inner scrolling list now max-h-32 (closest to h-30) -->
+                                    <div id="icdo-histology-list" class="max-h-32 overflow-y-auto filter-scroll space-y-1 text-sm pr-2">
+                                        <!-- Content injected here by JavaScript -->
+                                    </div>
+                                </div>
+
+                                <div class="bg-white p-3 rounded-md shadow-inner border border-gray-200">
+                                    <h4 class="text-sm font-bold text-gray-700 mb-2">Topography (Nested)</h4>
+                                    <!-- Inner scrolling list now max-h-32 (closest to h-30) -->
+                                    <div id="icdo-topography-list" class="max-h-32 overflow-y-auto filter-scroll space-y-1 text-sm pr-2">
+                                        <!-- Content injected here by JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Column 3: CRUK Cancer Terms (Single Column) -->
+                        <div class="border p-3 rounded-lg bg-gray-50">
+                            <h3 class="text-base font-semibold text-gray-800 mb-3 border-b pb-1">CRUK Cancer Terms</h3>
+                            <!-- Inner scrolling list now max-h-32 (closest to h-30) -->
+                            <div id="cruk-terms-list" class="max-h-32 overflow-y-auto filter-scroll space-y-1 text-sm pr-2">
+                                <!-- Content injected here by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Panel 2: Data Type Content -->
+            <div id="data-type-panel" class="md:col-span-3 bg-white rounded-xl shadow-lg border border-gray-200 flex flex-col hidden">
+                <div class="p-3 sm:p-4 text-gray-600 flex-grow overflow-hidden">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-3">Data Type Selection</h2>
+                    <p class="text-sm italic text-gray-500 mb-2">
+                        Select one or more modalities to include in your search.
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+
+                        <!-- Data Type 1: Biobank Samples -->
+                        <div class="border p-3 rounded-lg bg-gray-50">
+                            <h4 class="text-sm font-bold text-gray-700 mb-2 border-b pb-1">Biobank Samples</h4>
+                            <!-- Inner scrolling list now max-h-32 -->
+                            <div id="biobank-samples-list" class="max-h-32 overflow-y-auto filter-scroll space-y-1 text-sm pr-2">
+                                <!-- Content injected here by JavaScript -->
+                            </div>
+                        </div>
+
+                        <!-- Data Type 2: In Vitro Studies -->
+                        <div class="border p-3 rounded-lg bg-gray-50">
+                            <h4 class="text-sm font-bold text-gray-700 mb-2 border-b pb-1">In Vitro Studies</h4>
+                            <!-- Inner scrolling list now max-h-32 -->
+                            <div id="invitro-studies-list" class="max-h-32 overflow-y-auto filter-scroll space-y-1 text-sm pr-2">
+                                <!-- Content injected here by JavaScript -->
+                            </div>
+                        </div>
+
+                        <!-- Data Type 3: Animal Studies -->
+                        <div class="border p-3 rounded-lg bg-gray-50">
+                            <h4 class="text-sm font-bold text-gray-700 mb-2 border-b pb-1">Animal Studies</h4>
+                            <!-- Inner scrolling list now max-h-32 -->
+                            <div id="animal-studies-list" class="max-h-32 overflow-y-auto filter-scroll space-y-1 text-sm pr-2">
+                                <!-- Content injected here by JavaScript -->
+                            </div>
+                        </div>
+
+                        <!-- Data Type 4: Patient Studies -->
+                        <div class="border p-3 rounded-lg bg-gray-50">
+                            <h4 class="text-sm font-bold text-gray-700 mb-2 border-b pb-1">Patient Studies</h4>
+                            <!-- Inner scrolling list now max-h-32 -->
+                            <div id="patient-studies-list" class="max-h-32 overflow-y-auto filter-scroll space-y-1 text-sm pr-2">
+                                <!-- Content injected here by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 3: Accessibility Content -->
+            <div id="accessibility-panel" class="md:col-span-3 bg-white rounded-xl shadow-lg border border-gray-200 flex flex-col hidden">
+                <div class="p-3 sm:p-4 text-gray-600 flex-grow overflow-hidden">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-3">Accessibility and Source</h2>
+                    <p class="text-sm italic text-gray-500 mb-2">
+                        Filter by data access level and source.
+                    </p>
+                    <!-- Inner content now max-h-32 -->
+                    <div class="max-h-32 overflow-y-auto pr-2 filter-scroll border p-3 rounded-lg">
+                        <div class="text-sm text-gray-400">Placeholder for Accessibility list</div>
+                        <!-- Checkboxes here use data-filter-group="access" -->
+                        <div class="space-y-2 mt-2">
+                             <div class="flex items-center">
+                                <input type="checkbox" id="access-open" class="rounded cruk-red-checkbox mr-2 w-4 h-4 cursor-pointer" data-filter-group="access">
+                                <label for="access-open" class="text-gray-700 select-none flex-grow cursor-pointer text-sm">
+                                    Open Access Data (500)
+                                </label>
+                            </div>
+                             <div class="flex items-center">
+                                <input type="checkbox" id="access-controlled" class="rounded cruk-red-checkbox mr-2 w-4 h-4 cursor-pointer" data-filter-group="access">
+                                <label for="access-controlled" class="text-gray-700 select-none flex-grow cursor-pointer text-sm">
+                                    Controlled Access Data (1,200)
+                                </label>
+                            </div>
+                             <div class="flex items-center">
+                                <input type="checkbox" id="access-internal" class="rounded cruk-red-checkbox mr-2 w-4 h-4 cursor-pointer" data-filter-group="access">
+                                <label for="access-internal" class="text-gray-700 select-none flex-grow cursor-pointer text-sm">
+                                    Internal/Restricted Data (300)
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- --- End Filter Content Panels --- -->
+
+    </div>
+
+     <!-- JavaScript (Equivalent to script.js) -->
+    <script src="buttons.js"></script>
+    </body>
+</html>
