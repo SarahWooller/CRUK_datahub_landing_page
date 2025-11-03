@@ -1,0 +1,63 @@
+.cruk-red {
+    background-color: #E4002B;
+}
+.text-cruk-red { /* Define custom text color for non-background use */
+    color: #E4002B;
+}
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f8f8;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+/* Custom scrollbar for container */
+.filter-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+.filter-scroll::-webkit-scrollbar-thumb {
+    background-color: #d1d5db; /* gray-300 */
+    border-radius: 4px;
+}
+/* Custom styling for CRUK-themed checkboxes */
+.cruk-red-checkbox {
+    color: #E4002B;
+    /* Force Tailwind forms style to use custom color */
+    --tw-ring-color: #E4002B;
+    --tw-ring-offset-color: #fff;
+}
+.cruk-red-checkbox:checked {
+    border-color: #E4002B;
+    background-color: #E4002B;
+}
+.toggle-btn svg {
+    transition: transform 0.2s;
+    /* Default state (collapsed) is 0deg rotation (pointing right) */
+    transform: rotate(0deg);
+}
+/* Expanded state uses CSS to rotate the arrow down */
+.toggle-btn[data-expanded="true"] svg {
+    transform: rotate(90deg);
+}
+/* Style for the filter chips */
+.filter-chip {
+    white-space: nowrap;
+}
+.filter-chip-cancer {
+    background-color: #ffcccb; /* Light red/pink for OR group (Cancer) */
+    color: #E4002B;
+    border: 1px solid #E4002B;
+}
+.filter-chip-and {
+    background-color: #e0f2fe; /* Light blue for AND groups (Data/Access) */
+    color: #1e40af;
+    border: 1px solid #93c5fd;
+}
+#selected-filters-area {
+    /* Initial state for collapse/expand transition */
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+    overflow: hidden;
+}
