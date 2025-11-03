@@ -40,6 +40,7 @@ class DicConverter:
                 dic[key] = {"id":new_id,
                             "label": key,
                             "category": self.category,
+                            "count": "0",
                             "children": DicConverter(self.to_conv[key], new_id, key).dic
                             }
                 classification = {"id": new_id,
@@ -52,5 +53,23 @@ class DicConverter:
                 DicConverter.classifications.append(classification)
                 i += 1
             return dic
+
+
+class Include:
+
+    def __init__(self, to_conv):
+        self.to_conv = to_conv
+        self.dic = self.convert()
+
+    def convert(self):
+        if type(self.to_conv) == list:
+            return [i for i in self.to_conv if i != "include all"]
+        else:
+            dic = dict()
+            for key in self.to_conv:
+                if key != "include all":
+                    dic[key] = Include(self.to_conv[key]).dic
+            return dic
+
             
         
