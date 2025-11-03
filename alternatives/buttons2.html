@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Study Filter Interface</title>
+    <!-- 1. Load Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f8f8; }
+        /* CRUK Red used for primary accents: #E4002B */
+        .text-cruk-red { color: #E4002B; }
+        .bg-cruk-red { background-color: #E4002B; }
+        /* Style the scrollbar for cleaner nested lists */
+        .h-40::-webkit-scrollbar { width: 8px; }
+        .h-40::-webkit-scrollbar-thumb { background-color: #d1d5db; border-radius: 4px; }
+
+        /* Custom Checkbox Styling using Tailwind properties */
+        .text-\[\#E4002B\]:focus {
+            --tw-ring-color: #E4002B;
+            border-color: #E4002B;
+        }
+    </style>
+
+    <!-- 2. Load React and ReactDOM libraries -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- 3. Load Babel for JSX compilation in the browser -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <!-- The root element where the React application will be mounted -->
+    <div id="root">
+        <!-- A loading message while React initializes -->
+        <div class="p-8 text-center text-gray-500">Loading application...</div>
+    </div>
+
+    <!-- 4. The main script block (type="text/babel" is crucial) -->
+    <script type="text/babel">
+// --- BEGIN REACT CODE ---
+
+// --- DATA CONSTANTS ---
+// Filter examples structured in JSON format
+const filterData = {
+    cancerTypes: {
+        icdOHistology: [
+            {
+                id: 'h_all', label: 'Include All Histologies', count: 600, groupLabel: 'Histology', children: [
+                    { id: 'h_800', label: '800 Neoplasms, NOS', count: 350, groupLabel: 'Histology', children: [
+                        { id: 'h_8000_0', label: '8000/0 Neoplasm, benign', count: 50, groupLabel: 'Histology', category: 'Histology' },
+                        { id: 'h_8000_3', label: '8000/3 Neoplasm, malignant', count: 150, groupLabel: 'Histology', category: 'Histology' },
+                    ]},
+                    { id: 'h_8140', label: '8140/3 - Adenocarcinoma, NOS', count: 85, groupLabel: 'Histology', category: 'Histology' },
+                ]
+            }
+        ],
+        icdOTopography: [
+            {
+                id: 't_all', label: 'All Topography Sites', count: 400, groupLabel: 'Topography', children: [
+                    { id: 't1', label: 'C00-C14 Lip, Oral Cavity and Pharynx', count: 180, groupLabel: 'Topography', children: [
+                        { id: 't1_1', label: 'C00 Lip', count: 90, groupLabel: 'Topography', category: 'Topography' },
+                        { id: 't1_2', label: 'C01 Tongue Base', count: 50, groupLabel: 'Topography', category: 'Topography' },
+                    ]}
+                ]
+            }
+        ],
+        crukTerms: [
+            { id: 'c1', label: 'Breast Cancer', count: 24, groupLabel: 'CRUK Term', category: 'CRUK Term' },
+            { id: 'c2', label: 'Lung Cancer', count: 18, groupLabel: 'CRUK Term', category: 'CRUK Term' },
+        ]
+    },
+    dataType: {
+        biobankSamples: [
+            { id: 'bb_all', label: 'Biobank Samples', count: 980, groupLabel: 'Biobank', children: [
+                { id: 'bb_material', label: 'Material Type', count: 700, groupLabel: 'Biobank', children: [
+                    { id: 'bb_m1', label: 'Bloods', count: 250, groupLabel: 'Biobank', category: 'Biobank' },
+                ]},
+            ]}
+        ],
+        inVitroStudy: [
+            { id: 'iv_all', label: 'In Vitro Studies', count: 450, groupLabel: 'In Vitro', children: [
+                { id: 'iv_model', label: 'Model', count: 400, groupLabel: 'In Vitro', children: [
+                    { id: 'iv_m1', label: 'Organ on a Chip', count: 120, groupLabel: 'In Vitro', category: 'In Vitro' },
+                ]},
+            ]}
+        ],
+        animalModel: [
+            { id: 'am_all', label: 'Animal Studies', count: 300, groupLabel: 'Animal Model', children: [
+                { id: 'am_animal', label: 'Animal', count: 300, groupLabel: 'Animal Model', children: [
+                    { id: 'am_a4', label: 'Mouse', count: 150, groupLabel: 'Animal Model', category: 'Animal Model' },
+                ]},
+            ]}
+        ],
+        patientStudies: [
+            { id: 'ps_all', label: 'Patient Studies', count: 2500, groupLabel: 'Patient Study', children: [
+                { id: 'ps_design', label: 'Study Design', count: 2500, groupLabel: 'Patient Study', children: [
+                    { id: 'ps_d2', label: 'Clinical Trial', count: 800, groupLabel: 'Patient Study', category: 'Patient Study' },
+                ]},
+            ]}
+        ]
+    },
+    accessibility: [
+        { id: 'open', label: 'Open Access Data', count: 500, groupLabel: 'Accessibility', category: 'Accessibility' },
+        { id: 'controlled', label: 'Controlled Access Data', count: 1200, groupLabel: 'Accessibility', category: 'Accessibility' },
+        { id: 'internal', label: 'Internal/Restricted Data', count: 300, groupLabel: 'Accessibility', category: 'Accessibility' },
+    ]
+};
+
+// Flattened map to easily look up filter details by full checkbox ID (e.g., 'histo-h_8140')
+const filterDetailsMap = new Map();
+
+// Recursive function to populate the map
+const populateMap = (items, prefix, primaryGroup) => {
+    if (!items) return;
+
+    items.forEach(item => {
+        const fullId = `${prefix}-${item.id}`;
+        // Store details needed for chips/counts
+        filterDetailsMap.set(fullId, {
+            id: item.id,
+            label: item.label,
+            category: item.category || item.groupLabel, // Use specific category if available, otherwise general group label
+            group: primaryGroup, // 'cancer-type', 'data-type', or 'access'
+        });
+
+        if (item.children) {
+            populateMap(item.children, prefix, primaryGroup);
+        }
+    });
+};
+
+// Initialize the map once
+populateMap(filterData.cancerTypes.icdOHistology, 'histo', 'cancer-type');
+populateMap(filterData.cancerTypes.icdOTopography, 'topo', 'cancer-type');
+populateMap(filterData.cancerTypes.crukTerms, 'cruk', 'cancer-type');
+
+populateMap(filterData.dataType.biobankSamples, 'bb', 'data-type');
+populateMap(filterData.dataType.inVitroStudy, 'iv', 'data-type');
+populateMap(filterData.dataType.animalModel, 'am', 'data-type');
+populateMap(filterData.dataType.patientStudies, 'ps', 'data-type');
+
+// Handle accessibility separately as it's a flat array
+filterData.accessibility.forEach(item => {
+    filterDetailsMap.set(`access-${item.id}`, {
+        id: item.id,
+        label: item.label,
+        category: item.category,
+        group: 'access',
+    });
+});
+// --- END DATA CONSTANTS ---
+
+const { useState, useMemo, useCallback } = React;
+
+// Utility component for nested filters with toggle
+const NestedFilterList = ({ items, groupPrefix, primaryGroup, handleFilterChange, selectedFilters, level = 0 }) => {
+    if (!items || items.length === 0) return null;
+
+    return (
+        <div className="nested-list space-y-1">
+            {items.map(item => (
+                <NestedFilterItem
+                    key={item.id}
+                    item={item}
+                    groupPrefix={groupPrefix}
+                    primaryGroup={primaryGroup}
+                    handleFilterChange={handleFilterChange}
+                    selectedFilters={selectedFilters}
+                    level={level}
+                />
+            ))}
+        </div>
+    );
+};
+
+// Component for a single filter item (handles checked state and toggle)
+const NestedFilterItem = ({ item, groupPrefix, primaryGroup, handleFilterChange, selectedFilters, level }) => {
+    const fullId = `${groupPrefix}-${item.id}`;
+    const hasChildren = item.children && item.children.length > 0;
+    const isChecked = selectedFilters.has(fullId);
+
+    const [isExpanded, setIsExpanded] = useState(level === 0 && hasChildren);
+
+    const toggleExpansion = (e) => {
+        e.preventDefault();
+        setIsExpanded(prev => !prev);
+    };
+
+    // Style for indentation
+    const rowIndentStyle = {
+        paddingLeft: level > 0 ? `${level * 1.25}rem` : '0',
+    };
+
+    return (
+        <div className="flex flex-col">
+            <div
+                className="flex items-center group hover:bg-red-50 p-1 -m-1 rounded transition duration-100"
+                style={rowIndentStyle}
+            >
+                {hasChildren ? (
+                    <button
+                        type="button"
+                        className={`transition-transform duration-200 w-4 h-4 flex items-center justify-center text-gray-500 hover:text-red-700 mr-1 ${isExpanded ? 'rotate-90' : ''}`}
+                        onClick={toggleExpansion}
+                        aria-expanded={isExpanded}
+                    >
+                        {/* Chevron Right Icon (inline SVG) */}
+                        <svg className="w-3 h-3 transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                ) : (
+                    <span className="w-4 h-4 mr-1"></span>
+                )}
+
+                <input
+                    type="checkbox"
+                    id={fullId}
+                    className="rounded text-[#E4002B] border-gray-300 focus:ring-[#E4002B] mr-2 w-4 h-4 cursor-pointer"
+                    data-filter-group={primaryGroup}
+                    checked={isChecked}
+                    onChange={() => handleFilterChange(fullId)}
+                />
+                <label htmlFor={fullId} className="text-gray-700 select-none flex-grow cursor-pointer text-sm">
+                    {item.label}
+                    <span className="text-xs text-gray-500 ml-1">({item.count})</span>
+                </label>
+            </div>
+            {hasChildren && isExpanded && (
+                <NestedFilterList
+                    items={item.children}
+                    groupPrefix={groupPrefix}
+                    primaryGroup={primaryGroup}
+                    handleFilterChange={handleFilterChange}
+                    selectedFilters={selectedFilters}
+                    level={level + 1}
+                />
+            )}
+        </div>
+    );
+};
+
+
+// Component for the dynamic chips display
+const FilterChipArea = ({ selectedFilters, handleFilterChange }) => {
+
+    const chips = useMemo(() => {
+        const chipArray = Array.from(selectedFilters).map(fullId => {
+            const details = filterDetailsMap.get(fullId);
+            if (!details) return null;
+
+            // Determine styling based on logic: Cancer (OR) vs. Others (AND)
+            const isCancer = details.group === 'cancer-type';
+            const chipClass = isCancer
+                ? 'bg-red-100 text-[#E4002B] border border-[#E4002B]' // OR logic (Cancer Type)
+                : 'bg-blue-100 text-blue-800 border border-blue-300'; // AND logic (Data/Access)
+
+            return {
+                fullId,
+                label: details.label,
+                category: details.category,
+                chipClass,
+            };
+        }).filter(Boolean);
+        return chipArray;
+    }, [selectedFilters]);
+
+    if (chips.length === 0) {
+        return (
+            <div id="selected-filters-area" className="bg-white rounded-b-xl shadow-lg border-b border-l border-r border-gray-300 transition duration-300 ease-in-out">
+                <div className="h-0.5 overflow-hidden"></div>
+            </div>
+        );
+    }
+
+    return (
+        <div
+            id="selected-filters-area"
+            className="bg-white rounded-b-xl shadow-lg border-b border-l border-r border-gray-300 p-3 transition duration-300 ease-in-out"
+        >
+            <div id="filter-chip-list" className="flex items-start flex-wrap gap-2 text-sm">
+                {chips.map(chip => (
+                    <div
+                        key={chip.fullId}
+                        className={`filter-chip inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold shadow-sm ${chip.chipClass}`}
+                    >
+                        <span className="mr-1 opacity-75">{chip.category}:</span>
+                        <span className="font-bold">{chip.label}</span>
+                        <button
+                            type="button"
+                            className="ml-2 h-4 w-4 rounded-full flex items-center justify-center hover:bg-white hover:bg-opacity-50 transition duration-150"
+                            onClick={() => handleFilterChange(chip.fullId)}
+                            aria-label={`Remove filter ${chip.label}`}
+                        >
+                            {/* Close Icon (inline SVG) */}
+                            <svg className="w-3 h-3 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                        </button>
+                    </div>
+                ))}
+            </div>
+
+            <p id="logic-summary" className="text-xs text-gray-500 mt-2 px-1">
+                Logic: (Cancer Filters are OR-ed) AND (Data Type Filters are AND-ed) AND (Accessibility Filters are AND-ed)
+            </p>
+        </div>
+    );
+};
+
+
+// Main Application Component
+const App = () => {
+    const [activePanel, setActivePanel] = useState('cancer');
+    const [selectedFilters, setSelectedFilters] = useState(new Set());
+
+    const counts = useMemo(() => {
+        let cancerTypeSelected = 0;
+        let dataTypeSelected = 0;
+        let accessibilitySelected = 0;
+
+        selectedFilters.forEach(id => {
+            const details = filterDetailsMap.get(id);
+            if (!details) return;
+
+            if (details.group === 'cancer-type') {
+                cancerTypeSelected++;
+            } else if (details.group === 'data-type') {
+                dataTypeSelected++;
+            } else if (details.group === 'access') {
+                accessibilitySelected++;
+            }
+        });
+
+        return {
+            total: selectedFilters.size,
+            cancer: cancerTypeSelected,
+            data: dataTypeSelected,
+            access: accessibilitySelected,
+        };
+    }, [selectedFilters]);
+
+    const handleFilterChange = useCallback((id) => {
+        setSelectedFilters(prevFilters => {
+            const newFilters = new Set(prevFilters);
+            if (newFilters.has(id)) {
+                newFilters.delete(id);
+            } else {
+                newFilters.add(id);
+            }
+            return newFilters;
+        });
+    }, []);
+
+    const clearAllFilters = useCallback(() => {
+        setSelectedFilters(new Set());
+    }, []);
+
+    const renderPanel = () => {
+        const props = { handleFilterChange, selectedFilters };
+        switch (activePanel) {
+            case 'cancer':
+                return (
+                    <CancerTypePanel {...props} />
+                );
+            case 'data':
+                return (
+                    <DataTypePanel {...props} />
+                );
+            case 'access':
+                return (
+                    <AccessibilityPanel {...props} />
+                );
+            default:
+                return null;
+        }
+    };
+
+    const getNavButtonClasses = (panelKey) => {
+        const isActive = activePanel === panelKey;
+        const baseClasses = "nav-button flex-1 px-4 py-3 text-lg font-medium border-b-4 sm:border-b-0 sm:border-r transition duration-150";
+        const activeClasses = 'bg-gray-100 text-[#E4002B] border-[#E4002B]';
+        const inactiveClasses = 'text-gray-600 hover:bg-gray-50 border-transparent';
+
+        return `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`;
+    };
+
+    const isFindStudiesDisabled = counts.total === 0;
+
+    return (
+        <div className="p-4 sm:p-8 min-h-screen bg-gray-50">
+            <div id="filter-container" className="w-full flex flex-col">
+                <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">Select Study Filters</h1>
+
+                {/* --- Filter Navigation Bar --- */}
+                <div id="filter-navbar" className="flex flex-col sm:flex-row bg-white rounded-t-xl shadow-lg border-b border-gray-300 overflow-hidden">
+
+                    <button onClick={() => setActivePanel('cancer')} className={getNavButtonClasses('cancer')}>
+                        Cancer Type <span className="text-xs opacity-80 font-normal ml-2">({counts.cancer} Selected)</span>
+                    </button>
+                    <button onClick={() => setActivePanel('data')} className={getNavButtonClasses('data')}>
+                        Data Type <span className="text-xs opacity-80 font-normal ml-2">({counts.data} Selected)</span>
+                    </button>
+                    <button onClick={() => setActivePanel('access')} className={getNavButtonClasses('access')}>
+                        Accessibility <span className="text-xs opacity-80 font-normal ml-2">({counts.access} Selected)</span>
+                    </button>
+
+                    {/* Action Buttons */}
+                    <div className="flex-shrink-0 flex sm:flex-row flex-col">
+                        <button onClick={clearAllFilters} className="px-4 py-3 font-medium text-sm sm:text-lg text-gray-500 hover:bg-red-50 hover:text-[#E4002B] transition duration-150 border-t sm:border-t-0 sm:border-l">
+                            Clear Filters
+                        </button>
+                        <button
+                            className={`bg-[#E4002B] text-white font-bold py-3 px-8 shadow-md transition duration-150 ${isFindStudiesDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-red-700'}`}
+                            disabled={isFindStudiesDisabled}
+                        >
+                            Find Studies ({counts.total})
+                        </button>
+                    </div>
+                </div>
+                {/* --- End Navigation Bar --- */}
+
+                {/* --- Filter Chip Area --- */}
+                <FilterChipArea selectedFilters={selectedFilters} handleFilterChange={handleFilterChange} />
+                {/* --- End Filter Chip Area --- */}
+
+                {/* --- Filter Content Panels --- */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 flex-grow mt-4">
+                    {renderPanel()}
+                </div>
+                {/* --- End Filter Content Panels --- */}
+            </div>
+        </div>
+    );
+};
+
+// --- PANEL COMPONENTS ---
+
+const CancerTypePanel = ({ handleFilterChange, selectedFilters }) => (
+    <div id="cancer-type-panel" className="md:col-span-3 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col">
+        <div className="p-3 sm:p-4 text-gray-600 flex-grow overflow-hidden">
+            <h2 className="text-2xl font-bold text-gray-800 mb-3">Cancer Type Selection</h2>
+            <p className="text-sm italic text-gray-500 mb-3">
+                Filter by official pathology classifications (ICD-O) or patient-friendly CRUK terminology. (<span className="text-[#E4002B] font-semibold">OR Logic</span>)
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {/* ICD-O Grouping */}
+                <div className="md:col-span-2 border p-3 rounded-lg bg-gray-100">
+                    <h3 className="text-base font-semibold text-gray-800 mb-3 border-b pb-1">ICD-O Classification</h3>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="bg-white p-3 rounded-md shadow-inner border border-gray-200">
+                            <h4 className="text-sm font-bold text-gray-700 mb-2">Histology</h4>
+                            <div id="icdo-histology-list" className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
+                                <NestedFilterList
+                                    items={filterData.cancerTypes.icdOHistology}
+                                    groupPrefix="histo"
+                                    primaryGroup="cancer-type"
+                                    {...{handleFilterChange, selectedFilters}}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="bg-white p-3 rounded-md shadow-inner border border-gray-200">
+                            <h4 className="text-sm font-bold text-gray-700 mb-2">Topography</h4>
+                            <div id="icdo-topography-list" className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
+                                <NestedFilterList
+                                    items={filterData.cancerTypes.icdOTopography}
+                                    groupPrefix="topo"
+                                    primaryGroup="cancer-type"
+                                    {...{handleFilterChange, selectedFilters}}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* CRUK Cancer Terms */}
+                <div className="border p-3 rounded-lg bg-gray-50">
+                    <h3 className="text-base font-semibold text-gray-800 mb-3 border-b pb-1">CRUK Cancer Terms</h3>
+                    <div id="cruk-terms-list" className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
+                        <NestedFilterList
+                            items={filterData.cancerTypes.crukTerms}
+                            groupPrefix="cruk"
+                            primaryGroup="cancer-type"
+                            level={1}
+                            {...{handleFilterChange, selectedFilters}}
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+);
+
+const DataTypePanel = ({ handleFilterChange, selectedFilters }) => (
+    <div id="data-type-panel" className="md:col-span-3 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col">
+        <div className="p-3 sm:p-4 text-gray-600 flex-grow overflow-hidden">
+            <h2 className="text-2xl font-bold text-gray-800 mb-3">Data Type Selection</h2>
+            <p className="text-sm italic text-gray-500 mb-2">
+                Select one or more modalities to include in your search. (<span className="text-blue-800 font-semibold">AND Logic</span>)
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                {/* Biobank Samples */}
+                <div className="border p-3 rounded-lg bg-gray-50">
+                    <h4 className="text-sm font-bold text-gray-700 mb-2 border-b pb-1">Biobank Samples</h4>
+                    <div id="biobank-samples-list" className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
+                        <NestedFilterList
+                            items={filterData.dataType.biobankSamples}
+                            groupPrefix="bb"
+                            primaryGroup="data-type"
+                            {...{handleFilterChange, selectedFilters}}
+                        />
+                    </div>
+                </div>
+
+                {/* In Vitro Studies */}
+                <div className="border p-3 rounded-lg bg-gray-50">
+                    <h4 className="text-sm font-bold text-gray-700 mb-2 border-b pb-1">In Vitro Studies</h4>
+                    <div id="invitro-studies-list" className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
+                        <NestedFilterList
+                            items={filterData.dataType.inVitroStudy}
+                            groupPrefix="iv"
+                            primaryGroup="data-type"
+                            {...{handleFilterChange, selectedFilters}}
+                        />
+                    </div>
+                </div>
+
+                {/* Animal Studies */}
+                <div className="border p-3 rounded-lg bg-gray-50">
+                    <h4 className="text-sm font-bold text-gray-700 mb-2 border-b pb-1">Animal Studies</h4>
+                    <div id="animal-studies-list" className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
+                        <NestedFilterList
+                            items={filterData.dataType.animalModel}
+                            groupPrefix="am"
+                            primaryGroup="data-type"
+                            {...{handleFilterChange, selectedFilters}}
+                        />
+                    </div>
+                </div>
+
+                {/* Patient Studies */}
+                <div className="border p-3 rounded-lg bg-gray-50">
+                    <h4 className="text-sm font-bold text-gray-700 mb-2 border-b pb-1">Patient Studies</h4>
+                    <div id="patient-studies-list" className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
+                        <NestedFilterList
+                            items={filterData.dataType.patientStudies}
+                            groupPrefix="ps"
+                            primaryGroup="data-type"
+                            {...{handleFilterChange, selectedFilters}}
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+);
+
+
+const AccessibilityPanel = ({ handleFilterChange, selectedFilters }) => (
+    <div id="accessibility-panel" className="md:col-span-3 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col">
+        <div className="p-3 sm:p-4 text-gray-600 flex-grow overflow-hidden">
+            <h2 className="text-2xl font-bold text-gray-800 mb-3">Accessibility and Source</h2>
+            <p className="text-sm italic text-gray-500 mb-2">
+                Filter by data access level and source. (<span className="text-blue-800 font-semibold">AND Logic</span>)
+            </p>
+            <div className="h-32 overflow-y-auto pr-2 border p-3 rounded-lg">
+                <div className="space-y-2">
+                    {filterData.accessibility.map(item => {
+                        const fullId = `access-${item.id}`;
+                        const isChecked = selectedFilters.has(fullId);
+                        return (
+                            <div key={item.id} className="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    id={fullId}
+                                    className="rounded text-[#E4002B] border-gray-300 focus:ring-[#E4002B] mr-2 w-4 h-4 cursor-pointer"
+                                    data-filter-group="access"
+                                    checked={isChecked}
+                                    onChange={() => handleFilterChange(fullId)}
+                                />
+                                <label htmlFor={fullId} className="text-gray-700 select-none flex-grow cursor-pointer text-sm">
+                                    {item.label} <span className="text-xs text-gray-500 ml-1">({item.count})</span>
+                                </label>
+                            </div>
+                        );
+                    })}
+                </div>
+            </div>
+        </div>
+    </div>
+);
+
+// 5. Render the App component
+const rootElement = document.getElementById('root');
+const root = ReactDOM.createRoot(rootElement);
+root.render(<App />);
+
+// --- END REACT CODE ---
+    </script>
+</body>
+</html>
