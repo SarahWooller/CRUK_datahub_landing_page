@@ -361,7 +361,7 @@ export const VertFilterApp = () => {
 
                     {/* --- Vertical Filter Navigation Bar (Left Panel) --- */}
                     <div id="filter-navbar" className="flex flex-col flex-shrink-0 w-full md:w-1/4 bg-gray-50 border-b md:border-b-0 md:border-r border-gray-200">
-                        <h2 className="p-4 text-3xl sm:text-4xl font-bold text-gray-800 mb-6">Study Filters</h2>
+                        <h2 className="p-4 text-3xl sm:text-4xl font-bold text-[var(--cruk-blue)]">Study Filters</h2>
                         {/* Category Buttons - CLEAR SEARCH TERM WHEN SWITCHING PANELS */}
                         <button onClick={() => { setActivePanel('cancer'); setSearchTerm(''); }} className={getNavButtonClasses('cancer')}>
                             Cancer Type <span className="text-sm opacity-80 font-normal ml-2">({counts.cancer} Selected)</span>
