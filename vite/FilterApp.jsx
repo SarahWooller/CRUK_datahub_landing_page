@@ -261,7 +261,7 @@ export const FilterApp = () => {
     return (
         <div className="p-2 sm:p-8 bg-gray-50">
             <div id="filter-container" className="w-full flex flex-col">
-                <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">Study Filters</h2>
+                <h2 className="section-heading">Study Filters</h2>
 
                 {/* --- Filter Navigation Bar --- */}
                 <div id="filter-navbar" className="flex flex-col sm:flex-row bg-white rounded-t-xl shadow-lg border-b border-gray-300 overflow-hidden">
@@ -317,7 +317,7 @@ const CancerTypePanel = ({ handleFilterChange, selectedFilters }) => {
     return (
         <div id="cancer-type-panel" className="md:col-span-3 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col">
             <div className="p-3 sm:p-4 text-gray-600 flex-grow overflow-hidden">
-                <h2 className="text-2xl font-bold text-gray-800 mb-3">Cancer Type Selection</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-3">Cancer Filters</h2>
                 <p className="text-sm italic text-gray-500 mb-3">
                     Filter by official pathology classifications (ICD-O) or patient-friendly CRUK terminology. (<span className="text-[var(--cruk-pink)] font-semibold">OR Logic</span>)
                 </p>
@@ -434,7 +434,7 @@ const AccessibilityPanel = ({ handleFilterChange, selectedFilters }) => {
     return (
         <div id="accessibility-panel" className="md:col-span-3 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col">
             <div className="p-3 sm:p-4 text-gray-600 flex-grow overflow-hidden">
-                <h2 className="text-2xl font-bold text-gray-800 mb-3">Accessibility and Source</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-3">Accessibility</h2>
                 <p className="text-sm italic text-gray-500 mb-2">
                     Filter by data access level and source. (<span className="text-blue-800 font-semibold">AND Logic</span>)
                 </p>
