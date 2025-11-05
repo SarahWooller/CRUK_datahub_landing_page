@@ -14,8 +14,9 @@ export default defineConfig({
       input: {
         // Map a name (key) to the path (value) for each HTML file
         // The path must be absolute, which 'resolve' helps create.
-        main_vert_bar: resolve(__dirname, 'vert_bar.html'), // Assuming a.html is at the root
-        main_top_bar: resolve(__dirname, 'top_bar.html'), // Assuming b.html is at the root
+        main: resolve(__dirname, "index.html"),
+        vert_bar: resolve(__dirname, 'vert_bar.html'),
+        top_bar: resolve(__dirname, 'top_bar.html'),
       },
     },
   },
