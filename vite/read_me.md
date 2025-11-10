@@ -14,3 +14,5 @@ and a node_modules directory which you do and should be placed in the vite direc
    (others to follow)
 6) critically this should give you a directory full of node modules in the vite directory. 
 7) If they arent there you'll have to move them. 
+8) run `npm run build` to update the github io pages and then manually correct the
+hrefs in the assets so that they point to vite/dist/assets and not just assets! 
