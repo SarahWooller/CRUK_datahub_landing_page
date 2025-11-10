@@ -13,4 +13,6 @@ and a node_modules directory which you do and should be placed in the vite direc
 5) Run the http://localhost:5173  using `npm run dev` and navigate to top_bar.html
    (others to follow)
 6) critically this should give you a directory full of node modules in the vite directory. 
-7) If they arent there you'll have to move them. 
+7) If they aren't there you'll have to move them. 
+8) make sure that in the vite/dist versions of vert_bar and top_bar the 
+vite/dist/assets/ are included in the crossorigins href
