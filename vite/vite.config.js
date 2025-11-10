@@ -17,6 +17,7 @@ export default defineConfig({
         main: resolve(__dirname, "index.html"),
         vert_bar: resolve(__dirname, 'vert_bar.html'),
         top_bar: resolve(__dirname, 'top_bar.html'),
+        top_bar: resolve(__dirname, 'just_vert_bar.html'),
       },
     },
   },
