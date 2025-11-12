@@ -12,14 +12,22 @@ const generateMockStudies = () => {
         "Cancer Research Institute", "Global Oncology Center", "Biomedical Research Hub",
         "University Cancer Center", "National Health Institute"
     ];
-
+    const accesses = ["Access restricted at present","Closed to access",
+    "Open in response to specific calls","Open only through collaboration","Open to applicants"
+    ];
+    const positions = ["D", "E", "B", "C", "A"]
     const studiesData = [];
     for (let i = 1; i <= 50; i++) {
+        const j = Math.floor(Math.random() * positions.length);
+        const randomAccess = accesses[j]
+        const randomAccessPos = positions[j]
         const randomTitle = titles[Math.floor(Math.random() * titles.length)];
         const randomInstitute = institutes[Math.floor(Math.random() * institutes.length)];
         const randomDate = new Date(2023, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1);
         studiesData.push({
             id: i,
+            position: `${randomAccessPos}`,
+            accessPhrase: `${randomAccess}`,
             studyTitle: `${randomTitle} (Study ${i})`,
             leadResearcherInstitute: `Dr. ${String.fromCharCode(65 + Math.floor(Math.random() * 26))}. ${randomInstitute}`,
             dateAdded: randomDate.toISOString().split('T')[0] // YYYY-MM-DD
@@ -139,6 +147,9 @@ export const StudiesSection = () => {
                         <thead>
                             <tr>
                                 {/* Table headers with click handlers for sorting */}
+                                <th data-sort="accessPhrase" onClick={() => handleSort('position')}>
+                                    Accessibility <span classNaßme="sort-indicator">{getSortIndicator('accessPhrase')}</span>
+                                </th>
                                 <th data-sort="studyTitle" onClick={() => handleSort('studyTitle')}>
                                     Study Title <span className="sort-indicator">{getSortIndicator('studyTitle')}</span>
                                 </th>
@@ -155,6 +166,7 @@ export const StudiesSection = () => {
                         <tbody id="studies-table-body">
                             {filteredAndSortedStudies.map(study => (
                                 <tr key={study.id}>
+                                    <td>{study.accessPhrase}</td>
                                     <td>{study.studyTitle}</td>
                                     <td>{study.leadResearcherInstitute}</td>
                                     <td>{study.dateAdded}</td>
