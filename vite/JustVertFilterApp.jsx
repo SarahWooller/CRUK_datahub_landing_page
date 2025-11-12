@@ -587,7 +587,7 @@ const CancerTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setS
                 />
 
                 <p className="text-sm italic text-gray-500 mb-3">
-                    Filter by official pathology classifications (ICD-O) or patient-friendly CRUK terminology. (<span className="text-[var(--cruk-pink)] font-semibold">OR Logic</span>)
+                    Filter by official pathology classifications (ICD-O) or patient-friendly CRUK terminology.
                 </p>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -658,7 +658,7 @@ const DataTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setSea
                 />
 
                 <p className="text-sm italic text-gray-500 mb-2">
-                    Select one or more modalities to include in your search. (<span className="text-blue-800 font-semibold">AND Logic</span>)
+                    Select one or more modalities to include in your search.
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -740,7 +740,7 @@ const AccessibilityPanel = ({ handleFilterChange, selectedFilters, searchTerm, s
                 />
 
                 <p className="text-sm italic text-gray-500 mb-2">
-                    Filter by data access level and source. (<span className="text-blue-800 font-semibold">AND Logic</span>)
+                    Filter by data access level and source.
                 </p>
                 <div className="h-32 overflow-y-auto pr-2 border p-3 rounded-lg">
                     <div className="space-y-2">
