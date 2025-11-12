@@ -110,6 +110,138 @@ const NestedFilterItem = ({ item, handleFilterChange, selectedFilters, level }) 
     );
 };
 
+// NEW COMPONENT: Dynamic Logic Summary strictly based on make_message.py logic
+const FilterLogicSummary = ({ selectedFilters }) => {
+
+    // --- 1. Python's Designation.filter_type logic ---
+    const filterType = useCallback((id) => {
+        const info = id.split("_");
+        if (info.length < 3) return "unknown";
+
+        const first = info[1];
+        if (first === "2") {
+            return "data"; // 0_2_...
+        } else if (first === "1") {
+            return "access"; // 0_1_...
+        } else {
+            // first === "0"
+            const second = info[2];
+            if (second === "1") {
+                return "hist"; // 0_0_1_...
+            } else if (second === "0") {
+                return "top"; // 0_0_0_...
+            }
+            // CRUK terms (0_0_2_...) are treated as 'top' for grouping purposes
+            // since they are part of the main cancer group processing.
+            if (second === "2") return "cruk";
+
+            return "unknown";
+        }
+    }, []);
+
+    // --- 2. Python's Designation.include_parents logic ---
+    const includeParents = useCallback((f) => {
+        if (f) {
+            const nms = f.split("_");
+            // access filters dont inclde their parents (nms[1] !== "1" and len(nms) > 3)
+            if (nms[1] !== "1" && nms.length > 3) {
+                // Parent IDs start from length 4 (e.g., 0_0_0_1) up to the full length
+                const parents = [];
+                for (let k = 4; k <= nms.length; k++) {
+                    parents.push(nms.slice(0, k).join("_"));
+                }
+                return parents;
+            }
+        }
+        return [f];
+    }, []);
+
+    // --- 3. Python's Designation.plus_parents logic ---
+    const plusParents = useCallback((filters) => {
+        if (!filters || filters.length === 0) return [];
+
+        const allFilters = new Set();
+        filters.forEach(f => {
+            includeParents(f).forEach(parentOrSelf => {
+                allFilters.add(parentOrSelf);
+            });
+        });
+
+        // Filter out IDs that don't have a label in filterDetailsMap (i.e., root nodes)
+        return Array.from(allFilters).filter(id => filterDetailsMap.has(id));
+    }, [includeParents]);
+
+    // --- 4. Python's Designation.get_message logic ---
+    const getMessage = useCallback((thelist, joiner) => {
+        const length = thelist.length;
+        if (length === 0) {
+            return "";
+        } else if (length === 1) {
+            return filterDetailsMap.get(thelist[0])?.label || "";
+        } else {
+            const terms = thelist.map(id => filterDetailsMap.get(id)?.label).filter(Boolean);
+            return `(${terms.join(` ${joiner} `)})`;
+        }
+    }, []);
+
+    // --- 5. Python's Designation.make_message logic ---
+    const logicMessage = useMemo(() => {
+        const filters = Array.from(selectedFilters);
+        const hist = filters.filter(f => filterType(f) === "hist");
+        const top = filters.filter(f => filterType(f) === "top" || filterType(f) === "cruk");
+        const data = filters.filter(f => filterType(f) === "data");
+        const access = filters.filter(f => filterType(f) === "access");
+
+        const messages = [];
+
+        // HIST message: plus_parents and OR
+        const hist_plus = plusParents(hist);
+        const hist_message = getMessage(hist_plus, "OR");
+        if (hist_message) messages.push(hist_message);
+
+        // TOP/CRUK message: plus_parents and OR
+        const top_plus = plusParents(top);
+        const top_message = getMessage(top_plus, "OR");
+        if (top_message) messages.push(top_message);
+
+        // DATA message: include_parents (individually) and OR, then join groups with AND
+        const data_messages = data.map(d => {
+            // Note: The python code iterates over each selected data filter (d) and calls include_parents(d),
+            // then ORs the results. This results in an array of OR-ed messages, which are then AND-ed.
+            const listWithParents = includeParents(d).filter(id => filterDetailsMap.has(id));
+            return getMessage(listWithParents, "OR");
+        }).filter(Boolean);
+
+        const data_final_message = data_messages.join(" AND ");
+        if (data_final_message) messages.push(data_final_message);
+
+
+        // ACCESS message: simple list and OR
+        const access_message = getMessage(access, "OR");
+        if (access_message) messages.push(access_message);
+
+        // Final step: return " AND ".join([v for v in messages.values() if v])
+        return messages.join(" AND ");
+
+    }, [selectedFilters, filterType, plusParents, includeParents, getMessage]);
+
+    if (!selectedFilters || selectedFilters.size === 0) {
+        return null;
+    }
+
+    // Display
+    return (
+        <div className="p-1 mt-2 border-t border-gray-200">
+            <p className="text-sm text-gray-700 font-semibold mb-1">
+                Active Filter Logic:
+            </p>
+            <div id="logic-summary-message" className="text-xs text-gray-600 bg-gray-50 p-2 rounded break-words font-mono">
+                {logicMessage || "No filters selected"}
+            </div>
+        </div>
+    );
+};
+
 
 // Component for the dynamic chips display
 const FilterChipArea = ({ selectedFilters, handleFilterChange }) => {
@@ -165,16 +297,15 @@ const FilterChipArea = ({ selectedFilters, handleFilterChange }) => {
                 ))}
             </div>
 
-            <p id="logic-summary" className="text-xs text-gray-500 mt-2 px-1">
-                Logic: (Cancer Filters are OR-ed) AND (Data Type Filters are AND-ed) AND (Accessibility Filters are AND-ed)
-            </p>
+            {/* Now using the dynamic, logic-compliant summary component */}
+            <FilterLogicSummary selectedFilters={selectedFilters} />
         </div>
     );
 };
 
 
 // Main Application Component
-export const JustVertFilterApp = () => {
+export const VertFilterApp = () => {
     const [activePanel, setActivePanel] = useState(null);
     const [selectedFilters, setSelectedFilters] = useState(new Set());
 
@@ -388,18 +519,13 @@ export const JustVertFilterApp = () => {
 
                     {/* --- Filter Content Panel (Right Panel) --- */}
                     <div className="flex-grow w-full md:w-3/4 p-0">
-                        {/* Filter Chip Area */}
+                        {/* Filter Chip Area (Includes the new Logic Summary) */}
                         <FilterChipArea selectedFilters={selectedFilters} handleFilterChange={handleFilterChange} />
 
                         {/* Filter Panel Content / Default Content */}
                         <div className="grid grid-cols-1 gap-4">
                             {/* 1. Render the filter panel ONLY if active */}
                             {activePanel && renderPanel()}
-
-                            {/* 2. ALWAYS render the Content component
-                                <StudiesSection />
-                                */}
-
                         </div>
                     </div>
                     {/* --- End Filter Content Panel --- */}

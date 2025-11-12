@@ -1,9 +1,9 @@
 // main.jsx
 import React from 'react'; // React is now imported from node_modules
 import ReactDOM from 'react-dom/client';
-import { JustVertFilterApp } from './JustVertFilterApp.jsx'; // 👈 Note the named import for Filters
+import { VertFilterApp } from './JustVertFilterApp.jsx'; // 👈 Note the named import for Filters
 import { Header } from './Header.jsx'
-import { StudiesSection } from './StudiesSection.jsx'
+
 
 
 function renderReactComponent(targetId, Component) {
@@ -27,6 +27,6 @@ function renderReactComponent(targetId, Component) {
 }
 
 renderReactComponent('header', <Header/>)
-renderReactComponent('just_vert_navbar', <JustVertFilterApp/>)
+renderReactComponent('vert_navbar', <VertFilterApp/>)
 
 
