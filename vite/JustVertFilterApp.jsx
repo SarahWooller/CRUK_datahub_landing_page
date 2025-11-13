@@ -20,6 +20,44 @@ populateMap(filterData['0_1'].children, filterData['0_1'].primaryGroup);
 // --- END DUMMY DATA ---
 
 
+// --- UTILITY FUNCTIONS FOR LOGIC MESSAGE CALCULATION ---
+// Function to calculate the logic message (extracted logic from FilterLogicSummary)
+const calculateLogicMessage = (filters, filterType, plusParents, includeParents, getMessage) => {
+    const hist = filters.filter(f => filterType(f) === "hist");
+    const top = filters.filter(f => filterType(f) === "top" || filterType(f) === "cruk");
+    const data = filters.filter(f => filterType(f) === "data");
+    const access = filters.filter(f => filterType(f) === "access");
+
+    const messages = [];
+
+    // HIST message: plus_parents and OR
+    const hist_plus = plusParents(hist);
+    const hist_message = getMessage(hist_plus, "OR");
+    if (hist_message) messages.push(hist_message);
+
+    // TOP/CRUK message: plus_parents and OR
+    const top_plus = plusParents(top);
+    const top_message = getMessage(top_plus, "OR");
+    if (top_message) messages.push(top_message);
+
+    // DATA message: include_parents (individually) and OR, then join groups with AND
+    const data_messages = data.map(d => {
+        const listWithParents = includeParents(d).filter(id => filterDetailsMap.has(id));
+        return getMessage(listWithParents, "OR");
+    }).filter(Boolean);
+
+    const data_final_message = data_messages.join(" AND ");
+    if (data_final_message) messages.push(data_final_message);
+
+    // ACCESS message: simple list and OR
+    const access_message = getMessage(access, "OR");
+    if (access_message) messages.push(access_message);
+
+    return messages.join(" AND ");
+};
+// --- END UTILITY FUNCTIONS ---
+
+
 // --- ALL REACT COMPONENTS FROM knockdown.html START HERE ---
 const { useState, useMemo, useCallback, useEffect } = React;
 
@@ -78,8 +116,16 @@ const NestedFilterItem = ({ item, handleFilterChange, selectedFilters, level }) 
                         onClick={toggleExpansion}
                         aria-expanded={isExpanded}
                     >
-                        {/* Chevron Right Icon (inline SVG) */}
-                        <svg className="w-3 h-3 transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
+                        {/* Chevron Right Icon (inline SVG) - FIX APPLIED HERE */}
+                        <svg
+                            className="w-3 h-3 transform"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
                     </button>
                 ) : (
                     <span className="w-4 h-4 mr-1"></span>
@@ -110,141 +156,145 @@ const NestedFilterItem = ({ item, handleFilterChange, selectedFilters, level }) 
     );
 };
 
-// NEW COMPONENT: Dynamic Logic Summary strictly based on make_message.py logic
-const FilterLogicSummary = ({ selectedFilters }) => {
+// --- LOGIC UTILITY FUNCTIONS (RE-DEFINED FOR EXPORT/REUSE) ---
+const filterType = (id) => {
+    const info = id.split("_");
+    if (info.length < 3) return "unknown";
 
-    // --- 1. Python's Designation.filter_type logic ---
-    const filterType = useCallback((id) => {
-        const info = id.split("_");
-        if (info.length < 3) return "unknown";
-
-        const first = info[1];
-        if (first === "2") {
-            return "data"; // 0_2_...
-        } else if (first === "1") {
-            return "access"; // 0_1_...
-        } else {
-            // first === "0"
-            const second = info[2];
-            if (second === "1") {
-                return "hist"; // 0_0_1_...
-            } else if (second === "0") {
-                return "top"; // 0_0_0_...
-            }
-            // CRUK terms (0_0_2_...) are treated as 'top' for grouping purposes
-            // since they are part of the main cancer group processing.
-            if (second === "2") return "cruk";
-
-            return "unknown";
+    const first = info[1];
+    if (first === "2") {
+        return "data"; // 0_2_...
+    } else if (first === "1") {
+        return "access"; // 0_1_...
+    } else {
+        // first === "0"
+        const second = info[2];
+        if (second === "1") {
+            return "hist"; // 0_0_1_...
+        } else if (second === "0") {
+            return "top"; // 0_0_0_...
         }
-    }, []);
+        if (second === "2") return "cruk";
 
-    // --- 2. Python's Designation.include_parents logic ---
-    const includeParents = useCallback((f) => {
-        if (f) {
-            const nms = f.split("_");
-            // access filters dont inclde their parents (nms[1] !== "1" and len(nms) > 3)
-            if (nms[1] !== "1" && nms.length > 3) {
-                // Parent IDs start from length 4 (e.g., 0_0_0_1) up to the full length
-                const parents = [];
-                for (let k = 4; k <= nms.length; k++) {
-                    parents.push(nms.slice(0, k).join("_"));
-                }
-                return parents;
+        return "unknown";
+    }
+};
+
+const includeParents = (f) => {
+    if (f) {
+        const nms = f.split("_");
+        if (nms[1] !== "1" && nms.length > 3) {
+            const parents = [];
+            for (let k = 4; k <= nms.length; k++) {
+                parents.push(nms.slice(0, k).join("_"));
             }
+            return parents;
         }
-        return [f];
-    }, []);
+    }
+    return [f];
+};
 
-    // --- 3. Python's Designation.plus_parents logic ---
-    const plusParents = useCallback((filters) => {
-        if (!filters || filters.length === 0) return [];
+const plusParents = (filters) => {
+    if (!filters || filters.length === 0) return [];
 
-        const allFilters = new Set();
-        filters.forEach(f => {
-            includeParents(f).forEach(parentOrSelf => {
-                allFilters.add(parentOrSelf);
-            });
+    const allFilters = new Set();
+    filters.forEach(f => {
+        includeParents(f).forEach(parentOrSelf => {
+            allFilters.add(parentOrSelf);
         });
+    });
 
-        // Filter out IDs that don't have a label in filterDetailsMap (i.e., root nodes)
-        return Array.from(allFilters).filter(id => filterDetailsMap.has(id));
-    }, [includeParents]);
+    return Array.from(allFilters).filter(id => filterDetailsMap.has(id));
+};
 
-    // --- 4. Python's Designation.get_message logic ---
-    const getMessage = useCallback((thelist, joiner) => {
-        const length = thelist.length;
-        if (length === 0) {
-            return "";
-        } else if (length === 1) {
-            return filterDetailsMap.get(thelist[0])?.label || "";
-        } else {
-            const terms = thelist.map(id => filterDetailsMap.get(id)?.label).filter(Boolean);
-            return `(${terms.join(` ${joiner} `)})`;
-        }
-    }, []);
+const getMessage = (thelist, joiner) => {
+    const length = thelist.length;
+    if (length === 0) {
+        return "";
+    } else if (length === 1) {
+        return filterDetailsMap.get(thelist[0])?.label || "";
+    } else {
+        const terms = thelist.map(id => filterDetailsMap.get(id)?.label).filter(Boolean);
+        return `(${terms.join(` ${joiner} `)})`;
+    }
+};
 
-    // --- 5. Python's Designation.make_message logic ---
-    const logicMessage = useMemo(() => {
+// NEW COMPONENT: Dynamic Logic Summary with Edit/Reset functionality
+const FilterLogicSummary = ({
+    selectedFilters,
+    logicMessage,
+    setLogicMessage,
+    isMessageManuallyEdited,
+    setIsMessageManuallyEdited,
+}) => {
+
+    // Handler for user input changes in the textarea
+    const handleMessageChange = useCallback((e) => {
+        setLogicMessage(e.target.value);
+        setIsMessageManuallyEdited(true); // User has edited the message
+    }, [setLogicMessage, setIsMessageManuallyEdited]);
+
+    // Handler to reset the message to the automatically generated logic
+    const handleReset = useCallback(() => {
         const filters = Array.from(selectedFilters);
-        const hist = filters.filter(f => filterType(f) === "hist");
-        const top = filters.filter(f => filterType(f) === "top" || filterType(f) === "cruk");
-        const data = filters.filter(f => filterType(f) === "data");
-        const access = filters.filter(f => filterType(f) === "access");
+        const autoMessage = calculateLogicMessage(filters, filterType, plusParents, includeParents, getMessage);
+        setLogicMessage(autoMessage);
+        setIsMessageManuallyEdited(false); // Reset edit state
+    }, [selectedFilters, setLogicMessage, setIsMessageManuallyEdited]);
 
-        const messages = [];
-
-        // HIST message: plus_parents and OR
-        const hist_plus = plusParents(hist);
-        const hist_message = getMessage(hist_plus, "OR");
-        if (hist_message) messages.push(hist_message);
-
-        // TOP/CRUK message: plus_parents and OR
-        const top_plus = plusParents(top);
-        const top_message = getMessage(top_plus, "OR");
-        if (top_message) messages.push(top_message);
-
-        // DATA message: include_parents (individually) and OR, then join groups with AND
-        const data_messages = data.map(d => {
-            // Note: The python code iterates over each selected data filter (d) and calls include_parents(d),
-            // then ORs the results. This results in an array of OR-ed messages, which are then AND-ed.
-            const listWithParents = includeParents(d).filter(id => filterDetailsMap.has(id));
-            return getMessage(listWithParents, "OR");
-        }).filter(Boolean);
-
-        const data_final_message = data_messages.join(" AND ");
-        if (data_final_message) messages.push(data_final_message);
-
-
-        // ACCESS message: simple list and OR
-        const access_message = getMessage(access, "OR");
-        if (access_message) messages.push(access_message);
-
-        // Final step: return " AND ".join([v for v in messages.values() if v])
-        return messages.join(" AND ");
-
-    }, [selectedFilters, filterType, plusParents, includeParents, getMessage]);
 
     if (!selectedFilters || selectedFilters.size === 0) {
         return null;
     }
 
+    const showResetButton = isMessageManuallyEdited;
+
     // Display
     return (
         <div className="p-1 mt-2 border-t border-gray-200">
-            <p className="text-sm text-gray-700 font-semibold mb-1">
-                Active Filter Logic:
-            </p>
-            <div id="logic-summary-message" className="text-xs text-gray-600 bg-gray-50 p-2 rounded break-words font-mono">
-                {logicMessage || "No filters selected"}
+            <div className="flex justify-between items-center mb-1">
+                <p className="text-sm text-gray-700 font-semibold">
+                    Filter Logic: once you have chosen your filters you can adjust the logic below.
+                </p>
+                {showResetButton && (
+                    <button
+                        type="button"
+                        onClick={handleReset}
+                        className="text-xs text-blue-600 hover:text-blue-800 transition duration-150 font-medium py-1 px-2 rounded border border-blue-300 hover:bg-blue-50"
+                    >
+                        Reset to Auto Logic
+                    </button>
+                )}
             </div>
+            <textarea
+                id="logic-summary-message"
+                className="w-full text-xs text-gray-800 bg-gray-50 p-2 rounded break-words font-mono border border-gray-300 resize-y focus:ring-[var(--cruk-pink)] focus:border-[var(--cruk-pink)]"
+                value={logicMessage || "No filters selected"}
+                onChange={handleMessageChange}
+                rows={Math.max(2, Math.ceil((logicMessage || "No filters selected").length / 100))} // Dynamic rows
+            />
+
+            {isMessageManuallyEdited && (
+                 <p className="text-xs text-orange-600 mt-1">Note: Filter logic has been manually edited. If you need to add filters reset logic first</p>
+            )}
         </div>
     );
 };
 
+// Export utility functions for use in VertFilterApp's useEffect
+FilterLogicSummary.utilityFunctions = { filterType, plusParents, includeParents, getMessage };
+// --- END LOGIC SUMMARY COMPONENT ---
+
 
 // Component for the dynamic chips display
-const FilterChipArea = ({ selectedFilters, handleFilterChange }) => {
+const FilterChipArea = ({
+    selectedFilters,
+    handleFilterChange,
+    logicMessage,
+    setLogicMessage,
+    isMessageManuallyEdited,
+    setIsMessageManuallyEdited,
+}) => {
 
     const chips = useMemo(() => {
         const chipArray = Array.from(selectedFilters).map(fullId => {
@@ -298,7 +348,13 @@ const FilterChipArea = ({ selectedFilters, handleFilterChange }) => {
             </div>
 
             {/* Now using the dynamic, logic-compliant summary component */}
-            <FilterLogicSummary selectedFilters={selectedFilters} />
+            <FilterLogicSummary
+                selectedFilters={selectedFilters}
+                logicMessage={logicMessage}
+                setLogicMessage={setLogicMessage}
+                isMessageManuallyEdited={isMessageManuallyEdited}
+                setIsMessageManuallyEdited={setIsMessageManuallyEdited}
+            />
         </div>
     );
 };
@@ -308,6 +364,10 @@ const FilterChipArea = ({ selectedFilters, handleFilterChange }) => {
 export const VertFilterApp = () => {
     const [activePanel, setActivePanel] = useState(null);
     const [selectedFilters, setSelectedFilters] = useState(new Set());
+    // NEW STATE FOR EDITABLE LOGIC MESSAGE
+    const [logicMessage, setLogicMessage] = useState("");
+    const [isMessageManuallyEdited, setIsMessageManuallyEdited] = useState(false);
+    // END NEW STATE
 
     // NEW SEARCH STATE
     const [searchTerm, setSearchTerm] = useState('');
@@ -316,6 +376,19 @@ export const VertFilterApp = () => {
 
     // Flatten all data for efficient searching
     const allFiltersArray = useMemo(() => Array.from(filterDetailsMap.values()), []);
+
+    // Reuse the filter logic utilities from FilterLogicSummary
+    const { filterType, plusParents, includeParents, getMessage } = FilterLogicSummary.utilityFunctions;
+
+    // EFFECT to update logicMessage when filters change (unless manually edited)
+    useEffect(() => {
+        // Only calculate if the user hasn't manually overridden the message
+        if (!isMessageManuallyEdited) {
+            const filters = Array.from(selectedFilters);
+            const newMessage = calculateLogicMessage(filters, filterType, plusParents, includeParents, getMessage);
+            setLogicMessage(newMessage);
+        }
+    }, [selectedFilters, isMessageManuallyEdited, filterType, plusParents, includeParents, getMessage]);
 
     // NEW SEARCH EFFECT WITH DEBOUNCE AND MIN LENGTH
     useEffect(() => {
@@ -433,12 +506,14 @@ export const VertFilterApp = () => {
         setSelectedFilters(new Set());
         setActivePanel(null);
         setSearchTerm(''); // Clear search on filter clear
+        setLogicMessage(''); // NEW: Clear message
+        setIsMessageManuallyEdited(false); // NEW: Reset edit state
     }, []);
 
     const handleFindStudies = useCallback(() => {
-        console.log(`Executing search with ${counts.total} filters.`);
+        console.log(`Executing search with ${counts.total} filters. Current logic message: ${logicMessage}`);
         setActivePanel(null);
-    }, [counts.total]);
+    }, [counts.total, logicMessage]);
 
 
     const renderPanel = () => {
@@ -520,7 +595,14 @@ export const VertFilterApp = () => {
                     {/* --- Filter Content Panel (Right Panel) --- */}
                     <div className="flex-grow w-full md:w-3/4 p-0">
                         {/* Filter Chip Area (Includes the new Logic Summary) */}
-                        <FilterChipArea selectedFilters={selectedFilters} handleFilterChange={handleFilterChange} />
+                        <FilterChipArea
+                            selectedFilters={selectedFilters}
+                            handleFilterChange={handleFilterChange}
+                            logicMessage={logicMessage}
+                            setLogicMessage={setLogicMessage}
+                            isMessageManuallyEdited={isMessageManuallyEdited}
+                            setIsMessageManuallyEdited={setIsMessageManuallyEdited}
+                        />
 
                         {/* Filter Panel Content / Default Content */}
                         <div className="grid grid-cols-1 gap-4">
