@@ -1,14 +1,17 @@
 import { filterData } from './filter_data.js';
+import { executeFilterLogic } from './filterLogic.js';
 import React from 'react'; // React is now imported from node_modules
 import "../styles/style.css"
 
 const filterDetailsMap = new Map();
+
 const populateMap = (nodes, primaryGroup) => {
     if (!nodes) return;
     const nodesArray = Array.isArray(nodes) ? nodes : Object.values(nodes);
     nodesArray.forEach(item => {
         const fullId = item.id;
         filterDetailsMap.set(fullId, { id: item.id, label: item.label, category: item.category, group: primaryGroup, });
+
         if (item.children && Object.keys(item.children).length > 0) {
             populateMap(item.children, primaryGroup);
         }
@@ -360,6 +363,7 @@ const FilterChipArea = ({
 };
 
 
+
 // Main Application Component
 export const VertFilterApp = () => {
     const [activePanel, setActivePanel] = useState(null);
@@ -511,9 +515,28 @@ export const VertFilterApp = () => {
     }, []);
 
     const handleFindStudies = useCallback(() => {
+        // Log the current action
         console.log(`Executing search with ${counts.total} filters. Current logic message: ${logicMessage}`);
+
+        // 1. Check if filters are selected
+        if (counts.total > 0 && logicMessage) {
+            // 2. Execute the filter logic from the external utility file
+            const results = executeFilterLogic(logicMessage);
+
+            // 3. You can use the results object to update UI or perform further actions
+            if (results.success) {
+                // Example: Update the total count found in the button label or display the results studies
+                console.log(`Successfully found ${results.count} studies.`);
+            }
+        } else {
+             // Optional: Alert the user if they press Find Studies with no filters (though button is disabled)
+             console.log("No studies to find. Please select filters first.");
+        }
+
+        // Close the panel after finding studies
         setActivePanel(null);
-    }, [counts.total, logicMessage]);
+
+    }, [counts.total, logicMessage]); // Dependencies remain the same
 
 
     const renderPanel = () => {
