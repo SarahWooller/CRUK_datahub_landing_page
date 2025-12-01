@@ -30,7 +30,8 @@ const generateMockStudies = () => {
             accessPhrase: `${randomAccess}`,
             studyTitle: `${randomTitle} (Study ${i})`,
             leadResearcherInstitute: `Dr. ${String.fromCharCode(65 + Math.floor(Math.random() * 26))}. ${randomInstitute}`,
-            dateAdded: randomDate.toISOString().split('T')[0] // YYYY-MM-DD
+            dateAdded: randomDate.toISOString().split('T')[0], // YYYY-MM-DD
+            dateStarted: randomDate.toISOString().split('T')[0] // YYYY-MM-DD
         });
     }
     return studiesData;
@@ -99,10 +100,6 @@ export const StudiesSection = () => {
         return '';
     };
 
-    // Toggle the state for the developer notes button
-    const toggleDevNotes = () => {
-        setIsDevNotesHidden(prev => !prev);
-    };
 
     // Define the style for a larger font size (as requested)
     const style = { fontSize: '1.2rem' };
@@ -110,11 +107,7 @@ export const StudiesSection = () => {
     return (
         <div style={style}>
             <section className="studies-section">
-                <div style={{ marginBottom: '20px' }}>
-                    <button className="keyword-button" id="toggleDevNotes" onClick={toggleDevNotes}>
-                        {isDevNotesHidden ? 'Show Developer Notes' : 'Hide Developer Notes'}
-                    </button>
-                </div>
+
 
                 <div className="search-section">
                     <input
@@ -135,13 +128,6 @@ export const StudiesSection = () => {
                     <label htmlFor="deep_search"> Deep Search <i> - may be slow</i></label><br />
                 </div>
 
-                <h1 className="section-heading">Unleashing the power of big data</h1>
-                <p className="intro-text">
-                    Welcome to the CRUK Data Hub, your gateway to data produced by research funded through Cancer Research UK.
-                    Here, you can explore our groundbreaking work,
-                    and researchers can gain access to the data in a way which puts patient needs front and centre.
-                </p>
-
                 <div className="studies-table-container">
                     <table className="studies-table">
                         <thead>
@@ -157,9 +143,12 @@ export const StudiesSection = () => {
                                     Lead Researcher/Institute <span className="sort-indicator">{getSortIndicator('leadResearcherInstitute')}</span>
                                 </th>
                                 <th data-sort="dateAdded" onClick={() => handleSort('dateAdded')}>
-                                    Date added <span className="sort-indicator">{getSortIndicator('dateAdded')}</span>
+                                    Updated <span className="sort-indicator">{getSortIndicator('dateAdded')}</span>
                                 </th>
-                                <th>Explore</th>
+                                <th data-sort="dateStarted" onClick={() => handleSort('dateStarted')}>
+                                    CRUK funding start-date <span className="sort-indicator">{getSortIndicator('dateStarted')}</span>
+                                </th>
+
                             </tr>
                         </thead>
                         {/* Rendering the table body using React's map function */}
@@ -169,8 +158,8 @@ export const StudiesSection = () => {
                                     <td>{study.accessPhrase}</td>
                                     <td>{study.studyTitle}</td>
                                     <td>{study.leadResearcherInstitute}</td>
+                                    <td>{study.dateStarted}</td>
                                     <td>{study.dateAdded}</td>
-                                    <td><button className="btn-explore">View</button></td>
                                 </tr>
                             ))}
                         </tbody>
