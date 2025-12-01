@@ -1,5 +1,5 @@
 import React from 'react';
-import "../styles/style.css"
+import "./styles/style.css"
 
 // Define the functional component called Header
 export const Header = () => {
@@ -15,7 +15,7 @@ export const Header = () => {
                 <div className="logo-placeholder">
                     <p>
                         <a href="https://www.cancerresearchuk.org/">
-                            <img src="./cruk-logo.svg" alt="CRUK Logo" style={logoStyle} />
+                            <img src="./assets/cruk-logo.svg" alt="CRUK Logo" style={logoStyle} />
                         </a>
                     </p>
                 </div>
