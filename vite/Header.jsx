@@ -36,6 +36,8 @@ export const Header = () => {
                         </a>
                     </li>
                     <li><a href="https://sarahwooller.github.io/CRUK_datahub_landing_page/protect_data.html">How we protect your data</a></li>
+                    <li><a href="https://sarahwooller.github.io/CRUK_datahub_landing_page/protect_data.html">Data Custodian Area</a></li>
+
                 </ul>
             </nav>
         </header>
