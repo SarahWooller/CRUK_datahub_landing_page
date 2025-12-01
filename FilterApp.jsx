@@ -1,6 +1,6 @@
 import { filterData } from './filter_data.js';
 import React from 'react'; // React is now imported from node_modules
-import "../styles/style.css"
+import "./styles/style.css"
 
 const filterDetailsMap = new Map();
 const populateMap = (nodes, primaryGroup) => {

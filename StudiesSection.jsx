@@ -134,7 +134,7 @@ export const StudiesSection = () => {
                             <tr>
                                 {/* Table headers with click handlers for sorting */}
                                 <th data-sort="accessPhrase" onClick={() => handleSort('position')}>
-                                    Accessibility <span classNaßme="sort-indicator">{getSortIndicator('accessPhrase')}</span>
+                                    Accessibility <span className="sort-indicator">{getSortIndicator('accessPhrase')}</span>
                                 </th>
                                 <th data-sort="studyTitle" onClick={() => handleSort('studyTitle')}>
                                     Study Title <span className="sort-indicator">{getSortIndicator('studyTitle')}</span>

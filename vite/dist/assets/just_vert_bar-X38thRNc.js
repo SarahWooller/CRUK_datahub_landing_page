@@ -1,1 +1,0 @@
-import{R as a,j as e,a as s,H as c}from"./Header-Dufssz_U.js";import{V as m}from"./JustVertFilterApp-D2ytIcVa.js";function r(t,n){const o=document.getElementById(t);o?a.createRoot(o).render(e.jsx(s.StrictMode,{children:n})):console.error(`Target element '${t}' not found in the DOM. Cannot render component.`)}r("header",e.jsx(c,{}));r("vert_navbar",e.jsx(m,{}));

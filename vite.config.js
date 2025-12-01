@@ -6,10 +6,13 @@ import { resolve } from 'path'
 const repoName = 'CRUK_datahub_landing_page'
 
 export default defineConfig({
-  plugins: [react()],
-  base: `/${repoName}/`,
+  plugins: [react({
+    include: "**/*.{jsx.js}",
+    })],
+  base: "./",
 
   build: {
+    outDir: "docs",
     rollupOptions: {
       input: {
         // Map a name (key) to the path (value) for each HTML file

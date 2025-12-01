@@ -1,7 +1,7 @@
 import { filterData } from './filter_data.js';
 import { executeFilterLogic } from './filterLogic.js';
 import React from 'react'; // React is now imported from node_modules
-import "../styles/style.css"
+import "./styles/style.css"
 
 const filterDetailsMap = new Map();
 
@@ -630,7 +630,13 @@ export const VertFilterApp = () => {
                         {/* Filter Panel Content / Default Content */}
                         <div className="grid grid-cols-1 gap-4">
                             {/* 1. Render the filter panel ONLY if active */}
-                            {activePanel && renderPanel()}
+                            {activePanel ? (
+                                renderPanel()
+                                ): (
+                                    <div className="p-4 text-center text-lg text-gray-500 italic bg-gray-50 rounded-b-xl min-h-[200px] flex items-center justify-center">
+                                        Choose filters to begin or scroll down to browse Studies.
+                                    </div>
+                                    )}
                         </div>
                     </div>
                     {/* --- End Filter Content Panel --- */}
