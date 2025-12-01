@@ -15,7 +15,7 @@ export const Header = () => {
                 <div className="logo-placeholder">
                     <p>
                         <a href="https://www.cancerresearchuk.org/">
-                            <img src="./cruk-logo.svg" alt="CRUK Logo" style={logoStyle} />
+                            <img src="./assets/cruk-logo.svg" alt="CRUK Logo" style={logoStyle} />
                         </a>
                     </p>
                 </div>
