@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Protection and Access</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f9; /* Light background */
+            color: #333;
+            max-width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            font-size: 1.1em; /* Using a larger font as requested */
+        }
+
+        h1 {
+            color: #cc0052; /* A strong, appealing color */
+            border-bottom: 2px solid #cc0052;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* Accordion Styling */
+        details {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            padding: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        summary {
+            font-weight: bold;
+            padding: 15px 20px;
+            cursor: pointer;
+            outline: none;
+            list-style: none; /* Hide default triangle/arrow */
+            position: relative;
+            color: #007bff; /* A nice blue for interaction */
+            transition: background-color 0.2s;
+        }
+
+        summary:hover {
+            background-color: #f0f0f0;
+        }
+
+        /* Custom expand/collapse indicator (arrow) */
+        summary::after {
+            content: '►'; /* Right-pointing triangle (collapsed) */
+            position: absolute;
+            right: 20px;
+            transition: transform 0.2s;
+        }
+
+        details[open] summary::after {
+            content: '▼'; /* Down-pointing triangle (expanded) */
+            transform: rotate(0deg);
+        }
+
+        .content {
+            padding: 10px 20px 20px 20px;
+            border-top: 1px solid #eee;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Our Mission</h1>
+
+    <p>The CRUK Data Hub is a joint initiative between Cancer Research UK, Health Data Research UK and the University of Sussex.</p>
+    <p>Our mission is to make CRUK donations work harder to beat cancer by improving the findability, accessibility, and interoperability of CRUK funded datasets across the UK.</p>
+    <p>The CRUK Data Hub provides detailed overviews that describe the content, quality, and provenance of each dataset, along with structural metadata that sets out the contents of each table in the dataset. These overviews enable a researcher to decide whether the dataset is useful for their work without having to see the data itself. Metadata uploaded to the CRUK datahub is automatically shared with HDRUK’s healthdatagateway.</p>
+    <p>Researchers are guided through the necessary approvals and access processes, including ethical and legal considerations.</p>
+
+
+</body>
+</html>

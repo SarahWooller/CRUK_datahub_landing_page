@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUK Data Hub - Together We Are Beating Cancer </title>
+  <script type="module" crossorigin src="/CRUK_datahub_landing_page/assets/old_style-e9v-29Ni.js"></script>
+  <link rel="modulepreload" crossorigin href="/CRUK_datahub_landing_page/assets/modulepreload-polyfill-B5Qt9EMX.js">
+  <link rel="stylesheet" crossorigin href="/CRUK_datahub_landing_page/assets/Header-UoIphN8d.css">
+  <link rel="stylesheet" crossorigin href="/CRUK_datahub_landing_page/assets/dev_note-D10LvFDd.css">
+</head>
+<body>
+<div class="watermark">Provisional page only - not endorsed by CRUK</div>
+
+    <header class="main-header">
+        <div class="banner">
+            <div class="logo-placeholder">
+                <p><a href="https://www.cancerresearchuk.org/">
+                    <img src="" alt="CRUK Logo" style="width: 200px; height: auto;">
+                </a></p>
+            </div>
+            <h2 class="strap-line">CRUK Data Hub</h2>
+
+            <div class="header-buttons">
+                <button class="btn">Sign in</button>
+                <button class="btn">Help</button>
+            </div>
+        </div>
+
+        <nav class="thin-navbar">
+            <ul>
+                <li><a href="https://sarahwooller.github.io/CRUK_datahub_landing_page/about.html">About</a></li>
+                <li><a href="https://www.cancerresearchuk.org/funding-for-researchers/research-opportunities-in-data-science?_gl=1*j2h94s*_gcl_aw*R0NMLjE3NTIwNjY3ODcuQ2p3S0NBandwcmpEQmhCVEVpd0ExbTFkMG9kQ3M5bktReW14VlplOW5FUWJ4R0l2X0E4ekdieVpTaVZaWUNBUm1hZ09BN2t1anhNbTlCb0NNSm9RQXZEX0J3RQ..*_gcl_dc*R0NMLjE3NTIwNjY3ODcuQ2p3S0NBandwcmpEQmhCVEVpd0ExbTFkMG9kQ3M5bktReW14VlplOW5FUWJ4R0l2X0E4ekdieVpTaVZaWUNBUm1hZ09BN2t1anhNbTlCb0NNSm9RQXZEX0J3RQ..*_gcl_au*NTU0Mjk1Mzc0LjE3NDg4NjEwMTc.*_ga*MTg1NjY3MDg4OC4xNzQxMDA5MjYx*_ga_58736Z2GNN*czE3NTUyNTE1NTAkbzY0JGcxJHQxNzU1MjUxNjQ4JGo1MCRsMCRoMA..">CRUK Data Strategy</a></li>
+                <li><a href="https://sarahwooller.github.io/CRUK_datahub_landing_page/protect_data.html">How we protect your data</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-content">
+
+        <div class="left-sidebar-container">
+          <div class="container">
+
+
+
+</div>
+
+          <aside id="filterPanel">
+            <div class="panel-header">
+
+              <div class="panel-title">Study Filters</div>
+              <div style="display:flex; gap:8px;">
+                <button id="backBtn" class="icon-btn">◀</button>
+
+              </div>
+
+
+            </div>
+              <div class="dev-note">
+                <p>The filters need wiring so that ALL the data criteria are included and ANY of the cancer criteria, as below: </p>
+                <p>(((any selected of topography) and (any selected of histology)) </p>
+                <p> or (any selected of CRUK cancer terms)) </p>
+                <p> and </p>
+                <p>((all selected of Animal Model ) and (all selected of In Vitro Study) and (all selected of Patient study))</p>
+            </div>
+              <div id="selectedChips"></div>
+              <div id="selectedChips"></div>
+              <p>Click box to chose filter, click term to see sub-categories</p>
+            <div id="breadcrumb" class="breadcrumb"></div>
+            <div id="choices-container">
+                <ul id="choices" class="list"></ul>
+            </div>
+            <div class="panel-footer">
+              <button id="clearBtn" class="btn-secondary">Clear</button>
+            </div>
+          </aside>
+            <div class="video-promo-box">
+                <h3>We are making our data fairer</h3>
+                <div class="video-wrapper">
+                    <video controls muted autoplay loop playsinline preload="metadata">
+                        <source src="welcome.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+
+        <section class="studies-section">
+            <div style="margin-bottom: 20px;">
+                <button class="keyword-button" id="toggleDevNotes">
+                    Hide Developer Notes
+                </button>
+        </div>
+            <div class="search-section">
+                <input type="search" id="search-bar" placeholder="Search selected studies...">
+                <p></p>
+                <input type="checkbox" id="deep_search" >
+                <label for="deep_search"> Deep Search <i> - may be slow</i></label><br>
+
+            </div>
+            <h1 class="section-heading">Unleashing the power of big data</h1>
+            <p class="intro-text">
+                Welcome to the CRUK Data Hub, your gateway to data produced by research funded through Cancer Research UK.
+                Here, you can explore our groundbreaking work,
+ and researchers can gain access to the data in a way which puts patient needs front and centre.
+            </p>
+
+            <div class="studies-table-container">
+                <table class="studies-table">
+                    <thead>
+                        <tr>
+                            <th data-sort="studyTitle">Study Title <span class="sort-indicator"></span></th>
+                            <th data-sort="leadResearcherInstitute">Lead Researcher/Institute <span class="sort-indicator"></span></th>
+                            <th data-sort="dateAdded">Date added <span class="sort-indicator"></span></th>
+                            <th>Explore</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studies-table-body">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+
+</body>
+<div class="watermark">Provisional page only - not endorsed by CRUK</div>
+
+
+</html>
