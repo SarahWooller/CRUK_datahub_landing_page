@@ -11,6 +11,12 @@ const links =
         <p>
             <a href="./just_vert_bar.html"> Example with just the filters given as a vertical navbar. </a>
         </p>
+        <p>
+            <a href="./metadata.html"> Example page of how the metadata might be displayed. </a>
+        </p>
+        <p>
+            <a href="./structural_metadata.html"> Example page of how the structural metadata might be displayed. </a>
+        </p>
     </div>;
 
 createRoot(document.getElementById("root")).render(links);
