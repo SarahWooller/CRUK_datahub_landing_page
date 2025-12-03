@@ -21,6 +21,7 @@ export default defineConfig({
         vert_bar: resolve(__dirname, 'vert_bar.html'),
         top_bar: resolve(__dirname, 'top_bar.html'),
         just_vert_bar: resolve(__dirname, 'just_vert_bar.html'),
+        metadata: resolve(__dirname, 'metadata.html'),
         upload: resolve(__dirname, 'upload.html'),
       },
     },
