@@ -1,64 +1,12 @@
-import { filterData } from './filter_data.js';
+import { filterDetailsMap, filterData } from './utils/filter-setup';
+import { filterType, includeParents, plusParents, getMessage, calculateLogicMessage
+} from './utils/logic-utils';
 import { executeFilterLogic } from './filterLogic.js';
 import React from 'react'; // React is now imported from node_modules
 import "./styles/style.css"
 
-const filterDetailsMap = new Map();
-
-const populateMap = (nodes, primaryGroup) => {
-    if (!nodes) return;
-    const nodesArray = Array.isArray(nodes) ? nodes : Object.values(nodes);
-    nodesArray.forEach(item => {
-        const fullId = item.id;
-        filterDetailsMap.set(fullId, { id: item.id, label: item.label, category: item.category, group: primaryGroup, });
-
-        if (item.children && Object.keys(item.children).length > 0) {
-            populateMap(item.children, primaryGroup);
-        }
-    });
-};
-populateMap(filterData['0_0'].children, filterData['0_0'].primaryGroup);
-populateMap(filterData['0_2'].children, filterData['0_2'].primaryGroup);
-populateMap(filterData['0_1'].children, filterData['0_1'].primaryGroup);
-// --- END DUMMY DATA ---
-
 
 // --- UTILITY FUNCTIONS FOR LOGIC MESSAGE CALCULATION ---
-// Function to calculate the logic message (extracted logic from FilterLogicSummary)
-const calculateLogicMessage = (filters, filterType, plusParents, includeParents, getMessage) => {
-    const hist = filters.filter(f => filterType(f) === "hist");
-    const top = filters.filter(f => filterType(f) === "top" || filterType(f) === "cruk");
-    const data = filters.filter(f => filterType(f) === "data");
-    const access = filters.filter(f => filterType(f) === "access");
-
-    const messages = [];
-
-    // HIST message: plus_parents and OR
-    const hist_plus = plusParents(hist);
-    const hist_message = getMessage(hist_plus, "OR");
-    if (hist_message) messages.push(hist_message);
-
-    // TOP/CRUK message: plus_parents and OR
-    const top_plus = plusParents(top);
-    const top_message = getMessage(top_plus, "OR");
-    if (top_message) messages.push(top_message);
-
-    // DATA message: include_parents (individually) and OR, then join groups with AND
-    const data_messages = data.map(d => {
-        const listWithParents = includeParents(d).filter(id => filterDetailsMap.has(id));
-        return getMessage(listWithParents, "OR");
-    }).filter(Boolean);
-
-    const data_final_message = data_messages.join(" AND ");
-    if (data_final_message) messages.push(data_final_message);
-
-    // ACCESS message: simple list and OR
-    const access_message = getMessage(access, "OR");
-    if (access_message) messages.push(access_message);
-
-    return messages.join(" AND ");
-};
-// --- END UTILITY FUNCTIONS ---
 
 
 // --- ALL REACT COMPONENTS FROM knockdown.html START HERE ---
@@ -157,69 +105,6 @@ const NestedFilterItem = ({ item, handleFilterChange, selectedFilters, level }) 
             )}
         </div>
     );
-};
-
-// --- LOGIC UTILITY FUNCTIONS (RE-DEFINED FOR EXPORT/REUSE) ---
-const filterType = (id) => {
-    const info = id.split("_");
-    if (info.length < 3) return "unknown";
-
-    const first = info[1];
-    if (first === "2") {
-        return "data"; // 0_2_...
-    } else if (first === "1") {
-        return "access"; // 0_1_...
-    } else {
-        // first === "0"
-        const second = info[2];
-        if (second === "1") {
-            return "hist"; // 0_0_1_...
-        } else if (second === "0") {
-            return "top"; // 0_0_0_...
-        }
-        if (second === "2") return "cruk";
-
-        return "unknown";
-    }
-};
-
-const includeParents = (f) => {
-    if (f) {
-        const nms = f.split("_");
-        if (nms[1] !== "1" && nms.length > 3) {
-            const parents = [];
-            for (let k = 4; k <= nms.length; k++) {
-                parents.push(nms.slice(0, k).join("_"));
-            }
-            return parents;
-        }
-    }
-    return [f];
-};
-
-const plusParents = (filters) => {
-    if (!filters || filters.length === 0) return [];
-
-    const allFilters = new Set();
-    filters.forEach(f => {
-        includeParents(f).forEach(parentOrSelf => {
-            allFilters.add(parentOrSelf);
-        });
-    });
-
-    return Array.from(allFilters).filter(id => filterDetailsMap.has(id));
-};
-
-const getMessage = (thelist, joiner) => {
-    const length = thelist.length;
-    if (length === 0) {
-        return "";
-    } else if (length === 1) {
-        return filterDetailsMap.get(thelist[0])?.label || "";
-    } else {
-        const terms = thelist.map(id => filterDetailsMap.get(id)?.label).filter(Boolean);
-        return `(${terms.join(` ${joiner} `)})`;
-    }
 };
 
 // NEW COMPONENT: Dynamic Logic Summary with Edit/Reset functionality
@@ -676,70 +561,227 @@ const SearchInput = ({ searchTerm, setSearchTerm, isSearching, placeholder }) =>
 };
 
 const CancerTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setSearchTerm, filteredIds, isSearching, pruneHierarchy }) => {
+    // State to track which classification the user has selected
+    const [selectedClassification, setSelectedClassification] = useState(null); // null, 'cruk', 'tcga', 'snomed', 'icdo'
+
     const cancerGroups = filterData['0_0'].children;
-    const primaryGroup = filterData['0_0'].primaryGroup;
+    // const primaryGroup = filterData['0_0'].primaryGroup; // Not needed here
 
-    // Apply pruning logic to each main group
-    const filteredTopographyItems = pruneHierarchy(cancerGroups['0_0_0'].children, filteredIds);
-    const filteredHistologyItems = pruneHierarchy(cancerGroups['0_0_1'].children, filteredIds);
-    const filteredCrukTermItems = pruneHierarchy(cancerGroups['0_0_2'].children, filteredIds);
+    // --- DATA RETRIEVAL and PRUNING ---
+    // ICD-O (Combined Topography and Histology)
+    const filteredTopographyItems = pruneHierarchy(cancerGroups['0_0_0']?.children, filteredIds);
+    const filteredHistologyItems = pruneHierarchy(cancerGroups['0_0_1']?.children, filteredIds);
 
+    // CRUK (0_0_2)
+    const filteredCrukTermItems = pruneHierarchy(cancerGroups['0_0_2']?.children, filteredIds);
+
+    // SNOMED-CT (0_0_3) - NEW GROUP
+    // Use optional chaining (?) for safety if the key is missing in filter_data.js
+    const snomedData = cancerGroups['0_0_3'] || { children: {} };
+    const filteredSnomedItems = pruneHierarchy(snomedData.children, filteredIds);
+
+    // TCGA (0_0_4) - NEW GROUP
+    const tcgaData = cancerGroups['0_0_4'] || { children: {} };
+    const filteredTcgaItems = pruneHierarchy(tcgaData.children, filteredIds);
+
+    // --- Sub-Component for a Classification Card/Button ---
+    const ClassificationCard = ({ title, description, classificationKey, emoji }) => {
+        const isActive = selectedClassification === classificationKey;
+        const baseClasses = "flex flex-col items-center justify-center p-6 bg-white rounded-lg shadow-md border-2 transition duration-200 cursor-pointer text-center";
+        const activeClasses = 'border-[var(--cruk-pink)] ring-4 ring-[var(--cruk-pink)]/20 shadow-lg scale-[1.02]';
+        const inactiveClasses = 'border-gray-200 hover:border-[var(--cruk-pink)]/50';
+
+        // Check for filters selected within this group to show a count/badge
+        let filterCount = 0;
+        if (classificationKey === 'icdo') {
+            const icdoIds = new Set([...Object.keys(cancerGroups['0_0_0']?.children || {}), ...Object.keys(cancerGroups['0_0_1']?.children || {})]);
+            selectedFilters.forEach(id => {
+                 // Check if the selected ID's parent starts with '0_0_0' or '0_0_1' (crude check)
+                 if (id.startsWith('0_0_0') || id.startsWith('0_0_1')) {
+                    filterCount++;
+                 }
+            });
+        } else if (classificationKey === 'cruk' && cancerGroups['0_0_2']) {
+             selectedFilters.forEach(id => {
+                if (id.startsWith('0_0_2')) {
+                    filterCount++;
+                }
+            });
+        } else if (classificationKey === 'snomed' && cancerGroups['0_0_3']) {
+             selectedFilters.forEach(id => {
+                if (id.startsWith('0_0_3')) {
+                    filterCount++;
+                }
+            });
+        } else if (classificationKey === 'tcga' && cancerGroups['0_0_4']) {
+             selectedFilters.forEach(id => {
+                if (id.startsWith('0_0_4')) {
+                    filterCount++;
+                }
+            });
+        }
+
+        return (
+            <div
+                className={`${baseClasses} ${isActive ? activeClasses : inactiveClasses}`}
+                onClick={() => setSelectedClassification(classificationKey)}
+            >
+                <div className="flex items-center space-x-2">
+                    <span className="text-3xl">{emoji}</span>
+                    <h4 className="text-xl font-bold text-gray-800">{title}</h4>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">{description}</p>
+                {filterCount > 0 && (
+                    <span className="absolute top-2 right-2 px-2 py-0.5 text-xs font-semibold rounded-full bg-[var(--cruk-pink)] text-white">
+                        {filterCount} Selected
+                    </span>
+                )}
+            </div>
+        );
+    };
+
+    // --- Content for a selected classification ---
+    const renderClassificationContent = () => {
+        const listProps = { handleFilterChange, selectedFilters };
+        const baseListClass = "h-[250px] overflow-y-auto space-y-1 text-sm pr-2";
+
+        // Display Search Input for all sub-panels
+        const searchInput = (
+            <SearchInput
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                isSearching={isSearching}
+                placeholder={`Search ${selectedClassification.toUpperCase()} terms`}
+            />
+        );
+
+        switch (selectedClassification) {
+            case 'cruk':
+                return (
+                    <>
+                        <h3 className="text-xl font-bold text-gray-800 mb-3">CRUK Cancer Terms </h3>
+                        {searchInput}
+                        <div id="cruk-terms-list" className={baseListClass}>
+                            <NestedFilterList
+                                items={filteredCrukTermItems}
+                                {...listProps}
+                            />
+                        </div>
+                    </>
+                );
+
+            case 'tcga':
+                return (
+                    <>
+                        <h3 className="text-xl font-bold text-gray-800 mb-3">TCGA Terms </h3>
+                        {searchInput}
+                        <div id="tcga-terms-list" className={baseListClass}>
+                            <NestedFilterList
+                                items={filteredTcgaItems}
+                                {...listProps}
+                            />
+                        </div>
+                    </>
+                );
+
+            case 'snomed':
+                return (
+                    <>
+                        <h3 className="text-xl font-bold text-gray-800 mb-3">SNOMED-CT Terms</h3>
+                        {searchInput}
+                        <div id="snomed-terms-list" className={baseListClass}>
+                            <NestedFilterList
+                                items={filteredSnomedItems}
+                                {...listProps}
+                            />
+                        </div>
+                    </>
+                );
+
+            case 'icdo':
+                return (
+                    <>
+                        <h3 className="text-xl font-bold text-gray-800 mb-3">ICD-O Classification</h3>
+                        {searchInput}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="bg-gray-50 p-3 rounded-md shadow-inner border border-gray-200">
+                                <h4 className="text-base font-bold text-gray-700 mb-2">Topography</h4>
+                                <div id="icdo-topography-list" className={baseListClass}>
+                                    <NestedFilterList
+                                        items={filteredTopographyItems}
+                                        {...listProps}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="bg-gray-50 p-3 rounded-md shadow-inner border border-gray-200">
+                                <h4 className="text-base font-bold text-gray-700 mb-2">Histology</h4>
+                                <div id="icdo-histology-list" className={baseListClass}>
+                                    <NestedFilterList
+                                        items={filteredHistologyItems}
+                                        {...listProps}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                );
+
+            default:
+                return null;
+        }
+    };
+
+
+    // --- Main Panel Render Logic ---
     return (
         <div id="cancer-type-panel" className="md:col-span-3 bg-white rounded-xl overflow-hidden flex flex-col">
             <div className="p-3 sm:p-4 text-gray-600 flex-grow overflow-hidden">
-                <h2 className="text-2xl font-bold text-gray-800 mb-3">Cancer Type Selection</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-3 border-b pb-2">Cancer Type Selection</h2>
 
-                {/* Search Bar for Cancer Terms */}
-                <SearchInput
-                    searchTerm={searchTerm}
-                    setSearchTerm={setSearchTerm}
-                    isSearching={isSearching}
-                    placeholder="Search Cancer/ICD-O terms"
-                />
-
-                <p className="text-sm italic text-gray-500 mb-3">
-                    Filter by official pathology classifications (ICD-O) or patient-friendly CRUK terminology.
-                </p>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {/* ICD-O Grouping */}
-                    <div className="md:col-span-2 border p-3 rounded-lg bg-gray-100">
-                        <h3 className="text-base font-semibold text-gray-800 mb-3 border-b pb-1">ICD-O Classification</h3>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div className="bg-white p-3 rounded-md shadow-inner border border-gray-200">
-                                <h4 className="text-sm font-bold text-gray-700 mb-2">Topography</h4>
-                                <div id="icdo-topography-list" className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
-                                    <NestedFilterList
-                                        items={filteredTopographyItems} // USE FILTERED DATA
-                                        {...{handleFilterChange, selectedFilters}}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="bg-white p-3 rounded-md shadow-inner border border-gray-200">
-                                <h4 className="text-sm font-bold text-gray-700 mb-2">Histology</h4>
-                                <div id="icdo-histology-list" className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
-                                    <NestedFilterList
-                                        items={filteredHistologyItems} // USE FILTERED DATA
-                                        {...{handleFilterChange, selectedFilters}}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* CRUK Cancer Terms */}
-                    <div className="border p-3 rounded-lg bg-gray-50">
-                        <h3 className="text-base font-semibold text-gray-800 mb-3 border-b pb-1">CRUK Cancer Terms</h3>
-                        <div id="cruk-terms-list" className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
-                            <NestedFilterList
-                                items={filteredCrukTermItems} // USE FILTERED DATA
-                                {...{handleFilterChange, selectedFilters}}
+                {/* Classification Selector Screen */}
+                {!selectedClassification && (
+                    <div className="mt-4">
+                        <p className="text-lg font-medium text-gray-700 mb-6">
+                            Click on your choice of classification to begin
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            {/* Order: 0_0_2, 0_0_4, 0_0_3, 0_0_0 & 0_0_1 */}
+                            <ClassificationCard
+                                title="CRUK Cancer Terms"
+                                description="Patient-friendly, simplified cancer terms."
+                                classificationKey="cruk"
+                                emoji="🏥"
+                            />
+                            <ClassificationCard
+                                title="TCGA Terms"
+                                description="The Cancer Genome Atlas terminology."
+                                classificationKey="tcga"
+                                emoji="🧬"
+                            />
+                            <ClassificationCard
+                                title="SNOMED-CT"
+                                description="Systematized Nomenclature of Medicine."
+                                classificationKey="snomed"
+                                emoji="🏷️"
+                            />
+                            <ClassificationCard
+                                title="ICD-O Classification"
+                                description="Official pathology terms (Topography & Histology)."
+                                classificationKey="icdo"
+                                emoji="🔬"
                             />
                         </div>
                     </div>
-                </div>
+                )}
+
+                {/* Detailed Filter Content */}
+                {selectedClassification && (
+                    <div className="mt-4 border p-4 rounded-lg bg-gray-50">
+                        {renderClassificationContent()}
+
+                    </div>
+                )}
             </div>
         </div>
     );

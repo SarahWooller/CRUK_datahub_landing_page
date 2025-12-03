@@ -1,28 +1,16 @@
-import { filterData } from './filter_data.js';
+import { filterDetailsMap } from './utils/filter-setup.js';
+import {
+    filterType,
+    includeParents,
+    plusParents,
+    getMessage,
+    calculateLogicMessage
+} from './utils/logic-utils.js'
+import { executeFilterLogic } from './filterLogic.js';
 import React from 'react'; // React is now imported from node_modules
-import "../styles/style.css"
-import { StudiesSection } from './StudiesSection.jsx';
+import "./styles/style.css"
 
 
-const filterDetailsMap = new Map();
-const populateMap = (nodes, primaryGroup) => {
-    if (!nodes) return;
-    const nodesArray = Array.isArray(nodes) ? nodes : Object.values(nodes);
-    nodesArray.forEach(item => {
-        const fullId = item.id;
-        filterDetailsMap.set(fullId, { id: item.id, label: item.label, category: item.category, group: primaryGroup, });
-        if (item.children && Object.keys(item.children).length > 0) {
-            populateMap(item.children, primaryGroup);
-        }
-    });
-};
-populateMap(filterData['0_0'].children, filterData['0_0'].primaryGroup);
-populateMap(filterData['0_2'].children, filterData['0_2'].primaryGroup);
-populateMap(filterData['0_1'].children, filterData['0_1'].primaryGroup);
-// --- END DUMMY DATA ---
-
-
-// --- ALL REACT COMPONENTS FROM knockdown.html START HERE ---
 const { useState, useMemo, useCallback, useEffect } = React;
 
 // Utility component for nested filters with toggle
@@ -80,8 +68,16 @@ const NestedFilterItem = ({ item, handleFilterChange, selectedFilters, level }) 
                         onClick={toggleExpansion}
                         aria-expanded={isExpanded}
                     >
-                        {/* Chevron Right Icon (inline SVG) */}
-                        <svg className="w-3 h-3 transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
+                        {/* Chevron Right Icon (inline SVG) - FIX APPLIED HERE */}
+                        <svg
+                            className="w-3 h-3 transform"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
                     </button>
                 ) : (
                     <span className="w-4 h-4 mr-1"></span>
@@ -113,8 +109,83 @@ const NestedFilterItem = ({ item, handleFilterChange, selectedFilters, level }) 
 };
 
 
+
+// NEW COMPONENT: Dynamic Logic Summary with Edit/Reset functionality
+const FilterLogicSummary = ({
+    selectedFilters,
+    logicMessage,
+    setLogicMessage,
+    isMessageManuallyEdited,
+    setIsMessageManuallyEdited,
+}) => {
+
+    // Handler for user input changes in the textarea
+    const handleMessageChange = useCallback((e) => {
+        setLogicMessage(e.target.value);
+        setIsMessageManuallyEdited(true); // User has edited the message
+    }, [setLogicMessage, setIsMessageManuallyEdited]);
+
+    // Handler to reset the message to the automatically generated logic
+    const handleReset = useCallback(() => {
+        const filters = Array.from(selectedFilters);
+        const autoMessage = calculateLogicMessage(filters, filterType, plusParents, includeParents, getMessage);
+        setLogicMessage(autoMessage);
+        setIsMessageManuallyEdited(false); // Reset edit state
+    }, [selectedFilters, setLogicMessage, setIsMessageManuallyEdited]);
+
+
+    if (!selectedFilters || selectedFilters.size === 0) {
+        return null;
+    }
+
+    const showResetButton = isMessageManuallyEdited;
+
+    // Display
+    return (
+        <div className="p-1 mt-2 border-t border-gray-200">
+            <div className="flex justify-between items-center mb-1">
+                <p className="text-sm text-gray-700 font-semibold">
+                    Filter Logic: once you have chosen your filters you can adjust the logic below.
+                </p>
+                {showResetButton && (
+                    <button
+                        type="button"
+                        onClick={handleReset}
+                        className="text-xs text-blue-600 hover:text-blue-800 transition duration-150 font-medium py-1 px-2 rounded border border-blue-300 hover:bg-blue-50"
+                    >
+                        Reset to Auto Logic
+                    </button>
+                )}
+            </div>
+            <textarea
+                id="logic-summary-message"
+                className="w-full text-xs text-gray-800 bg-gray-50 p-2 rounded break-words font-mono border border-gray-300 resize-y focus:ring-[var(--cruk-pink)] focus:border-[var(--cruk-pink)]"
+                value={logicMessage || "No filters selected"}
+                onChange={handleMessageChange}
+                rows={Math.max(2, Math.ceil((logicMessage || "No filters selected").length / 100))} // Dynamic rows
+            />
+
+            {isMessageManuallyEdited && (
+                 <p className="text-xs text-orange-600 mt-1">Note: Filter logic has been manually edited. If you need to add filters reset logic first</p>
+            )}
+        </div>
+    );
+};
+
+// Export utility functions for use in VertFilterApp's useEffect
+FilterLogicSummary.utilityFunctions = { filterType, plusParents, includeParents, getMessage };
+// --- END LOGIC SUMMARY COMPONENT ---
+
+
 // Component for the dynamic chips display
-const FilterChipArea = ({ selectedFilters, handleFilterChange }) => {
+const FilterChipArea = ({
+    selectedFilters,
+    handleFilterChange,
+    logicMessage,
+    setLogicMessage,
+    isMessageManuallyEdited,
+    setIsMessageManuallyEdited,
+}) => {
 
     const chips = useMemo(() => {
         const chipArray = Array.from(selectedFilters).map(fullId => {
@@ -167,18 +238,28 @@ const FilterChipArea = ({ selectedFilters, handleFilterChange }) => {
                 ))}
             </div>
 
-            <p id="logic-summary" className="text-xs text-gray-500 mt-2 px-1">
-                Logic: (Cancer Filters are OR-ed) AND (Data Type Filters are AND-ed) AND (Accessibility Filters are AND-ed)
-            </p>
+            {/* Now using the dynamic, logic-compliant summary component */}
+            <FilterLogicSummary
+                selectedFilters={selectedFilters}
+                logicMessage={logicMessage}
+                setLogicMessage={setLogicMessage}
+                isMessageManuallyEdited={isMessageManuallyEdited}
+                setIsMessageManuallyEdited={setIsMessageManuallyEdited}
+            />
         </div>
     );
 };
+
 
 
 // Main Application Component
 export const VertFilterApp = () => {
     const [activePanel, setActivePanel] = useState(null);
     const [selectedFilters, setSelectedFilters] = useState(new Set());
+    // NEW STATE FOR EDITABLE LOGIC MESSAGE
+    const [logicMessage, setLogicMessage] = useState("");
+    const [isMessageManuallyEdited, setIsMessageManuallyEdited] = useState(false);
+    // END NEW STATE
 
     // NEW SEARCH STATE
     const [searchTerm, setSearchTerm] = useState('');
@@ -187,6 +268,19 @@ export const VertFilterApp = () => {
 
     // Flatten all data for efficient searching
     const allFiltersArray = useMemo(() => Array.from(filterDetailsMap.values()), []);
+
+    // Reuse the filter logic utilities from FilterLogicSummary
+    const { filterType, plusParents, includeParents, getMessage } = FilterLogicSummary.utilityFunctions;
+
+    // EFFECT to update logicMessage when filters change (unless manually edited)
+    useEffect(() => {
+        // Only calculate if the user hasn't manually overridden the message
+        if (!isMessageManuallyEdited) {
+            const filters = Array.from(selectedFilters);
+            const newMessage = calculateLogicMessage(filters, filterType, plusParents, includeParents, getMessage);
+            setLogicMessage(newMessage);
+        }
+    }, [selectedFilters, isMessageManuallyEdited, filterType, plusParents, includeParents, getMessage]);
 
     // NEW SEARCH EFFECT WITH DEBOUNCE AND MIN LENGTH
     useEffect(() => {
@@ -304,12 +398,33 @@ export const VertFilterApp = () => {
         setSelectedFilters(new Set());
         setActivePanel(null);
         setSearchTerm(''); // Clear search on filter clear
+        setLogicMessage(''); // NEW: Clear message
+        setIsMessageManuallyEdited(false); // NEW: Reset edit state
     }, []);
 
     const handleFindStudies = useCallback(() => {
-        console.log(`Executing search with ${counts.total} filters.`);
+        // Log the current action
+        console.log(`Executing search with ${counts.total} filters. Current logic message: ${logicMessage}`);
+
+        // 1. Check if filters are selected
+        if (counts.total > 0 && logicMessage) {
+            // 2. Execute the filter logic from the external utility file
+            const results = executeFilterLogic(logicMessage);
+
+            // 3. You can use the results object to update UI or perform further actions
+            if (results.success) {
+                // Example: Update the total count found in the button label or display the results studies
+                console.log(`Successfully found ${results.count} studies.`);
+            }
+        } else {
+             // Optional: Alert the user if they press Find Studies with no filters (though button is disabled)
+             console.log("No studies to find. Please select filters first.");
+        }
+
+        // Close the panel after finding studies
         setActivePanel(null);
-    }, [counts.total]);
+
+    }, [counts.total, logicMessage]); // Dependencies remain the same
 
 
     const renderPanel = () => {
@@ -390,16 +505,26 @@ export const VertFilterApp = () => {
 
                     {/* --- Filter Content Panel (Right Panel) --- */}
                     <div className="flex-grow w-full md:w-3/4 p-0">
-                        {/* Filter Chip Area */}
-                        <FilterChipArea selectedFilters={selectedFilters} handleFilterChange={handleFilterChange} />
+                        {/* Filter Chip Area (Includes the new Logic Summary) */}
+                        <FilterChipArea
+                            selectedFilters={selectedFilters}
+                            handleFilterChange={handleFilterChange}
+                            logicMessage={logicMessage}
+                            setLogicMessage={setLogicMessage}
+                            isMessageManuallyEdited={isMessageManuallyEdited}
+                            setIsMessageManuallyEdited={setIsMessageManuallyEdited}
+                        />
 
                         {/* Filter Panel Content / Default Content */}
                         <div className="grid grid-cols-1 gap-4">
                             {/* 1. Render the filter panel ONLY if active */}
-                            {activePanel && renderPanel()}
-
-                            {/* 2. ALWAYS render the Content component */}
-                            <StudiesSection />
+                            {activePanel ? (
+                                renderPanel()
+                                ): (
+                                    <div className="p-4 text-center text-lg text-gray-500 italic bg-gray-50 rounded-b-xl min-h-[200px] flex items-center justify-center">
+                                        Choose filters to begin or scroll down to browse Studies.
+                                    </div>
+                                    )}
                         </div>
                     </div>
                     {/* --- End Filter Content Panel --- */}
@@ -439,70 +564,233 @@ const SearchInput = ({ searchTerm, setSearchTerm, isSearching, placeholder }) =>
 };
 
 const CancerTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setSearchTerm, filteredIds, isSearching, pruneHierarchy }) => {
+    // State to track which classification the user has selected
+    const [selectedClassification, setSelectedClassification] = useState(null); // null, 'cruk', 'tcga', 'snomed', 'icdo'
+
     const cancerGroups = filterData['0_0'].children;
-    const primaryGroup = filterData['0_0'].primaryGroup;
+    // const primaryGroup = filterData['0_0'].primaryGroup; // Not needed here
 
-    // Apply pruning logic to each main group
-    const filteredTopographyItems = pruneHierarchy(cancerGroups['0_0_0'].children, filteredIds);
-    const filteredHistologyItems = pruneHierarchy(cancerGroups['0_0_1'].children, filteredIds);
-    const filteredCrukTermItems = pruneHierarchy(cancerGroups['0_0_2'].children, filteredIds);
+    // --- DATA RETRIEVAL and PRUNING ---
+    // ICD-O (Combined Topography and Histology)
+    const filteredTopographyItems = pruneHierarchy(cancerGroups['0_0_0']?.children, filteredIds);
+    const filteredHistologyItems = pruneHierarchy(cancerGroups['0_0_1']?.children, filteredIds);
 
+    // CRUK (0_0_2)
+    const filteredCrukTermItems = pruneHierarchy(cancerGroups['0_0_2']?.children, filteredIds);
+
+    // SNOMED-CT (0_0_3) - NEW GROUP
+    // Use optional chaining (?) for safety if the key is missing in filter_data.js
+    const snomedData = cancerGroups['0_0_3'] || { children: {} };
+    const filteredSnomedItems = pruneHierarchy(snomedData.children, filteredIds);
+
+    // TCGA (0_0_4) - NEW GROUP
+    const tcgaData = cancerGroups['0_0_4'] || { children: {} };
+    const filteredTcgaItems = pruneHierarchy(tcgaData.children, filteredIds);
+
+    // --- Sub-Component for a Classification Card/Button ---
+    const ClassificationCard = ({ title, description, classificationKey, emoji }) => {
+        const isActive = selectedClassification === classificationKey;
+        const baseClasses = "flex flex-col items-center justify-center p-6 bg-white rounded-lg shadow-md border-2 transition duration-200 cursor-pointer text-center";
+        const activeClasses = 'border-[var(--cruk-pink)] ring-4 ring-[var(--cruk-pink)]/20 shadow-lg scale-[1.02]';
+        const inactiveClasses = 'border-gray-200 hover:border-[var(--cruk-pink)]/50';
+
+        // Check for filters selected within this group to show a count/badge
+        let filterCount = 0;
+        if (classificationKey === 'icdo') {
+            const icdoIds = new Set([...Object.keys(cancerGroups['0_0_0']?.children || {}), ...Object.keys(cancerGroups['0_0_1']?.children || {})]);
+            selectedFilters.forEach(id => {
+                 // Check if the selected ID's parent starts with '0_0_0' or '0_0_1' (crude check)
+                 if (id.startsWith('0_0_0') || id.startsWith('0_0_1')) {
+                    filterCount++;
+                 }
+            });
+        } else if (classificationKey === 'cruk' && cancerGroups['0_0_2']) {
+             selectedFilters.forEach(id => {
+                if (id.startsWith('0_0_2')) {
+                    filterCount++;
+                }
+            });
+        } else if (classificationKey === 'snomed' && cancerGroups['0_0_3']) {
+             selectedFilters.forEach(id => {
+                if (id.startsWith('0_0_3')) {
+                    filterCount++;
+                }
+            });
+        } else if (classificationKey === 'tcga' && cancerGroups['0_0_4']) {
+             selectedFilters.forEach(id => {
+                if (id.startsWith('0_0_4')) {
+                    filterCount++;
+                }
+            });
+        }
+
+        return (
+            <div
+                className={`${baseClasses} ${isActive ? activeClasses : inactiveClasses}`}
+                onClick={() => setSelectedClassification(classificationKey)}
+            >
+                <div className="flex items-center space-x-2">
+                    <span className="text-3xl">{emoji}</span>
+                    <h4 className="text-xl font-bold text-gray-800">{title}</h4>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">{description}</p>
+                {filterCount > 0 && (
+                    <span className="absolute top-2 right-2 px-2 py-0.5 text-xs font-semibold rounded-full bg-[var(--cruk-pink)] text-white">
+                        {filterCount} Selected
+                    </span>
+                )}
+            </div>
+        );
+    };
+
+    // --- Content for a selected classification ---
+    const renderClassificationContent = () => {
+        const listProps = { handleFilterChange, selectedFilters };
+        const baseListClass = "h-[250px] overflow-y-auto space-y-1 text-sm pr-2";
+
+        // Display Search Input for all sub-panels
+        const searchInput = (
+            <SearchInput
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                isSearching={isSearching}
+                placeholder={`Search ${selectedClassification.toUpperCase()} terms`}
+            />
+        );
+
+        switch (selectedClassification) {
+            case 'cruk':
+                return (
+                    <>
+                        <h3 className="text-xl font-bold text-gray-800 mb-3">CRUK Cancer Terms </h3>
+                        {searchInput}
+                        <div id="cruk-terms-list" className={baseListClass}>
+                            <NestedFilterList
+                                items={filteredCrukTermItems}
+                                {...listProps}
+                            />
+                        </div>
+                    </>
+                );
+
+            case 'tcga':
+                return (
+                    <>
+                        <h3 className="text-xl font-bold text-gray-800 mb-3">TCGA Terms </h3>
+                        {searchInput}
+                        <div id="tcga-terms-list" className={baseListClass}>
+                            <NestedFilterList
+                                items={filteredTcgaItems}
+                                {...listProps}
+                            />
+                        </div>
+                    </>
+                );
+
+            case 'snomed':
+                return (
+                    <>
+                        <h3 className="text-xl font-bold text-gray-800 mb-3">SNOMED-CT Terms</h3>
+                        {searchInput}
+                        <div id="snomed-terms-list" className={baseListClass}>
+                            <NestedFilterList
+                                items={filteredSnomedItems}
+                                {...listProps}
+                            />
+                        </div>
+                    </>
+                );
+
+            case 'icdo':
+                return (
+                    <>
+                        <h3 className="text-xl font-bold text-gray-800 mb-3">ICD-O Classification</h3>
+                        {searchInput}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="bg-gray-50 p-3 rounded-md shadow-inner border border-gray-200">
+                                <h4 className="text-base font-bold text-gray-700 mb-2">Topography</h4>
+                                <div id="icdo-topography-list" className={baseListClass}>
+                                    <NestedFilterList
+                                        items={filteredTopographyItems}
+                                        {...listProps}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="bg-gray-50 p-3 rounded-md shadow-inner border border-gray-200">
+                                <h4 className="text-base font-bold text-gray-700 mb-2">Histology</h4>
+                                <div id="icdo-histology-list" className={baseListClass}>
+                                    <NestedFilterList
+                                        items={filteredHistologyItems}
+                                        {...listProps}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                );
+
+            default:
+                return null;
+        }
+    };
+
+
+    // --- Main Panel Render Logic ---
     return (
         <div id="cancer-type-panel" className="md:col-span-3 bg-white rounded-xl overflow-hidden flex flex-col">
             <div className="p-3 sm:p-4 text-gray-600 flex-grow overflow-hidden">
-                <h2 className="text-2xl font-bold text-gray-800 mb-3">Cancer Type Selection</h2>
+                <h2 className="text-2xl font-bold text-gray-800 mb-3 border-b pb-2">Cancer Type Selection</h2>
 
-                {/* Search Bar for Cancer Terms */}
-                <SearchInput
-                    searchTerm={searchTerm}
-                    setSearchTerm={setSearchTerm}
-                    isSearching={isSearching}
-                    placeholder="Search Cancer/ICD-O terms"
-                />
-
-                <p className="text-sm italic text-gray-500 mb-3">
-                    Filter by official pathology classifications (ICD-O) or patient-friendly CRUK terminology. (<span className="text-[var(--cruk-pink)] font-semibold">OR Logic</span>)
-                </p>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    {/* ICD-O Grouping */}
-                    <div className="md:col-span-2 border p-3 rounded-lg bg-gray-100">
-                        <h3 className="text-base font-semibold text-gray-800 mb-3 border-b pb-1">ICD-O Classification</h3>
-
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <div className="bg-white p-3 rounded-md shadow-inner border border-gray-200">
-                                <h4 className="text-sm font-bold text-gray-700 mb-2">Topography</h4>
-                                <div id="icdo-topography-list" className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
-                                    <NestedFilterList
-                                        items={filteredTopographyItems} // USE FILTERED DATA
-                                        {...{handleFilterChange, selectedFilters}}
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="bg-white p-3 rounded-md shadow-inner border border-gray-200">
-                                <h4 className="text-sm font-bold text-gray-700 mb-2">Histology</h4>
-                                <div id="icdo-histology-list" className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
-                                    <NestedFilterList
-                                        items={filteredHistologyItems} // USE FILTERED DATA
-                                        {...{handleFilterChange, selectedFilters}}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* CRUK Cancer Terms */}
-                    <div className="border p-3 rounded-lg bg-gray-50">
-                        <h3 className="text-base font-semibold text-gray-800 mb-3 border-b pb-1">CRUK Cancer Terms</h3>
-                        <div id="cruk-terms-list" className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
-                            <NestedFilterList
-                                items={filteredCrukTermItems} // USE FILTERED DATA
-                                {...{handleFilterChange, selectedFilters}}
+                {/* Classification Selector Screen */}
+                {!selectedClassification && (
+                    <div className="mt-4">
+                        <p className="text-lg font-medium text-gray-700 mb-6">
+                            Click on your choice of cancer classification to begin
+                        </p>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            {/* Order: 0_0_2, 0_0_4, 0_0_3, 0_0_0 & 0_0_1 */}
+                            <ClassificationCard
+                                title="CRUK Cancer Terms"
+                                description="Patient-friendly, simplified cancer terms."
+                                classificationKey="cruk"
+                                emoji="🏥"
+                            />
+                            <ClassificationCard
+                                title="TCGA Terms"
+                                description="The Cancer Genome Atlas terminology."
+                                classificationKey="tcga"
+                                emoji="🧬"
+                            />
+                            <ClassificationCard
+                                title="SNOMED-CT"
+                                description="Systematized Nomenclature of Medicine."
+                                classificationKey="snomed"
+                                emoji="🏷️"
+                            />
+                            <ClassificationCard
+                                title="ICD-O Classification"
+                                description="Official pathology terms (Topography & Histology)."
+                                classificationKey="icdo"
+                                emoji="🔬"
                             />
                         </div>
                     </div>
-                </div>
+                )}
+
+                {/* Detailed Filter Content */}
+                {selectedClassification && (
+                    <div className="mt-4 border p-4 rounded-lg bg-gray-50">
+                        <button
+                            onClick={() => { setSelectedClassification(null); setSearchTerm(''); }}
+                            className="mt-4 text-sm text-blue-600 hover:text-blue-800 transition duration-150 font-medium"
+                        >
+                            ← Back to Classification Selection
+                        </button>
+                        {renderClassificationContent()}
+
+                    </div>
+                )}
             </div>
         </div>
     );
@@ -532,7 +820,7 @@ const DataTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setSea
                 />
 
                 <p className="text-sm italic text-gray-500 mb-2">
-                    Select one or more modalities to include in your search. (<span className="text-blue-800 font-semibold">AND Logic</span>)
+                    Select one or more modalities to include in your search.
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -614,7 +902,7 @@ const AccessibilityPanel = ({ handleFilterChange, selectedFilters, searchTerm, s
                 />
 
                 <p className="text-sm italic text-gray-500 mb-2">
-                    Filter by data access level and source. (<span className="text-blue-800 font-semibold">AND Logic</span>)
+                    Filter by data access level and source.
                 </p>
                 <div className="h-32 overflow-y-auto pr-2 border p-3 rounded-lg">
                     <div className="space-y-2">

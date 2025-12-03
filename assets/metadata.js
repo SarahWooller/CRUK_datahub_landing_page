@@ -51,8 +51,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     name: "Treatments"
                 }
             ]
-        }
-    ];
+        },
+
+     {
+            title: "Keywords",
+            items: [
+                {
+                    name: "VHL",
+
+                },
+                {
+                    name: "Metastatic",
+
+                }
+            ]
+        }];
 
     // Function to populate the Left Navigation Bar
     dummyNames.forEach(name => {
