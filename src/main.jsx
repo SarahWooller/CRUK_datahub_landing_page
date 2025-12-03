@@ -16,6 +16,7 @@ const links =
         </p>
         <p>
             <a href="./structural_metadata.html"> Example page of how the structural metadata might be displayed. </a>
+            <a href="./upload.html"> Early mock up so I can explore how to change the guidance and schemas. </a>
         </p>
     </div>;
 
