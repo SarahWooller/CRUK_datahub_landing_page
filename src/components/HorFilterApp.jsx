@@ -531,9 +531,7 @@ export const FilterApp = () => {
                             {activePanel ? (
                                 renderPanel()
                             ) : (
-                                <div className="p-4 text-center text-lg text-gray-500 italic bg-gray-50 rounded-b-xl min-h-[200px] flex items-center justify-center">
-                                    Choose filters to begin or scroll down to browse Studies.
-                                </div>
+                                null
                             )}
                         </div>
                     </div>
@@ -749,8 +747,20 @@ const CancerTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setS
     return (
         <div id="cancer-type-panel" className="md:col-span-3 bg-white rounded-xl overflow-hidden flex flex-col">
             <div className="p-3 sm:p-4 text-gray-600 flex-grow overflow-hidden">
-                <h2 className="text-2xl font-bold text-gray-800 mb-3 border-b pb-2">Cancer Type Selection</h2>
-
+                <div className="text-2xl font-bold text-gray-800 mb-3 border-b pb-2">
+                    {selectedClassification && (
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setSelectedClassification(null);
+                                    setSearchTerm("");
+                                }}
+                                className="px-3 py-1 text-sm rounded-md border border-gray-300 bg-white hover:bg-gray-100 text-gray-700"
+                            >
+                                ← Back to Cancer Type Selection
+                            </button>
+                        )}
+                </div>
                 {/* Classification Selector Screen */}
                 {!selectedClassification && (
                     <div className="mt-4">
@@ -790,6 +800,7 @@ const CancerTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setS
                 {/* Detailed Filter Content */}
                 {selectedClassification && (
                     <div className="mt-4 border p-4 rounded-lg bg-gray-50">
+
                         {renderClassificationContent()}
 
                     </div>
