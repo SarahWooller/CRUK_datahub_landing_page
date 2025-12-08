@@ -3,26 +3,27 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
 
-const repoName = 'CRUK_datahub_landing_page'
-
 export default defineConfig({
   plugins: [react({
-    include: "**/*.{jsx.js}",
-    })],
+    // FIX: Changed "{jsx.js}" to "{jsx,js}" for correct syntax
+    include: "**/*.{jsx,js}",
+  })],
   base: "./",
 
   build: {
     outDir: "docs",
+    emptyOutDir: true, // Added for clean builds (recommended)
     rollupOptions: {
       input: {
-        // Map a name (key) to the path (value) for each HTML file
-        // The path must be absolute, which 'resolve' helps create.
-        main: resolve(__dirname, "index.html"),
-        vert_bar: resolve(__dirname, 'vert_bar.html'),
-        top_bar: resolve(__dirname, 'top_bar.html'),
-        just_vert_bar: resolve(__dirname, 'just_vert_bar.html'),
-        metadata: resolve(__dirname, 'metadata.html'),
-        upload: resolve(__dirname, 'upload.html'),
+        // FIX: The main index.html is now resolved from the root.
+        main: resolve(__dirname, 'index.html'),
+
+        // The remaining entry points are still in src/.
+        // FIX: Removed leading slash '/' from these paths.
+        vert_bar: resolve(__dirname, 'src/vert_bar.html'),
+        top_bar: resolve(__dirname, 'src/top_bar.html'),
+        just_vert_bar: resolve(__dirname, 'src/just_vert_bar.html'),
+        upload: resolve(__dirname, 'src/upload.html'),
       },
     },
   },
