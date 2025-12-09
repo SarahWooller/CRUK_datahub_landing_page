@@ -282,7 +282,7 @@ export const FilterApp = () => {
     // NEW SEARCH EFFECT WITH DEBOUNCE AND MIN LENGTH
     useEffect(() => {
         // Clear search results if the term is too short or empty
-        if (!searchTerm || searchTerm.length < 4) {
+        if (!searchTerm || searchTerm.length < 3) {
             setFilteredIds(null);
             setIsSearching(false);
             return;
@@ -564,8 +564,8 @@ const SearchInput = ({ searchTerm, setSearchTerm, isSearching, placeholder }) =>
                     )}
                 </div>
             </div>
-            {searchTerm && searchTerm.length < 4 && (
-                <p className="text-xs text-red-500 mt-1">Please enter at least 4 characters to search.</p>
+            {searchTerm && searchTerm.length < 3 && (
+                <p className="text-xs text-red-500 mt-1">Please enter at least three characters to search.</p>
             )}
         </div>
     );
@@ -834,7 +834,7 @@ const DataTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setSea
                 />
 
                 <p className="text-sm italic text-gray-500 mb-2">
-                    Select one or more modalities to include in your search.
+
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -906,15 +906,6 @@ const AccessibilityPanel = ({ handleFilterChange, selectedFilters, searchTerm, s
         <div id="accessibility-panel" className="md:col-span-3 bg-white rounded-xl overflow-hidden flex flex-col">
             <div className="p-3 sm:p-4 text-gray-600 flex-grow overflow-hidden">
                 <h2 className="text-2xl font-bold text-gray-800 mb-3">Accessibility and Source</h2>
-
-                {/* Search Bar for Accessibility Terms */}
-                <SearchInput
-                    searchTerm={searchTerm}
-                    setSearchTerm={setSearchTerm}
-                    isSearching={isSearching}
-                    placeholder="Search accessibility/source terms"
-                />
-
                 <p className="text-sm italic text-gray-500 mb-2">
                     Filter by data access level and source.
                 </p>
