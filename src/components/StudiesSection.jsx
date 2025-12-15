@@ -115,8 +115,60 @@ export const StudiesSection = () => {
 
     return (
         <div style={style}>
-            <section className="studies-section">
+            {/* 1. Add CSS for the Instant Tooltip */}
+            <style>{`
+                /* Container for the image and the tooltip */
+                .icon-container {
+                    position: relative;
+                    display: inline-flex;
+                    justify-content: center;
+                    align-items: center;
+                }
 
+                /* The actual tooltip box (hidden by default) */
+                .custom-tooltip {
+                    visibility: hidden;
+                    background-color: #333;
+                    color: #fff;
+                    text-align: center;
+                    padding: 5px 10px;
+                    border-radius: 6px;
+                    position: absolute;
+                    z-index: 10;
+
+                    /* Position specific: places it above the icon */
+                    bottom: 110%;
+                    left: 50%;
+                    transform: translateX(-50%);
+
+                    /* Visuals */
+                    font-size: 0.8rem;
+                    white-space: nowrap;
+                    opacity: 0;
+                    transition: opacity 0.2s;
+                    pointer-events: none; /* Prevents tooltip from blocking mouse */
+                }
+
+                /* Little arrow pointing down from the tooltip */
+                .custom-tooltip::after {
+                    content: "";
+                    position: absolute;
+                    top: 100%; /* At the bottom of the tooltip */
+                    left: 50%;
+                    margin-left: -5px;
+                    border-width: 5px;
+                    border-style: solid;
+                    border-color: #333 transparent transparent transparent;
+                }
+
+                /* Show the tooltip when hovering the container */
+                .icon-container:hover .custom-tooltip {
+                    visibility: visible;
+                    opacity: 1;
+                }
+            `}</style>
+
+            <section className="studies-section">
                 <div className="search-section">
                     <input
                         type="search"
@@ -145,6 +197,8 @@ export const StudiesSection = () => {
                                 <th data-sort="studyTitle" onClick={() => handleSort('studyTitle')}>
                                     Study Title <span className="sort-indicator">{getSortIndicator('studyTitle')}</span>
                                 </th>
+                                {/* New Header for Icons */}
+                                <th>Indicators</th>
                                 <th data-sort="leadResearcherInstitute" onClick={() => handleSort('leadResearcherInstitute')}>
                                     Lead Researcher/Institute <span className="sort-indicator">{getSortIndicator('leadResearcherInstitute')}</span>
                                 </th>
@@ -163,6 +217,11 @@ export const StudiesSection = () => {
                                     <tr className="study-data-row" style={{ borderBottom: 'none' }}>
                                         <td>{study.accessPhrase}</td>
                                         <td>{study.studyTitle}</td>
+                                        {/* Blank cell in the main row for alignment if needed, or you can merge it.
+                                            Currently, the icons are in the 2nd row, so this cell might be empty or removed
+                                            depending on your exact column preference.
+                                            For this structure, I will leave it empty. */}
+                                        <td></td>
                                         <td>{study.leadResearcherInstitute}</td>
                                         <td>{study.dateStarted}</td>
                                         <td>{study.dateAdded}</td>
@@ -170,33 +229,35 @@ export const StudiesSection = () => {
 
                                     {/* Row 2: Icons spanning full width */}
                                     <tr className="study-icon-row">
-                                        <td colSpan="5" style={{ borderTop: 'none', padding: 0 }}>
-                                            {/* FLEX CONTAINER: Forces horizontal layout */}
+                                        <td colSpan="6" style={{ borderTop: 'none', padding: 0 }}>
                                             <div style={{
                                                 display: 'flex',
                                                 flexDirection: 'row',
-                                                gap: '12px',       // Adds consistent space between icons
+                                                gap: '12px',
                                                 paddingLeft: '1rem',
                                                 paddingBottom: '1rem',
                                                 alignItems: 'center'
                                             }}>
                                                 {study.studyIcons.length > 0 ? (
                                                     study.studyIcons.map((icon, idx) => (
-                                                        <img
-                                                            key={idx}
-                                                            src={icon.url}
-                                                            alt={icon.label}
-                                                            title={icon.label}
-                                                            style={{
-                                                                height: '1.5em',
-                                                                width: 'auto',
-                                                                cursor: 'help'
-                                                                // margin is no longer needed because of 'gap' in the parent div
-                                                            }}
-                                                        />
+                                                        /* 2. Wrap image in the custom tooltip container */
+                                                        <div key={idx} className="icon-container">
+                                                            <img
+                                                                src={icon.url}
+                                                                alt={icon.label}
+                                                                // REMOVED 'title' attribute to prevent double tooltips
+                                                                style={{
+                                                                    height: '1.5em',
+                                                                    width: 'auto',
+                                                                    cursor: 'help',
+                                                                    display: 'block'
+                                                                }}
+                                                            />
+                                                            {/* 3. The Custom Label */}
+                                                            <span className="custom-tooltip">{icon.label}</span>
+                                                        </div>
                                                     ))
                                                 ) : (
-                                                    // Keeps the row height consistent even if empty
                                                     <span style={{ height: '1.5em', display: 'block' }}>&nbsp;</span>
                                                 )}
                                             </div>
