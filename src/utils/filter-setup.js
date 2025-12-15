@@ -1,4 +1,4 @@
-import { filterData } from './new_filter_data.js';
+import { filterData } from './longer_filter_data.js';
 const filterDetailsMap = new Map();
 
 const populateMap = (nodes, primaryGroup) => {
