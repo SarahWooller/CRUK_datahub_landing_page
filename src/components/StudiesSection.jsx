@@ -1,5 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react';
 
+const ICON_OPTS = [
+    { url: "../assets/animal.png", label: "Dataset Available" },
+    { url: "../assets/background.png", label: "Clinical Trial" },
+    { url: "../assets/biobank.png", label: "Peer Reviewed" },
+    { url: "../assets/invitro.png", label: "High Impact" },
+    { url: "../assets/lab_results.png", label: "Collaborative" },
+    { url: "../assets/longitudinal.png", label: "Longitudinal" },
+    { url: "../assets/medical_imaging.png", label: "Longitudinal" }
+];
+
 const generateMockStudies = () => {
     const titles = [
         "Genomic Profiling of Triple-Negative Breast Cancer", "AI-Driven Drug Discovery for Pancreatic Cancer",
@@ -24,6 +34,11 @@ const generateMockStudies = () => {
         const randomTitle = titles[Math.floor(Math.random() * titles.length)];
         const randomInstitute = institutes[Math.floor(Math.random() * institutes.length)];
         const randomDate = new Date(2023, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1);
+
+        // Logic to pick up to 4 unique icons at random
+        const shuffledIcons = [...ICON_OPTS].sort(() => 0.5 - Math.random());
+        const selectedIcons = shuffledIcons.slice(0, Math.floor(Math.random() * 5)); // Picks 0 to 4 items
+
         studiesData.push({
             id: i,
             position: `${randomAccessPos}`,
@@ -31,7 +46,8 @@ const generateMockStudies = () => {
             studyTitle: `${randomTitle} (Study ${i})`,
             leadResearcherInstitute: `Dr. ${String.fromCharCode(65 + Math.floor(Math.random() * 26))}. ${randomInstitute}`,
             dateAdded: randomDate.toISOString().split('T')[0], // YYYY-MM-DD
-            dateStarted: randomDate.toISOString().split('T')[0] // YYYY-MM-DD
+            dateStarted: randomDate.toISOString().split('T')[0], // YYYY-MM-DD
+            studyIcons: selectedIcons
         });
     }
     return studiesData;
@@ -42,7 +58,6 @@ const INITIAL_STUDIES_DATA = generateMockStudies();
 // --- StudiesSection Component ---
 
 export const StudiesSection = () => {
-    // State management for table data, search, sort, and the dev notes button
     const [searchTerm, setSearchTerm] = useState('');
     const [isDeepSearch, setIsDeepSearch] = useState(false);
     const [isDevNotesHidden, setIsDevNotesHidden] = useState(true);
@@ -52,7 +67,7 @@ export const StudiesSection = () => {
     const filteredAndSortedStudies = useMemo(() => {
         let currentStudies = [...studies];
 
-        // 1. Filtering (Simulates search logic from script.js)
+        // 1. Filtering
         if (searchTerm) {
             const lowerCaseSearchTerm = searchTerm.toLowerCase();
             currentStudies = currentStudies.filter(study =>
@@ -61,7 +76,7 @@ export const StudiesSection = () => {
             );
         }
 
-        // 2. Sorting (Simulates sorting logic from script.js)
+        // 2. Sorting
         currentStudies.sort((a, b) => {
             const valA = a[sortConfig.column];
             const valB = b[sortConfig.column];
@@ -78,12 +93,10 @@ export const StudiesSection = () => {
         return currentStudies;
     }, [studies, searchTerm, isDeepSearch, sortConfig]);
 
-    // Event handler for the search bar
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
     };
 
-    // Event handler for table header click (sorting)
     const handleSort = (column) => {
         setSortConfig(prevConfig => ({
             column,
@@ -91,7 +104,6 @@ export const StudiesSection = () => {
         }));
     };
 
-    // JSX helper to display the sort indicator
     const getSortIndicator = (column) => {
         if (sortConfig.column === column) {
             return sortConfig.direction === 'asc' ? ' ▲' : ' ▼';
@@ -99,14 +111,11 @@ export const StudiesSection = () => {
         return '';
     };
 
-
-    // Define the style for a larger font size (as requested)
     const style = { fontSize: '1.2rem' };
 
     return (
         <div style={style}>
             <section className="studies-section">
-
 
                 <div className="search-section">
                     <input
@@ -123,7 +132,6 @@ export const StudiesSection = () => {
                         checked={isDeepSearch}
                         onChange={(e) => setIsDeepSearch(e.target.checked)}
                     />
-                    {/* htmlFor is used in JSX for label-input association */}
                     <label htmlFor="deep_search"> Deep Search <i> - may be slow</i></label><br />
                 </div>
 
@@ -131,7 +139,6 @@ export const StudiesSection = () => {
                     <table className="studies-table">
                         <thead>
                             <tr>
-                                {/* Table headers with click handlers for sorting */}
                                 <th data-sort="accessPhrase" onClick={() => handleSort('position')}>
                                     Accessibility <span className="sort-indicator">{getSortIndicator('accessPhrase')}</span>
                                 </th>
@@ -147,19 +154,55 @@ export const StudiesSection = () => {
                                 <th data-sort="dateStarted" onClick={() => handleSort('dateStarted')}>
                                     CRUK funding start-date <span className="sort-indicator">{getSortIndicator('dateStarted')}</span>
                                 </th>
-
                             </tr>
                         </thead>
-                        {/* Rendering the table body using React's map function */}
                         <tbody id="studies-table-body">
                             {filteredAndSortedStudies.map(study => (
-                                <tr key={study.id}>
-                                    <td>{study.accessPhrase}</td>
-                                    <td>{study.studyTitle}</td>
-                                    <td>{study.leadResearcherInstitute}</td>
-                                    <td>{study.dateStarted}</td>
-                                    <td>{study.dateAdded}</td>
-                                </tr>
+                                <React.Fragment key={study.id}>
+                                    {/* Row 1: Main Study Data */}
+                                    <tr className="study-data-row" style={{ borderBottom: 'none' }}>
+                                        <td>{study.accessPhrase}</td>
+                                        <td>{study.studyTitle}</td>
+                                        <td>{study.leadResearcherInstitute}</td>
+                                        <td>{study.dateStarted}</td>
+                                        <td>{study.dateAdded}</td>
+                                    </tr>
+
+                                    {/* Row 2: Icons spanning full width */}
+                                    <tr className="study-icon-row">
+                                        <td colSpan="5" style={{ borderTop: 'none', padding: 0 }}>
+                                            {/* FLEX CONTAINER: Forces horizontal layout */}
+                                            <div style={{
+                                                display: 'flex',
+                                                flexDirection: 'row',
+                                                gap: '12px',       // Adds consistent space between icons
+                                                paddingLeft: '1rem',
+                                                paddingBottom: '1rem',
+                                                alignItems: 'center'
+                                            }}>
+                                                {study.studyIcons.length > 0 ? (
+                                                    study.studyIcons.map((icon, idx) => (
+                                                        <img
+                                                            key={idx}
+                                                            src={icon.url}
+                                                            alt={icon.label}
+                                                            title={icon.label}
+                                                            style={{
+                                                                height: '1.5em',
+                                                                width: 'auto',
+                                                                cursor: 'help'
+                                                                // margin is no longer needed because of 'gap' in the parent div
+                                                            }}
+                                                        />
+                                                    ))
+                                                ) : (
+                                                    // Keeps the row height consistent even if empty
+                                                    <span style={{ height: '1.5em', display: 'block' }}>&nbsp;</span>
+                                                )}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </React.Fragment>
                             ))}
                         </tbody>
                     </table>
