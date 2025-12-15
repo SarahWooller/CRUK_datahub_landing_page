@@ -1,15 +1,17 @@
 import React, { useState, useMemo } from 'react';
 
 const ICON_OPTS = [
-    { url: "../assets/animal.png", label: "Dataset Available" },
-    { url: "../assets/background.png", label: "Clinical Trial" },
-    { url: "../assets/biobank.png", label: "Peer Reviewed" },
-    { url: "../assets/invitro.png", label: "High Impact" },
-    { url: "../assets/lab_results.png", label: "Collaborative" },
-    { url: "../assets/longitudinal.png", label: "Longitudinal" },
-    { url: "../assets/medical_imaging.png", label: "Longitudinal" }
+    { url: "../assets/animal.png", label: "Model Organism Study" },
+    { url: "../assets/background.png", label: "Background Information" },
+    { url: "../assets/biobank.png", label: "Samples Available" },
+    { url: "../assets/invitro.png", label: "In Vitro Study" },
+    { url: "../assets/lab_results.png", label: "Lab Results" },
+    { url: "../assets/longitudinal.png", label: "Longitudinal Study" },
+    { url: "../assets/medical_imaging.png", label: "Medical Imaging" },
+    { url: "../assets/omics.png", label: "Omics" },
+    { url: "../assets/population.png", label: "Patient Study" },
+    { url: "../assets/treatments.png", label: "Treatments" }
 ];
-
 const generateMockStudies = () => {
     const titles = [
         "Genomic Profiling of Triple-Negative Breast Cancer", "AI-Driven Drug Discovery for Pancreatic Cancer",
