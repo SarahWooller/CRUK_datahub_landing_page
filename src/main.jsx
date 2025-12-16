@@ -18,6 +18,9 @@ const links =
             <a href="./metadata.html"> Example page of how the metadata might be displayed. </a>
         </p>
         <p>
+            <a href="./src/meta.html"> Example page of how the metadata might be displayed in future. </a>
+        </p>
+        <p>
             <a href="./structural_metadata.html"> Example page of how the structural metadata might be displayed. </a>
         </p>
         <p>
