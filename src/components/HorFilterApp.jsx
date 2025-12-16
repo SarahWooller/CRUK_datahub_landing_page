@@ -31,13 +31,15 @@ const NestedFilterList = ({ items, handleFilterChange, selectedFilters, level = 
         </div>
     );
 };
-
 // Component for a single filter item
 const NestedFilterItem = ({ item, handleFilterChange, selectedFilters, level }) => {
     const fullId = item.id;
     const childrenArray = item.children ? Object.values(item.children) : [];
     const hasChildren = childrenArray.length > 0;
     const isChecked = selectedFilters.has(fullId);
+
+    // Check if description exists
+    const hasDescription = item.description && item.description.trim().length > 0;
 
     const [isExpanded, setIsExpanded] = useState(false);
 
@@ -56,6 +58,9 @@ const NestedFilterItem = ({ item, handleFilterChange, selectedFilters, level }) 
 
     return (
         <div className="flex flex-col">
+            {/* FIX 1: Removed 'relative' and 'hover:z-30' from this main row.
+               This stops the "stuttering" and "unwanted shading" glitch.
+            */}
             <div
                 className="flex items-center group hover:var(--cruk-pink) p-1 -m-1 rounded transition duration-100"
                 style={rowIndentStyle}
@@ -67,7 +72,7 @@ const NestedFilterItem = ({ item, handleFilterChange, selectedFilters, level }) 
                         onClick={toggleExpansion}
                         aria-expanded={isExpanded}
                     >
-                        {/* Chevron Right Icon (inline SVG) - FIX APPLIED HERE */}
+                        {/* Chevron Right Icon */}
                         <svg
                             className="w-3 h-3 transform"
                             fill="none"
@@ -90,10 +95,40 @@ const NestedFilterItem = ({ item, handleFilterChange, selectedFilters, level }) 
                     checked={isChecked}
                     onChange={() => handleFilterChange(fullId)}
                 />
-                <label htmlFor={fullId} className="text-gray-700 select-none flex-grow cursor-pointer text-sm">
-                    {item.label}
-                    <span className="text-xs text-gray-500 ml-1">({item.count})</span>
-                </label>
+
+                {/* FIX 2: Applied 'relative' and 'hover:z-20' here instead.
+                   This ensures the label (and tooltip) sits on top of the next row
+                   without messing up the layout of the current row.
+                */}
+                <div className="relative flex-grow flex items-center group/tooltip hover:z-20">
+                    <label
+                        htmlFor={fullId}
+                        className="text-gray-700 select-none flex-grow cursor-pointer text-sm flex items-center"
+                    >
+                        {item.label}
+                        <span className="text-xs text-gray-500 ml-1">({item.count})</span>
+
+                        {/* Info Icon */}
+                        {hasDescription && (
+                            <svg className="w-3 h-3 ml-1 text-gray-400 opacity-50 group-hover/tooltip:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                            </svg>
+                        )}
+                    </label>
+
+                    {/* TOOLTIP POPUP */}
+                    {hasDescription && (
+                        /* FIX 3: Changed to 'top-full' (Below) and added 'mt-1'.
+                           This lowers the tooltip so it doesn't clip off the top filter.
+                        */
+                        <div className="absolute top-full left-4 mt-1 hidden group-hover/tooltip:block w-64 p-2 bg-[var(--cruk-blue)] text-white text-xs rounded shadow-xl cursor-auto whitespace-normal">
+                            {item.description}
+
+                            {/* Arrow pointing UP (Attached to top of tooltip) */}
+                            <div className="absolute bottom-full left-4 -mb-px border-4 border-transparent border-b-[var(--cruk-blue)]"></div>
+                        </div>
+                    )}
+                </div>
             </div>
             {hasChildren && isExpanded && (
                 <NestedFilterList
@@ -282,7 +317,7 @@ export const FilterApp = () => {
     // NEW SEARCH EFFECT WITH DEBOUNCE AND MIN LENGTH
     useEffect(() => {
         // Clear search results if the term is too short or empty
-        if (!searchTerm || searchTerm.length < 3) {
+        if (!searchTerm || searchTerm.length < 4) {
             setFilteredIds(null);
             setIsSearching(false);
             return;
@@ -564,8 +599,8 @@ const SearchInput = ({ searchTerm, setSearchTerm, isSearching, placeholder }) =>
                     )}
                 </div>
             </div>
-            {searchTerm && searchTerm.length < 3 && (
-                <p className="text-xs text-red-500 mt-1">Please enter at least three characters to search.</p>
+            {searchTerm && searchTerm.length < 4 && (
+                <p className="text-xs text-red-500 mt-1">Please enter at least 4 characters to search.</p>
             )}
         </div>
     );
@@ -576,7 +611,6 @@ const CancerTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setS
     const [selectedClassification, setSelectedClassification] = useState(null); // null, 'cruk', 'tcga', 'snomed', 'icdo'
 
     const cancerGroups = filterData['0_0'].children;
-    // const primaryGroup = filterData['0_0'].primaryGroup; // Not needed here
 
     // --- DATA RETRIEVAL and PRUNING ---
     // ICD-O (Combined Topography and Histology)
@@ -586,49 +620,33 @@ const CancerTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setS
     // CRUK (0_0_2)
     const filteredCrukTermItems = pruneHierarchy(cancerGroups['0_0_2']?.children, filteredIds);
 
-    // SNOMED-CT (0_0_3) - NEW GROUP
-    // Use optional chaining (?) for safety if the key is missing in filter_data.js
+    // SNOMED-CT (0_0_3)
     const snomedData = cancerGroups['0_0_3'] || { children: {} };
     const filteredSnomedItems = pruneHierarchy(snomedData.children, filteredIds);
 
-    // TCGA (0_0_4) - NEW GROUP
+    // TCGA (0_0_4)
     const tcgaData = cancerGroups['0_0_4'] || { children: {} };
     const filteredTcgaItems = pruneHierarchy(tcgaData.children, filteredIds);
 
     // --- Sub-Component for a Classification Card/Button ---
     const ClassificationCard = ({ title, description, classificationKey, emoji }) => {
         const isActive = selectedClassification === classificationKey;
-        const baseClasses = "flex flex-col items-center justify-center p-6 bg-white rounded-lg shadow-md border-2 transition duration-200 cursor-pointer text-center relative"; // Added relative
+        const baseClasses = "flex flex-col items-center justify-center p-6 bg-white rounded-lg shadow-md border-2 transition duration-200 cursor-pointer text-center relative";
         const activeClasses = 'border-[var(--cruk-pink)] ring-4 ring-[var(--cruk-pink)]/20 shadow-lg scale-[1.02]';
         const inactiveClasses = 'border-gray-200 hover:border-[var(--cruk-pink)]/50';
 
         // Check for filters selected within this group to show a count/badge
         let filterCount = 0;
         if (classificationKey === 'icdo') {
-            // Check if the selected ID's parent starts with '0_0_0' or '0_0_1' (crude check)
              selectedFilters.forEach(id => {
-                 if (id.startsWith('0_0_0') || id.startsWith('0_0_1')) {
-                    filterCount++;
-                 }
+                 if (id.startsWith('0_0_0') || id.startsWith('0_0_1')) filterCount++;
             });
         } else if (classificationKey === 'cruk' && cancerGroups['0_0_2']) {
-             selectedFilters.forEach(id => {
-                if (id.startsWith('0_0_2')) {
-                    filterCount++;
-                }
-            });
+             selectedFilters.forEach(id => { if (id.startsWith('0_0_2')) filterCount++; });
         } else if (classificationKey === 'snomed' && cancerGroups['0_0_3']) {
-             selectedFilters.forEach(id => {
-                if (id.startsWith('0_0_3')) {
-                    filterCount++;
-                }
-            });
+             selectedFilters.forEach(id => { if (id.startsWith('0_0_3')) filterCount++; });
         } else if (classificationKey === 'tcga' && cancerGroups['0_0_4']) {
-             selectedFilters.forEach(id => {
-                if (id.startsWith('0_0_4')) {
-                    filterCount++;
-                }
-            });
+             selectedFilters.forEach(id => { if (id.startsWith('0_0_4')) filterCount++; });
         }
 
         return (
@@ -653,7 +671,9 @@ const CancerTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setS
     // --- Content for a selected classification ---
     const renderClassificationContent = () => {
         const listProps = { handleFilterChange, selectedFilters };
-        const baseListClass = "h-[250px] overflow-y-auto space-y-1 text-sm pr-2";
+
+        // FIX APPLIED HERE: Added 'pb-28' to allow scrolling space for bottom tooltips
+        const baseListClass = "h-[250px] overflow-y-auto space-y-1 text-sm pr-2 pb-28";
 
         // Display Search Input for all sub-panels
         const searchInput = (
@@ -761,14 +781,12 @@ const CancerTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setS
                             </button>
                         )}
                 </div>
-                {/* Classification Selector Screen */}
                 {!selectedClassification && (
                     <div className="mt-4">
                         <p className="text-lg font-medium text-gray-700 mb-6">
                             Click on your choice of classification to begin
                         </p>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                            {/* Order: 0_0_2, 0_0_4, 0_0_3, 0_0_0 & 0_0_1 */}
                             <ClassificationCard
                                 title="CRUK Cancer Terms"
                                 description="Patient-friendly, simplified cancer terms."
@@ -800,9 +818,7 @@ const CancerTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setS
                 {/* Detailed Filter Content */}
                 {selectedClassification && (
                     <div className="mt-4 border p-4 rounded-lg bg-gray-50">
-
                         {renderClassificationContent()}
-
                     </div>
                 )}
             </div>
@@ -820,6 +836,9 @@ const DataTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setSea
     const filteredAnimalItems = pruneHierarchy(dataTypeGroups['0_2_2'].children, filteredIds);
     const filteredPatientItems = pruneHierarchy(dataTypeGroups['0_2_3'].children, filteredIds);
 
+    // Helper class for the lists: Added 'pb-28' for tooltip space
+    const listClass = "h-40 overflow-y-auto space-y-1 text-sm pr-2 pb-28";
+
     return (
         <div id="data-type-panel" className="md:col-span-3 bg-white rounded-xl overflow-hidden flex flex-col">
             <div className="p-3 sm:p-4 text-gray-600 flex-grow overflow-hidden">
@@ -834,14 +853,14 @@ const DataTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setSea
                 />
 
                 <p className="text-sm italic text-gray-500 mb-2">
-
+                    Select one or more modalities to include in your search.
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                     {/* Biobank Samples (0_2_0) */}
                     <div className="border p-3 rounded-lg bg-gray-50">
                         <h4 className="text-sm font-bold text-gray-700 mb-2 border-b pb-1">Biobank Samples</h4>
-                        <div id="biobank-samples-list" className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
+                        <div id="biobank-samples-list" className={listClass}>
                             <NestedFilterList
                                 items={filteredBiobankItems} // USE FILTERED DATA
                                 {...{handleFilterChange, selectedFilters}}
@@ -852,7 +871,7 @@ const DataTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setSea
                     {/* In Vitro Studies (0_2_1) */}
                     <div className="border p-3 rounded-lg bg-gray-50">
                         <h4 className="text-sm font-bold text-gray-700 mb-2 border-b pb-1">In Vitro Studies</h4>
-                        <div id="invitro-studies-list" className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
+                        <div id="invitro-studies-list" className={listClass}>
                             <NestedFilterList
                                 items={filteredInvitroItems} // USE FILTERED DATA
                                 {...{handleFilterChange, selectedFilters}}
@@ -863,7 +882,7 @@ const DataTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setSea
                     {/* Model Organisms (0_2_2) */}
                     <div className="border p-3 rounded-lg bg-gray-50">
                         <h4 className="text-sm font-bold text-gray-700 mb-2 border-b pb-1">Model Organisms</h4>
-                        <div id="animal-studies-list" className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
+                        <div id="animal-studies-list" className={listClass}>
                             <NestedFilterList
                                 items={filteredAnimalItems} // USE FILTERED DATA
                                 {...{handleFilterChange, selectedFilters}}
@@ -874,7 +893,7 @@ const DataTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setSea
                     {/* Patient Studies (0_2_3) */}
                     <div className="border p-3 rounded-lg bg-gray-50">
                         <h4 className="text-sm font-bold text-gray-700 mb-2 border-b pb-1">Patient Studies</h4>
-                        <div id="patient-studies-list" className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
+                        <div id="patient-studies-list" className={listClass}>
                             <NestedFilterList
                                 items={filteredPatientItems} // USE FILTERED DATA
                                 {...{handleFilterChange, selectedFilters}}
@@ -886,8 +905,6 @@ const DataTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setSea
         </div>
     );
 };
-
-
 const AccessibilityPanel = ({ handleFilterChange, selectedFilters, searchTerm, setSearchTerm, filteredIds, isSearching, pruneHierarchy }) => {
     const accessibilityItems = Object.values(filterData['0_1'].children);
     const primaryGroup = filterData['0_1'].primaryGroup;
@@ -906,15 +923,30 @@ const AccessibilityPanel = ({ handleFilterChange, selectedFilters, searchTerm, s
         <div id="accessibility-panel" className="md:col-span-3 bg-white rounded-xl overflow-hidden flex flex-col">
             <div className="p-3 sm:p-4 text-gray-600 flex-grow overflow-hidden">
                 <h2 className="text-2xl font-bold text-gray-800 mb-3">Accessibility and Source</h2>
+
+                {/* Search Bar for Accessibility Terms */}
+                <SearchInput
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    isSearching={isSearching}
+                    placeholder="Search accessibility/source terms"
+                />
+
                 <p className="text-sm italic text-gray-500 mb-2">
                     Filter by data access level and source.
                 </p>
-                <div className="h-32 overflow-y-auto pr-2 border p-3 rounded-lg">
+
+                {/* FIX APPLIED HERE: Added 'pb-28' to the container */}
+                <div className="h-32 overflow-y-auto pr-2 border p-3 rounded-lg pb-28">
                     <div className="space-y-2">
                         {/* Render the filtered or full list */}
                         {finalAccessibilityItems.map(item => {
                             const fullId = item.id;
                             const isChecked = selectedFilters.has(fullId);
+                            // NOTE: Tooltip logic isn't in a separate component here,
+                            // but if you want tooltips here too, you'd need to duplicate the logic
+                            // or use NestedFilterItem here as well.
+                            // Assuming you just want the scrolling space for consistency:
                             return (
                                 <div key={item.id} className="flex items-center">
                                     <input
@@ -931,7 +963,6 @@ const AccessibilityPanel = ({ handleFilterChange, selectedFilters, searchTerm, s
                                 </div>
                             );
                         })}
-                        {/* If search is active but results are empty */}
                         {isSearching === false && searchTerm.length >= 4 && finalAccessibilityItems.length === 0 && (
                             <p className="text-sm text-gray-500">No results found for "{searchTerm}".</p>
                         )}
