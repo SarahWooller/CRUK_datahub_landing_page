@@ -863,7 +863,7 @@ const DataTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setSea
                     {/* Model Organisms (0_2_2) */}
                     <div className="border p-3 rounded-lg bg-gray-50">
                         <h4 className="text-sm font-bold text-gray-700 mb-2 border-b pb-1">Model Organisms</h4>
-                        <div id="model-organisms-list" className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
+                        <div id="animal-studies-list" className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
                             <NestedFilterList
                                 items={filteredAnimalItems} // USE FILTERED DATA
                                 {...{handleFilterChange, selectedFilters}}

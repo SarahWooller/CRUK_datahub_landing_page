@@ -349,6 +349,7 @@ body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-seri
     font-family: 'Poppins', sans-serif;
     font-size: 2.2em; /* Bolder font */
     color: var(--cruk-blue);
+    margin-top: 40px;
     margin-bottom: 20px;
     text-align: center;
     font-weight: 800; /* Extra bold */

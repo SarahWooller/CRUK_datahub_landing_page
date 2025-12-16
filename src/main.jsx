@@ -3,6 +3,9 @@ import { createRoot } from 'react-dom/client'
 const links =
     <div>
         <p>
+            <a href="./src/alt_studies.html"> This is my preferred version at the moment. It provides a brief synopsis for each study </a>
+        </p>
+        <p>
             <a href="./src/top_bar.html"> Example with the filters given as a horizontal navbar. </a>
         </p>
         <p>
