@@ -835,6 +835,7 @@ const DataTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setSea
     const filteredInvitroItems = pruneHierarchy(dataTypeGroups['0_2_1'].children, filteredIds);
     const filteredAnimalItems = pruneHierarchy(dataTypeGroups['0_2_2'].children, filteredIds);
     const filteredPatientItems = pruneHierarchy(dataTypeGroups['0_2_3'].children, filteredIds);
+    const filteredNonBioItems = pruneHierarchy(dataTypeGroups['0_2_4'].children, filteredIds);
 
     // Helper class for the lists: Added 'pb-28' for tooltip space
     const listClass = "h-40 overflow-y-auto space-y-1 text-sm pr-2 pb-28";
@@ -856,7 +857,7 @@ const DataTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setSea
                     Select one or more modalities to include in your search.
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
                     {/* Biobank Samples (0_2_0) */}
                     <div className="border p-3 rounded-lg bg-gray-50">
                         <h4 className="text-sm font-bold text-gray-700 mb-2 border-b pb-1">Biobank Samples</h4>
@@ -896,6 +897,16 @@ const DataTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setSea
                         <div id="patient-studies-list" className={listClass}>
                             <NestedFilterList
                                 items={filteredPatientItems} // USE FILTERED DATA
+                                {...{handleFilterChange, selectedFilters}}
+                            />
+                        </div>
+                    </div>
+                    {/* Non-biological Studies (0_2_4) */}
+                    <div className="border p-3 rounded-lg bg-gray-50">
+                        <h4 className="text-sm font-bold text-gray-700 mb-2 border-b pb-1">Non-biological Studies</h4>
+                        <div id="nonbio-studies-list" className={listClass}>
+                            <NestedFilterList
+                                items={filteredNonBioItems} // USE FILTERED DATA
                                 {...{handleFilterChange, selectedFilters}}
                             />
                         </div>
