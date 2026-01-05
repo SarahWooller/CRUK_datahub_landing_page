@@ -563,6 +563,19 @@
                               "description": "A description of a table in a dataset.",
                               "title": "Table description"
                         },
+                        "size": {
+                              "anyOf": [
+                                    {
+                                          "type": "integer"
+                                    },
+                                    {
+                                          "type": "null"
+                                    }
+                              ],
+                              "default": null,
+                              "description": "A Population size contributing to the table in a dataset.",
+                              "title": "Table size"
+                        },
                         "columns": {
                               "description": "A list of columns contained within a table in a dataset.",
                               "items": {
@@ -1649,6 +1662,18 @@
                   "title": "LifestyleSubTypes",
                   "type": "string"
             },
+            "LineSeparatedValues": {
+                  "anyOf": [
+                        {
+                              "pattern": "([^\\r\\n]+)",
+                              "type": "string"
+                        },
+                        {
+                              "type": "null"
+                        }
+                  ],
+                  "title": "LineSeparatedValues"
+            },
             "LongDescription": {
                   "anyOf": [
                         {
@@ -2537,20 +2562,36 @@
                               "guidance": "- Use the **title** the dataset is best known by. Expand **acronyms**, adding the acronym in brackets.\\n- Use a **unique** title. adding a **prefix** with your organisation name or identifier where necessary",
                               "title": "Title"
                         },
-                        "CRUK grant": {
+                        "Funders": {
                               "allOf": [
                                     {
-                                          "$ref": "#/$defs/OneHundredFiftyCharacters"
+                                          "$ref": "#/$defs/LineSeparatedValues"
                                     }
                               ],
-                              "description": "Original grant award number",
+                              "description": "List of Funders separated by a line break",
                               "examples": [
-                                    "A4535248py4",
-                                    "CRUK/A3400 00"
+                                    "CRUK",
+                                    "University of Sussex"
+                              ],
+                              "guidance": "Put each funder on a new line",
+
+                              "title": "Funded by"
+                        },
+                        "Grant numbers": {
+                              "allOf": [
+                                    {
+                                          "$ref": "#/$defs/LineSeparatedValues"
+                                    }
+                              ],
+                              "description": "List of grant numbers separated by a line break",
+
+                              "examples": [
+                                    "A354t",
+                                    "ropguadg"
                               ],
                               "guidance": "Is it helpful to have a record of all the grant numbers included here to enable tracking of what happens to CRUK funded datasets? An alternative is to put in the original grant proposal title, but the grant can wander. If so what is the exact format of the grant number? How would we deal with long term datasets that may be the result of more than one grant? ",
 
-                              "title": "CRUK grant"
+                              "title": "Grant numbers"
                         },
 
                         "abstract": {
