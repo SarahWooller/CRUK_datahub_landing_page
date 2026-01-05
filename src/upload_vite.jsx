@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import SchemaPage from './components/SchemaPage.jsx';
+import SchemaPage from './components/SchemaPage2.jsx';
 
 // 1. Find the root element
 const container = document.getElementById('upload');
