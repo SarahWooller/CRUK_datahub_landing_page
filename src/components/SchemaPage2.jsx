@@ -1,6 +1,24 @@
-import React, { useState, useCallback } from 'react';
-// Ensure this points to your FULL schema file
+import React, { useState, useCallback, useMemo } from 'react';
 import schema from '../utils/schema.json';
+import DataTagger, { FilterChipArea } from './DataTagger';
+// Import filterData to check hierarchy directly
+import { filterData } from '../utils/filter-setup';
+
+// --- USER CONFIGURATION: Sidebar Section Order & Visibility ---
+const VISIBLE_SECTIONS = [
+    "welcome",
+    "summary",
+    "documentation",
+    "datasetFilters",
+    "coverage",
+    "provenance",
+    "accessibility",
+    "enrichmentAndLinkage",
+    "observations",
+    "structuralMetadata",
+    "demographicFrequency",
+    "omics"
+];
 
 // --- Safe Schema Loading ---
 const DATA_SCHEMA = schema.properties ? schema : (schema.fullContent || {});
@@ -17,6 +35,133 @@ const resolveRef = (ref) => {
 // --- Utility: Get Safe Value ---
 const getValueByPath = (obj, path) => {
     return path.reduce((acc, key) => (acc && acc[key] !== undefined) ? acc[key] : undefined, obj);
+};
+
+// --- Utility: Check emptiness ---
+const isEmpty = (value) => {
+    if (value === undefined || value === null) return true;
+    if (typeof value === 'string' && value.trim() === '') return true;
+    if (Array.isArray(value) && value.length === 0) return true;
+    if (typeof value === 'object' && Object.keys(value).length === 0) return true;
+    return false;
+};
+
+// --- Utility: Hierarchy Helper ---
+// Checks if a selected ID exists within a specific branch of the filter tree
+const idExistsInBranch = (targetId, branch) => {
+    if (!branch) return false;
+    const items = Array.isArray(branch) ? branch : Object.values(branch);
+
+    for (const item of items) {
+        if (item.id === targetId) return true;
+        if (item.children && idExistsInBranch(targetId, item.children)) return true;
+    }
+    return false;
+};
+
+// --- Utility: Calculate Section Status ---
+const calculateSectionStatus = (sectionKey, formData) => {
+    // 1. Special Case: Dataset Filters (Strict ICD-O Validation)
+    if (sectionKey === 'datasetFilters') {
+        const tags = formData['datasetFilters'] || [];
+        if (tags.length === 0) return 'incomplete';
+
+        // Define the specific branches we require
+        // Note: These keys ('0_0_0', etc.) must match your filterData structure keys
+        const topographyBranch = filterData['0_0']?.children?.['0_0_0']?.children; // Topography
+        const histologyBranch  = filterData['0_0']?.children?.['0_0_1']?.children; // Histology
+        const dataTypeBranch   = filterData['0_2']?.children; // Data Type
+        const accessBranch     = filterData['0_1']?.children; // Access
+
+        let hasTopo = false;
+        let hasHisto = false;
+        let hasData = false;
+        let hasAccess = false;
+
+        tags.forEach(id => {
+            if (!hasTopo && idExistsInBranch(id, topographyBranch)) hasTopo = true;
+            if (!hasHisto && idExistsInBranch(id, histologyBranch)) hasHisto = true;
+            if (!hasData && idExistsInBranch(id, dataTypeBranch)) hasData = true;
+            if (!hasAccess && idExistsInBranch(id, accessBranch)) hasAccess = true;
+        });
+
+        // REQUIRE ALL 4: Topo, Histo, Data, Access
+        if (hasTopo && hasHisto && hasData && hasAccess) return 'complete';
+        return 'incomplete';
+    }
+
+    // 2. Special Case: Welcome Screen
+    if (sectionKey === 'welcome') return 'info';
+
+    // 3. Standard Schema Sections
+    const sectionSchema = DATA_SCHEMA.properties[sectionKey];
+    if (!sectionSchema) return 'error';
+
+    let definition = sectionSchema;
+    if (sectionSchema.$ref) definition = resolveRef(sectionSchema.$ref) || sectionSchema;
+    else if (sectionSchema.allOf) {
+         const refItem = sectionSchema.allOf.find(i => i.$ref);
+         if (refItem) definition = resolveRef(refItem.$ref) || sectionSchema;
+    } else if (sectionSchema.anyOf) {
+         const validOption = sectionSchema.anyOf.find(i => i.type !== 'null');
+         if (validOption) definition = (validOption.$ref ? resolveRef(validOption.$ref) : validOption) || sectionSchema;
+    }
+
+    const requiredProps = definition.required || [];
+    const allProps = definition.properties ? Object.keys(definition.properties) : [];
+    const sectionData = formData[sectionKey] || {};
+
+    for (const req of requiredProps) {
+        if (isEmpty(sectionData[req])) return 'incomplete';
+    }
+
+    const optionalProps = allProps.filter(p => !requiredProps.includes(p));
+    if (optionalProps.length > 0) {
+        const hasEmptyOptional = optionalProps.some(p => isEmpty(sectionData[p]));
+        if (hasEmptyOptional) return 'partial';
+    }
+
+    return 'complete';
+};
+
+// --- Component: Status Icon ---
+const StatusIcon = ({ status, isActive, isVisited }) => {
+    if (isActive) {
+        return (
+            <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center shadow-sm ring-2 ring-blue-100 flex-shrink-0">
+                <div className="w-2 h-2 rounded-full bg-white"></div>
+            </div>
+        );
+    }
+
+    if (!isVisited && status === 'incomplete') {
+        return (
+            <div className="w-6 h-6 rounded-full bg-gray-200 border-2 border-gray-300 flex-shrink-0"></div>
+        );
+    }
+
+    switch (status) {
+        case 'complete':
+            return (
+                <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center shadow-sm flex-shrink-0">
+                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
+                </div>
+            );
+        case 'partial':
+            return (
+                <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center shadow-sm flex-shrink-0">
+                    <span className="text-white font-bold text-sm">!</span>
+                </div>
+            );
+        case 'incomplete':
+            return (
+                <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center shadow-sm flex-shrink-0">
+                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </div>
+            );
+        default:
+            return <div className="w-6 h-6 rounded-full border-2 border-gray-300 flex-shrink-0"></div>;
+    }
 };
 
 // --- Utility: Render Guidance ---
@@ -37,7 +182,6 @@ const renderGuidance = (guidanceText) => {
     });
 };
 
-// --- Component: Markdown Renderer ---
 const MarkdownRenderer = ({ content }) => {
     if (!content) return null;
     const lineBlocks = content.split('\n');
@@ -69,7 +213,75 @@ const MarkdownRenderer = ({ content }) => {
     );
 };
 
-// --- Component: Field Renderer (Recursive) ---
+// --- Component: Welcome Section ---
+const WelcomeSection = () => (
+    <div className="w-2/4 p-8 overflow-y-auto pb-20">
+        <h1 className="text-4xl font-extrabold mb-4 text-gray-900">Welcome to dataset metadata on-boarding</h1>
+        <p className="text-lg text-gray-600 mb-8 border-b pb-6">
+            You will see a legend to help you as you on-board your dataset metadata.
+        </p>
+
+        <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">Progress Legend</h2>
+            <div className="space-y-6">
+
+                {/* Complete */}
+                <div className="flex items-center p-3 rounded-lg hover:bg-gray-50 transition">
+                    <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center mr-4 shadow-sm flex-shrink-0">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <div>
+                        <span className="text-gray-900 font-bold block text-lg">All fields complete</span>
+                        <span className="text-gray-500 text-sm">Every field in this section has been filled.</span>
+                    </div>
+                </div>
+
+                {/* Partial */}
+                <div className="flex items-center p-3 rounded-lg hover:bg-gray-50 transition">
+                    <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center mr-4 shadow-sm flex-shrink-0">
+                        <span className="text-white font-bold text-xl">!</span>
+                    </div>
+                    <div>
+                        <span className="text-gray-900 font-bold block text-lg">Requirements met</span>
+                        <span className="text-gray-500 text-sm">All <strong>required</strong> fields are complete, but some optional fields remain.</span>
+                    </div>
+                </div>
+
+                {/* Incomplete */}
+                <div className="flex items-center p-3 rounded-lg hover:bg-gray-50 transition">
+                    <div className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center mr-4 shadow-sm flex-shrink-0">
+                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    </div>
+                    <div>
+                        <span className="text-gray-900 font-bold block text-lg">Action required</span>
+                        <span className="text-gray-500 text-sm">Not all <strong>required</strong> fields are complete.</span>
+                    </div>
+                </div>
+
+                {/* Active */}
+                <div className="flex items-center p-3 rounded-lg hover:bg-gray-50 transition">
+                    <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center mr-4 shadow-sm ring-4 ring-blue-100 flex-shrink-0">
+                        <div className="w-3 h-3 rounded-full bg-white"></div>
+                    </div>
+                    <div>
+                        <span className="text-gray-900 font-bold block text-lg">Current Section</span>
+                        <span className="text-gray-500 text-sm">Indicates the form section you are currently viewing.</span>
+                    </div>
+                </div>
+
+                {/* Not Visited */}
+                <div className="flex items-center p-3 rounded-lg hover:bg-gray-50 transition">
+                    <div className="w-10 h-10 rounded-full bg-gray-200 border-2 border-gray-300 mr-4 shadow-sm flex-shrink-0"></div>
+                    <div>
+                        <span className="text-gray-900 font-bold block text-lg">Not Started</span>
+                        <span className="text-gray-500 text-sm">You haven't visited this section yet.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+);
+
 // --- Component: Field Renderer (Recursive) ---
 const FieldRenderer = ({
     propKey,
@@ -83,39 +295,27 @@ const FieldRenderer = ({
 }) => {
     const [isMarkdownToggled, setIsMarkdownToggled] = useState(false);
 
-    // FIX: Updated logic to handle inline definitions inside anyOf
     const getDefinitionAndEnum = (p) => {
         let definition = p;
-
-        // Helper: resolves a ref if it exists, otherwise returns the object itself
         const resolve = (obj) => (obj && obj.$ref ? resolveRef(obj.$ref) : obj);
 
-        // 1. Direct Ref
         if (p.$ref) {
             definition = resolveRef(p.$ref) || p;
-        }
-        // 2. allOf: grab the first ref found
-        else if (p.allOf) {
+        } else if (p.allOf) {
             const refItem = p.allOf.find(i => i.$ref);
             if (refItem) definition = resolveRef(refItem.$ref);
-        }
-        // 3. anyOf: Find the option that is NOT null
-        else if (p.anyOf) {
+        } else if (p.anyOf) {
             const validOption = p.anyOf.find(i => i.type !== 'null');
             if (validOption) {
-                // If the valid option is a ref, resolve it.
-                // If it's an inline definition (like type: 'array'), use it directly.
                 definition = resolve(validOption);
             }
         }
 
-        // 4. Array Items Ref check (just to ensure we have the full definition if it's an array)
         if (definition.type === 'array' && definition.items && definition.items.$ref) {
-             // no-op, we just confirmed it's an array
+             // no-op
         }
 
         const enumValues = definition.enum || p.enum;
-        // Check both the original prop (p) AND the resolved definition for 'array' type
         const isArray = p.type === 'array' || definition.type === 'array';
 
         return { definition, enumValues, isArray };
@@ -129,11 +329,9 @@ const FieldRenderer = ({
         const items = Array.isArray(currentValue) ? currentValue : [];
 
         const handleAdd = () => {
-            // Logic to determine if the new item is an Object (DataTable) or Primitive (String)
             let itemSchema = fieldDef.items || {};
-
-            // Resolve the item schema (it might be a ref, or inside anyOf)
             let resolvedItemDef = itemSchema;
+
             if (itemSchema.$ref) {
                 resolvedItemDef = resolveRef(itemSchema.$ref);
             } else if (itemSchema.anyOf) {
@@ -141,9 +339,7 @@ const FieldRenderer = ({
                  if (validItem) resolvedItemDef = resolveRef(validItem.$ref);
             }
 
-            // If the resolved item has properties, it's an object. Otherwise treat as primitive string.
             const newItem = (resolvedItemDef && (resolvedItemDef.type === 'object' || resolvedItemDef.properties)) ? {} : '';
-
             const newArray = [...items, newItem];
             onChange(path, newArray);
         };
@@ -171,12 +367,10 @@ const FieldRenderer = ({
                                 {fieldDef.title || 'Item'} #{index + 1}
                             </h4>
 
-                            {/* Recursion Logic for Items */}
                             {(() => {
                                 let itemSchema = fieldDef.items || {};
                                 let resolvedItemDef = itemSchema;
 
-                                // Resolve Ref deep dive for the Item
                                 if (itemSchema.$ref) {
                                     resolvedItemDef = resolveRef(itemSchema.$ref);
                                 } else if (itemSchema.anyOf) {
@@ -185,7 +379,6 @@ const FieldRenderer = ({
                                 }
 
                                 if (resolvedItemDef && resolvedItemDef.properties) {
-                                    // Complex Object Render
                                     return Object.keys(resolvedItemDef.properties).map(childKey => (
                                         <FieldRenderer
                                             key={childKey}
@@ -200,7 +393,6 @@ const FieldRenderer = ({
                                         />
                                     ));
                                 } else {
-                                    // Primitive Render
                                     return (
                                         <input
                                             type="text"
@@ -229,7 +421,6 @@ const FieldRenderer = ({
         );
     }
 
-    // -- Determine Input Type for Non-Arrays --
     let inputType = 'text';
     let rows = 1;
     const examples = prop.examples;
@@ -325,27 +516,50 @@ const FieldRenderer = ({
 
 // --- Component: Main Form Logic ---
 const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance }) => {
+
+    // 0. Welcome Section
+    if (sectionKey === 'welcome') {
+        return <WelcomeSection />;
+    }
+
+    // 1. Data Tagger
+    if (sectionKey === 'datasetFilters') {
+        return (
+            <div className="w-2/4 p-8 overflow-y-auto pb-20">
+                <h1 className="text-3xl font-extrabold mb-2 text-gray-800">Dataset Filters</h1>
+                <p className="text-gray-600 mb-8 border-b pb-4">
+                    Tag your dataset with specific filters (Cancer Type, Data Type, Access) to improve searchability.
+                    <br/><span className="text-sm text-red-600 font-bold mt-2 block">
+                        Required: At least one Topography, one Histology, one Data Type, and one Access Type.
+                    </span>
+                </p>
+                <DataTagger
+                    value={formData['datasetFilters'] || []}
+                    onChange={(newTags) => onFormChange(['datasetFilters'], newTags)}
+                />
+            </div>
+        );
+    }
+
     const sectionSchema = DATA_SCHEMA.properties ? DATA_SCHEMA.properties[sectionKey] : null;
 
     if (!sectionSchema) return <p className="p-8">Section not found or Schema is invalid.</p>;
 
-    // RECURSIVE RESOLVER: Unwraps allOf AND anyOf to find the real object definition
     const resolveDefinition = (s) => {
         if (!s) return null;
         let ref = s.$ref;
         if (!ref) ref = s.allOf?.find(i => i.$ref)?.$ref;
-        // The Fix: Unwrap anyOf correctly (filtering out null types)
-        if (!ref) ref = s.anyOf?.find(i => i.$ref && i.type !== 'null')?.$ref;
-
-        if (ref) {
-            return resolveRef(ref);
+        if (!ref && s.anyOf) {
+             const validOption = s.anyOf.find(i => i.type !== 'null');
+             if (validOption) {
+                 return validOption.$ref ? resolveRef(validOption.$ref) : validOption;
+             }
         }
-        return s; // Return original if no ref found
+        if (ref) return resolveRef(ref);
+        return s;
     };
 
     const definition = resolveDefinition(sectionSchema);
-
-    // FIX: Check if definition exists and has properties to determine if it's a container
     const isContainer = definition && (definition.type === 'object' || definition.properties);
 
     return (
@@ -390,28 +604,45 @@ const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance }) =
 };
 
 // --- Component: Navigation & Download ---
-const SchemaNav = ({ activeSection, setActiveSection, onDownload }) => {
-    const sections = DATA_SCHEMA.properties ? Object.keys(DATA_SCHEMA.properties) : [];
-
+const SchemaNav = ({ activeSection, setActiveSection, onDownload, formData, visitedSections }) => {
     return (
         <div className="w-1/5 border-r border-gray-200 bg-gray-50 h-screen flex flex-col">
             <div className="p-6 overflow-y-auto flex-grow">
                 <h2 className="text-lg font-bold mb-4 text-gray-700">Metadata Sections</h2>
                 <ul className="space-y-2">
-                    {sections.map((sectionKey) => (
-                        <li key={sectionKey}>
-                            <button
-                                onClick={() => setActiveSection(sectionKey)}
-                                className={`w-full text-left p-3 rounded-md transition-colors duration-150 text-sm font-medium ${
-                                    activeSection === sectionKey
-                                        ? 'bg-indigo-600 text-white shadow-md'
-                                        : 'text-gray-700 hover:bg-indigo-100'
-                                }`}
-                            >
-                                {DATA_SCHEMA.properties[sectionKey]?.title || sectionKey}
-                            </button>
-                        </li>
-                    ))}
+                    {VISIBLE_SECTIONS.map((sectionKey) => {
+                        let title;
+                        if (sectionKey === 'datasetFilters') title = "Dataset Filters";
+                        else if (sectionKey === 'welcome') title = "Welcome & Guide";
+                        else title = DATA_SCHEMA.properties[sectionKey]?.title || sectionKey;
+
+                        if (sectionKey !== 'datasetFilters' && sectionKey !== 'welcome' && !DATA_SCHEMA.properties[sectionKey]) return null;
+
+                        const status = calculateSectionStatus(sectionKey, formData);
+                        const isVisited = visitedSections.has(sectionKey);
+
+                        return (
+                            <li key={sectionKey}>
+                                <button
+                                    onClick={() => setActiveSection(sectionKey)}
+                                    className={`w-full text-left p-3 rounded-md transition-colors duration-150 text-sm font-medium flex items-center justify-between group ${
+                                        activeSection === sectionKey
+                                            ? 'bg-indigo-50 text-indigo-700 border border-indigo-200'
+                                            : 'text-gray-700 hover:bg-white hover:shadow-sm'
+                                    }`}
+                                >
+                                    <span className="flex-grow">{title}</span>
+                                    {sectionKey !== 'welcome' && (
+                                        <StatusIcon
+                                            status={status}
+                                            isActive={activeSection === sectionKey}
+                                            isVisited={isVisited}
+                                        />
+                                    )}
+                                </button>
+                            </li>
+                        );
+                    })}
                 </ul>
             </div>
             <div className="p-6 border-t border-gray-200 bg-white">
@@ -462,8 +693,20 @@ const SchemaPage = () => {
     }
 
     const [formData, setFormData] = useState({});
-    const [activeSection, setActiveSection] = useState(Object.keys(DATA_SCHEMA.properties)[0]);
+
+    // Initialize with Welcome section
+    const initialSection = VISIBLE_SECTIONS[0] || Object.keys(DATA_SCHEMA.properties)[0];
+    const [activeSection, setActiveSection] = useState(initialSection);
     const [activeGuidance, setActiveGuidance] = useState(null);
+
+    // Track visited sections (Start with the initial one)
+    const [visitedSections, setVisitedSections] = useState(new Set([initialSection]));
+
+    const handleNavChange = (key) => {
+        setVisitedSections(prev => new Set(prev).add(key));
+        setActiveSection(key);
+        setActiveGuidance(null);
+    };
 
     const handleDataChange = useCallback((path, value) => {
         setFormData(prev => {
@@ -490,6 +733,12 @@ const SchemaPage = () => {
         });
     }, []);
 
+    const handleTagRemove = (id) => {
+        const currentTags = formData['datasetFilters'] || [];
+        const newTags = currentTags.filter(tagId => tagId !== id);
+        handleDataChange(['datasetFilters'], newTags);
+    };
+
     const downloadJSON = () => {
         const fileData = JSON.stringify(formData, null, 2);
         const blob = new Blob([fileData], { type: "application/json" });
@@ -505,8 +754,10 @@ const SchemaPage = () => {
         <div className="flex min-h-screen font-sans bg-white">
             <SchemaNav
                 activeSection={activeSection}
-                setActiveSection={(key) => { setActiveSection(key); setActiveGuidance(null); }}
+                setActiveSection={handleNavChange}
                 onDownload={downloadJSON}
+                formData={formData}
+                visitedSections={visitedSections}
             />
 
             <SchemaForm
@@ -516,9 +767,24 @@ const SchemaPage = () => {
                 setActiveGuidance={setActiveGuidance}
             />
 
-            <GuidancePanel
-                activeGuidance={activeGuidance}
-            />
+            {/* Right Column Logic */}
+            {activeSection === 'datasetFilters' ? (
+                <div className="w-1/4 border-l border-gray-200 p-6 bg-gray-50 h-screen sticky top-0 overflow-y-auto">
+                     <h2 className="text-lg font-bold mb-4 text-gray-700">Active Tags</h2>
+                     <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100 min-h-[200px]">
+                        <FilterChipArea
+                            selectedFilters={formData['datasetFilters'] || []}
+                            handleFilterChange={handleTagRemove}
+                        />
+                     </div>
+                </div>
+            ) : activeSection === 'welcome' ? (
+                 <div className="w-1/4 border-l border-gray-200 bg-gray-50"></div>
+            ) : (
+                <GuidancePanel
+                    activeGuidance={activeGuidance}
+                />
+            )}
         </div>
     );
 };
