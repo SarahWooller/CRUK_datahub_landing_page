@@ -1,0 +1,41 @@
+0 data use permission - A data item that is used to indicate consent permissions for datasets and/or materials, and relates to the purposes for which datasets and/or material might be removed, stored or used.
+1 no restriction - This data use permission indicates there is no restriction on use.
+2 obsolete general research use and clinical care - This data use limitation indicates that use is allowed for health/medical/biomedical purposes and other biological research, including the study of population origins or ancestry.
+3 health or medical or biomedical research - This data use permission indicates that use is allowed for health/medical/biomedical purposes; does not include the study of population origins or ancestry.
+4 disease specific research - This data use permission indicates that use is allowed provided it is related to the specified disease.
+5 is restricted to - A is restricted to B iff A is a consent code and B is an investigation and A may only participate in instances of a class C, of which B is an instance.
+6 population origins or ancestry research only - This data use permission indicates that use of the data is limited to the study of population origins or ancestry.
+7 research specific restrictions - This data use modifier indicates that use is limited to studies of a certain research type.
+8 obsolete research use only - This data use limitation indicates that use is limited to research purposes (e.g., does not include its use in clinical care).
+9 no general methods research - This data use modifier indicates that use does not allow methods development research (e.g., development of software or algorithms).
+10 genetic studies only - This data use modifier indicates that use is limited to genetic studies only (i.e., studies that include genotype research alone or both genotype and phenotype research, but not phenotype research exclusively)
+11 data use modifier - Data use modifiers indicate additional conditions for use.
+12 not for profit, non commercial use only - This data use modifier indicates that use of the data is limited to not-for-profit organizations and not-for-profit use, non-commercial use.
+13 publication required - This data use modifier indicates that requestor agrees to make results of studies using the data available to the larger scientific community.
+14 collaboration required - This data use modifier indicates that the requestor must agree to collaboration with the primary study investigator(s).
+15 ethics approval required - This data use modifier indicates that the requestor must provide documentation of local IRB/ERB approval.
+16 geographical restriction - This data use modifier indicates that use is limited to within a specific geographic region.
+17 publication moratorium - This data use modifier indicates that requestor agrees not to publish results of studies until a specific date.
+18 time limit on use - This data use modifier indicates that use is approved for a specific number of months.
+19 user specific restriction - This data use modifier indicates that use is limited to use by approved users.
+20 project specific restriction - This data use modifier indicates that use is limited to use within an approved project.
+21 institution specific restriction - This data use modifier indicates that use is limited to use within an approved institution.
+22 return to database or resource - This data use modifier indicates that the requestor must return derived/enriched data to the database/resource.
+23 method development - An investigation concerning development of methods, algorithms, software or analytical tools.
+24 population research - An investigation concerning a specific population group.
+25 ancestry research - An investigation concerning ancestry or population origins.
+26 age category research - An investigation concerning specific age categories.
+27 gender category research - An investigation concerning specific gender categories.
+28 research control - An investigation concerning use of data as reference or control material.
+29 biomedical research - An investigation concerning health, medical, or biomedical research.
+30 genetic research - Biomedical research concerning genetics (i.e., the study of genes, genetic variations and heredity).
+31 drug development research - Biomedical research concerning drug development.
+32 disease category research - Biomedical research research concerning specific disease/s
+33 general research use - This data use permission indicates that use is allowed for general research use for any research purpose.
+34 clinical care use - This data use modifier indicates that use is allowed for clinical use and care.
+35 population origins or ancestry research prohibited - This data use modifier indicates use for purposes of population, origin, or ancestry research is prohibited.
+36 not for profit organisation use only - This data use modifier indicates that use of the data is limited to not-for-profit organizations.
+37 non-commercial use only - This data use modifier indicates that use of the data is limited to not-for-profit use.
+38 geographic location - NO DEFINITION PROVIDED
+39 disease or disorder - A disease is a disposition to undergo pathological processes that exists in an organism because of one or more disorders in that organism.
+40 Topic - A category denoting a rather broad domain or field of interest, study, application, work, data, or technology. Topics have no clearly defined borders between each other.
