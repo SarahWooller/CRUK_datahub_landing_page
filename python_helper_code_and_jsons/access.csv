@@ -1,0 +1,42 @@
+,ID,TYPE,LABEL,DEFINITION
+0,DUO:0000001,Class,data use permission,"A data item that is used to indicate consent permissions for datasets and/or materials, and relates to the purposes for which datasets and/or material might be removed, stored or used."
+1,DUO:0000004,Class,no restriction,This data use permission indicates there is no restriction on use.
+2,DUO:0000005,Class,obsolete general research use and clinical care,"This data use limitation indicates that use is allowed for health/medical/biomedical purposes and other biological research, including the study of population origins or ancestry."
+3,DUO:0000006,Class,health or medical or biomedical research,This data use permission indicates that use is allowed for health/medical/biomedical purposes; does not include the study of population origins or ancestry.
+4,DUO:0000007,Class,disease specific research,This data use permission indicates that use is allowed provided it is related to the specified disease.
+5,DUO:0000010,Property,is restricted to,"A is restricted to B iff A is a consent code and B is an investigation and A may only participate in instances of a class C, of which B is an instance."
+6,DUO:0000011,Class,population origins or ancestry research only,This data use permission indicates that use of the data is limited to the study of population origins or ancestry.
+7,DUO:0000012,Class,research specific restrictions,This data use modifier indicates that use is limited to studies of a certain research type.
+8,DUO:0000014,Class,obsolete research use only,"This data use limitation indicates that use is limited to research purposes (e.g., does not include its use in clinical care)."
+9,DUO:0000015,Class,no general methods research,"This data use modifier indicates that use does not allow methods development research (e.g., development of software or algorithms)."
+10,DUO:0000016,Class,genetic studies only,"This data use modifier indicates that use is limited to genetic studies only (i.e., studies that include genotype research alone or both genotype and phenotype research, but not phenotype research exclusively)"
+11,DUO:0000017,Class,data use modifier,Data use modifiers indicate additional conditions for use.
+12,DUO:0000018,Class,"not for profit, non commercial use only","This data use modifier indicates that use of the data is limited to not-for-profit organizations and not-for-profit use, non-commercial use."
+13,DUO:0000019,Class,publication required,This data use modifier indicates that requestor agrees to make results of studies using the data available to the larger scientific community.
+14,DUO:0000020,Class,collaboration required,This data use modifier indicates that the requestor must agree to collaboration with the primary study investigator(s).
+15,DUO:0000021,Class,ethics approval required,This data use modifier indicates that the requestor must provide documentation of local IRB/ERB approval.
+16,DUO:0000022,Class,geographical restriction,This data use modifier indicates that use is limited to within a specific geographic region.
+17,DUO:0000024,Class,publication moratorium,This data use modifier indicates that requestor agrees not to publish results of studies until a specific date.
+18,DUO:0000025,Class,time limit on use,This data use modifier indicates that use is approved for a specific number of months.
+19,DUO:0000026,Class,user specific restriction,This data use modifier indicates that use is limited to use by approved users.
+20,DUO:0000027,Class,project specific restriction,This data use modifier indicates that use is limited to use within an approved project.
+21,DUO:0000028,Class,institution specific restriction,This data use modifier indicates that use is limited to use within an approved institution.
+22,DUO:0000029,Class,return to database or resource,This data use modifier indicates that the requestor must return derived/enriched data to the database/resource.
+23,DUO:0000031,Class,method development,"An investigation concerning development of methods, algorithms, software or analytical tools."
+24,DUO:0000032,Class,population research,An investigation concerning a specific population group.
+25,DUO:0000033,Class,ancestry research,An investigation concerning ancestry or population origins.
+26,DUO:0000034,Class,age category research,An investigation concerning specific age categories.
+27,DUO:0000035,Class,gender category research,An investigation concerning specific gender categories.
+28,DUO:0000036,Class,research control,An investigation concerning use of data as reference or control material.
+29,DUO:0000037,Class,biomedical research,"An investigation concerning health, medical, or biomedical research."
+30,DUO:0000038,Class,genetic research,"Biomedical research concerning genetics (i.e., the study of genes, genetic variations and heredity)."
+31,DUO:0000039,Class,drug development research,Biomedical research concerning drug development.
+32,DUO:0000040,Class,disease category research,Biomedical research research concerning specific disease/s
+33,DUO:0000042,Class,general research use,This data use permission indicates that use is allowed for general research use for any research purpose.
+34,DUO:0000043,Class,clinical care use,This data use modifier indicates that use is allowed for clinical use and care.
+35,DUO:0000044,Class,population origins or ancestry research prohibited,"This data use modifier indicates use for purposes of population, origin, or ancestry research is prohibited."
+36,DUO:0000045,Class,not for profit organisation use only,This data use modifier indicates that use of the data is limited to not-for-profit organizations.
+37,DUO:0000046,Class,non-commercial use only,This data use modifier indicates that use of the data is limited to not-for-profit use.
+38,GAZ:00000448,Class,geographic location,NO DEFINITION PROVIDED
+39,MONDO:0000001,Class,disease or disorder,A disease is a disposition to undergo pathological processes that exists in an organism because of one or more disorders in that organism.
+40,topic:0003,Class,Topic,"A category denoting a rather broad domain or field of interest, study, application, work, data, or technology. Topics have no clearly defined borders between each other."
