@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom/client';
 
 // 1. IMPORT DATA FROM UTILS
-import mammogramData from '../utils/mam2.json';
+import mammogramData from '../utils/mammogram.json';
 
 // 2. IMPORT ICONS
 import animalIcon from '../assets/animal.png';
@@ -47,28 +47,43 @@ const normalizeList = (input) => {
   return input.split(';,;').map(k => k.trim());
 };
 
-const getActiveIcons = (provenance) => {
+// Updated to extract icons from filters.Data Types
+const getActiveIcons = (filters) => {
   const activeKeys = new Set();
   const targetKeys = Object.keys(ICON_MAPPING);
 
-  // In new schema, types are in provenance.origin.datasetType
-  const types = provenance?.origin?.datasetType || [];
+  // Safety check to ensure filters and Data Types exist
+  if (!filters || !filters["Data Types"]) return [];
 
-  types.forEach(typeObj => {
-      // Check the main name (e.g., "Imaging types")
-      if (targetKeys.includes(typeObj.name)) {
-          activeKeys.add(typeObj.name);
-      }
-      // Check subtypes if necessary (e.g., "Longitudinal Follow up" might be hidden there)
-      if (Array.isArray(typeObj.subTypes)) {
-          typeObj.subTypes.forEach(sub => {
-              if (targetKeys.includes(sub)) activeKeys.add(sub);
+  const dataTypes = filters["Data Types"];
+
+  // Iterate over categories in Data Types (e.g., "Patient Study")
+  Object.values(dataTypes).forEach(list => {
+    if (Array.isArray(list)) {
+      list.forEach(item => {
+        // 1. Handle Strings (e.g., "Background", "Multi-omic Data")
+        if (typeof item === 'string') {
+          console.log(item);
+          if (targetKeys.includes(item)) {
+            activeKeys.add(item);
+          }
+        }
+        // 2. Handle Objects (e.g., {"Imaging Data": "Radiographic imaging"})
+        else if (typeof item === 'object' && item !== null) {
+          Object.keys(item).forEach(key => {
+            if (targetKeys.includes(key)) {
+              activeKeys.add(key);
+            }
           });
-      }
+        }
+      });
+    }
   });
 
   return Array.from(activeKeys).map(key => ICON_MAPPING[key]);
 };
+
+
 
 // --- Sub-Components ---
 
@@ -125,7 +140,7 @@ const MetadataPage = () => {
   const keywords = useMemo(() => normalizeList(data.summary.keywords), [data]);
 
   // 3. Icons are derived from provenance.origin.datasetType
-  const activeIcons = useMemo(() => getActiveIcons(data.provenance), [data]);
+  const activeIcons = useMemo(() => getActiveIcons(data.filters), [data]);
 
   // 4. Structural Metadata is now inside an object with a 'tables' key
   const groupedMetadata = useMemo(() => {
