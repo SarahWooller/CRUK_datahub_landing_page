@@ -5,15 +5,15 @@ import ReactDOM from 'react-dom/client';
 import mammogramData from '../utils/mammogram.json';
 
 // 2. IMPORT ICONS
-import animalIcon from '../assets/animal.png';
-import backgroundIcon from '../assets/background.png';
-import biobankIcon from '../assets/biobank.png';
-import invitroIcon from '../assets/invitro.png';
-import longitudinalIcon from '../assets/longitudinal.png';
-import treatmentsIcon from '../assets/treatments.png';
-import omicsIcon from '../assets/omics.png';
-import imagingIcon from '../assets/medical_imaging.png';
-import labResultsIcon from '../assets/lab_results.png';
+import animalIcon from '../assets/animal.webp';
+import backgroundIcon from '../assets/background.webp';
+import biobankIcon from '../assets/biobank.webp';
+import invitroIcon from '../assets/invitro.webp';
+import longitudinalIcon from '../assets/longitudinal.webp';
+import treatmentsIcon from '../assets/treatments.webp';
+import omicsIcon from '../assets/omics.webp';
+import imagingIcon from '../assets/medical_imaging.webp';
+import labResultsIcon from '../assets/lab_results.webp';
 
 // 3. IMPORT ERD IMAGE
 import erdImage from '../assets/erd.png';
