@@ -27,7 +27,6 @@ function renderReactComponent(targetId, Component) {
 }
 
 renderReactComponent('header', <Header/>)
-
 renderReactComponent('filter_navbar', <FilterApp/>)
 renderReactComponent('studies', <StudiesSection/>)
 

@@ -7,7 +7,6 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
-
   },
   "keywords": [],
   "author": "",
@@ -15,6 +14,7 @@
   "type": "commonjs",
   "devDependencies": {
     "@vitejs/plugin-react": "^5.1.0",
+    "baseline-browser-mapping": "^2.9.11",
     "copy-webpack-plugin": "^13.0.1",
     "cpx": "^1.5.0",
     "react": "^19.2.0",
