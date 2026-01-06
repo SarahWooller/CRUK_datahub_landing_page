@@ -216,17 +216,20 @@ const MarkdownRenderer = ({ content }) => {
 // --- Component: Welcome Section ---
 const WelcomeSection = () => (
     <div className="w-2/4 p-8 overflow-y-auto pb-20">
-        <h1 className="text-4xl font-extrabold mb-4 text-gray-900">Welcome to dataset metadata on-boarding</h1>
-        <p className="text-lg text-gray-600 mb-8 border-b pb-6">
-            You will see a legend to help you as you on-board your dataset metadata.
+        <h1 className="text-4xl font-extrabold mb-4 text-gray-900">Uploading and Modifying Metadata</h1>
+        <p className="text-gray-600 mb-2">
+            If this is a new dataset, you can either input the metadata manually or, if you have done this before, you can directly upload a json with all the required information.
         </p>
+        <p className="text-gray-600 mb-2"> To modify an existing dataset, choose from your existing datasets below to retrieve the existing information for manual adjustment, to download the data, or to upload amendments.
+        </p>
+        <p className="text-gray-600 mb-2"> </p>
 
         <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6">Progress Legend</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Progress Legend</h2>
             <div className="space-y-6">
 
                 {/* Complete */}
-                <div className="flex items-center p-3 rounded-lg hover:bg-gray-50 transition">
+                <div className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 transition">
                     <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center mr-4 shadow-sm flex-shrink-0">
                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
                     </div>
@@ -237,7 +240,7 @@ const WelcomeSection = () => (
                 </div>
 
                 {/* Partial */}
-                <div className="flex items-center p-3 rounded-lg hover:bg-gray-50 transition">
+                <div className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 transition">
                     <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center mr-4 shadow-sm flex-shrink-0">
                         <span className="text-white font-bold text-xl">!</span>
                     </div>
@@ -248,7 +251,7 @@ const WelcomeSection = () => (
                 </div>
 
                 {/* Incomplete */}
-                <div className="flex items-center p-3 rounded-lg hover:bg-gray-50 transition">
+                <div className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 transition">
                     <div className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center mr-4 shadow-sm flex-shrink-0">
                         <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </div>
@@ -259,7 +262,7 @@ const WelcomeSection = () => (
                 </div>
 
                 {/* Active */}
-                <div className="flex items-center p-3 rounded-lg hover:bg-gray-50 transition">
+                <div className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 transition">
                     <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center mr-4 shadow-sm ring-4 ring-blue-100 flex-shrink-0">
                         <div className="w-3 h-3 rounded-full bg-white"></div>
                     </div>
@@ -270,7 +273,7 @@ const WelcomeSection = () => (
                 </div>
 
                 {/* Not Visited */}
-                <div className="flex items-center p-3 rounded-lg hover:bg-gray-50 transition">
+                <div className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 transition">
                     <div className="w-10 h-10 rounded-full bg-gray-200 border-2 border-gray-300 mr-4 shadow-sm flex-shrink-0"></div>
                     <div>
                         <span className="text-gray-900 font-bold block text-lg">Not Started</span>
