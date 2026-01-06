@@ -1,16 +1,16 @@
 import React, { useState, useMemo } from 'react';
 
 const ICON_OPTS = [
-    { url: "../assets/animal.png", label: "Model Organism Study" },
-    { url: "../assets/background.png", label: "Background Information" },
-    { url: "../assets/biobank.png", label: "Samples Available" },
-    { url: "../assets/invitro.png", label: "In Vitro Study" },
-    { url: "../assets/lab_results.png", label: "Lab Results" },
-    { url: "../assets/longitudinal.png", label: "Longitudinal Study" },
-    { url: "../assets/medical_imaging.png", label: "Medical Imaging" },
-    { url: "../assets/omics.png", label: "Omics" },
-    { url: "../assets/population.png", label: "Patient Study" },
-    { url: "../assets/treatments.png", label: "Treatments" }
+    { url: "../assets/animal.webp", label: "Model Organism Study" },
+    { url: "../assets/background.webp", label: "Background Information" },
+    { url: "../assets/biobank.webp", label: "Samples Available" },
+    { url: "../assets/invitro.webp", label: "In Vitro Study" },
+    { url: "../assets/lab_results.webp", label: "Lab Results" },
+    { url: "../assets/longitudinal.webp", label: "Longitudinal Study" },
+    { url: "../assets/medical_imaging.webp", label: "Medical Imaging" },
+    { url: "../assets/omics.webp", label: "Omics" },
+    { url: "../assets/population.webp", label: "Patient Study" },
+    { url: "../assets/treatments.webp", label: "Treatments" }
 ];
 const generateMockStudies = () => {
     const titles = [
