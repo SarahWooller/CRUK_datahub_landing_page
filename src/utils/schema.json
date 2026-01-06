@@ -866,7 +866,8 @@
                               "examples": [
                                     "CPRD Aurum contains primary care data contributed by General Practitioner (GP) practices using EMIS Web\u00ae including patient registration information and all care events that GPs have chosen to record as part of their usual medical practice."
                               ],
-                              "guidance": "- An HTML account of the data that **provides context and scope** of the data, **limited to 10000 characters, and/or a resolvable URL** that describes the dataset.\\n- Additional information can be recorded and included using the Associated media field."
+                              "guidance": "- An HTML account of the data that **provides context and scope** of the data, **limited to 10000 characters, and/or a resolvable URL** that describes the dataset.\\n- Additional information can be recorded and included using the Associated media field.",
+                              "title": "Description"
                         },
                         "associatedMedia": {
                               "anyOf": [
@@ -3046,7 +3047,8 @@
                               "$ref": "#/$defs/Summary"
                         }
                   ],
-                  "description": "Summary of metadata describing key pieces of information."
+                  "description": "Summary of metadata describing key pieces of information.",
+                  "title": "Summary"
             },
             "documentation": {
                   "anyOf": [
@@ -3093,7 +3095,8 @@
                               "$ref": "#/$defs/Accessibility"
                         }
                   ],
-                  "description": "Accessibility information allows researchers to understand access, usage, limitations, formats, standards and linkage or interoperability with toolsets."
+                  "description": "Accessibility information allows researchers to understand access, usage, limitations, formats, standards and linkage or interoperability with toolsets.",
+                  "title": "Accessibility"
             },
             "enrichmentAndLinkage": {
                   "anyOf": [
