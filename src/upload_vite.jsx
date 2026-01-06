@@ -1,17 +1,29 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import SchemaPage from './components/SchemaPage2.jsx';
+import { Header } from './components/Header.jsx'
 
-// 1. Find the root element
-const container = document.getElementById('upload');
+function renderReactComponent(targetId, Component) {
+  // 1. Get the target DOM element
+  const targetElement = document.getElementById(targetId);
 
-// 2. Create the React root instance
-const root = ReactDOM.createRoot(container);
+  // 2. Check if the element exists
+  if (targetElement) {
+    // 3. Create the root and render the component
+    const root = ReactDOM.createRoot(targetElement);
+    root.render(
+      // Keep it wrapped in React.StrictMode for development best practices
+      <React.StrictMode>
+        {Component}
+      </React.StrictMode>
+    );
+  } else {
+    // 4. Log an error if the element is not found
+    console.error(`Target element '${targetId}' not found in the DOM. Cannot render component.`);
+  }
+}
 
-// 3. Render the SchemaPage component
-root.render(
-  // React.StrictMode helps find potential problems in the application
-  <React.StrictMode>
-    <SchemaPage />
-  </React.StrictMode>
-);
+renderReactComponent('header', <Header/>)
+renderReactComponent('upload', <SchemaPage/>)
+renderReactComponent(upload, SchemaPage);
+

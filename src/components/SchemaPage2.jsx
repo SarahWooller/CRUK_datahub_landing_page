@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import schema from '../utils/schema.json';
 import DataTagger, { FilterChipArea } from './DataTagger';
-// Import filterData to check hierarchy directly
+import JsonUpload from './JsonUpload';
+import UploadTopBar from './UploadTopBar'; // Restored Import
 import { filterData } from '../utils/filter-setup';
 
 // --- USER CONFIGURATION: Sidebar Section Order & Visibility ---
@@ -22,6 +23,15 @@ const VISIBLE_SECTIONS = [
 
 // --- Safe Schema Loading ---
 const DATA_SCHEMA = schema.properties ? schema : (schema.fullContent || {});
+
+// --- CUSTOM VALIDATION RULES ---
+const EXTRA_VALIDATIONS = {
+    "datasetFilters": (value) => {
+        if (!Array.isArray(value)) return false;
+        const idPattern = /^(\d+_){0,5}\d+$/;
+        return value.every(item => typeof item === 'string' && idPattern.test(item));
+    }
+};
 
 // --- Utility: Resolve References ---
 const resolveRef = (ref) => {
@@ -47,7 +57,6 @@ const isEmpty = (value) => {
 };
 
 // --- Utility: Hierarchy Helper ---
-// Checks if a selected ID exists within a specific branch of the filter tree
 const idExistsInBranch = (targetId, branch) => {
     if (!branch) return false;
     const items = Array.isArray(branch) ? branch : Object.values(branch);
@@ -61,17 +70,15 @@ const idExistsInBranch = (targetId, branch) => {
 
 // --- Utility: Calculate Section Status ---
 const calculateSectionStatus = (sectionKey, formData) => {
-    // 1. Special Case: Dataset Filters (Strict ICD-O Validation)
+    // 1. Special Case: Dataset Filters
     if (sectionKey === 'datasetFilters') {
         const tags = formData['datasetFilters'] || [];
         if (tags.length === 0) return 'incomplete';
 
-        // Define the specific branches we require
-        // Note: These keys ('0_0_0', etc.) must match your filterData structure keys
-        const topographyBranch = filterData['0_0']?.children?.['0_0_0']?.children; // Topography
-        const histologyBranch  = filterData['0_0']?.children?.['0_0_1']?.children; // Histology
-        const dataTypeBranch   = filterData['0_2']?.children; // Data Type
-        const accessBranch     = filterData['0_1']?.children; // Access
+        const topographyBranch = filterData['0_0']?.children?.['0_0_0']?.children;
+        const histologyBranch  = filterData['0_0']?.children?.['0_0_1']?.children;
+        const dataTypeBranch   = filterData['0_2']?.children;
+        const accessBranch     = filterData['0_1']?.children;
 
         let hasTopo = false;
         let hasHisto = false;
@@ -85,7 +92,6 @@ const calculateSectionStatus = (sectionKey, formData) => {
             if (!hasAccess && idExistsInBranch(id, accessBranch)) hasAccess = true;
         });
 
-        // REQUIRE ALL 4: Topo, Histo, Data, Access
         if (hasTopo && hasHisto && hasData && hasAccess) return 'complete';
         return 'incomplete';
     }
@@ -93,7 +99,20 @@ const calculateSectionStatus = (sectionKey, formData) => {
     // 2. Special Case: Welcome Screen
     if (sectionKey === 'welcome') return 'info';
 
-    // 3. Standard Schema Sections
+    // 3. Schema-based Validation
+    const sectionData = formData[sectionKey];
+
+    // Check Root Level Requirement (Fixes Observations array issue)
+    const isRootRequired = DATA_SCHEMA.required?.includes(sectionKey);
+
+    if (isRootRequired && isEmpty(sectionData)) {
+        return 'incomplete';
+    }
+
+    if (!isRootRequired && isEmpty(sectionData)) {
+        return 'partial';
+    }
+
     const sectionSchema = DATA_SCHEMA.properties[sectionKey];
     if (!sectionSchema) return 'error';
 
@@ -107,17 +126,23 @@ const calculateSectionStatus = (sectionKey, formData) => {
          if (validOption) definition = (validOption.$ref ? resolveRef(validOption.$ref) : validOption) || sectionSchema;
     }
 
+    // Array Types
+    if (definition.type === 'array') {
+        return 'complete';
+    }
+
+    // Object Types
     const requiredProps = definition.required || [];
     const allProps = definition.properties ? Object.keys(definition.properties) : [];
-    const sectionData = formData[sectionKey] || {};
+    const dataObj = sectionData || {};
 
     for (const req of requiredProps) {
-        if (isEmpty(sectionData[req])) return 'incomplete';
+        if (isEmpty(dataObj[req])) return 'incomplete';
     }
 
     const optionalProps = allProps.filter(p => !requiredProps.includes(p));
     if (optionalProps.length > 0) {
-        const hasEmptyOptional = optionalProps.some(p => isEmpty(sectionData[p]));
+        const hasEmptyOptional = optionalProps.some(p => isEmpty(dataObj[p]));
         if (hasEmptyOptional) return 'partial';
     }
 
@@ -134,7 +159,7 @@ const StatusIcon = ({ status, isActive, isVisited }) => {
         );
     }
 
-    if (!isVisited && status === 'incomplete') {
+    if (!isVisited && status !== 'complete') {
         return (
             <div className="w-6 h-6 rounded-full bg-gray-200 border-2 border-gray-300 flex-shrink-0"></div>
         );
@@ -149,7 +174,7 @@ const StatusIcon = ({ status, isActive, isVisited }) => {
             );
         case 'partial':
             return (
-                <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center shadow-sm flex-shrink-0">
+                <div className="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center shadow-sm flex-shrink-0">
                     <span className="text-white font-bold text-sm">!</span>
                 </div>
             );
@@ -213,71 +238,90 @@ const MarkdownRenderer = ({ content }) => {
     );
 };
 
-// --- Component: Welcome Section ---
-const WelcomeSection = () => (
-    <div className="w-2/4 p-8 overflow-y-auto pb-20">
-        <h1 className="text-4xl font-extrabold mb-4 text-gray-900">Uploading and Modifying Metadata</h1>
-        <p className="text-gray-600 mb-2">
-            If this is a new dataset, you can either input the metadata manually or, if you have done this before, you can directly upload a json with all the required information.
-        </p>
-        <p className="text-gray-600 mb-2"> To modify an existing dataset, choose from your existing datasets below to retrieve the existing information for manual adjustment, to download the data, or to upload amendments.
-        </p>
-        <p className="text-gray-600 mb-2"> </p>
+// --- Component: Welcome Section (VISUALLY UPDATED) ---
+const WelcomeSection = ({ onUpload }) => (
+    <div className="p-8 overflow-y-auto pb-20 w-full">
+        <h1 className="text-3xl font-extrabold mb-4 text-gray-900">Guide to Uploading and Modifying Metadata</h1>
 
-        <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">Progress Legend</h2>
-            <div className="space-y-6">
+        <p className="text-sm text-gray-600 mb-1 leading-relaxed">
+            If this is a new dataset, you can either input the metadata manually or, if you have done this before, you can directly upload a json with some or all of the required information.
+            <JsonUpload
+                schema={DATA_SCHEMA}
+                onUpload={onUpload}
+                additionalValidations={EXTRA_VALIDATIONS}
+            />
+        </p>
+
+        <p className="text-sm text-gray-600 mb-3 leading-relaxed">
+            To modify an existing dataset, choose from your existing datasets below to retrieve the existing information for manual adjustment, to download the data, or to upload amendments.
+        </p>
+
+        <div className="mb-6 max-w-lg">
+            <select
+                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 bg-white text-sm text-gray-700 cursor-pointer"
+                defaultValue=""
+                onChange={(e) => {
+                    if (e.target.value) {
+                        alert(`You selected: ${e.target.options[e.target.selectedIndex].text}\n(Logic to load this dataset would go here)`);
+                    }
+                }}
+            >
+                <option value="" disabled>-- Select an existing dataset --</option>
+                <option value="dataset1">Dataset for histopathology reports for prostatic carcinoma</option>
+                <option value="dataset2">The Cancer Imaging Archive</option>
+                <option value="dataset3">Longitudinal breast cancer data</option>
+            </select>
+        </div>
+
+        <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 mt-4">
+            <h2 className="text-xl font-bold text-gray-800 mb-3">Progress Legend</h2>
+            <div className="space-y-1">
 
                 {/* Complete */}
-                <div className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 transition">
-                    <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center mr-4 shadow-sm flex-shrink-0">
-                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
+                <div className="flex items-center py-1 rounded-lg">
+                    <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center mr-3 shadow-sm flex-shrink-0">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7"></path></svg>
                     </div>
                     <div>
-                        <span className="text-gray-900 font-bold block text-lg">All fields complete</span>
-                        <span className="text-gray-500 text-sm">Every field in this section has been filled.</span>
+                        <span className="text-gray-900 font-semibold text-sm">All fields complete</span>
                     </div>
                 </div>
 
                 {/* Partial */}
-                <div className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 transition">
-                    <div className="w-10 h-10 rounded-full bg-green-500 flex items-center justify-center mr-4 shadow-sm flex-shrink-0">
-                        <span className="text-white font-bold text-xl">!</span>
+                <div className="flex items-center py-1 rounded-lg">
+                    <div className="w-6 h-6 rounded-full bg-amber-500 flex items-center justify-center mr-3 shadow-sm flex-shrink-0">
+                        <span className="text-white font-bold text-xs">!</span>
                     </div>
                     <div>
-                        <span className="text-gray-900 font-bold block text-lg">Requirements met</span>
-                        <span className="text-gray-500 text-sm">All <strong>required</strong> fields are complete, but some optional fields remain.</span>
+                        <span className="text-gray-900 font-semibold text-sm">Requirements met (optional fields remain)</span>
                     </div>
                 </div>
 
                 {/* Incomplete */}
-                <div className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 transition">
-                    <div className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center mr-4 shadow-sm flex-shrink-0">
-                        <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <div className="flex items-center py-1 rounded-lg">
+                    <div className="w-6 h-6 rounded-full bg-red-500 flex items-center justify-center mr-3 shadow-sm flex-shrink-0">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </div>
                     <div>
-                        <span className="text-gray-900 font-bold block text-lg">Action required</span>
-                        <span className="text-gray-500 text-sm">Not all <strong>required</strong> fields are complete.</span>
+                        <span className="text-gray-900 font-semibold text-sm">Action required</span>
                     </div>
                 </div>
 
                 {/* Active */}
-                <div className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 transition">
-                    <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center mr-4 shadow-sm ring-4 ring-blue-100 flex-shrink-0">
-                        <div className="w-3 h-3 rounded-full bg-white"></div>
+                <div className="flex items-center py-1 rounded-lg">
+                    <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center mr-3 shadow-sm ring-2 ring-blue-100 flex-shrink-0">
+                        <div className="w-2 h-2 rounded-full bg-white"></div>
                     </div>
                     <div>
-                        <span className="text-gray-900 font-bold block text-lg">Current Section</span>
-                        <span className="text-gray-500 text-sm">Indicates the form section you are currently viewing.</span>
+                        <span className="text-gray-900 font-semibold text-sm">Current Section</span>
                     </div>
                 </div>
 
                 {/* Not Visited */}
-                <div className="flex items-center py-2 px-3 rounded-lg hover:bg-gray-50 transition">
-                    <div className="w-10 h-10 rounded-full bg-gray-200 border-2 border-gray-300 mr-4 shadow-sm flex-shrink-0"></div>
+                <div className="flex items-center py-1 rounded-lg">
+                    <div className="w-6 h-6 rounded-full bg-gray-200 border-2 border-gray-300 mr-3 shadow-sm flex-shrink-0"></div>
                     <div>
-                        <span className="text-gray-900 font-bold block text-lg">Not Started</span>
-                        <span className="text-gray-500 text-sm">You haven't visited this section yet.</span>
+                        <span className="text-gray-900 font-semibold text-sm">Not Started</span>
                     </div>
                 </div>
             </div>
@@ -518,11 +562,15 @@ const FieldRenderer = ({
 };
 
 // --- Component: Main Form Logic ---
-const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance }) => {
+const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance, onUpload }) => {
 
     // 0. Welcome Section
     if (sectionKey === 'welcome') {
-        return <WelcomeSection />;
+        return (
+            <div className="w-full flex h-full">
+                <WelcomeSection onUpload={onUpload} />
+            </div>
+        );
     }
 
     // 1. Data Tagger
@@ -609,15 +657,22 @@ const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance }) =
 // --- Component: Navigation & Download ---
 const SchemaNav = ({ activeSection, setActiveSection, onDownload, formData, visitedSections }) => {
     return (
-        <div className="w-1/5 border-r border-gray-200 bg-gray-50 h-screen flex flex-col">
-            <div className="p-6 overflow-y-auto flex-grow">
+        <div className="w-1/5 border-r border-gray-200 bg-gray-50 h-full overflow-y-auto flex-shrink-0">
+            <div className="p-6">
                 <h2 className="text-lg font-bold mb-4 text-gray-700">Metadata Sections</h2>
                 <ul className="space-y-2">
                     {VISIBLE_SECTIONS.map((sectionKey) => {
                         let title;
-                        if (sectionKey === 'datasetFilters') title = "Dataset Filters";
-                        else if (sectionKey === 'welcome') title = "Welcome & Guide";
-                        else title = DATA_SCHEMA.properties[sectionKey]?.title || sectionKey;
+                        if (sectionKey === 'datasetFilters') {
+                            title = "Dataset Filters";
+                        } else if (sectionKey === 'welcome') {
+                            title = "Welcome & Guide";
+                        } else {
+                            // Title logic matching user requirement
+                            const prop = DATA_SCHEMA.properties[sectionKey];
+                            const definition = prop?.$ref ? resolveRef(prop.$ref) : prop;
+                            title = prop?.title || definition?.title || (sectionKey.charAt(0).toUpperCase() + sectionKey.slice(1));
+                        }
 
                         if (sectionKey !== 'datasetFilters' && sectionKey !== 'welcome' && !DATA_SCHEMA.properties[sectionKey]) return null;
 
@@ -665,7 +720,7 @@ const SchemaNav = ({ activeSection, setActiveSection, onDownload, formData, visi
 
 // --- Component: Guidance Panel ---
 const GuidancePanel = ({ activeGuidance }) => (
-    <div className="w-1/4 border-l border-gray-200 p-6 bg-gray-50 h-screen sticky top-0 overflow-y-auto">
+    <div className="w-1/4 border-l border-gray-200 p-6 bg-gray-50 h-full overflow-y-auto flex-shrink-0">
         <h2 className="text-lg font-bold mb-4 text-gray-700">Field Guidance</h2>
         <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100">
             {activeGuidance ? (
@@ -736,6 +791,14 @@ const SchemaPage = () => {
         });
     }, []);
 
+    // New handler for JSON upload
+    const handleJsonUpload = useCallback((uploadedData) => {
+        setFormData(uploadedData);
+        // We can optionally mark all sections as visited so the user sees the green/red circles immediately
+        const allSections = Object.keys(DATA_SCHEMA.properties);
+        setVisitedSections(new Set([...allSections, 'datasetFilters', 'welcome']));
+    }, []);
+
     const handleTagRemove = (id) => {
         const currentTags = formData['datasetFilters'] || [];
         const newTags = currentTags.filter(tagId => tagId !== id);
@@ -754,40 +817,60 @@ const SchemaPage = () => {
     };
 
     return (
-        <div className="flex min-h-screen font-sans bg-white">
-            <SchemaNav
-                activeSection={activeSection}
-                setActiveSection={handleNavChange}
-                onDownload={downloadJSON}
-                formData={formData}
-                visitedSections={visitedSections}
-            />
+        <div className="flex flex-col min-h-screen font-sans bg-white">
+            {/* Top Bar Added Here */}
+            <UploadTopBar formData={formData} schema={DATA_SCHEMA} />
 
-            <SchemaForm
-                sectionKey={activeSection}
-                formData={formData}
-                onFormChange={handleDataChange}
-                setActiveGuidance={setActiveGuidance}
-            />
-
-            {/* Right Column Logic */}
-            {activeSection === 'datasetFilters' ? (
-                <div className="w-1/4 border-l border-gray-200 p-6 bg-gray-50 h-screen sticky top-0 overflow-y-auto">
-                     <h2 className="text-lg font-bold mb-4 text-gray-700">Active Tags</h2>
-                     <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100 min-h-[200px]">
-                        <FilterChipArea
-                            selectedFilters={formData['datasetFilters'] || []}
-                            handleFilterChange={handleTagRemove}
-                        />
-                     </div>
-                </div>
-            ) : activeSection === 'welcome' ? (
-                 <div className="w-1/4 border-l border-gray-200 bg-gray-50"></div>
-            ) : (
-                <GuidancePanel
-                    activeGuidance={activeGuidance}
+            <div className="flex flex-grow overflow-hidden h-[calc(100vh-40px)]">
+                <SchemaNav
+                    activeSection={activeSection}
+                    setActiveSection={handleNavChange}
+                    onDownload={downloadJSON}
+                    formData={formData}
+                    visitedSections={visitedSections}
                 />
-            )}
+
+                {/* Middle and Right Columns Logic */}
+                {activeSection === 'welcome' ? (
+                    // Welcome Section spans 80% (4/5) because nav is 20% (1/5)
+                    <div className="w-4/5 flex h-full">
+                        <SchemaForm
+                            sectionKey={activeSection}
+                            formData={formData}
+                            onFormChange={handleDataChange}
+                            setActiveGuidance={setActiveGuidance}
+                            onUpload={handleJsonUpload}
+                        />
+                    </div>
+                ) : (
+                    <>
+                        <SchemaForm
+                            sectionKey={activeSection}
+                            formData={formData}
+                            onFormChange={handleDataChange}
+                            setActiveGuidance={setActiveGuidance}
+                            onUpload={handleJsonUpload}
+                        />
+
+                        {/* Right Column Logic */}
+                        {activeSection === 'datasetFilters' ? (
+                            <div className="w-1/4 border-l border-gray-200 p-6 bg-gray-50 h-full overflow-y-auto">
+                                <h2 className="text-lg font-bold mb-4 text-gray-700">Active Tags</h2>
+                                <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100 min-h-[200px]">
+                                    <FilterChipArea
+                                        selectedFilters={formData['datasetFilters'] || []}
+                                        handleFilterChange={handleTagRemove}
+                                    />
+                                </div>
+                            </div>
+                        ) : (
+                            <GuidancePanel
+                                activeGuidance={activeGuidance}
+                            />
+                        )}
+                    </>
+                )}
+            </div>
         </div>
     );
 };

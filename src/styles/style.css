@@ -4,6 +4,7 @@
 :root {
     --cruk-white: #FFFFFF;
     --cruk-blue: #00468C; /* Primary Blue */
+    --cruk-darkblue: #00468C;
     --cruk-pink: #D10A6F; /* Accent Pink */
     --cruk-gradient-start: #00468C; /* Blue for gradient */
     --cruk-gradient-end: #D10A6F;   /* Pink for gradient */
@@ -130,7 +131,7 @@ body {
 }
 
 body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; color: var(--text); margin: 0; }
-.container { padding: 24px; }
+
 .hidden {
   display: none;
 }

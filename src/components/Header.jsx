@@ -5,7 +5,7 @@ import "../styles/style.css"
 export const Header = () => {
     // Define the inline style object for the image
     const logoStyle = {
-        width: '200px',
+        width: 'auto',
         height: 'auto',
     };
 
