@@ -563,6 +563,19 @@
                               "description": "A description of a table in a dataset.",
                               "title": "Table description"
                         },
+                        "size": {
+                              "anyOf": [
+                                    {
+                                          "type": "integer"
+                                    },
+                                    {
+                                          "type": "null"
+                                    }
+                              ],
+                              "default": null,
+                              "description": "A Population size contributing to the table in a dataset.",
+                              "title": "Table size"
+                        },
                         "columns": {
                               "description": "A list of columns contained within a table in a dataset.",
                               "items": {
@@ -853,7 +866,8 @@
                               "examples": [
                                     "CPRD Aurum contains primary care data contributed by General Practitioner (GP) practices using EMIS Web\u00ae including patient registration information and all care events that GPs have chosen to record as part of their usual medical practice."
                               ],
-                              "guidance": "- An HTML account of the data that **provides context and scope** of the data, **limited to 10000 characters, and/or a resolvable URL** that describes the dataset.\\n- Additional information can be recorded and included using the Associated media field."
+                              "guidance": "- An HTML account of the data that **provides context and scope** of the data, **limited to 10000 characters, and/or a resolvable URL** that describes the dataset.\\n- Additional information can be recorded and included using the Associated media field.",
+                              "title": "Description"
                         },
                         "associatedMedia": {
                               "anyOf": [
@@ -1648,6 +1662,18 @@
                   ],
                   "title": "LifestyleSubTypes",
                   "type": "string"
+            },
+            "LineSeparatedValues": {
+                  "anyOf": [
+                        {
+                              "pattern": "([^\\r\\n]+)",
+                              "type": "string"
+                        },
+                        {
+                              "type": "null"
+                        }
+                  ],
+                  "title": "LineSeparatedValues"
             },
             "LongDescription": {
                   "anyOf": [
@@ -2537,20 +2563,36 @@
                               "guidance": "- Use the **title** the dataset is best known by. Expand **acronyms**, adding the acronym in brackets.\\n- Use a **unique** title. adding a **prefix** with your organisation name or identifier where necessary",
                               "title": "Title"
                         },
-                        "CRUK grant": {
+                        "funders": {
                               "allOf": [
                                     {
-                                          "$ref": "#/$defs/OneHundredFiftyCharacters"
+                                          "$ref": "#/$defs/LineSeparatedValues"
                                     }
                               ],
-                              "description": "Original grant award number",
+                              "description": "List of Funders separated by a line break",
                               "examples": [
-                                    "A4535248py4",
-                                    "CRUK/A3400 00"
+                                    "CRUK",
+                                    "University of Sussex"
+                              ],
+                              "guidance": "Put each funder on a new line",
+
+                              "title": "Funded by"
+                        },
+                        "grantNumbers": {
+                              "allOf": [
+                                    {
+                                          "$ref": "#/$defs/LineSeparatedValues"
+                                    }
+                              ],
+                              "description": "List of grant numbers separated by a line break",
+
+                              "examples": [
+                                    "A354t",
+                                    "ropguadg"
                               ],
                               "guidance": "Is it helpful to have a record of all the grant numbers included here to enable tracking of what happens to CRUK funded datasets? An alternative is to put in the original grant proposal title, but the grant can wander. If so what is the exact format of the grant number? How would we deal with long term datasets that may be the result of more than one grant? ",
 
-                              "title": "CRUK grant"
+                              "title": "Grant numbers"
                         },
 
                         "abstract": {
@@ -2583,7 +2625,7 @@
                               "examples": [
                                     1000
                               ],
-                              "guidance": "Enables researchers to differentiate dataset search results based on population size.",
+                              "guidance": "Enables researchers to find datasets reaching above a population threshold.",
                               "title": "Dataset population size",
                               "type": "integer"
                         },
@@ -2672,6 +2714,8 @@
                         "title",
                         "abstract",
                         "dataCustodian",
+                        "funders",
+                        "grantNumbers",
                         "populationSize",
                         "contactPoint"
                   ],
@@ -3003,7 +3047,8 @@
                               "$ref": "#/$defs/Summary"
                         }
                   ],
-                  "description": "Summary of metadata describing key pieces of information."
+                  "description": "Summary of metadata describing key pieces of information.",
+                  "title": "Summary"
             },
             "documentation": {
                   "anyOf": [
@@ -3050,7 +3095,8 @@
                               "$ref": "#/$defs/Accessibility"
                         }
                   ],
-                  "description": "Accessibility information allows researchers to understand access, usage, limitations, formats, standards and linkage or interoperability with toolsets."
+                  "description": "Accessibility information allows researchers to understand access, usage, limitations, formats, standards and linkage or interoperability with toolsets.",
+                  "title": "Accessibility"
             },
             "enrichmentAndLinkage": {
                   "anyOf": [
@@ -3123,6 +3169,6 @@
             "accessibility",
             "observations"
       ],
-      "title": "Hdruk400",
+      "title": "CRUK100",
       "type": "object"
 }
