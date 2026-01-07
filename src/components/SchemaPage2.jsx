@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo } from 'react';
 import schema from '../utils/schema.json';
 import DataTagger, { FilterChipArea } from './DataTagger';
 import JsonUpload from './JsonUpload';
-import UploadTopBar from './UploadTopBar'; // Restored Import
+import UploadTopBar from './UploadTopBar';
 import { filterData } from '../utils/filter-setup';
 
 // --- USER CONFIGURATION: Sidebar Section Order & Visibility ---
