@@ -1,5 +1,52 @@
-import React, { useState, useMemo } from 'react';
+'use client'; // Required for Next.js App Router components that use state
 
+import React, { useState, useMemo } from 'react';
+import {
+  Box,
+  Typography,
+  TextField,
+  InputAdornment,
+  IconButton,
+  FormControlLabel,
+  Checkbox,
+  MenuItem,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Tooltip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  List,
+  ListItem,
+  ListItemText,
+  Badge,
+  Stack,
+  Collapse
+} from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+
+// --- Brand Colors (Extracted from your style.css) ---
+const COLORS = {
+  blue: '#00468C',
+  pink: '#D10A6F',
+  white: '#FFFFFF',
+  lightBg: '#F0F2F5',
+  border: '#AAB7C4'
+};
+
+// --- Data Generation (Kept identical to your original logic) ---
 const ICON_OPTS = [
     { url: "../assets/animal.webp", label: "Model Organism Study" },
     { url: "../assets/background.webp", label: "Background Information" },
@@ -12,6 +59,7 @@ const ICON_OPTS = [
     { url: "../assets/population.webp", label: "Patient Study" },
     { url: "../assets/treatments.webp", label: "Treatments" }
 ];
+
 const generateMockStudies = () => {
     const titles = [
         "Genomic Profiling of Triple-Negative Breast Cancer", "AI-Driven Drug Discovery for Pancreatic Cancer",
@@ -27,25 +75,19 @@ const generateMockStudies = () => {
     const accesses = ["Access restricted at present","Closed to access",
     "Open in response to specific calls","Open only through collaboration","Open to applicants"
     ];
-    const positions = ["D", "E", "B", "C", "A"]
+    const positions = ["D", "E", "B", "C", "A"];
 
     const studiesData = [];
 
     for (let i = 1; i <= 50; i++) {
         const j = Math.floor(Math.random() * positions.length);
-        const randomAccess = accesses[j]
-        const randomAccessPos = positions[j]
+        const randomAccess = accesses[j];
+        const randomAccessPos = positions[j];
         const randomTitle = titles[Math.floor(Math.random() * titles.length)];
         const randomInstitute = institutes[Math.floor(Math.random() * institutes.length)];
-
-        // Random Dates
         const randomDate = new Date(2023, Math.floor(Math.random() * 12), Math.floor(Math.random() * 28) + 1);
         const earliestDate = new Date(Date.now() - Math.floor(Math.random() * 10 * 365 * 24 * 60 * 60 * 1000));
-
-        // Random Population Size (10 - 40000)
         const popSize = Math.floor(Math.random() * 39991) + 10;
-
-        // Logic to pick up to 4 unique icons at random
         const shuffledIcons = [...ICON_OPTS].sort(() => 0.5 - Math.random());
         const selectedIcons = shuffledIcons.slice(0, Math.floor(Math.random() * 5));
 
@@ -68,41 +110,7 @@ const generateMockStudies = () => {
 
 const INITIAL_STUDIES_DATA = generateMockStudies();
 
-// --- SVG Icons Components ---
-
-const HeartIcon = ({ filled, onClick }) => (
-    <svg
-        onClick={onClick}
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        width="28"
-        height="28"
-        style={{ cursor: 'pointer', fill: filled ? '#dc3545' : 'none', stroke: filled ? '#dc3545' : '#555', strokeWidth: 2 }}
-    >
-        <title>{filled ? "Remove from Favourites" : "Add to Favourites"}</title>
-        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-    </svg>
-);
-
-const CartIcon = ({ filled, onClick }) => (
-    <svg
-        onClick={onClick}
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        width="28"
-        height="28"
-        style={{ cursor: 'pointer', fill: filled ? '#007bff' : 'none', stroke: filled ? '#007bff' : '#555', strokeWidth: 2 }}
-    >
-        <title>{filled ? "Remove from Cart" : "Add to Cart"}</title>
-        <circle cx="9" cy="21" r="1"></circle>
-        <circle cx="20" cy="21" r="1"></circle>
-        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
-    </svg>
-);
-
-
-// --- StudiesSection Component ---
-
+// --- Main Component ---
 export const StudiesSection = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [isDeepSearch, setIsDeepSearch] = useState(false);
@@ -110,12 +118,10 @@ export const StudiesSection = () => {
     const [studies, setStudies] = useState(INITIAL_STUDIES_DATA);
     const [showSynopsis, setShowSynopsis] = useState(true);
 
-    // State for Cart and Favourites
-    const [cart, setCart] = useState([]); // Array of Study Objects
-    const [favourites, setFavourites] = useState([]); // Array of IDs
+    const [cart, setCart] = useState([]);
+    const [favourites, setFavourites] = useState([]);
     const [showCartModal, setShowCartModal] = useState(false);
 
-    // Toggle Logic
     const toggleFavourite = (id) => {
         if (favourites.includes(id)) {
             setFavourites(favourites.filter(favId => favId !== id));
@@ -136,7 +142,6 @@ export const StudiesSection = () => {
     const filteredAndSortedStudies = useMemo(() => {
         let currentStudies = [...studies];
 
-        // 1. Filtering
         if (searchTerm) {
             const lowerCaseSearchTerm = searchTerm.toLowerCase();
             currentStudies = currentStudies.filter(study =>
@@ -145,38 +150,24 @@ export const StudiesSection = () => {
             );
         }
 
-        // 2. Sorting
         currentStudies.sort((a, b) => {
-            // Special handling for Favourite Sorting
             if (sortConfig.column === 'favourite') {
                 const isFavA = favourites.includes(a.id);
                 const isFavB = favourites.includes(b.id);
                 if (isFavA === isFavB) return 0;
-                if (sortConfig.direction === 'desc') {
-                    return isFavA ? -1 : 1;
-                } else {
-                    return isFavA ? 1 : -1;
-                }
+                return sortConfig.direction === 'desc' ? (isFavA ? -1 : 1) : (isFavA ? 1 : -1);
             }
 
             const valA = a[sortConfig.column];
             const valB = b[sortConfig.column];
 
-            if (valA < valB) {
-                return sortConfig.direction === 'asc' ? -1 : 1;
-            }
-            if (valA > valB) {
-                return sortConfig.direction === 'asc' ? 1 : -1;
-            }
+            if (valA < valB) return sortConfig.direction === 'asc' ? -1 : 1;
+            if (valA > valB) return sortConfig.direction === 'asc' ? 1 : -1;
             return 0;
         });
 
         return currentStudies;
     }, [studies, searchTerm, isDeepSearch, sortConfig, favourites]);
-
-    const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value);
-    };
 
     const handleSort = (column) => {
         setSortConfig(prevConfig => ({
@@ -195,394 +186,251 @@ export const StudiesSection = () => {
         downloadAnchorNode.remove();
     };
 
-    const getSortIndicator = (column) => {
-        if (sortConfig.column === column) {
-            return sortConfig.direction === 'asc' ? ' ▲' : ' ▼';
-        }
-        return '';
+    // Helper to render sort arrow
+    const SortIcon = ({ column }) => {
+        if (sortConfig.column !== column) return null;
+        return sortConfig.direction === 'asc'
+            ? <ArrowUpwardIcon fontSize="small" sx={{ opacity: 0.7, ml: 0.5 }} />
+            : <ArrowDownwardIcon fontSize="small" sx={{ opacity: 0.7, ml: 0.5 }} />;
     };
 
-    const style = { fontSize: '1.3rem' };
+    // Define table headers for cleaner render loop
+    const headers = [
+        { id: 'leadResearcherInstitute', label: 'Lead Researcher' },
+        { id: 'populationSize', label: 'Pop. Size' },
+        { id: 'position', label: 'Accessibility' },
+        { id: 'earliestData', label: 'Earliest Data' },
+        { id: 'dateStarted', label: 'Start Date' },
+        { id: 'dateAdded', label: 'Updated' },
+    ];
 
     return (
-        <div style={style}>
-            <style>{`
-                /* Container for the image and the tooltip */
-                .icon-container {
-                    position: relative;
-                    display: inline-flex;
-                    justify-content: center;
-                    align-items: center;
-                    z-index: 1;
-                }
+        <Paper elevation={0} sx={{ p: 4, bgcolor: COLORS.white }}>
+            {/* Header Section */}
+            <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3, pb: 1 }}>
+                <Typography variant="h4" component="h2" sx={{ color: COLORS.blue, fontWeight: 'bold' }}>
+                    Studies
+                </Typography>
+            </Box>
 
-                .icon-container:hover {
-                    z-index: 9999;
-                }
+            {/* Controls Container */}
+            <Paper
+                elevation={0}
+                variant="outlined"
+                sx={{
+                    p: 2,
+                    mb: 3,
+                    bgcolor: COLORS.lightBg,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 3,
+                    flexWrap: 'wrap'
+                }}
+            >
+                {/* Search */}
+                <TextField
+                    label="Search studies..."
+                    variant="outlined"
+                    size="small"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    sx={{ width: 300, bgcolor: 'white' }}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <SearchIcon />
+                            </InputAdornment>
+                        ),
+                    }}
+                />
 
-                /* Tooltip Box - White Text on Blue Background */
-                .custom-tooltip {
-                    visibility: hidden;
-                    background-color: #0056b3; /* Darker Blue */
-                    color: #ffffff;            /* White Text */
-                    text-align: center;
-                    padding: 6px 12px;
-                    border-radius: 6px;
-                    position: absolute;
-                    z-index: 10000;
-                    bottom: 110%;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    font-size: 0.9rem;
-                    white-space: nowrap;
-                    opacity: 0;
-                    transition: opacity 0.2s;
-                    pointer-events: none;
-                    box-shadow: 0px 4px 8px rgba(0,0,0,0.3);
-                }
+                {/* Cart Badge */}
+                <IconButton onClick={() => setShowCartModal(true)} color="primary">
+                    <Badge badgeContent={cart.length} color="error">
+                        <ShoppingCartIcon sx={{ fontSize: 28 }} />
+                    </Badge>
+                </IconButton>
 
-                /* Arrow pointing down - matches Blue background */
-                .custom-tooltip::after {
-                    content: "";
-                    position: absolute;
-                    top: 100%;
-                    left: 50%;
-                    margin-left: -5px;
-                    border-width: 5px;
-                    border-style: solid;
-                    border-color: #0056b3 transparent transparent transparent;
-                }
-
-                .icon-container:hover .custom-tooltip {
-                    visibility: visible;
-                    opacity: 1;
-                }
-
-                .studies-table {
-                    width: 100%;
-                    border-collapse: collapse;
-                }
-
-                .studies-table th {
-                    white-space: nowrap;
-                    padding: 12px;
-                    text-align: left;
-                    background-color: #e9ecef;
-                    cursor: pointer;
-                    border-bottom: 2px solid #ccc;
-                    position: sticky;
-                    top: 0;
-                    z-index: 500;
-                }
-
-                .studies-table td {
-                    padding: 10px 12px;
-                }
-
-                .study-title-row {
-                    background-color: #fff;
-                    border-top: 2px solid #888;
-                    position: relative;
-                }
-
-                .study-data-row {
-                    background-color: #fcfcfc;
-                }
-
-                .synopsis-row td {
-                    background-color: #f8f9fa;
-                    color: #555;
-                    font-style: italic;
-                    padding: 10px 20px;
-                    border-bottom: 1px solid #ddd;
-                    font-size: 1.1rem;
-                }
-
-                .controls-container {
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 20px;
-                    align-items: center;
-                    margin-bottom: 20px;
-                    background: #f1f1f1;
-                    padding: 15px;
-                    border-radius: 8px;
-                    position: relative;
-                }
-
-                .cart-container {
-                    position: relative;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    font-size: 1.5rem;
-                }
-                .cart-badge {
-                    background-color: #d9534f;
-                    color: white;
-                    border-radius: 50%;
-                    padding: 2px 8px;
-                    font-size: 0.9rem;
-                    position: absolute;
-                    top: -5px;
-                    right: -10px;
-                    font-weight: bold;
-                }
-
-                .modal-overlay {
-                    position: fixed;
-                    top: 0; left: 0; right: 0; bottom: 0;
-                    background: rgba(0,0,0,0.5);
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    z-index: 20000;
-                }
-                .modal-content {
-                    background: white;
-                    padding: 20px;
-                    border-radius: 8px;
-                    width: 500px;
-                    max-width: 90%;
-                    max-height: 80vh;
-                    overflow-y: auto;
-                    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-                }
-
-                .action-btn-group {
-                    display: flex;
-                    gap: 15px;
-                    margin-right: 20px;
-                }
-
-                /* Study Title Link Styling */
-                .study-title-link {
-                    font-size: 1.4rem;
-                    font-weight: bold;
-                    margin-right: 20px;
-                    color: #0056b3;
-                    text-decoration: none;
-                }
-                .study-title-link:hover {
-                    text-decoration: underline;
-                }
-
-                /* Explicit "Clickable" Expand/Collapse Button */
-                .expand-collapse-btn {
-                    background: none;
-                    border: none;
-                    color: #0056b3;
-                    font-size: 1.1rem;
-                    font-weight: bold;
-                    text-decoration: underline;
-                    cursor: pointer;
-                    padding: 10px 20px;
-                    transition: color 0.2s;
-                }
-                .expand-collapse-btn:hover {
-                    color: #003060;
-                    background-color: #eef;
-                    border-radius: 4px;
-                }
-            `}</style>
-
-            {/* Main Heading */}
-
-
-            <section className="studies-section">
-
-                <h2 class="p-4 text-3xl sm:text-4xl font-bold text-[var(--cruk-blue)] sm:pr-8 sm:w-1/4 flex items-center border-b sm:border-b-0 sm:border-r border-gray-200">Studies</h2>
-                {/* Controls Area */}
-                <div className="controls-container">
-                    <div>
-                        <input
-                            type="search"
-                            placeholder="Search studies..."
-                            value={searchTerm}
-                            onChange={handleSearchChange}
-                            style={{ padding: '10px', fontSize: '1.1rem', width: '300px' }}
-                        />
-                    </div>
-
-                    {/* Cart Icon in Header */}
-                    <div className="cart-container" onClick={() => setShowCartModal(true)}>
-                        <span title="View Cart">🛒</span>
-                        <span className="cart-badge">{cart.length}</span>
-                    </div>
-
-                    <div>
-                        <input
-                            type="checkbox"
-                            id="deep_search"
+                {/* Deep Search Checkbox */}
+                <FormControlLabel
+                    control={
+                        <Checkbox
                             checked={isDeepSearch}
                             onChange={(e) => setIsDeepSearch(e.target.checked)}
-                            style={{ transform: "scale(1.5)", marginRight: "10px", marginLeft: "20px" }}
+                            color="primary"
                         />
-                        <label htmlFor="deep_search">Deep Search</label>
-                    </div>
+                    }
+                    label="Deep Search"
+                />
 
-                    {/* Sort Dropdown */}
-                    <div>
-                        <label style={{ marginRight: '10px' }}>Sort by:</label>
-                        <select
-                            onChange={(e) => handleSort(e.target.value)}
-                            value={sortConfig.column}
-                            style={{ padding: '8px', fontSize: '1rem' }}
-                        >
-                            <option value="favourite">Favourites</option>
-                            <option value="dateAdded">Updated Date</option>
-                            <option value="studyTitle">Study Title</option>
-                            <option value="leadResearcherInstitute">Lead Researcher</option>
-                            <option value="populationSize">Population Size</option>
-                            <option value="position">Accessibility</option>
-                            <option value="earliestData">Earliest Data</option>
-                            <option value="dateStarted">Start Date</option>
-                        </select>
-                    </div>
+                {/* Sort Dropdown */}
+                <TextField
+                    select
+                    label="Sort by"
+                    size="small"
+                    value={sortConfig.column}
+                    onChange={(e) => handleSort(e.target.value)}
+                    sx={{ width: 180, bgcolor: 'white' }}
+                >
+                    <MenuItem value="favourite">Favourites</MenuItem>
+                    <MenuItem value="dateAdded">Updated Date</MenuItem>
+                    <MenuItem value="studyTitle">Study Title</MenuItem>
+                    <MenuItem value="leadResearcherInstitute">Lead Researcher</MenuItem>
+                    <MenuItem value="populationSize">Population Size</MenuItem>
+                    <MenuItem value="position">Accessibility</MenuItem>
+                    <MenuItem value="earliestData">Earliest Data</MenuItem>
+                    <MenuItem value="dateStarted">Start Date</MenuItem>
+                </TextField>
 
-                    {/* Explicitly Clickable Expand/Collapse Text */}
-                    <div>
-                        <button
-                            className="expand-collapse-btn"
-                            onClick={() => setShowSynopsis(!showSynopsis)}
-                        >
-                            {showSynopsis ? "Collapse Synopses" : "Expand Synopses"}
-                        </button>
-                    </div>
-                </div>
+                {/* Collapse/Expand Toggle */}
+                <Button
+                    onClick={() => setShowSynopsis(!showSynopsis)}
+                    sx={{ ml: 'auto', textTransform: 'none', fontWeight: 'bold' }}
+                >
+                    {showSynopsis ? "Collapse Synopses" : "Expand Synopses"}
+                </Button>
+            </Paper>
 
-                {/* Cart Modal */}
-                {showCartModal && (
-                    <div className="modal-overlay" onClick={() => setShowCartModal(false)}>
-                        <div className="modal-content" onClick={e => e.stopPropagation()}>
-                            <h3>Your Cart ({cart.length})</h3>
-                            {cart.length === 0 ? (
-                                <p>Your cart is empty.</p>
-                            ) : (
-                                <ul style={{ marginBottom: '20px' }}>
-                                    {cart.map(item => (
-                                        <li key={item.id} style={{ marginBottom: '8px' }}>
-                                            {item.studyTitle}
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
-                            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
-                                <button onClick={() => setShowCartModal(false)} style={{ padding: '8px 16px' }}>Close</button>
-                                {cart.length > 0 && (
-                                    <button
-                                        onClick={handleDownloadMetadata}
-                                        style={{ padding: '8px 16px', background: '#007bff', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
-                                    >
-                                        Download Metadata
-                                    </button>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                )}
+            {/* Table */}
+            <TableContainer component={Paper} variant="outlined" sx={{ maxHeight: 800 }}>
+                <Table stickyHeader sx={{ minWidth: 650 }}>
+                    <TableHead>
+                        <TableRow>
+                            {headers.map((headCell) => (
+                                <TableCell
+                                    key={headCell.id}
+                                    onClick={() => handleSort(headCell.id)}
+                                    sx={{
+                                        cursor: 'pointer',
+                                        fontWeight: 'bold',
+                                        bgcolor: COLORS.lightBg,
+                                        '&:hover': { bgcolor: '#e2e6ea' }
+                                    }}
+                                >
+                                    <Box display="flex" alignItems="center">
+                                        {headCell.label}
+                                        <SortIcon column={headCell.id} />
+                                    </Box>
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {filteredAndSortedStudies.map((study) => {
+                            const isFav = favourites.includes(study.id);
+                            const isInCart = cart.some(c => c.id === study.id);
 
-                <div className="studies-table-container">
-                    <table className="studies-table">
-                        <thead>
-                            <tr>
-                                <th onClick={() => handleSort('leadResearcherInstitute')}>
-                                    Lead Researcher <span className="sort-indicator">{getSortIndicator('leadResearcherInstitute')}</span>
-                                </th>
-                                <th onClick={() => handleSort('populationSize')}>
-                                    Pop. Size <span className="sort-indicator">{getSortIndicator('populationSize')}</span>
-                                </th>
-                                <th onClick={() => handleSort('position')}>
-                                    Accessibility <span className="sort-indicator">{getSortIndicator('accessPhrase')}</span>
-                                </th>
-                                <th onClick={() => handleSort('earliestData')}>
-                                    Earliest Data <span className="sort-indicator">{getSortIndicator('earliestData')}</span>
-                                </th>
-                                <th onClick={() => handleSort('dateStarted')}>
-                                    Start Date <span className="sort-indicator">{getSortIndicator('dateStarted')}</span>
-                                </th>
-                                <th onClick={() => handleSort('dateAdded')}>
-                                    Updated <span className="sort-indicator">{getSortIndicator('dateAdded')}</span>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredAndSortedStudies.map(study => {
-                                const isFav = favourites.includes(study.id);
-                                const isInCart = cart.some(c => c.id === study.id);
-
-                                return (
+                            return (
                                 <React.Fragment key={study.id}>
-
-                                    {/* LINE 1: Actions (Icons), Title, Indicators */}
-                                    <tr className="study-title-row">
-                                        <td colSpan="6" style={{ padding: '15px' }}>
-                                            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
-
-                                                {/* Action Buttons (Icons) */}
-                                                <div className="action-btn-group">
-                                                    <HeartIcon
-                                                        filled={isFav}
-                                                        onClick={() => toggleFavourite(study.id)}
-                                                    />
-                                                    <CartIcon
-                                                        filled={isInCart}
-                                                        onClick={() => toggleCart(study)}
-                                                    />
-                                                </div>
+                                    {/* Row 1: Title and Actions */}
+                                    <TableRow sx={{ bgcolor: 'white', '& > td': { borderBottom: 'none' } }}>
+                                        <TableCell colSpan={6} sx={{ pt: 3, pb: 1 }}>
+                                            <Stack direction="row" alignItems="center" spacing={2}>
+                                                {/* Actions */}
+                                                <Stack direction="row">
+                                                    <IconButton onClick={() => toggleFavourite(study.id)} color={isFav ? "error" : "default"}>
+                                                        {isFav ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                                                    </IconButton>
+                                                    <IconButton onClick={() => toggleCart(study)} color={isInCart ? "primary" : "default"}>
+                                                        <ShoppingCartIcon />
+                                                    </IconButton>
+                                                </Stack>
 
                                                 {/* Title Link */}
-                                                <a href="../metadata.html" className="study-title-link">
+                                                <Typography
+                                                    variant="h6"
+                                                    component="a"
+                                                    href="../metadata.html"
+                                                    sx={{
+                                                        color: COLORS.blue,
+                                                        textDecoration: 'none',
+                                                        fontWeight: 'bold',
+                                                        '&:hover': { textDecoration: 'underline' }
+                                                    }}
+                                                >
                                                     {study.studyTitle}
-                                                </a>
+                                                </Typography>
 
-                                                {/* Indicators/Icons */}
-                                                <div style={{ display: 'flex', gap: '10px' }}>
+                                                {/* Icons with MUI Tooltip */}
+                                                <Stack direction="row" spacing={1} sx={{ ml: 2 }}>
                                                     {study.studyIcons.map((icon, idx) => (
-                                                        <div key={idx} className="icon-container">
-                                                            <img
+                                                        <Tooltip key={idx} title={icon.label} arrow placement="top">
+                                                            <Box
+                                                                component="img"
                                                                 src={icon.url}
                                                                 alt={icon.label}
-                                                                style={{
-                                                                    height: '1.5em',
-                                                                    width: 'auto',
-                                                                    cursor: 'help',
-                                                                    display: 'block'
-                                                                }}
+                                                                sx={{ height: 24, width: 'auto', cursor: 'help' }}
                                                             />
-                                                            <span className="custom-tooltip">{icon.label}</span>
-                                                        </div>
+                                                        </Tooltip>
                                                     ))}
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                                </Stack>
+                                            </Stack>
+                                        </TableCell>
+                                    </TableRow>
 
-                                    {/* LINE 2: Summary Information */}
-                                    <tr className="study-data-row">
-                                        <td>{study.leadResearcherInstitute}</td>
-                                        <td>{study.populationSize.toLocaleString()}</td>
-                                        <td>{study.accessPhrase}</td>
-                                        <td>{study.earliestData}</td>
-                                        <td>{study.dateStarted}</td>
-                                        <td>{study.dateAdded}</td>
-                                    </tr>
+                                    {/* Row 2: Data */}
+                                    <TableRow sx={{ bgcolor: '#fafafa' }}>
+                                        <TableCell>{study.leadResearcherInstitute}</TableCell>
+                                        <TableCell>{study.populationSize.toLocaleString()}</TableCell>
+                                        <TableCell>{study.accessPhrase}</TableCell>
+                                        <TableCell>{study.earliestData}</TableCell>
+                                        <TableCell>{study.dateStarted}</TableCell>
+                                        <TableCell>{study.dateAdded}</TableCell>
+                                    </TableRow>
 
-                                    {/* LINE 3: Synopsis */}
-                                    {showSynopsis && (
-                                        <tr className="synopsis-row">
-                                            <td colSpan="6">
-                                                <strong>Synopsis: </strong> {study.synopsis}
-                                            </td>
-                                        </tr>
-                                    )}
-
+                                    {/* Row 3: Synopsis (Collapsible) */}
+                                    <TableRow>
+                                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                                            <Collapse in={showSynopsis} timeout="auto" unmountOnExit>
+                                                <Box sx={{ margin: 1, p: 2, bgcolor: COLORS.lightBg, fontStyle: 'italic', borderRadius: 1 }}>
+                                                    <Typography variant="body2" color="text.secondary">
+                                                        <strong>Synopsis: </strong>{study.synopsis}
+                                                    </Typography>
+                                                </Box>
+                                            </Collapse>
+                                        </TableCell>
+                                    </TableRow>
                                 </React.Fragment>
-                            )})}
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </div>
+                            );
+                        })}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
+            {/* Cart Modal (Dialog) */}
+            <Dialog
+                open={showCartModal}
+                onClose={() => setShowCartModal(false)}
+                maxWidth="sm"
+                fullWidth
+            >
+                <DialogTitle>Your Cart ({cart.length})</DialogTitle>
+                <DialogContent dividers>
+                    {cart.length === 0 ? (
+                        <Typography>Your cart is empty.</Typography>
+                    ) : (
+                        <List dense>
+                            {cart.map((item) => (
+                                <ListItem key={item.id} divider>
+                                    <ListItemText primary={item.studyTitle} />
+                                </ListItem>
+                            ))}
+                        </List>
+                    )}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setShowCartModal(false)}>Close</Button>
+                    {cart.length > 0 && (
+                        <Button
+                            onClick={handleDownloadMetadata}
+                            variant="contained"
+                            color="primary"
+                        >
+                            Download Metadata
+                        </Button>
+                    )}
+                </DialogActions>
+            </Dialog>
+        </Paper>
     );
 };
