@@ -1,0 +1,2761 @@
+{
+  "summary": {
+    "title": "OPTIMAM Mammographic Image Database",
+    "doiName": "10.1148/ryai.2020200103",
+    "abstract": "The OPTIMAM Mammography Image Database is a sharable resource with processed and unprocessed mammography images from United Kingdom breast screening centers, with annotated cancers and clinical details.",
+    "keywords": [
+      "Mammography",
+      "Tomosythesis",
+      "Breast Screening",
+      "Symptomatic",
+      "Breast Cancer"
+    ],
+    "publisher": {
+      "name": "Cancer Research Horizons",
+      "gatewayId": "ca48a08f-8d21-4ee2-bd9a-6bcf2943168e"
+    },
+    "inPipeline": "Not available",
+    "shortTitle": "OPTIMAM Mammographic Image Database",
+    "datasetType": "Health and disease",
+    "description": "The development of artificial intelligence software to improve the outcomes of breast screening relies on the availability of well-curated image databases. The OPTIMAM Mammography Image Database (OMI-DB) was created to provide a centralized, fully annotated dataset for research. The initial reason for creating the database was for the Cancer Research United Kingdom–funded projects OPTIMAM (2008–2013) and OPTIMAM2 (2013–2018), which evaluated how various factors affect breast cancer detection on mammograms. The images are derived from screening centers in the United Kingdom and combined with systematically collected data on the current screening episode, as well as previous and subsequent episodes. In the United Kingdom, the National Health Service Breast Screening Programme (NHSBSP) invites women to attend breast screening every 3 years between the ages of 50 and 70 years. A screening episode is one attendance at screening by a woman and includes any immediate workup imaging (assessment) if she was recalled for further investigation of a suspicious region on the screening mammograms. Any pathologic finding is also included, and the episode ends with histologic diagnosis or treatment for all lesions. Our objective was to collect mammograms for women with screen-detected cancers as well as representative samples of normal and benign screening cases.\n\n“For processing” and “for presentation” screening mammograms and prior mammograms have been collected for all screen-detected and interval cancers from several screening centres since 2011. All mammography images and data associated with initial screening attendance, further assessment, and surgical outcomes were collected as a screening episode. In addition to continuous collection of cancers, images and clinical data were collected for all women screened during 2014, and for a random selection of 25% of all women screened in 2012, 2013, and 2015 at two of the three sites. Collection into the database is ongoing, and each case is updated with new information and further screening episodes. \n\nThe associated data comprise radiologic, clinical, and pathologic information extracted from NBSS. Information on screening history, previous occurrences of cancer, biopsy results, and surgical procedures are collected from NBSS. The exact radiologic locations of lesions are not stored in NBSS. However, such information, important for training and evaluating algorithms, is collected in OMI-DB. Experienced (UK accredited) mammography readers at their own site (radiologists and advanced practice radiographers) annotate the images with reference to records made at the time of initial mammography interpretation and at further (assessment) workup (magnification views, US, and biopsy). This information is used to define rectangular regions of interest indicating the location and area of lesions and other attributes, such as radiologic appearance and conspicuity.",
+    "contactPoint": "mhalling-brown@nhs.net",
+    "datasetSubType": "Not applicable",
+    "populationSize": 540000,
+    "controlledKeywords": null,
+    "funders": "CRUK",
+    "grantNumbers": "10350",
+    "dataCustodian": "Cancer Research Horizons",
+    "datasetAliases": "n/a"
+  },
+  "coverage": {
+    "pathway": "The images are derived from screening centres in the United Kingdom and combined with systematically collected data on the current screening episode, as well as previous and subsequent episodes. In the United Kingdom, the National Health Service Breast Screening Programme (NHSBSP) invites women to attend breast screening every 3 years between the ages of 50 and 70 years. A screening episode is one attendance at screening by a woman and includes any immediate workup imaging (assessment) if she was recalled for further investigation of a suspicious region on the screening mammograms. Any pathologic finding is also included, and the episode ends with histologic diagnosis or treatment for all lesions. At some screening centers younger and older women are also invited for screening as part of the national age trial. Some women in high-risk groups receive annual invitations to screening. Our objective was to collect mammograms for women with screen-detected cancers as well as representative samples of normal and benign screening cases.",
+    "spatial": "United Kingdom",
+    "followUp": "Continuous",
+    "typicalAgeRange": "50-70",
+    "datasetCompleteness": "none",
+    "typicalAgeRangeMin": 50,
+    "typicalAgeRangeMax": 70
+  },
+  "provenance": {
+    "origin": {
+      "source": "Other",
+      "purpose": "Disease registry",
+      "imageContrast": "Not stated",
+      "collectionSituation": "Other"
+    },
+    "temporal": {
+      "endDate": null,
+      "timeLag": "Variable",
+      "startDate": "2011-01-01",
+      "accrualPeriodicity": "Continuous",
+      "distributionReleaseDate": null
+    }
+  },
+  "observations": [
+    {
+      "observedNode": "Persons",
+      "measuredValue": 540000,
+      "observationDate": "2023-05-26",
+      "measuredProperty": "Total Count",
+      "disambiguatingDescription": "Total number of clients in the dataset"
+    },
+    {
+      "observedNode": "Findings",
+      "measuredValue": 18000,
+      "observationDate": "2023-05-26",
+      "measuredProperty": "Count of screen detect cancer findings",
+      "disambiguatingDescription": "Screen detected cancer findings"
+    },
+    {
+      "observedNode": "Events",
+      "measuredValue": 3500,
+      "observationDate": "2023-05-26",
+      "measuredProperty": "Number of interval cancer events",
+      "disambiguatingDescription": "Interval Cancer events"
+    }
+  ],
+  "accessibility": {
+    "usage": {
+      "resourceCreator": {
+        "name": "Cancer Research UK;,;Royal Surrey NHS Foundation Trust",
+        "rorId": null,
+        "gatewayId": null
+      },
+      "dataUseLimitation": "Project-specific restrictions",
+      "dataUseRequirement": "Project-specific restrictions"
+    },
+    "access": {
+      "accessRights": "https://medphys.royalsurrey.nhs.uk/omidb/",
+      "jurisdiction": "GB-ENG",
+      "accessService": null,
+      "dataProcessor": "Data scientists from the Royal Surrey manage the collection, storage and distribution of the dataset",
+      "dataController": "CRUK and Royal Surrey NHS Foundation Trusts are joint data controllers. The OPTIMAM Data Access Committee (https://medphys.royalsurrey.nhs.uk/omidb/the-steering-committee/) administer and review data access request. Please apply for access at https://medphys.royalsurrey.nhs.uk/omidb/apply-for-access/ .",
+      "deliveryLeadTime": "1-2 months",
+      "accessRequestCost": null,
+      "accessServiceCategory": null
+    },
+    "formatAndStandards": {
+      "formats": "DICOM;,;JSON",
+      "languages": "en",
+      "conformsTo": null,
+      "vocabularyEncodingSchemes": "LOCAL"
+    }
+  },
+  "structuralMetadata": {
+    "tables": [
+      {
+        "name": "CLIENT",
+        "columns": [
+          {
+            "name": "ClientID",
+            "values": null,
+            "dataType": "string",
+            "sensitive": false,
+            "description": "ClientID"
+          },
+          {
+            "name": "Classification",
+            "values": null,
+            "dataType": "string",
+            "sensitive": false,
+            "description": "Classification"
+          }
+        ],
+        "description": "Client-level object; a container for this client's episodes."
+      },
+      {
+        "name": "EPISODE",
+        "columns": [
+          {
+            "name": "Episode ID",
+            "values": null,
+            "dataType": "string",
+            "sensitive": false,
+            "description": "Episode ID"
+          },
+          {
+            "name": "IntervalCancerType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "IntervalCancerType"
+          },
+          {
+            "name": "EpisodeIsClosed",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "EpisodeIsClosed"
+          },
+          {
+            "name": "EpisodeType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "EpisodeType"
+          },
+          {
+            "name": "PatientAge",
+            "values": null,
+            "dataType": "integer",
+            "sensitive": false,
+            "description": "PatientAge"
+          },
+          {
+            "name": "AccessionID",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "AccessionID"
+          },
+          {
+            "name": "IntervalCancerSizeMm",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "IntervalCancerSizeMm"
+          },
+          {
+            "name": "EpisodeClosedDate",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "EpisodeClosedDate"
+          },
+          {
+            "name": "IntervalCancerDateOfDiagnosis",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "IntervalCancerDateOfDiagnosis"
+          },
+          {
+            "name": "IntervalCancerDateOfReview",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "IntervalCancerDateOfReview"
+          },
+          {
+            "name": "EpisodeOpenedDate",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "EpisodeOpenedDate"
+          },
+          {
+            "name": "EpisodeAction",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "EpisodeAction"
+          },
+          {
+            "name": "IntervalCancerDateOfRegional",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "IntervalCancerDateOfRegional"
+          },
+          {
+            "name": "StudyList",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Comma-separated Study Instance UIDs"
+          }
+        ],
+        "description": "Episode information. The key of this object is the episode ID."
+      },
+      {
+        "name": "SCREENING",
+        "columns": [
+          {
+            "name": "diagnosticsetoutcome",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "diagnosticsetoutcome"
+          },
+          {
+            "name": "Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Opinion"
+          },
+          {
+            "name": "left_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "left_opinion"
+          },
+          {
+            "name": "right_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "right_opinion"
+          },
+          {
+            "name": "dateperformed",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "dateperformed"
+          },
+          {
+            "name": "L_SizeMm",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "SizeMm (Side-specific)"
+          },
+          {
+            "name": "L_FilmReader1Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReader1Opinion (Side-specific)"
+          },
+          {
+            "name": "L_FilmRecommendedActions",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmRecommendedActions (Side-specific)"
+          },
+          {
+            "name": "L_FilmReader1RecAction",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReader1RecAction (Side-specific)"
+          },
+          {
+            "name": "L_NumberOfRepeats",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "NumberOfRepeats (Side-specific)"
+          },
+          {
+            "name": "L_Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Opinion (Side-specific)"
+          },
+          {
+            "name": "L_FilmReaderOpinions",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReaderOpinions (Side-specific)"
+          },
+          {
+            "name": "L_EquipmentMakeModel",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "EquipmentMakeModel (Side-specific)"
+          },
+          {
+            "name": "L_FinalAction",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FinalAction (Side-specific)"
+          },
+          {
+            "name": "L_Microcalcification",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Microcalcification (Side-specific)"
+          },
+          {
+            "name": "L_DateTaken",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DateTaken (Side-specific)"
+          },
+          {
+            "name": "L_FilmReader3RecAction",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReader3RecAction (Side-specific)"
+          },
+          {
+            "name": "L_FilmReader4RecAction",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReader4RecAction (Side-specific)"
+          },
+          {
+            "name": "L_FilmReader2RecAction",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReader2RecAction (Side-specific)"
+          },
+          {
+            "name": "L_EquipmentUsed",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "EquipmentUsed (Side-specific)"
+          },
+          {
+            "name": "L_FilmReader2Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReader2Opinion (Side-specific)"
+          },
+          {
+            "name": "L_SideCode",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "SideCode (Side-specific)"
+          },
+          {
+            "name": "L_RepeatReason",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "RepeatReason (Side-specific)"
+          },
+          {
+            "name": "L_FilmReader4Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReader4Opinion (Side-specific)"
+          },
+          {
+            "name": "L_MicrocalcWithMass",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "MicrocalcWithMass (Side-specific)"
+          },
+          {
+            "name": "L_Mass",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Mass (Side-specific)"
+          },
+          {
+            "name": "L_FilmReader5Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReader5Opinion (Side-specific)"
+          },
+          {
+            "name": "L_FilmReaders",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReaders (Side-specific)"
+          },
+          {
+            "name": "L_FilmReader5RecAction",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReader5RecAction (Side-specific)"
+          },
+          {
+            "name": "L_FilmReader3Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReader3Opinion (Side-specific)"
+          },
+          {
+            "name": "R_SizeMm",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "SizeMm (Side-specific)"
+          },
+          {
+            "name": "R_FilmReader1Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReader1Opinion (Side-specific)"
+          },
+          {
+            "name": "R_FilmRecommendedActions",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmRecommendedActions (Side-specific)"
+          },
+          {
+            "name": "R_FilmReader1RecAction",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReader1RecAction (Side-specific)"
+          },
+          {
+            "name": "R_NumberOfRepeats",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "NumberOfRepeats (Side-specific)"
+          },
+          {
+            "name": "R_Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Opinion (Side-specific)"
+          },
+          {
+            "name": "R_FilmReaderOpinions",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReaderOpinions (Side-specific)"
+          },
+          {
+            "name": "R_EquipmentMakeModel",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "EquipmentMakeModel (Side-specific)"
+          },
+          {
+            "name": "R_FinalAction",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FinalAction (Side-specific)"
+          },
+          {
+            "name": "R_Microcalcification",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Microcalcification (Side-specific)"
+          },
+          {
+            "name": "R_DateTaken",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DateTaken (Side-specific)"
+          },
+          {
+            "name": "R_FilmReader3RecAction",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReader3RecAction (Side-specific)"
+          },
+          {
+            "name": "R_FilmReader4RecAction",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReader4RecAction (Side-specific)"
+          },
+          {
+            "name": "R_FilmReader2RecAction",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReader2RecAction (Side-specific)"
+          },
+          {
+            "name": "R_EquipmentUsed",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "EquipmentUsed (Side-specific)"
+          },
+          {
+            "name": "R_FilmReader2Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReader2Opinion (Side-specific)"
+          },
+          {
+            "name": "R_SideCode",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "SideCode (Side-specific)"
+          },
+          {
+            "name": "R_RepeatReason",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "RepeatReason (Side-specific)"
+          },
+          {
+            "name": "R_FilmReader4Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReader4Opinion (Side-specific)"
+          },
+          {
+            "name": "R_MicrocalcWithMass",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "MicrocalcWithMass (Side-specific)"
+          },
+          {
+            "name": "R_Mass",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Mass (Side-specific)"
+          },
+          {
+            "name": "R_FilmReader5Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReader5Opinion (Side-specific)"
+          },
+          {
+            "name": "R_FilmReaders",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReaders (Side-specific)"
+          },
+          {
+            "name": "R_FilmReader5RecAction",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReader5RecAction (Side-specific)"
+          },
+          {
+            "name": "R_FilmReader3Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "FilmReader3Opinion (Side-specific)"
+          }
+        ],
+        "description": "Contains screening film side-dependent information."
+      },
+      {
+        "name": "LESION",
+        "columns": [
+          {
+            "name": "L_LesionNotes",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "LesionNotes (Side-specific)"
+          },
+          {
+            "name": "L_LesionDescription",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "LesionDescription (Side-specific)"
+          },
+          {
+            "name": "L_LesionPosition",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "LesionPosition (Side-specific)"
+          },
+          {
+            "name": "L_CystAspirated",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "CystAspirated (Side-specific)"
+          },
+          {
+            "name": "R_LesionNotes",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "LesionNotes (Side-specific)"
+          },
+          {
+            "name": "R_LesionDescription",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "LesionDescription (Side-specific)"
+          },
+          {
+            "name": "R_LesionPosition",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "LesionPosition (Side-specific)"
+          },
+          {
+            "name": "R_CystAspirated",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "CystAspirated (Side-specific)"
+          }
+        ],
+        "description": "Container for lesion information for one side of the breast"
+      },
+      {
+        "name": "BIOPSYWIDE",
+        "columns": [
+          {
+            "name": "diagnosticsetoutcome",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "diagnosticsetoutcome"
+          },
+          {
+            "name": "Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Opinion"
+          },
+          {
+            "name": "left_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "left_opinion"
+          },
+          {
+            "name": "right_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "right_opinion"
+          },
+          {
+            "name": "dateperformed",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "dateperformed"
+          },
+          {
+            "name": "L_DiagnosticSetOutcome",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DiagnosticSetOutcome (Side-specific)"
+          },
+          {
+            "name": "L_Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Opinion (Side-specific)"
+          },
+          {
+            "name": "L_MalignancyType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "MalignancyType (Side-specific)"
+          },
+          {
+            "name": "L_HormonePRScore",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormonePRScore (Side-specific)"
+          },
+          {
+            "name": "L_CalcificationOnSpecimen",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "CalcificationOnSpecimen (Side-specific)"
+          },
+          {
+            "name": "L_InvasivePresent",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasivePresent (Side-specific)"
+          },
+          {
+            "name": "L_LocalisationType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "LocalisationType (Side-specific)"
+          },
+          {
+            "name": "L_left_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "left_opinion (Side-specific)"
+          },
+          {
+            "name": "L_SpecimenType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "SpecimenType (Side-specific)"
+          },
+          {
+            "name": "L_Location",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Location (Side-specific)"
+          },
+          {
+            "name": "L_InsituPresent",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InsituPresent (Side-specific)"
+          },
+          {
+            "name": "L_InSituComponents",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InSituComponents (Side-specific)"
+          },
+          {
+            "name": "L_BenignLesions",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "BenignLesions (Side-specific)"
+          },
+          {
+            "name": "L_HormoneERStatus",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormoneERStatus (Side-specific)"
+          },
+          {
+            "name": "L_HormoneERScore",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormoneERScore (Side-specific)"
+          },
+          {
+            "name": "L_SideCode",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "SideCode (Side-specific)"
+          },
+          {
+            "name": "L_DiseaseGrade",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DiseaseGrade (Side-specific)"
+          },
+          {
+            "name": "L_HormonePRStatus",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormonePRStatus (Side-specific)"
+          },
+          {
+            "name": "L_DcisGrade",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DcisGrade (Side-specific)"
+          },
+          {
+            "name": "L_HER2ReceptorScore",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HER2ReceptorScore (Side-specific)"
+          },
+          {
+            "name": "L_right_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "right_opinion (Side-specific)"
+          },
+          {
+            "name": "L_LymphNode",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "LymphNode (Side-specific)"
+          },
+          {
+            "name": "L_InvasiveType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasiveType (Side-specific)"
+          },
+          {
+            "name": "L_HistologicalCalcification",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HistologicalCalcification (Side-specific)"
+          },
+          {
+            "name": "L_DatePerformed",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DatePerformed (Side-specific)"
+          },
+          {
+            "name": "L_NeedleSpecimenType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "NeedleSpecimenType (Side-specific)"
+          },
+          {
+            "name": "L_HER2ReceptorStatus",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HER2ReceptorStatus (Side-specific)"
+          },
+          {
+            "name": "L_InvasiveTypeOther",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasiveTypeOther (Side-specific)"
+          },
+          {
+            "name": "L_EpithelialProliferation",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "EpithelialProliferation (Side-specific)"
+          },
+          {
+            "name": "L_InvasiveComponents",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasiveComponents (Side-specific)"
+          },
+          {
+            "name": "R_DiagnosticSetOutcome",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DiagnosticSetOutcome (Side-specific)"
+          },
+          {
+            "name": "R_Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Opinion (Side-specific)"
+          },
+          {
+            "name": "R_MalignancyType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "MalignancyType (Side-specific)"
+          },
+          {
+            "name": "R_HormonePRScore",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormonePRScore (Side-specific)"
+          },
+          {
+            "name": "R_CalcificationOnSpecimen",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "CalcificationOnSpecimen (Side-specific)"
+          },
+          {
+            "name": "R_InvasivePresent",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasivePresent (Side-specific)"
+          },
+          {
+            "name": "R_LocalisationType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "LocalisationType (Side-specific)"
+          },
+          {
+            "name": "R_left_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "left_opinion (Side-specific)"
+          },
+          {
+            "name": "R_SpecimenType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "SpecimenType (Side-specific)"
+          },
+          {
+            "name": "R_Location",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Location (Side-specific)"
+          },
+          {
+            "name": "R_InsituPresent",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InsituPresent (Side-specific)"
+          },
+          {
+            "name": "R_InSituComponents",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InSituComponents (Side-specific)"
+          },
+          {
+            "name": "R_BenignLesions",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "BenignLesions (Side-specific)"
+          },
+          {
+            "name": "R_HormoneERStatus",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormoneERStatus (Side-specific)"
+          },
+          {
+            "name": "R_HormoneERScore",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormoneERScore (Side-specific)"
+          },
+          {
+            "name": "R_SideCode",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "SideCode (Side-specific)"
+          },
+          {
+            "name": "R_DiseaseGrade",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DiseaseGrade (Side-specific)"
+          },
+          {
+            "name": "R_HormonePRStatus",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormonePRStatus (Side-specific)"
+          },
+          {
+            "name": "R_DcisGrade",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DcisGrade (Side-specific)"
+          },
+          {
+            "name": "R_HER2ReceptorScore",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HER2ReceptorScore (Side-specific)"
+          },
+          {
+            "name": "R_right_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "right_opinion (Side-specific)"
+          },
+          {
+            "name": "R_LymphNode",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "LymphNode (Side-specific)"
+          },
+          {
+            "name": "R_InvasiveType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasiveType (Side-specific)"
+          },
+          {
+            "name": "R_HistologicalCalcification",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HistologicalCalcification (Side-specific)"
+          },
+          {
+            "name": "R_DatePerformed",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DatePerformed (Side-specific)"
+          },
+          {
+            "name": "R_NeedleSpecimenType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "NeedleSpecimenType (Side-specific)"
+          },
+          {
+            "name": "R_HER2ReceptorStatus",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HER2ReceptorStatus (Side-specific)"
+          },
+          {
+            "name": "R_InvasiveTypeOther",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasiveTypeOther (Side-specific)"
+          },
+          {
+            "name": "R_EpithelialProliferation",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "EpithelialProliferation (Side-specific)"
+          },
+          {
+            "name": "R_InvasiveComponents",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasiveComponents (Side-specific)"
+          }
+        ],
+        "description": "Contains Histology (Wide Bore Needle) procedure and lesion information."
+      },
+      {
+        "name": "BIOPSYFINE",
+        "columns": [
+          {
+            "name": "diagnosticsetoutcome",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "diagnosticsetoutcome"
+          },
+          {
+            "name": "Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Opinion"
+          },
+          {
+            "name": "left_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "left_opinion"
+          },
+          {
+            "name": "right_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "right_opinion"
+          },
+          {
+            "name": "dateperformed",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "dateperformed"
+          },
+          {
+            "name": "L_DiagnosticSetOutcome",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DiagnosticSetOutcome (Side-specific)"
+          },
+          {
+            "name": "L_Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Opinion (Side-specific)"
+          },
+          {
+            "name": "L_MalignancyType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "MalignancyType (Side-specific)"
+          },
+          {
+            "name": "L_HormonePRScore",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormonePRScore (Side-specific)"
+          },
+          {
+            "name": "L_CalcificationOnSpecimen",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "CalcificationOnSpecimen (Side-specific)"
+          },
+          {
+            "name": "L_InvasivePresent",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasivePresent (Side-specific)"
+          },
+          {
+            "name": "L_LocalisationType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "LocalisationType (Side-specific)"
+          },
+          {
+            "name": "L_left_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "left_opinion (Side-specific)"
+          },
+          {
+            "name": "L_SpecimenType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "SpecimenType (Side-specific)"
+          },
+          {
+            "name": "L_Location",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Location (Side-specific)"
+          },
+          {
+            "name": "L_InsituPresent",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InsituPresent (Side-specific)"
+          },
+          {
+            "name": "L_InSituComponents",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InSituComponents (Side-specific)"
+          },
+          {
+            "name": "L_BenignLesions",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "BenignLesions (Side-specific)"
+          },
+          {
+            "name": "L_HormoneERStatus",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormoneERStatus (Side-specific)"
+          },
+          {
+            "name": "L_HormoneERScore",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormoneERScore (Side-specific)"
+          },
+          {
+            "name": "L_SideCode",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "SideCode (Side-specific)"
+          },
+          {
+            "name": "L_DiseaseGrade",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DiseaseGrade (Side-specific)"
+          },
+          {
+            "name": "L_HormonePRStatus",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormonePRStatus (Side-specific)"
+          },
+          {
+            "name": "L_DcisGrade",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DcisGrade (Side-specific)"
+          },
+          {
+            "name": "L_HER2ReceptorScore",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HER2ReceptorScore (Side-specific)"
+          },
+          {
+            "name": "L_right_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "right_opinion (Side-specific)"
+          },
+          {
+            "name": "L_LymphNode",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "LymphNode (Side-specific)"
+          },
+          {
+            "name": "L_InvasiveType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasiveType (Side-specific)"
+          },
+          {
+            "name": "L_HistologicalCalcification",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HistologicalCalcification (Side-specific)"
+          },
+          {
+            "name": "L_DatePerformed",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DatePerformed (Side-specific)"
+          },
+          {
+            "name": "L_NeedleSpecimenType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "NeedleSpecimenType (Side-specific)"
+          },
+          {
+            "name": "L_HER2ReceptorStatus",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HER2ReceptorStatus (Side-specific)"
+          },
+          {
+            "name": "L_InvasiveTypeOther",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasiveTypeOther (Side-specific)"
+          },
+          {
+            "name": "L_EpithelialProliferation",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "EpithelialProliferation (Side-specific)"
+          },
+          {
+            "name": "L_InvasiveComponents",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasiveComponents (Side-specific)"
+          },
+          {
+            "name": "R_DiagnosticSetOutcome",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DiagnosticSetOutcome (Side-specific)"
+          },
+          {
+            "name": "R_Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Opinion (Side-specific)"
+          },
+          {
+            "name": "R_MalignancyType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "MalignancyType (Side-specific)"
+          },
+          {
+            "name": "R_HormonePRScore",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormonePRScore (Side-specific)"
+          },
+          {
+            "name": "R_CalcificationOnSpecimen",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "CalcificationOnSpecimen (Side-specific)"
+          },
+          {
+            "name": "R_InvasivePresent",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasivePresent (Side-specific)"
+          },
+          {
+            "name": "R_LocalisationType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "LocalisationType (Side-specific)"
+          },
+          {
+            "name": "R_left_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "left_opinion (Side-specific)"
+          },
+          {
+            "name": "R_SpecimenType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "SpecimenType (Side-specific)"
+          },
+          {
+            "name": "R_Location",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Location (Side-specific)"
+          },
+          {
+            "name": "R_InsituPresent",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InsituPresent (Side-specific)"
+          },
+          {
+            "name": "R_InSituComponents",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InSituComponents (Side-specific)"
+          },
+          {
+            "name": "R_BenignLesions",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "BenignLesions (Side-specific)"
+          },
+          {
+            "name": "R_HormoneERStatus",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormoneERStatus (Side-specific)"
+          },
+          {
+            "name": "R_HormoneERScore",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormoneERScore (Side-specific)"
+          },
+          {
+            "name": "R_SideCode",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "SideCode (Side-specific)"
+          },
+          {
+            "name": "R_DiseaseGrade",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DiseaseGrade (Side-specific)"
+          },
+          {
+            "name": "R_HormonePRStatus",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormonePRStatus (Side-specific)"
+          },
+          {
+            "name": "R_DcisGrade",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DcisGrade (Side-specific)"
+          },
+          {
+            "name": "R_HER2ReceptorScore",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HER2ReceptorScore (Side-specific)"
+          },
+          {
+            "name": "R_right_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "right_opinion (Side-specific)"
+          },
+          {
+            "name": "R_LymphNode",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "LymphNode (Side-specific)"
+          },
+          {
+            "name": "R_InvasiveType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasiveType (Side-specific)"
+          },
+          {
+            "name": "R_HistologicalCalcification",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HistologicalCalcification (Side-specific)"
+          },
+          {
+            "name": "R_DatePerformed",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DatePerformed (Side-specific)"
+          },
+          {
+            "name": "R_NeedleSpecimenType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "NeedleSpecimenType (Side-specific)"
+          },
+          {
+            "name": "R_HER2ReceptorStatus",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HER2ReceptorStatus (Side-specific)"
+          },
+          {
+            "name": "R_InvasiveTypeOther",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasiveTypeOther (Side-specific)"
+          },
+          {
+            "name": "R_EpithelialProliferation",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "EpithelialProliferation (Side-specific)"
+          },
+          {
+            "name": "R_InvasiveComponents",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasiveComponents (Side-specific)"
+          }
+        ],
+        "description": "Contains Cytology (Fine Needle Aspirate) procedure and lesion information."
+      },
+      {
+        "name": "SURGERY",
+        "columns": [
+          {
+            "name": "diagnosticsetoutcome",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "diagnosticsetoutcome"
+          },
+          {
+            "name": "Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Opinion"
+          },
+          {
+            "name": "left_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "left_opinion"
+          },
+          {
+            "name": "right_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "right_opinion"
+          },
+          {
+            "name": "dateperformed",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "dateperformed"
+          },
+          {
+            "name": "L_CalcificationsOnSpecimen",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "CalcificationsOnSpecimen (Side-specific)"
+          },
+          {
+            "name": "L_WholeSizeOfTumour",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "WholeSizeOfTumour (Side-specific)"
+          },
+          {
+            "name": "L_Microinvasion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Microinvasion (Side-specific)"
+          },
+          {
+            "name": "L_Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Opinion (Side-specific)"
+          },
+          {
+            "name": "L_DiagnosticProcedure",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DiagnosticProcedure (Side-specific)"
+          },
+          {
+            "name": "L_NationalTrial",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "NationalTrial (Side-specific)"
+          },
+          {
+            "name": "L_HormonePRScore",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormonePRScore (Side-specific)"
+          },
+          {
+            "name": "L_LocalTrialCode",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "LocalTrialCode (Side-specific)"
+          },
+          {
+            "name": "L_DiseaseExtent",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DiseaseExtent (Side-specific)"
+          },
+          {
+            "name": "L_TherapeuticProcedures",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "TherapeuticProcedures (Side-specific)"
+          },
+          {
+            "name": "L_TreatmentProcedure",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "TreatmentProcedure (Side-specific)"
+          },
+          {
+            "name": "L_BenignLesions",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "BenignLesions (Side-specific)"
+          },
+          {
+            "name": "L_HormoneERScore",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormoneERScore (Side-specific)"
+          },
+          {
+            "name": "L_SizeDuctalOnly",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "SizeDuctalOnly (Side-specific)"
+          },
+          {
+            "name": "L_AxillaryNodesPositive",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "AxillaryNodesPositive (Side-specific)"
+          },
+          {
+            "name": "L_right_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "right_opinion (Side-specific)"
+          },
+          {
+            "name": "L_AxillarySpecimenType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "AxillarySpecimenType (Side-specific)"
+          },
+          {
+            "name": "L_AxillaryMetsType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "AxillaryMetsType (Side-specific)"
+          },
+          {
+            "name": "L_ExcisionMargins",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "ExcisionMargins (Side-specific)"
+          },
+          {
+            "name": "L_AxillaryNodesNumberPositive",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "AxillaryNodesNumberPositive (Side-specific)"
+          },
+          {
+            "name": "L_BiopsySpecimenType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "BiopsySpecimenType (Side-specific)"
+          },
+          {
+            "name": "L_InvasiveComponents",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasiveComponents (Side-specific)"
+          },
+          {
+            "name": "L_DcisGrowthPatterns",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DcisGrowthPatterns (Side-specific)"
+          },
+          {
+            "name": "L_ReconstructiveProcedure",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "ReconstructiveProcedure (Side-specific)"
+          },
+          {
+            "name": "L_NonsurgicalTreatments",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "NonsurgicalTreatments (Side-specific)"
+          },
+          {
+            "name": "L_Chemotherapy",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Chemotherapy (Side-specific)"
+          },
+          {
+            "name": "L_left_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "left_opinion (Side-specific)"
+          },
+          {
+            "name": "L_CancerOnKC62",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "CancerOnKC62 (Side-specific)"
+          },
+          {
+            "name": "L_InSituComponents",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InSituComponents (Side-specific)"
+          },
+          {
+            "name": "L_HormoneERStatus",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormoneERStatus (Side-specific)"
+          },
+          {
+            "name": "L_Event",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Event (Side-specific)"
+          },
+          {
+            "name": "L_DiseaseGrade",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DiseaseGrade (Side-specific)"
+          },
+          {
+            "name": "L_DcisGrade",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DcisGrade (Side-specific)"
+          },
+          {
+            "name": "L_HER2ReceptorScore",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HER2ReceptorScore (Side-specific)"
+          },
+          {
+            "name": "L_HormonePRStatus",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormonePRStatus (Side-specific)"
+          },
+          {
+            "name": "L_InvasiveType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasiveType (Side-specific)"
+          },
+          {
+            "name": "L_HistologicalCalcification",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HistologicalCalcification (Side-specific)"
+          },
+          {
+            "name": "L_DatePerformed",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DatePerformed (Side-specific)"
+          },
+          {
+            "name": "L_HER2ReceptorStatus",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HER2ReceptorStatus (Side-specific)"
+          },
+          {
+            "name": "L_ExcisionMarginDistance",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "ExcisionMarginDistance (Side-specific)"
+          },
+          {
+            "name": "L_EpithelialProliferation",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "EpithelialProliferation (Side-specific)"
+          },
+          {
+            "name": "L_InvasiveTypeOther",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasiveTypeOther (Side-specific)"
+          },
+          {
+            "name": "R_CalcificationsOnSpecimen",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "CalcificationsOnSpecimen (Side-specific)"
+          },
+          {
+            "name": "R_WholeSizeOfTumour",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "WholeSizeOfTumour (Side-specific)"
+          },
+          {
+            "name": "R_Microinvasion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Microinvasion (Side-specific)"
+          },
+          {
+            "name": "R_Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Opinion (Side-specific)"
+          },
+          {
+            "name": "R_DiagnosticProcedure",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DiagnosticProcedure (Side-specific)"
+          },
+          {
+            "name": "R_NationalTrial",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "NationalTrial (Side-specific)"
+          },
+          {
+            "name": "R_HormonePRScore",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormonePRScore (Side-specific)"
+          },
+          {
+            "name": "R_LocalTrialCode",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "LocalTrialCode (Side-specific)"
+          },
+          {
+            "name": "R_DiseaseExtent",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DiseaseExtent (Side-specific)"
+          },
+          {
+            "name": "R_TherapeuticProcedures",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "TherapeuticProcedures (Side-specific)"
+          },
+          {
+            "name": "R_TreatmentProcedure",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "TreatmentProcedure (Side-specific)"
+          },
+          {
+            "name": "R_BenignLesions",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "BenignLesions (Side-specific)"
+          },
+          {
+            "name": "R_HormoneERScore",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormoneERScore (Side-specific)"
+          },
+          {
+            "name": "R_SizeDuctalOnly",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "SizeDuctalOnly (Side-specific)"
+          },
+          {
+            "name": "R_AxillaryNodesPositive",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "AxillaryNodesPositive (Side-specific)"
+          },
+          {
+            "name": "R_right_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "right_opinion (Side-specific)"
+          },
+          {
+            "name": "R_AxillarySpecimenType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "AxillarySpecimenType (Side-specific)"
+          },
+          {
+            "name": "R_AxillaryMetsType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "AxillaryMetsType (Side-specific)"
+          },
+          {
+            "name": "R_ExcisionMargins",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "ExcisionMargins (Side-specific)"
+          },
+          {
+            "name": "R_AxillaryNodesNumberPositive",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "AxillaryNodesNumberPositive (Side-specific)"
+          },
+          {
+            "name": "R_BiopsySpecimenType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "BiopsySpecimenType (Side-specific)"
+          },
+          {
+            "name": "R_InvasiveComponents",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasiveComponents (Side-specific)"
+          },
+          {
+            "name": "R_DcisGrowthPatterns",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DcisGrowthPatterns (Side-specific)"
+          },
+          {
+            "name": "R_ReconstructiveProcedure",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "ReconstructiveProcedure (Side-specific)"
+          },
+          {
+            "name": "R_NonsurgicalTreatments",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "NonsurgicalTreatments (Side-specific)"
+          },
+          {
+            "name": "R_Chemotherapy",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Chemotherapy (Side-specific)"
+          },
+          {
+            "name": "R_left_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "left_opinion (Side-specific)"
+          },
+          {
+            "name": "R_CancerOnKC62",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "CancerOnKC62 (Side-specific)"
+          },
+          {
+            "name": "R_InSituComponents",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InSituComponents (Side-specific)"
+          },
+          {
+            "name": "R_HormoneERStatus",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormoneERStatus (Side-specific)"
+          },
+          {
+            "name": "R_Event",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Event (Side-specific)"
+          },
+          {
+            "name": "R_DiseaseGrade",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DiseaseGrade (Side-specific)"
+          },
+          {
+            "name": "R_DcisGrade",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DcisGrade (Side-specific)"
+          },
+          {
+            "name": "R_HER2ReceptorScore",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HER2ReceptorScore (Side-specific)"
+          },
+          {
+            "name": "R_HormonePRStatus",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HormonePRStatus (Side-specific)"
+          },
+          {
+            "name": "R_InvasiveType",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasiveType (Side-specific)"
+          },
+          {
+            "name": "R_HistologicalCalcification",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HistologicalCalcification (Side-specific)"
+          },
+          {
+            "name": "R_DatePerformed",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DatePerformed (Side-specific)"
+          },
+          {
+            "name": "R_HER2ReceptorStatus",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "HER2ReceptorStatus (Side-specific)"
+          },
+          {
+            "name": "R_ExcisionMarginDistance",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "ExcisionMarginDistance (Side-specific)"
+          },
+          {
+            "name": "R_EpithelialProliferation",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "EpithelialProliferation (Side-specific)"
+          },
+          {
+            "name": "R_InvasiveTypeOther",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "InvasiveTypeOther (Side-specific)"
+          }
+        ],
+        "description": "Contains surgery (biopsy and treatment) procedure lesion information"
+      },
+      {
+        "name": "ASSESSMENT",
+        "columns": [
+          {
+            "name": "diagnosticsetoutcome",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "diagnosticsetoutcome"
+          },
+          {
+            "name": "Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Opinion"
+          },
+          {
+            "name": "left_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "left_opinion"
+          },
+          {
+            "name": "right_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "right_opinion"
+          },
+          {
+            "name": "dateperformed",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "dateperformed"
+          },
+          {
+            "name": "L_DiagnosticSetOutcome",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DiagnosticSetOutcome (Side-specific)"
+          },
+          {
+            "name": "L_UssMass",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "UssMass (Side-specific)"
+          },
+          {
+            "name": "L_UssSizeMm",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "UssSizeMm (Side-specific)"
+          },
+          {
+            "name": "L_MammoAttributes",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "MammoAttributes (Side-specific)"
+          },
+          {
+            "name": "L_RightAxillaOpinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "RightAxillaOpinion (Side-specific)"
+          },
+          {
+            "name": "L_MammoCalcification",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "MammoCalcification (Side-specific)"
+          },
+          {
+            "name": "L_UssOpinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "UssOpinion (Side-specific)"
+          },
+          {
+            "name": "L_SideCode",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "SideCode (Side-specific)"
+          },
+          {
+            "name": "L_MammoSizeMm90",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "MammoSizeMm90 (Side-specific)"
+          },
+          {
+            "name": "L_UssAttributes",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "UssAttributes (Side-specific)"
+          },
+          {
+            "name": "L_MammoOpinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "MammoOpinion (Side-specific)"
+          },
+          {
+            "name": "L_DatePerformed",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DatePerformed (Side-specific)"
+          },
+          {
+            "name": "L_MammoMass",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "MammoMass (Side-specific)"
+          },
+          {
+            "name": "L_MammoSizeMm",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "MammoSizeMm (Side-specific)"
+          },
+          {
+            "name": "L_LeftAxillaOpinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "LeftAxillaOpinion (Side-specific)"
+          },
+          {
+            "name": "L_action",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "action (Side-specific)"
+          },
+          {
+            "name": "L_MammoFocus",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "MammoFocus (Side-specific)"
+          },
+          {
+            "name": "L_UssLymphNode",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "UssLymphNode (Side-specific)"
+          },
+          {
+            "name": "R_DiagnosticSetOutcome",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DiagnosticSetOutcome (Side-specific)"
+          },
+          {
+            "name": "R_UssMass",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "UssMass (Side-specific)"
+          },
+          {
+            "name": "R_UssSizeMm",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "UssSizeMm (Side-specific)"
+          },
+          {
+            "name": "R_MammoAttributes",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "MammoAttributes (Side-specific)"
+          },
+          {
+            "name": "R_RightAxillaOpinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "RightAxillaOpinion (Side-specific)"
+          },
+          {
+            "name": "R_MammoCalcification",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "MammoCalcification (Side-specific)"
+          },
+          {
+            "name": "R_UssOpinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "UssOpinion (Side-specific)"
+          },
+          {
+            "name": "R_SideCode",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "SideCode (Side-specific)"
+          },
+          {
+            "name": "R_MammoSizeMm90",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "MammoSizeMm90 (Side-specific)"
+          },
+          {
+            "name": "R_UssAttributes",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "UssAttributes (Side-specific)"
+          },
+          {
+            "name": "R_MammoOpinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "MammoOpinion (Side-specific)"
+          },
+          {
+            "name": "R_DatePerformed",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DatePerformed (Side-specific)"
+          },
+          {
+            "name": "R_MammoMass",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "MammoMass (Side-specific)"
+          },
+          {
+            "name": "R_MammoSizeMm",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "MammoSizeMm (Side-specific)"
+          },
+          {
+            "name": "R_LeftAxillaOpinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "LeftAxillaOpinion (Side-specific)"
+          },
+          {
+            "name": "R_action",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "action (Side-specific)"
+          },
+          {
+            "name": "R_MammoFocus",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "MammoFocus (Side-specific)"
+          },
+          {
+            "name": "R_UssLymphNode",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "UssLymphNode (Side-specific)"
+          }
+        ],
+        "description": "Contains imaging assessment procedure and lesion information for mammograms and ultrasound."
+      },
+      {
+        "name": "CLINICAL",
+        "columns": [
+          {
+            "name": "diagnosticsetoutcome",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "diagnosticsetoutcome"
+          },
+          {
+            "name": "Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Opinion"
+          },
+          {
+            "name": "left_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "left_opinion"
+          },
+          {
+            "name": "right_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "right_opinion"
+          },
+          {
+            "name": "dateperformed",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "dateperformed"
+          },
+          {
+            "name": "L_DiscreteMass",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DiscreteMass (Side-specific)"
+          },
+          {
+            "name": "L_SizeMm",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "SizeMm (Side-specific)"
+          },
+          {
+            "name": "L_Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Opinion (Side-specific)"
+          },
+          {
+            "name": "L_Nodularity",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Nodularity (Side-specific)"
+          },
+          {
+            "name": "L_SkinChanges",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "SkinChanges (Side-specific)"
+          },
+          {
+            "name": "L_NippleDischarge",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "NippleDischarge (Side-specific)"
+          },
+          {
+            "name": "L_right_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "right_opinion (Side-specific)"
+          },
+          {
+            "name": "L_DatePerformed",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DatePerformed (Side-specific)"
+          },
+          {
+            "name": "L_NippleChanges",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "NippleChanges (Side-specific)"
+          },
+          {
+            "name": "L_left_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "left_opinion (Side-specific)"
+          },
+          {
+            "name": "L_RightAxillaOpinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "RightAxillaOpinion (Side-specific)"
+          },
+          {
+            "name": "L_LeftAxillaOpinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "LeftAxillaOpinion (Side-specific)"
+          },
+          {
+            "name": "R_DiscreteMass",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DiscreteMass (Side-specific)"
+          },
+          {
+            "name": "R_SizeMm",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "SizeMm (Side-specific)"
+          },
+          {
+            "name": "R_Opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Opinion (Side-specific)"
+          },
+          {
+            "name": "R_Nodularity",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "Nodularity (Side-specific)"
+          },
+          {
+            "name": "R_SkinChanges",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "SkinChanges (Side-specific)"
+          },
+          {
+            "name": "R_NippleDischarge",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "NippleDischarge (Side-specific)"
+          },
+          {
+            "name": "R_right_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "right_opinion (Side-specific)"
+          },
+          {
+            "name": "R_DatePerformed",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "DatePerformed (Side-specific)"
+          },
+          {
+            "name": "R_NippleChanges",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "NippleChanges (Side-specific)"
+          },
+          {
+            "name": "R_left_opinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "left_opinion (Side-specific)"
+          },
+          {
+            "name": "R_RightAxillaOpinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "RightAxillaOpinion (Side-specific)"
+          },
+          {
+            "name": "R_LeftAxillaOpinion",
+            "values": null,
+            "dataType": "string,null",
+            "sensitive": false,
+            "description": "LeftAxillaOpinion (Side-specific)"
+          }
+        ],
+        "description": "Contains clinical examination (Clinical Findings) procedure and lesion information."
+      }
+    ]
+  },
+  "demographicFrequency": {
+    "age": [
+      {
+        "bin": "50-54 years",
+        "count": 10000
+      },
+      {}
+    ]
+  },
+  "datasetFilters": [
+    "0_0_0_9",
+    "0_0_1_0",
+    "0_2_3_2_6",
+    "0_2_3_0",
+    "0_2_3_3",
+    "0_2_3_5",
+    "0_1_4"
+  ],
+  "documentation": {
+    "associatedMedia": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8082293/pdf/ryai.2020200103.pdf",
+    "description": "The development of artificial intelligence software to improve the outcomes of breast screening relies on the availability of well-curated image databases. The OPTIMAM Mammography Image Database (OMI-DB) was created to provide a centralized, fully annotated dataset for research. The initial reason for creating the database was for the Cancer Research United Kingdom–funded projects OPTIMAM (2008–2013) and OPTIMAM2 (2013–2018), which evaluated how various factors affect breast cancer detection on mammograms. The images are derived from screening centers in the United Kingdom and combined with systematically collected data on the current screening episode, as well as previous and subsequent episodes. In the United Kingdom, the National Health Service Breast Screening Programme (NHSBSP) invites women to attend breast screening every 3 years between the ages of 50 and 70 years. A screening episode is one attendance at screening by a woman and includes any immediate workup imaging (assessment) if she was recalled for further investigation of a suspicious region on the screening mammograms. Any pathologic finding is also included, and the episode ends with histologic diagnosis or treatment for all lesions. Our objective was to collect mammograms for women with screen-detected cancers as well as representative samples of normal and benign screening cases.\n\n“For processing” and “for presentation” screening mammograms and prior mammograms have been collected for all screen-detected and interval cancers from several screening centres since 2011. All mammography images and data associated with initial screening attendance, further assessment, and surgical outcomes were collected as a screening episode. In addition to continuous collection of cancers, images and clinical data were collected for all women screened during 2014, and for a random selection of 25% of all women screened in 2012, 2013, and 2015 at two of the three sites. Collection into the database is ongoing, and each case is updated with new information and further screening episodes.\n\nThe associated data comprise radiologic, clinical, and pathologic information extracted from NBSS. Information on screening history, previous occurrences of cancer, biopsy results, and surgical procedures are collected from NBSS. The exact radiologic locations of lesions are not stored in NBSS. However, such information, important for training and evaluating algorithms, is collected in OMI-DB. Experienced (UK accredited) mammography readers at their own site (radiologists and advanced practice radiographers) annotate the images with reference to records made at the time of initial mammography interpretation and at further (assessment) workup (magnification views, US, and biopsy). This information is used to define rectangular regions of interest indicating the location and area of lesions and other attributes, such as radiologic appearance and conspicuity.",
+    "inPipeline": "Yes"
+  }
+}
