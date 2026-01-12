@@ -862,7 +862,7 @@
                                           "$ref": "#/$defs/Description"
                                     }
                               ],
-                              "description": "A free-text description of the dataset.\\nA URL can also be provided as the description of the dataset.\\nGateway Feature: Keywords and text may be extracted out of the description and indexed for search.",
+                              "description": "A free-text description of the dataset.\\nA URL can also be provided as the description of the dataset.",
                               "examples": [
                                     "CPRD Aurum contains primary care data contributed by General Practitioner (GP) practices using EMIS Web\u00ae including patient registration information and all care events that GPs have chosen to record as part of their usual medical practice."
                               ],
@@ -1855,84 +1855,6 @@
                   "title": "Observation",
                   "type": "object"
             },
-            "Omics": {
-                  "additionalProperties": false,
-                  "properties": {
-                        "assay": {
-                              "anyOf": [
-                                    {
-                                          "$ref": "#/$defs/Assay"
-                                    },
-                                    {
-                                          "type": "null"
-                                    }
-                              ],
-                              "default": null,
-                              "description": "The specific 'omics assay that generated the dataset.",
-                              "guidance": "The specific 'omics assay that generated the dataset. If the assay used to generate your dataset is not listed, please contract the gateway team by submitting an enquiry.",
-                              "title": "Omics assay"
-                        },
-                        "platform": {
-                              "anyOf": [
-                                    {
-                                          "$ref": "#/$defs/Platform"
-                                    },
-                                    {
-                                          "type": "null"
-                                    }
-                              ],
-                              "default": null,
-                              "description": "The specific technology or infrastructure used to perform the assay. If the omics platform used to create your dataset is not listed, please select other, a member of the gateway team will contact you to add an appropriate term(s) both to your record and to the metadata schema on your behalf.",
-                              "guidance": "The specific technology or infrastructure used to perform the assay. If the omics platform used to create your dataset is not listed, please select other, a member of the gateway team will contact you to add an appropriate term(s) both to your record and to the metadata schema on your behalf.",
-                              "title": "Omics Platform"
-                        }
-                  },
-                  "title": "Omics",
-                  "type": "object"
-            },
-            "OmicsDataType": {
-                  "properties": {
-                        "name": {
-                              "Literal": true,
-                              "default": "Omics",
-                              "title": "Name",
-                              "type": "string"
-                        },
-                        "subTypes": {
-                              "anyOf": [
-                                    {
-                                          "items": {
-                                                "$ref": "#/$defs/OmicsDataTypeSubTypes"
-                                          },
-                                          "type": "array"
-                                    },
-                                    {
-                                          "type": "null"
-                                    }
-                              ],
-                              "title": "Subtypes"
-                        }
-                  },
-                  "required": [
-                        "subTypes"
-                  ],
-                  "title": "OmicsDataType",
-                  "type": "object"
-            },
-            "OmicsDataTypeSubTypes": {
-                  "enum": [
-                        "Proteomics",
-                        "Transcriptomics",
-                        "Epigenomics",
-                        "Metabolomics",
-                        "Metagenomics",
-                        "Genomics",
-                        "Lipidomics",
-                        "Others"
-                  ],
-                  "title": "OmicsDataTypeSubTypes",
-                  "type": "string"
-            },
             "OneHundredFiftyCharacters": {
                   "maxLength": 150,
                   "minLength": 2,
@@ -2064,7 +1986,7 @@
                               "examples": [
                                     "Health and disease"
                               ],
-                              "guidance": "Types include those listed below. Datasets can have more than one type associated.\\n- **Health and disease**: Includes any data related to mental health, cardiovascular, cancer, rare diseases, metabolic and endocrine, neurological, reproductive, maternity and neonatology, respiratory, immunity, musculoskeletal, vision, renal and urogenital, oral and gastrointestinal, cognitive function or hearing.\\n- **Treatments/Interventions**: Includes any data related to treatment or interventions related to vaccines or which are preventative or therapeutic in nature.\\n- **Measurements/Tests**: Includes any data related to laboratory or other diagnostics.\\n- **Imaging types**: Includes any data related to CT, MRI, PET, x-ray, ultrasound or pathology imaging.\\n- **Imaging area of the body**: Indicates whether the dataset relates to head, chest, arm abdomen or leg imaging.\\n- **Omics**: Includes any data related to proteomics, transcriptomics, epigenomics, metabolomics, multiomics, metagenomics or genomics.\\n- **Socioeconomic**: Includes any data related to education, crime and justice, ethnicity, housing, labour, ageing, economics, marital status, social support, deprivation, religion, occupation, finances or family circumstances.\\n- **Lifestyle**: Includes any data related to smoking, physical activity, dietary habits or alcohol.\\n- **Registry**: Includes any data related to disease registries for research, national disease registries, audits, or birth and deaths records.\\n- **Environment and energy**: Includes any data related to the monitoring or study of environmental or energy factors or events.\\n- **Information and communication**: Includes any data related to the study or application of information and communication.\\n- **Politics**: Includes any data related to political views, activities, voting, etc.",
+                              "guidance": "Types include those listed below. Datasets can have more than one type associated.\\n- **Health and disease**: Includes any data related to mental health, cardiovascular, cancer, rare diseases, metabolic and endocrine, neurological, reproductive, maternity and neonatology, respiratory, immunity, musculoskeletal, vision, renal and urogenital, oral and gastrointestinal, cognitive function or hearing.\\n- **Treatments/Interventions**: Includes any data related to treatment or interventions related to vaccines or which are preventative or therapeutic in nature.\\n- **Measurements/Tests**: Includes any data related to laboratory or other diagnostics.\\n- **Imaging types**: Includes any data related to CT, MRI, PET, x-ray, ultrasound or pathology imaging.\\n- **Imaging area of the body**: Indicates whether the dataset relates to head, chest, arm abdomen or leg imaging.",
                               "items": {
                                     "anyOf": [
                                           {
@@ -2081,9 +2003,6 @@
                                           },
                                           {
                                                 "$ref": "#/$defs/ImagingAreaOfTheBody"
-                                          },
-                                          {
-                                                "$ref": "#/$defs/OmicsDataType"
                                           },
                                           {
                                                 "$ref": "#/$defs/Socioeconomic"
@@ -3144,19 +3063,6 @@
                   "default": null,
                   "description": "The statistical characteristics of a population or group within the dataset.",
                   "title": "Demographic frequency"
-            },
-            "omics": {
-                  "anyOf": [
-                        {
-                              "$ref": "#/$defs/Omics"
-                        },
-                        {
-                              "type": "null"
-                        }
-                  ],
-                  "default": null,
-                  "description": "Omics",
-                  "title": "Omics"
             }
       },
       "required": [
