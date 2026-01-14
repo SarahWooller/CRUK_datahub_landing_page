@@ -1,0 +1,115 @@
+{
+  "identifier": "34f50133-4b39-490c-af12-c48f3bb04fe9",
+  "version": "1.0.0",
+  "revisions": [],
+  "issued": "2024-01-01T00:00:00.000Z",
+  "modified": "2024-01-01T00:00:00.000Z",
+  "summary": {
+    "title": "Early-Stage Non-Small Cell Lung Cancer (NSCLC) CT Imaging",
+    "abstract": "High-resolution CT imaging dataset of 800 Stage I-II NSCLC patients. Includes radiomic feature extractions and annotated nodule segmentations.",
+    "dataCustodian": {
+      "identifier": "https://ror.org/example",
+      "name": "Generated Research Institute",
+      "contactPoint": "access@example.org"
+    },
+    "funders": "CRUK\nNIHR",
+    "grantNumbers": "GRANT-5-2024",
+    "populationSize": 1849,
+    "keywords": [
+      "Early-Stage",
+      "Non-Small",
+      "Cell",
+      "Lung",
+      "Cancer"
+    ],
+    "doiName": "10.1000/data.5",
+    "contactPoint": "access@example.org"
+  },
+  "documentation": {
+    "description": "High-resolution CT imaging dataset of 800 Stage I-II NSCLC patients. Includes radiomic feature extractions and annotated nodule segmentations. This is a dummy description generated for testing purposes.",
+    "inPipeline": "Available"
+  },
+  "coverage": {
+    "spatial": "United Kingdom",
+    "followUp": "1 - 10 Years"
+  },
+  "provenance": {
+    "origin": {
+      "purpose": [
+        "Study"
+      ],
+      "datasetType": [
+        "Health and disease"
+      ]
+    },
+    "temporal": {
+      "publishingFrequency": "Annual",
+      "startDate": "2020-01-01",
+      "timeLag": "1-2 months"
+    }
+  },
+  "accessibility": {
+    "usage": {
+      "dataUseLimitation": [
+        "General research use"
+      ]
+    },
+    "access": {
+      "accessRights": "Open access upon request.",
+      "jurisdiction": [
+        "GB-ENG"
+      ]
+    },
+    "formatAndStandards": {
+      "vocabularyEncodingScheme": [
+        "ICD10"
+      ],
+      "conformsTo": [
+        "OMOP"
+      ],
+      "language": [
+        "en"
+      ],
+      "format": [
+        "text/csv"
+      ]
+    }
+  },
+  "observations": [
+    {
+      "observedNode": "Persons",
+      "measuredValue": 2154,
+      "observationDate": "2023-12-31",
+      "measuredProperty": "Count"
+    }
+  ],
+  "demographicFrequency": {
+    "age": [
+      {
+        "bin": "50-54 years",
+        "count": 10
+      },
+      {
+        "bin": "55-59 years",
+        "count": 20
+      }
+    ],
+    "ethnicity": [
+      {
+        "bin": "White - British",
+        "count": 25
+      },
+      {
+        "bin": "Not stated",
+        "count": 5
+      }
+    ]
+  },
+  "datasetFilters": [
+    "0_0_0_2_4",
+    "0_0_1_1_0",
+    "0_2_3_2",
+    "0_2_3_6",
+    "0_1_4"
+  ]
+}

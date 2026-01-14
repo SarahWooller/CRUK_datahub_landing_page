@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom/client';
 
 // 1. IMPORT DATA FROM UTILS
-import mammogramData from '../utils/mammogram.json';
+import studyData from '../utils/dummy_data/mammogram.json';
 
 // 2. IMPORT ICONS
 import animalIcon from '../assets/animal.webp';
@@ -122,7 +122,7 @@ const AccessItem = ({ label, value, isLink }) => {
 // --- Main Component ---
 
 const MetadataPage = () => {
-  const data = mammogramData;
+  const data = studyData;
   const [expandedTables, setExpandedTables] = useState({});
   const [showEmailMenu, setShowEmailMenu] = useState(false);
 

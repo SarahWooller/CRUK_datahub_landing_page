@@ -1,5 +1,15 @@
 {
     "$defs": {
+        "Image": {
+            "properties": {
+                "image": {
+                    "guidance": "Upload an image file (PNG, JPG, SVG) of an Entity Relationship Diagram. The ERD should show how the different tables relate to one another for example via foreignID keys. Max file size: 5MB."
+                },
+                "description": {
+                    "guidance": "Short textual description of the ERD"
+                }
+            }
+        },
         "Summary": {
             "properties": {
                 "title": {
@@ -40,6 +50,26 @@
                         "researcher@university.ac.uk"
                     ],
                     "guidance": "This should be a **dedicated email address** associated with the data access request process. \\n**Note:** An employee's email address can only be provided on a temporary basis and if one is provided, **you must obtain explicit consent for this purpose**."
+                }
+            }
+        },
+        "Documentation": {
+            "properties": {
+                "description": {
+                    "description": "Free-text description of the dataset.",
+                    "examples": ["OPTIMAM is a database of mammogram images and associated clinical data from multiple NHS Breast Cancer screening sites across the UK. The automated process of image collection, processing and storage enables easy expansion across new imaging sites and continual collection of new data."]
+                },
+                "associatedMedia": {
+                    "description": "Url linking to associated media. Note: media asset can be hosted by the organisation or uploaded using the onboarding portal."
+                }
+            }
+        },
+        "StructuralMetadata": {
+            "properties": {
+                "syntheticDataWebLink": {
+                    "description":  "Artificial datasets that share the properties of the original data but contain no sensitive information can be very useful for researchers wishing to explore the properties of a dataset, and can be generated using entirely local solutions such as python's Synthetic Data Vault. Please provide the website address(es) with information on any related synthetic datasets. For example: https://digital.nhs.uk/ndrs/data/data-outputs/cancer-publications-and-tools/simulacrum"
+
+
                 }
             }
         }
