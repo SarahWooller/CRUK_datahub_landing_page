@@ -1,5 +1,5 @@
 {
-  "identifier": "9126c0c1-f011-48ca-8a5d-a2a6fe3fe13e",
+  "identifier": "9896ab5b-5205-415f-85cb-1e69928ea03e",
   "version": "1.0.0",
   "revisions": [],
   "issued": "2024-01-01T00:00:00.000Z",
@@ -8,13 +8,13 @@
     "title": "Lung Cancer Screening Low-Dose CT (LDCT) Cohort",
     "abstract": "LDCT scans from a pilot screening program in high-risk areas. Includes follow-up data on nodule management and lung cancer diagnosis rates.",
     "dataCustodian": {
-      "identifier": "https://ror.org/example",
-      "name": "Generated Research Institute",
-      "contactPoint": "access@example.org"
+      "identifier": "https://ror.org/custodian-13",
+      "name": "SUMMIT Study Group",
+      "contactPoint": "access@custodian-13.org"
     },
     "funders": "CRUK\nNIHR",
     "grantNumbers": "GRANT-13-2024",
-    "populationSize": 1592,
+    "populationSize": 1315,
     "keywords": [
       "Lung",
       "Cancer",
@@ -23,7 +23,7 @@
       "CT"
     ],
     "doiName": "10.1000/data.13",
-    "contactPoint": "access@example.org"
+    "contactPoint": "access@custodian-13.org"
   },
   "documentation": {
     "description": "LDCT scans from a pilot screening program in high-risk areas. Includes follow-up data on nodule management and lung cancer diagnosis rates. This is a dummy description generated for testing purposes.",
@@ -78,7 +78,7 @@
   "observations": [
     {
       "observedNode": "Persons",
-      "measuredValue": 761,
+      "measuredValue": 4110,
       "observationDate": "2023-12-31",
       "measuredProperty": "Count"
     }
@@ -110,6 +110,8 @@
     "0_2_3_2",
     "0_2_3_6",
     "0_1_4",
+    "0_0_2_51",
+    "0_0_4_19",
     "0_0_1_1_0"
   ]
 }

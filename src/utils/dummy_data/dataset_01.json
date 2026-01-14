@@ -1,5 +1,5 @@
 {
-  "identifier": "65814def-0395-4b45-b7cf-a02c13e4d77c",
+  "identifier": "a7fdf1c1-d24f-4cfe-9638-d5f460384a32",
   "version": "1.0.0",
   "revisions": [],
   "issued": "2024-01-01T00:00:00.000Z",
@@ -8,13 +8,13 @@
     "title": "Longitudinal Glioblastoma Multiforme (GBM) MRI and Survival Cohort",
     "abstract": "A retrospective longitudinal collection of multi-parametric MRI scans from 450 patients diagnosed with Glioblastoma Multiforme (WHO Grade IV). Linked with genomic biomarkers (IDH1, MGMT) and survival outcomes.",
     "dataCustodian": {
-      "identifier": "https://ror.org/example",
-      "name": "Generated Research Institute",
-      "contactPoint": "access@example.org"
+      "identifier": "https://ror.org/custodian-1",
+      "name": "Neuro-Oncology Imaging Archive",
+      "contactPoint": "access@custodian-1.org"
     },
     "funders": "CRUK\nNIHR",
     "grantNumbers": "GRANT-1-2024",
-    "populationSize": 2305,
+    "populationSize": 3465,
     "keywords": [
       "Longitudinal",
       "Glioblastoma",
@@ -23,7 +23,7 @@
       "MRI"
     ],
     "doiName": "10.1000/data.1",
-    "contactPoint": "access@example.org"
+    "contactPoint": "access@custodian-1.org"
   },
   "documentation": {
     "description": "A retrospective longitudinal collection of multi-parametric MRI scans from 450 patients diagnosed with Glioblastoma Multiforme (WHO Grade IV). Linked with genomic biomarkers (IDH1, MGMT) and survival outcomes. This is a dummy description generated for testing purposes.",
@@ -78,7 +78,7 @@
   "observations": [
     {
       "observedNode": "Persons",
-      "measuredValue": 2283,
+      "measuredValue": 580,
       "observationDate": "2023-12-31",
       "measuredProperty": "Count"
     }
@@ -110,6 +110,8 @@
     "0_0_1_35_28",
     "0_2_3_2",
     "0_2_3_3",
-    "0_1_4"
+    "0_1_4",
+    "0_0_2_13",
+    "0_0_4_10"
   ]
 }

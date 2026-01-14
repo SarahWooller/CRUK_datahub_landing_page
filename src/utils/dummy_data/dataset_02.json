@@ -1,5 +1,5 @@
 {
-  "identifier": "1448d30a-1041-4fd3-a5ef-52329a65f61a",
+  "identifier": "7a92d7ed-e659-41f3-9dc2-f7339070c805",
   "version": "1.0.0",
   "revisions": [],
   "issued": "2024-01-01T00:00:00.000Z",
@@ -8,13 +8,13 @@
     "title": "Pancreatic Ductal Adenocarcinoma (PDAC) Proteomics Landscape",
     "abstract": "Mass-spectrometry based proteomics analysis of 200 resected PDAC tumor samples compared with adjacent normal tissue. Includes detailed clinical staging and chemotherapy response data.",
     "dataCustodian": {
-      "identifier": "https://ror.org/example",
-      "name": "Generated Research Institute",
-      "contactPoint": "access@example.org"
+      "identifier": "https://ror.org/custodian-2",
+      "name": "Pancreatic Cancer Research Fund Tissue Bank",
+      "contactPoint": "access@custodian-2.org"
     },
     "funders": "CRUK\nNIHR",
     "grantNumbers": "GRANT-2-2024",
-    "populationSize": 2933,
+    "populationSize": 1476,
     "keywords": [
       "Pancreatic",
       "Ductal",
@@ -23,7 +23,7 @@
       "Proteomics"
     ],
     "doiName": "10.1000/data.2",
-    "contactPoint": "access@example.org"
+    "contactPoint": "access@custodian-2.org"
   },
   "documentation": {
     "description": "Mass-spectrometry based proteomics analysis of 200 resected PDAC tumor samples compared with adjacent normal tissue. Includes detailed clinical staging and chemotherapy response data. This is a dummy description generated for testing purposes.",
@@ -78,7 +78,7 @@
   "observations": [
     {
       "observedNode": "Persons",
-      "measuredValue": 3718,
+      "measuredValue": 2767,
       "observationDate": "2023-12-31",
       "measuredProperty": "Count"
     }
@@ -110,6 +110,8 @@
     "0_0_1_3_0",
     "0_2_3_4",
     "0_2_0",
-    "0_1_4"
+    "0_1_4",
+    "0_0_2_75",
+    "0_0_4_24"
   ]
 }

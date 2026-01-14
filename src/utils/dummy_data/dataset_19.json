@@ -1,5 +1,5 @@
 {
-  "identifier": "a4be77f9-eb4e-4ee1-9a52-df8046afd555",
+  "identifier": "6eb0c130-9865-4e10-8e67-a7ec5d307f8e",
   "version": "1.0.0",
   "revisions": [],
   "issued": "2024-01-01T00:00:00.000Z",
@@ -8,13 +8,13 @@
     "title": "Renal Cell Carcinoma (RCC) Histopathology WSI",
     "abstract": "Whole Slide Images (H&E stained) of 300 clear cell RCC nephrectomy specimens. Annotated for nuclear grade and necrosis.",
     "dataCustodian": {
-      "identifier": "https://ror.org/example",
-      "name": "Generated Research Institute",
-      "contactPoint": "access@example.org"
+      "identifier": "https://ror.org/custodian-19",
+      "name": "Kidney Cancer UK Biobank",
+      "contactPoint": "access@custodian-19.org"
     },
     "funders": "CRUK\nNIHR",
     "grantNumbers": "GRANT-19-2024",
-    "populationSize": 660,
+    "populationSize": 1298,
     "keywords": [
       "Renal",
       "Cell",
@@ -23,7 +23,7 @@
       "Histopathology"
     ],
     "doiName": "10.1000/data.19",
-    "contactPoint": "access@example.org"
+    "contactPoint": "access@custodian-19.org"
   },
   "documentation": {
     "description": "Whole Slide Images (H&E stained) of 300 clear cell RCC nephrectomy specimens. Annotated for nuclear grade and necrosis. This is a dummy description generated for testing purposes.",
@@ -78,7 +78,7 @@
   "observations": [
     {
       "observedNode": "Persons",
-      "measuredValue": 2339,
+      "measuredValue": 4839,
       "observationDate": "2023-12-31",
       "measuredProperty": "Count"
     }
@@ -110,6 +110,8 @@
     "0_0_1_3_21",
     "0_2_3_2",
     "0_2_0",
-    "0_1_4"
+    "0_1_4",
+    "0_0_2_46",
+    "0_0_4_13"
   ]
 }
