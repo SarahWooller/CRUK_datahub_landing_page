@@ -1,28 +1,70 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import schema from '../utils/schema.json';
+import semanticSchema from '../utils/semanticSchema.json';
 import DataTagger, { FilterChipArea } from './DataTagger';
 import JsonUpload from './JsonUpload';
 import UploadTopBar from './UploadTopBar';
 import { filterData } from '../utils/filter-setup';
 
+// --- CONFIGURATION: Priority Sections ---
+// Sections in this list will prioritize the property's own metadata (Title, Description, Guidance)
+// over the metadata found in the resolved definition ($ref/allOf).
+const METADATA_PRIORITY_SECTIONS = [
+    "version"
+];
+
 // --- USER CONFIGURATION: Sidebar Section Order & Visibility ---
 const VISIBLE_SECTIONS = [
     "welcome",
+    "version",
     "summary",
     "documentation",
     "datasetFilters",
+    "structuralMetadata",
+    "erd", // Preserved ERD section
     "coverage",
     "provenance",
     "accessibility",
+    "access",
     "enrichmentAndLinkage",
     "observations",
-    "structuralMetadata",
     "demographicFrequency",
     "omics"
 ];
+// --- Utility: Deep Merge Schemas ---
+const deepMerge = (target, source) => {
+    // If either is not an object, return the source (override) or target
+    if (typeof target !== 'object' || target === null) return source || target;
+    if (typeof source !== 'object' || source === null) return target;
 
-// --- Safe Schema Loading ---
-const DATA_SCHEMA = schema.properties ? schema : (schema.fullContent || {});
+    // Clone target to avoid mutation
+    const output = Array.isArray(target) ? [...target] : { ...target };
+
+    Object.keys(source).forEach(key => {
+        const targetValue = output[key];
+        const sourceValue = source[key];
+
+        if (Array.isArray(targetValue) && Array.isArray(sourceValue)) {
+            // DECISION: For arrays, do we overwrite or concatenate?
+            // For a "semantic override" (like replacing a list of enums or requirements),
+            // usually overwriting is safer. If you just want to change text,
+            // you generally won't be touching arrays in the semantic schema.
+            output[key] = sourceValue;
+        } else if (typeof targetValue === 'object' && typeof sourceValue === 'object') {
+            output[key] = deepMerge(targetValue, sourceValue);
+        } else {
+            output[key] = sourceValue;
+        }
+    });
+
+    return output;
+};
+// --- Safe Schema Loading and Merging ---
+const RAW_SCHEMA = schema.properties ? schema : (schema.fullContent || {});
+const OVERLAY_SCHEMA = semanticSchema.properties ? semanticSchema : (semanticSchema.fullContent || semanticSchema);
+
+// This creates a new object where semanticSchema properties overwrite rawSchema properties
+const DATA_SCHEMA = deepMerge(RAW_SCHEMA, OVERLAY_SCHEMA);
 
 // --- CUSTOM VALIDATION RULES ---
 const EXTRA_VALIDATIONS = {
@@ -238,7 +280,7 @@ const MarkdownRenderer = ({ content }) => {
     );
 };
 
-// --- Component: Welcome Section ---
+// --- Component: Welcome Section (RESTORED) ---
 const WelcomeSection = ({ onUpload }) => (
     <div className="p-8 overflow-y-auto pb-20 w-full">
         <h1 className="text-3xl font-extrabold mb-4 text-gray-900">Guide to Uploading and Modifying Metadata</h1>
@@ -505,7 +547,11 @@ const FieldRenderer = ({
     let placeholder = examples && examples.length > 0 ? examples.join(', ') : 'Enter value...';
     const showMarkdownToggle = prop.showMarkdown === "True";
 
-    if (showMarkdownToggle || (prop.title && (prop.title.includes("Description") || prop.title.includes("Guidance") || prop.title.includes("Abstract")))) {
+    // DETECTION LOGIC: File Upload (For ERD)
+    // Check if the schema property has contentMediaType set to an image type
+    if (prop.contentMediaType && prop.contentMediaType.startsWith('image/')) {
+        inputType = 'file';
+    } else if (showMarkdownToggle || (prop.title && (prop.title.includes("Description") || prop.title.includes("Guidance") || prop.title.includes("Abstract")))) {
         inputType = 'textarea';
         rows = 4;
     } else if (fieldDef.type === 'integer' || fieldDef.type === 'number') {
@@ -528,12 +574,42 @@ const FieldRenderer = ({
         onChange(path, val);
     };
 
+    // HANDLER: File Upload (Convert to Base64)
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            if (file.size > 5 * 1024 * 1024) { // 5MB limit check
+                alert("File size exceeds 5MB.");
+                return;
+            }
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                onChange(path, reader.result); // Stores "data:image/png;base64,..."
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     return (
         <div className={`bg-white p-4 rounded-lg shadow-sm border border-gray-100 mb-4 ${level > 0 ? 'ml-0' : ''}`}>
             <label className="block text-sm font-bold text-gray-700 mb-1">
                 {prop.title || propKey} {isRequired && <span className="text-red-500">*</span>}
             </label>
             <p className="text-xs text-gray-500 mb-2">{prop.description}</p>
+
+            {/* PREVIEW for File Upload */}
+            {inputType === 'file' && currentValue && (
+                <div className="mb-2 p-2 border border-gray-200 rounded bg-gray-50">
+                    <p className="text-xs text-gray-500 mb-1">Current Image:</p>
+                    <img src={currentValue} alt="Preview" className="max-w-full h-auto max-h-64 rounded shadow-sm" />
+                    <button
+                        onClick={() => onChange(path, null)}
+                        className="mt-2 text-xs text-red-600 hover:text-red-800 underline"
+                    >
+                        Remove Image
+                    </button>
+                </div>
+            )}
 
             {showMarkdownToggle && inputType === 'textarea' && (
                 <div className="flex justify-end mb-1">
@@ -597,6 +673,14 @@ const FieldRenderer = ({
                         {!!currentValue ? 'Yes' : 'No'}
                     </span>
                  </div>
+            ) : inputType === 'file' ? (
+                <input
+                    type="file"
+                    accept="image/*"
+                    className="w-full p-2 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
+                    onFocus={handleFocus}
+                    onChange={handleFileChange}
+                />
             ) : (
                 <input
                     type={inputType}
@@ -690,7 +774,10 @@ const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance, onU
                 <div className="space-y-6">
                      <FieldRenderer
                         propKey={sectionKey}
-                        prop={definition || sectionSchema}
+                        // CHECK: Is this section in the priority list?
+                        // If so, pass 'sectionSchema' (the original prop with correct title/desc/guidance)
+                        // If not, pass 'definition' (resolved) as default behavior to ensure type resolution works
+                        prop={METADATA_PRIORITY_SECTIONS.includes(sectionKey) ? sectionSchema : (definition || sectionSchema)}
                         path={[sectionKey]}
                         formData={formData}
                         onChange={onFormChange}
