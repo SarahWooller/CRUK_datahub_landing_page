@@ -371,6 +371,73 @@ const WelcomeSection = ({ onUpload }) => (
     </div>
 );
 
+// --- Component: Frequency Grid (Matrix Input) ---
+const FrequencyGrid = ({ value, onChange, enumOptions, label }) => {
+    // value is expected to be: [{ bin: "0-6 days", count: 10 }, ...]
+    const currentData = Array.isArray(value) ? value : [];
+
+    const handleCountChange = (binLabel, newCount) => {
+        let newData = [...currentData];
+        const existingIndex = newData.findIndex(item => item.bin === binLabel);
+
+        // Convert input to integer or null if empty
+        const countVal = newCount === '' ? null : parseInt(newCount, 10);
+
+        if (existingIndex > -1) {
+            if (countVal === null || isNaN(countVal)) {
+                // Remove item if cleared
+                newData.splice(existingIndex, 1);
+            } else {
+                // Update existing
+                newData[existingIndex].count = countVal;
+            }
+        } else if (countVal !== null && !isNaN(countVal)) {
+            // Add new item
+            newData.push({ bin: binLabel, count: countVal });
+        }
+
+        onChange(newData);
+    };
+
+    return (
+        <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 mb-6">
+            <h3 className="text-lg font-bold text-gray-800 mb-4">{label} Breakdown</h3>
+            <div className="grid grid-cols-2 gap-x-8 gap-y-4 max-w-4xl">
+                {/* Headers */}
+                <div className="font-semibold text-gray-500 text-sm uppercase tracking-wider border-b pb-2">Age Group</div>
+                <div className="font-semibold text-gray-500 text-sm uppercase tracking-wider border-b pb-2">Count</div>
+
+                {/* Rows */}
+                {enumOptions.map((binLabel) => {
+                    const match = currentData.find(d => d.bin === binLabel);
+                    const count = match ? match.count : '';
+
+                    return (
+                        <React.Fragment key={binLabel}>
+                            <div className="flex items-center text-gray-700 text-sm font-medium">
+                                {binLabel}
+                            </div>
+                            <div>
+                                <input
+                                    type="number"
+                                    min="0"
+                                    placeholder="0"
+                                    value={count}
+                                    onChange={(e) => handleCountChange(binLabel, e.target.value)}
+                                    className="w-full p-2 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500"
+                                />
+                            </div>
+                        </React.Fragment>
+                    );
+                })}
+            </div>
+            <p className="text-xs text-gray-500 mt-4">
+                * Leave blank if the count is zero or unknown.
+            </p>
+        </div>
+    );
+};
+
 // --- Component: Field Renderer (Recursive) ---
 const FieldRenderer = ({
     propKey,
@@ -433,7 +500,46 @@ const FieldRenderer = ({
 
     const { definition: fieldDef, enumValues, isArray } = getDefinitionAndEnum(prop);
     const currentValue = getValueByPath(formData, path);
+    // --- SPECIAL RENDER: Age Frequency Grid ---
+    // Check if this is the "Age" field inside "DemographicFrequency"
+    // We identify it by checking the path or the definition structure
+    if (propKey === 'age' && path.includes('demographicFrequency')) {
+        // 1. Resolve the Enum options for Age
+        // The schema for age items is: { items: { $ref: "#/$defs/Age" } }
+        // The definition for Age has a property 'bin' which refers to 'AgeEnum'
 
+        // This is a manual lookup based on your known schema structure:
+        const ageEnumDef = DATA_SCHEMA.$defs?.AgeEnum;
+        const ageOptions = ageEnumDef?.enum || [];
+
+        if (ageOptions.length > 0) {
+            return (
+                <FrequencyGrid
+                    value={currentValue}
+                    onChange={(newVal) => onChange(path, newVal)}
+                    enumOptions={ageOptions}
+                    label="Age"
+                />
+            );
+        }
+    }
+
+    // --- SPECIAL RENDER: Ethnicity Frequency Grid ---
+    if (propKey === 'ethnicity' && path.includes('demographicFrequency')) {
+        const ethEnumDef = DATA_SCHEMA.$defs?.EthnicityEnum;
+        const ethOptions = ethEnumDef?.enum || [];
+
+        if (ethOptions.length > 0) {
+            return (
+                <FrequencyGrid
+                    value={currentValue}
+                    onChange={(newVal) => onChange(path, newVal)}
+                    enumOptions={ethOptions}
+                    label="Ethnicity"
+                />
+            );
+        }
+    }
     // --- RENDER: ARRAY TYPES (e.g. Tables, Columns) ---
     if (isArray) {
         const items = Array.isArray(currentValue) ? currentValue : [];
@@ -695,6 +801,7 @@ const FieldRenderer = ({
     );
 };
 // --- Component: Main Form Logic ---
+// --- Component: Main Form Logic ---
 const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance, onUpload }) => {
 
     // 0. Welcome Section
@@ -753,6 +860,19 @@ const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance, onU
             </h1>
             <p className="text-gray-600 mb-8 border-b pb-4">{sectionSchema.description}</p>
 
+            {/* --- NEW: Example Image for ERD Section --- */}
+            {sectionKey === 'erd' && (
+                <div className="mb-8 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                    <p className="text-sm font-bold text-gray-700 mb-2">Example of expected ERD format:</p>
+                    <img
+                        src='../assets/erd.png'
+                        alt="Example Entity Relationship Diagram"
+                        className="max-w-full h-auto border border-gray-300 shadow-sm"
+                    />
+                </div>
+            )}
+            {/* ------------------------------------------ */}
+
             {isContainer ? (
                 <div className="space-y-6">
                     {Object.keys(definition.properties).map((propKey) => {
@@ -774,9 +894,6 @@ const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance, onU
                 <div className="space-y-6">
                      <FieldRenderer
                         propKey={sectionKey}
-                        // CHECK: Is this section in the priority list?
-                        // If so, pass 'sectionSchema' (the original prop with correct title/desc/guidance)
-                        // If not, pass 'definition' (resolved) as default behavior to ensure type resolution works
                         prop={METADATA_PRIORITY_SECTIONS.includes(sectionKey) ? sectionSchema : (definition || sectionSchema)}
                         path={[sectionKey]}
                         formData={formData}
@@ -789,7 +906,6 @@ const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance, onU
         </div>
     );
 };
-
 // --- Component: Navigation & Download ---
 const SchemaNav = ({ activeSection, setActiveSection, onDownload, formData, visitedSections }) => {
     return (
@@ -842,7 +958,7 @@ const SchemaNav = ({ activeSection, setActiveSection, onDownload, formData, visi
             <div className="p-6 border-t border-gray-200 bg-white">
                 <button
                     onClick={onDownload}
-                    className="w-full py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded shadow flex items-center justify-center gap-2 transition-transform active:scale-95"
+                    className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded shadow flex items-center justify-center gap-2 transition-transform active:scale-95"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />

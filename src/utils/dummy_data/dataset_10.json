@@ -1,0 +1,115 @@
+{
+  "identifier": "af8cfad1-7b16-41d6-80f7-88deaa62d368",
+  "version": "1.0.0",
+  "revisions": [],
+  "issued": "2024-01-01T00:00:00.000Z",
+  "modified": "2024-01-01T00:00:00.000Z",
+  "summary": {
+    "title": "Pediatric Medulloblastoma Methylation Classifier Data",
+    "abstract": "Genome-wide DNA methylation profiling of 250 pediatric medulloblastoma samples. Used to define molecular subgroups (WNT, SHH, Group 3, Group 4).",
+    "dataCustodian": {
+      "identifier": "https://ror.org/example",
+      "name": "Generated Research Institute",
+      "contactPoint": "access@example.org"
+    },
+    "funders": "CRUK\nNIHR",
+    "grantNumbers": "GRANT-10-2024",
+    "populationSize": 862,
+    "keywords": [
+      "Pediatric",
+      "Medulloblastoma",
+      "Methylation",
+      "Classifier",
+      "Data"
+    ],
+    "doiName": "10.1000/data.10",
+    "contactPoint": "access@example.org"
+  },
+  "documentation": {
+    "description": "Genome-wide DNA methylation profiling of 250 pediatric medulloblastoma samples. Used to define molecular subgroups (WNT, SHH, Group 3, Group 4). This is a dummy description generated for testing purposes.",
+    "inPipeline": "Available"
+  },
+  "coverage": {
+    "spatial": "United Kingdom",
+    "followUp": "1 - 10 Years"
+  },
+  "provenance": {
+    "origin": {
+      "purpose": [
+        "Study"
+      ],
+      "datasetType": [
+        "Health and disease"
+      ]
+    },
+    "temporal": {
+      "publishingFrequency": "Annual",
+      "startDate": "2020-01-01",
+      "timeLag": "1-2 months"
+    }
+  },
+  "accessibility": {
+    "usage": {
+      "dataUseLimitation": [
+        "General research use"
+      ]
+    },
+    "access": {
+      "accessRights": "Open access upon request.",
+      "jurisdiction": [
+        "GB-ENG"
+      ]
+    },
+    "formatAndStandards": {
+      "vocabularyEncodingScheme": [
+        "ICD10"
+      ],
+      "conformsTo": [
+        "OMOP"
+      ],
+      "language": [
+        "en"
+      ],
+      "format": [
+        "text/csv"
+      ]
+    }
+  },
+  "observations": [
+    {
+      "observedNode": "Persons",
+      "measuredValue": 776,
+      "observationDate": "2023-12-31",
+      "measuredProperty": "Count"
+    }
+  ],
+  "demographicFrequency": {
+    "age": [
+      {
+        "bin": "50-54 years",
+        "count": 10
+      },
+      {
+        "bin": "55-59 years",
+        "count": 20
+      }
+    ],
+    "ethnicity": [
+      {
+        "bin": "White - British",
+        "count": 25
+      },
+      {
+        "bin": "Not stated",
+        "count": 5
+      }
+    ]
+  },
+  "datasetFilters": [
+    "0_0_0_13_2_9",
+    "0_0_1_35_36",
+    "0_2_3_4",
+    "0_2_0",
+    "0_1_3"
+  ]
+}
