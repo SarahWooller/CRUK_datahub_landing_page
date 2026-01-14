@@ -1,5 +1,5 @@
 {
-  "identifier": "9539da23-786b-4f55-98b6-f013570895c6",
+  "identifier": "79bc17c5-8504-480c-aae5-c739fbcbe5cd",
   "version": "1.0.0",
   "revisions": [],
   "issued": "2024-01-01T00:00:00.000Z",
@@ -8,13 +8,13 @@
     "title": "Circulating Tumor DNA (ctDNA) in Colorectal Cancer",
     "abstract": "Serial plasma ctDNA analysis in Stage II/III colorectal cancer patients post-surgery. Correlated with radiological recurrence and adjuvant therapy benefit.",
     "dataCustodian": {
-      "identifier": "https://ror.org/example",
-      "name": "Generated Research Institute",
-      "contactPoint": "access@example.org"
+      "identifier": "https://ror.org/custodian-15",
+      "name": "FOCUS4 Trial Management Group",
+      "contactPoint": "access@custodian-15.org"
     },
     "funders": "CRUK\nNIHR",
     "grantNumbers": "GRANT-15-2024",
-    "populationSize": 4352,
+    "populationSize": 1834,
     "keywords": [
       "Circulating",
       "Tumor",
@@ -23,7 +23,7 @@
       "in"
     ],
     "doiName": "10.1000/data.15",
-    "contactPoint": "access@example.org"
+    "contactPoint": "access@custodian-15.org"
   },
   "documentation": {
     "description": "Serial plasma ctDNA analysis in Stage II/III colorectal cancer patients post-surgery. Correlated with radiological recurrence and adjuvant therapy benefit. This is a dummy description generated for testing purposes.",
@@ -78,7 +78,7 @@
   "observations": [
     {
       "observedNode": "Persons",
-      "measuredValue": 1964,
+      "measuredValue": 4533,
       "observationDate": "2023-12-31",
       "measuredProperty": "Count"
     }
@@ -110,6 +110,8 @@
     "0_0_1_3_0",
     "0_2_3_4",
     "0_2_3_3",
-    "0_1_4"
+    "0_1_4",
+    "0_0_2_12",
+    "0_0_4_6"
   ]
 }

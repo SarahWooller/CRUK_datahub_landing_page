@@ -1,5 +1,5 @@
 {
-  "identifier": "7bc7878c-86be-469a-b619-8628e110ca90",
+  "identifier": "906d5fb8-179d-4886-b831-884adea2878a",
   "version": "1.0.0",
   "revisions": [],
   "issued": "2024-01-01T00:00:00.000Z",
@@ -8,13 +8,13 @@
     "title": "Primary Care Referrals for Suspected Cancer (Two-Week Wait)",
     "abstract": "EHR extract of 10,000 urgent cancer referrals from GP practices. Tracks conversion rates to cancer diagnosis and time-to-treatment intervals.",
     "dataCustodian": {
-      "identifier": "https://ror.org/example",
-      "name": "Generated Research Institute",
-      "contactPoint": "access@example.org"
+      "identifier": "https://ror.org/custodian-16",
+      "name": "National Cancer Diagnosis Audit (NCDA)",
+      "contactPoint": "access@custodian-16.org"
     },
     "funders": "CRUK\nNIHR",
     "grantNumbers": "GRANT-16-2024",
-    "populationSize": 4804,
+    "populationSize": 631,
     "keywords": [
       "Primary",
       "Care",
@@ -23,7 +23,7 @@
       "Suspected"
     ],
     "doiName": "10.1000/data.16",
-    "contactPoint": "access@example.org"
+    "contactPoint": "access@custodian-16.org"
   },
   "documentation": {
     "description": "EHR extract of 10,000 urgent cancer referrals from GP practices. Tracks conversion rates to cancer diagnosis and time-to-treatment intervals. This is a dummy description generated for testing purposes.",
@@ -78,7 +78,7 @@
   "observations": [
     {
       "observedNode": "Persons",
-      "measuredValue": 2421,
+      "measuredValue": 670,
       "observationDate": "2023-12-31",
       "measuredProperty": "Count"
     }

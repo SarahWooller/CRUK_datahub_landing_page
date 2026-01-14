@@ -1,5 +1,5 @@
 {
-  "identifier": "193b29e7-42a7-46cf-864c-63ced22c5480",
+  "identifier": "3ab22c0a-712e-4be0-9595-c97f0eac2287",
   "version": "1.0.0",
   "revisions": [],
   "issued": "2024-01-01T00:00:00.000Z",
@@ -8,13 +8,13 @@
     "title": "Diffuse Large B-Cell Lymphoma (DLBCL) PET-CT Staging",
     "abstract": "Baseline and interim PET-CT scans for 400 DLBCL patients treated with R-CHOP. Includes Deauville scores and metabolic tumor volume calculations.",
     "dataCustodian": {
-      "identifier": "https://ror.org/example",
-      "name": "Generated Research Institute",
-      "contactPoint": "access@example.org"
+      "identifier": "https://ror.org/custodian-9",
+      "name": "PET-PANC Collaborative",
+      "contactPoint": "access@custodian-9.org"
     },
     "funders": "CRUK\nNIHR",
     "grantNumbers": "GRANT-9-2024",
-    "populationSize": 3978,
+    "populationSize": 4822,
     "keywords": [
       "Diffuse",
       "Large",
@@ -23,7 +23,7 @@
       "(DLBCL)"
     ],
     "doiName": "10.1000/data.9",
-    "contactPoint": "access@example.org"
+    "contactPoint": "access@custodian-9.org"
   },
   "documentation": {
     "description": "Baseline and interim PET-CT scans for 400 DLBCL patients treated with R-CHOP. Includes Deauville scores and metabolic tumor volume calculations. This is a dummy description generated for testing purposes.",
@@ -78,7 +78,7 @@
   "observations": [
     {
       "observedNode": "Persons",
-      "measuredValue": 4945,
+      "measuredValue": 254,
       "observationDate": "2023-12-31",
       "measuredProperty": "Count"
     }
@@ -111,6 +111,9 @@
     "0_2_3_6",
     "0_2_3_5",
     "0_1_4",
+    "0_0_2_70",
+    "0_0_2_53",
+    "0_0_4_7",
     "0_0_0_1_1"
   ]
 }

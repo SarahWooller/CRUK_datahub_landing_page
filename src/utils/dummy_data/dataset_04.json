@@ -1,5 +1,5 @@
 {
-  "identifier": "960d3b87-7ed6-4968-8fd9-ad222e7f717c",
+  "identifier": "cdd0849d-2c5a-492e-a485-3fee19beca5e",
   "version": "1.0.0",
   "revisions": [],
   "issued": "2024-01-01T00:00:00.000Z",
@@ -8,13 +8,13 @@
     "title": "Metastatic Melanoma Immunotherapy Response Registry",
     "abstract": "Real-world data on 1200 patients with metastatic melanoma treated with checkpoint inhibitors (anti-PD1/CTLA4). Includes progression-free survival and immune-related adverse events.",
     "dataCustodian": {
-      "identifier": "https://ror.org/example",
-      "name": "Generated Research Institute",
-      "contactPoint": "access@example.org"
+      "identifier": "https://ror.org/custodian-4",
+      "name": "Melanoma Focus Registry",
+      "contactPoint": "access@custodian-4.org"
     },
     "funders": "CRUK\nNIHR",
     "grantNumbers": "GRANT-4-2024",
-    "populationSize": 3355,
+    "populationSize": 4206,
     "keywords": [
       "Metastatic",
       "Melanoma",
@@ -23,7 +23,7 @@
       "Registry"
     ],
     "doiName": "10.1000/data.4",
-    "contactPoint": "access@example.org"
+    "contactPoint": "access@custodian-4.org"
   },
   "documentation": {
     "description": "Real-world data on 1200 patients with metastatic melanoma treated with checkpoint inhibitors (anti-PD1/CTLA4). Includes progression-free survival and immune-related adverse events. This is a dummy description generated for testing purposes.",
@@ -78,7 +78,7 @@
   "observations": [
     {
       "observedNode": "Persons",
-      "measuredValue": 1133,
+      "measuredValue": 3523,
       "observationDate": "2023-12-31",
       "measuredProperty": "Count"
     }
@@ -110,6 +110,8 @@
     "0_0_1_15",
     "0_2_3_6",
     "0_2_3_5",
-    "0_1_4"
+    "0_1_4",
+    "0_0_2_56",
+    "0_0_4_29"
   ]
 }

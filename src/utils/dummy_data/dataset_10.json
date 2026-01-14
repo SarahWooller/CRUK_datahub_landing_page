@@ -1,5 +1,5 @@
 {
-  "identifier": "af8cfad1-7b16-41d6-80f7-88deaa62d368",
+  "identifier": "e27fa1cc-4320-4203-863e-8fc0d97950f6",
   "version": "1.0.0",
   "revisions": [],
   "issued": "2024-01-01T00:00:00.000Z",
@@ -8,13 +8,13 @@
     "title": "Pediatric Medulloblastoma Methylation Classifier Data",
     "abstract": "Genome-wide DNA methylation profiling of 250 pediatric medulloblastoma samples. Used to define molecular subgroups (WNT, SHH, Group 3, Group 4).",
     "dataCustodian": {
-      "identifier": "https://ror.org/example",
-      "name": "Generated Research Institute",
-      "contactPoint": "access@example.org"
+      "identifier": "https://ror.org/custodian-10",
+      "name": "Children's Cancer and Leukaemia Group (CCLG)",
+      "contactPoint": "access@custodian-10.org"
     },
     "funders": "CRUK\nNIHR",
     "grantNumbers": "GRANT-10-2024",
-    "populationSize": 862,
+    "populationSize": 4423,
     "keywords": [
       "Pediatric",
       "Medulloblastoma",
@@ -23,7 +23,7 @@
       "Data"
     ],
     "doiName": "10.1000/data.10",
-    "contactPoint": "access@example.org"
+    "contactPoint": "access@custodian-10.org"
   },
   "documentation": {
     "description": "Genome-wide DNA methylation profiling of 250 pediatric medulloblastoma samples. Used to define molecular subgroups (WNT, SHH, Group 3, Group 4). This is a dummy description generated for testing purposes.",
@@ -78,7 +78,7 @@
   "observations": [
     {
       "observedNode": "Persons",
-      "measuredValue": 776,
+      "measuredValue": 3183,
       "observationDate": "2023-12-31",
       "measuredProperty": "Count"
     }
@@ -110,6 +110,8 @@
     "0_0_1_35_36",
     "0_2_3_4",
     "0_2_0",
-    "0_1_3"
+    "0_1_3",
+    "0_0_2_24",
+    "0_0_2_13"
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "identifier": "6fe0dca9-ece4-4adb-8880-2eeddf049f07",
+  "identifier": "50ccea77-738f-4314-b145-9865bd98eedd",
   "version": "1.0.0",
   "revisions": [],
   "issued": "2024-01-01T00:00:00.000Z",
@@ -8,13 +8,13 @@
     "title": "Prostate Cancer Active Surveillance MRI Cohort",
     "abstract": "Longitudinal multiparametric MRI data for 600 men on active surveillance for low-to-intermediate risk prostate cancer. Includes biopsy Gleason scores and PSA kinetics.",
     "dataCustodian": {
-      "identifier": "https://ror.org/example",
-      "name": "Generated Research Institute",
-      "contactPoint": "access@example.org"
+      "identifier": "https://ror.org/custodian-7",
+      "name": "Prostate Cancer UK Active Surveillance Cohort",
+      "contactPoint": "access@custodian-7.org"
     },
     "funders": "CRUK\nNIHR",
     "grantNumbers": "GRANT-7-2024",
-    "populationSize": 4691,
+    "populationSize": 3451,
     "keywords": [
       "Prostate",
       "Cancer",
@@ -23,7 +23,7 @@
       "MRI"
     ],
     "doiName": "10.1000/data.7",
-    "contactPoint": "access@example.org"
+    "contactPoint": "access@custodian-7.org"
   },
   "documentation": {
     "description": "Longitudinal multiparametric MRI data for 600 men on active surveillance for low-to-intermediate risk prostate cancer. Includes biopsy Gleason scores and PSA kinetics. This is a dummy description generated for testing purposes.",
@@ -78,7 +78,7 @@
   "observations": [
     {
       "observedNode": "Persons",
-      "measuredValue": 4754,
+      "measuredValue": 2240,
       "observationDate": "2023-12-31",
       "measuredProperty": "Count"
     }
@@ -110,6 +110,8 @@
     "0_0_1_3_0",
     "0_2_3_2",
     "0_2_3_3",
-    "0_1_4"
+    "0_1_4",
+    "0_0_2_81",
+    "0_0_4_26"
   ]
 }

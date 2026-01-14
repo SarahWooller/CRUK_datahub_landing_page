@@ -1,5 +1,5 @@
 {
-  "identifier": "422a227d-6a36-430d-8ce2-f61a0c3a096f",
+  "identifier": "9b600f60-edfc-4b10-82f1-f558ba71da8b",
   "version": "1.0.0",
   "revisions": [],
   "issued": "2024-01-01T00:00:00.000Z",
@@ -8,13 +8,13 @@
     "title": "Colorectal Cancer Liver Metastases (CRLM) Surgical Outcomes",
     "abstract": "Clinical outcome data for 1500 patients undergoing liver resection for colorectal metastases. Variables include margin status, recurrence patterns, and 5-year survival.",
     "dataCustodian": {
-      "identifier": "https://ror.org/example",
-      "name": "Generated Research Institute",
-      "contactPoint": "access@example.org"
+      "identifier": "https://ror.org/custodian-6",
+      "name": "Liver Metastasis Surgical Registry (LiMSR)",
+      "contactPoint": "access@custodian-6.org"
     },
     "funders": "CRUK\nNIHR",
     "grantNumbers": "GRANT-6-2024",
-    "populationSize": 2482,
+    "populationSize": 1436,
     "keywords": [
       "Colorectal",
       "Cancer",
@@ -23,7 +23,7 @@
       "(CRLM)"
     ],
     "doiName": "10.1000/data.6",
-    "contactPoint": "access@example.org"
+    "contactPoint": "access@custodian-6.org"
   },
   "documentation": {
     "description": "Clinical outcome data for 1500 patients undergoing liver resection for colorectal metastases. Variables include margin status, recurrence patterns, and 5-year survival. This is a dummy description generated for testing purposes.",
@@ -78,7 +78,7 @@
   "observations": [
     {
       "observedNode": "Persons",
-      "measuredValue": 2988,
+      "measuredValue": 4238,
       "observationDate": "2023-12-31",
       "measuredProperty": "Count"
     }
@@ -111,6 +111,10 @@
     "0_0_1_3_0",
     "0_2_3_6",
     "0_2_3_5",
-    "0_1_4"
+    "0_1_4",
+    "0_0_2_12",
+    "0_0_2_50",
+    "0_0_4_6",
+    "0_0_4_18"
   ]
 }

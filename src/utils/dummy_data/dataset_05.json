@@ -1,5 +1,5 @@
 {
-  "identifier": "34f50133-4b39-490c-af12-c48f3bb04fe9",
+  "identifier": "6999d0e7-4826-41c2-954f-3a3e75341710",
   "version": "1.0.0",
   "revisions": [],
   "issued": "2024-01-01T00:00:00.000Z",
@@ -8,13 +8,13 @@
     "title": "Early-Stage Non-Small Cell Lung Cancer (NSCLC) CT Imaging",
     "abstract": "High-resolution CT imaging dataset of 800 Stage I-II NSCLC patients. Includes radiomic feature extractions and annotated nodule segmentations.",
     "dataCustodian": {
-      "identifier": "https://ror.org/example",
-      "name": "Generated Research Institute",
-      "contactPoint": "access@example.org"
+      "identifier": "https://ror.org/custodian-5",
+      "name": "National Lung Matrix Trial Repository",
+      "contactPoint": "access@custodian-5.org"
     },
     "funders": "CRUK\nNIHR",
     "grantNumbers": "GRANT-5-2024",
-    "populationSize": 1849,
+    "populationSize": 581,
     "keywords": [
       "Early-Stage",
       "Non-Small",
@@ -23,7 +23,7 @@
       "Cancer"
     ],
     "doiName": "10.1000/data.5",
-    "contactPoint": "access@example.org"
+    "contactPoint": "access@custodian-5.org"
   },
   "documentation": {
     "description": "High-resolution CT imaging dataset of 800 Stage I-II NSCLC patients. Includes radiomic feature extractions and annotated nodule segmentations. This is a dummy description generated for testing purposes.",
@@ -78,7 +78,7 @@
   "observations": [
     {
       "observedNode": "Persons",
-      "measuredValue": 2154,
+      "measuredValue": 1970,
       "observationDate": "2023-12-31",
       "measuredProperty": "Count"
     }
@@ -110,6 +110,8 @@
     "0_0_1_1_0",
     "0_2_3_2",
     "0_2_3_6",
-    "0_1_4"
+    "0_1_4",
+    "0_0_2_51",
+    "0_0_4_20"
   ]
 }

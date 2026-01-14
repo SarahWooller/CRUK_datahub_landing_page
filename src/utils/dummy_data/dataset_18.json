@@ -1,5 +1,5 @@
 {
-  "identifier": "92717555-7961-48ae-abb7-da6376fddfa0",
+  "identifier": "20181b5f-066a-4acb-a322-ae3f45a38916",
   "version": "1.0.0",
   "revisions": [],
   "issued": "2024-01-01T00:00:00.000Z",
@@ -8,13 +8,13 @@
     "title": "Ovarian Cancer Ascites Metabolomics",
     "abstract": "NMR-based metabolomic profiling of ascites fluid from 100 ovarian cancer patients. Identification of metabolic signatures associated with platinum resistance.",
     "dataCustodian": {
-      "identifier": "https://ror.org/example",
-      "name": "Generated Research Institute",
-      "contactPoint": "access@example.org"
+      "identifier": "https://ror.org/custodian-18",
+      "name": "Ovarian Cancer Action Research Centre",
+      "contactPoint": "access@custodian-18.org"
     },
     "funders": "CRUK\nNIHR",
     "grantNumbers": "GRANT-18-2024",
-    "populationSize": 1603,
+    "populationSize": 962,
     "keywords": [
       "Ovarian",
       "Cancer",
@@ -22,7 +22,7 @@
       "Metabolomics"
     ],
     "doiName": "10.1000/data.18",
-    "contactPoint": "access@example.org"
+    "contactPoint": "access@custodian-18.org"
   },
   "documentation": {
     "description": "NMR-based metabolomic profiling of ascites fluid from 100 ovarian cancer patients. Identification of metabolic signatures associated with platinum resistance. This is a dummy description generated for testing purposes.",
@@ -77,7 +77,7 @@
   "observations": [
     {
       "observedNode": "Persons",
-      "measuredValue": 4510,
+      "measuredValue": 3135,
       "observationDate": "2023-12-31",
       "measuredProperty": "Count"
     }
@@ -109,6 +109,8 @@
     "0_0_1_3_0",
     "0_2_3_4",
     "0_2_0",
-    "0_1_4"
+    "0_1_4",
+    "0_0_2_74",
+    "0_0_4_23"
   ]
 }
