@@ -530,6 +530,15 @@
                   "title": "DataColumn",
                   "type": "object"
             },
+            "DatasetFilters": {
+                  "type": "array",
+                  "items": {
+                        "type": "string",
+                        "pattern": "^(\\d+_){0,5}\\d+$"
+                  },
+                  "title": "Dataset Filters",
+                  "description": "A list of categorization tags (ids) for the dataset."
+            },
             "DataTable": {
                   "additionalProperties": false,
                   "properties": {
@@ -573,7 +582,8 @@
                                     }
                               ],
                               "default": null,
-                              "description": "A Population size contributing to the table in a dataset.",
+                              "description": "Number of Complete Entries.",
+                              "guidance": "Provides a measure of the completeness of the data set. A row which includes n/a against columns that are not relevant or not applicable should still be counted as complete.",
                               "title": "Table size"
                         },
                         "columns": {
@@ -862,12 +872,11 @@
                                           "$ref": "#/$defs/Description"
                                     }
                               ],
-                              "description": "A free-text description of the dataset.\\nA URL can also be provided as the description of the dataset.",
+                              "description": "A free-text description of the dataset.\\nA URL can also be provided as the description of the dataset.\\nGateway Feature: Keywords and text may be extracted out of the description and indexed for search.",
                               "examples": [
                                     "CPRD Aurum contains primary care data contributed by General Practitioner (GP) practices using EMIS Web\u00ae including patient registration information and all care events that GPs have chosen to record as part of their usual medical practice."
                               ],
-                              "guidance": "- An HTML account of the data that **provides context and scope** of the data, **limited to 10000 characters, and/or a resolvable URL** that describes the dataset.\\n- Additional information can be recorded and included using the Associated media field.",
-                              "title": "Description"
+                              "guidance": "- An HTML account of the data that **provides context and scope** of the data, **limited to 10000 characters, and/or a resolvable URL** that describes the dataset.\\n- Additional information can be recorded and included using the Associated media field."
                         },
                         "associatedMedia": {
                               "anyOf": [
@@ -1315,6 +1324,23 @@
                   ],
                   "title": "HealthAndDiseaseSubTypes",
                   "type": "string"
+            },
+            "Image": {
+                  "additionalProperties": false,
+                  "properties": {
+                        "image": {
+                              "description": "An image file.",
+                              "title": "Image",
+                              "type": "string",
+                              "contentMediaType": "image/*",
+                              "guidance": "Upload an image file (PNG, JPG, SVG) Max file size: 5MB."
+                        },
+                        "description": {
+                               "$ref": "#/$defs/Description"
+                        }
+                  },
+                  "title": "Diagram",
+                  "type": "object"
             },
             "ImagingAreaOfTheBody": {
                   "properties": {
@@ -1855,6 +1881,84 @@
                   "title": "Observation",
                   "type": "object"
             },
+            "Omics": {
+                  "additionalProperties": false,
+                  "properties": {
+                        "assay": {
+                              "anyOf": [
+                                    {
+                                          "$ref": "#/$defs/Assay"
+                                    },
+                                    {
+                                          "type": "null"
+                                    }
+                              ],
+                              "default": null,
+                              "description": "The specific 'omics assay that generated the dataset.",
+                              "guidance": "The specific 'omics assay that generated the dataset. If the assay used to generate your dataset is not listed, please contract the gateway team by submitting an enquiry.",
+                              "title": "Omics assay"
+                        },
+                        "platform": {
+                              "anyOf": [
+                                    {
+                                          "$ref": "#/$defs/Platform"
+                                    },
+                                    {
+                                          "type": "null"
+                                    }
+                              ],
+                              "default": null,
+                              "description": "The specific technology or infrastructure used to perform the assay. If the omics platform used to create your dataset is not listed, please select other, a member of the gateway team will contact you to add an appropriate term(s) both to your record and to the metadata schema on your behalf.",
+                              "guidance": "The specific technology or infrastructure used to perform the assay. If the omics platform used to create your dataset is not listed, please select other, a member of the gateway team will contact you to add an appropriate term(s) both to your record and to the metadata schema on your behalf.",
+                              "title": "Omics Platform"
+                        }
+                  },
+                  "title": "Omics",
+                  "type": "object"
+            },
+            "OmicsDataType": {
+                  "properties": {
+                        "name": {
+                              "Literal": true,
+                              "default": "Omics",
+                              "title": "Name",
+                              "type": "string"
+                        },
+                        "subTypes": {
+                              "anyOf": [
+                                    {
+                                          "items": {
+                                                "$ref": "#/$defs/OmicsDataTypeSubTypes"
+                                          },
+                                          "type": "array"
+                                    },
+                                    {
+                                          "type": "null"
+                                    }
+                              ],
+                              "title": "Subtypes"
+                        }
+                  },
+                  "required": [
+                        "subTypes"
+                  ],
+                  "title": "OmicsDataType",
+                  "type": "object"
+            },
+            "OmicsDataTypeSubTypes": {
+                  "enum": [
+                        "Proteomics",
+                        "Transcriptomics",
+                        "Epigenomics",
+                        "Metabolomics",
+                        "Metagenomics",
+                        "Genomics",
+                        "Lipidomics",
+                        "Others"
+                  ],
+                  "title": "OmicsDataTypeSubTypes",
+                  "type": "string"
+            },
             "OneHundredFiftyCharacters": {
                   "maxLength": 150,
                   "minLength": 2,
@@ -1986,7 +2090,7 @@
                               "examples": [
                                     "Health and disease"
                               ],
-                              "guidance": "Types include those listed below. Datasets can have more than one type associated.\\n- **Health and disease**: Includes any data related to mental health, cardiovascular, cancer, rare diseases, metabolic and endocrine, neurological, reproductive, maternity and neonatology, respiratory, immunity, musculoskeletal, vision, renal and urogenital, oral and gastrointestinal, cognitive function or hearing.\\n- **Treatments/Interventions**: Includes any data related to treatment or interventions related to vaccines or which are preventative or therapeutic in nature.\\n- **Measurements/Tests**: Includes any data related to laboratory or other diagnostics.\\n- **Imaging types**: Includes any data related to CT, MRI, PET, x-ray, ultrasound or pathology imaging.\\n- **Imaging area of the body**: Indicates whether the dataset relates to head, chest, arm abdomen or leg imaging.",
+                              "guidance": "Types include those listed below. Datasets can have more than one type associated.\\n- **Health and disease**: Includes any data related to mental health, cardiovascular, cancer, rare diseases, metabolic and endocrine, neurological, reproductive, maternity and neonatology, respiratory, immunity, musculoskeletal, vision, renal and urogenital, oral and gastrointestinal, cognitive function or hearing.\\n- **Treatments/Interventions**: Includes any data related to treatment or interventions related to vaccines or which are preventative or therapeutic in nature.\\n- **Measurements/Tests**: Includes any data related to laboratory or other diagnostics.\\n- **Imaging types**: Includes any data related to CT, MRI, PET, x-ray, ultrasound or pathology imaging.\\n- **Imaging area of the body**: Indicates whether the dataset relates to head, chest, arm abdomen or leg imaging.\\n- **Omics**: Includes any data related to proteomics, transcriptomics, epigenomics, metabolomics, multiomics, metagenomics or genomics.\\n- **Socioeconomic**: Includes any data related to education, crime and justice, ethnicity, housing, labour, ageing, economics, marital status, social support, deprivation, religion, occupation, finances or family circumstances.\\n- **Lifestyle**: Includes any data related to smoking, physical activity, dietary habits or alcohol.\\n- **Registry**: Includes any data related to disease registries for research, national disease registries, audits, or birth and deaths records.\\n- **Environment and energy**: Includes any data related to the monitoring or study of environmental or energy factors or events.\\n- **Information and communication**: Includes any data related to the study or application of information and communication.\\n- **Politics**: Includes any data related to political views, activities, voting, etc.",
                               "items": {
                                     "anyOf": [
                                           {
@@ -2003,6 +2107,9 @@
                                           },
                                           {
                                                 "$ref": "#/$defs/ImagingAreaOfTheBody"
+                                          },
+                                          {
+                                                "$ref": "#/$defs/OmicsDataType"
                                           },
                                           {
                                                 "$ref": "#/$defs/Socioeconomic"
@@ -2472,14 +2579,12 @@
                                           "$ref": "#/$defs/OneHundredFiftyCharacters"
                                     }
                               ],
-                              "description": "Up to 150 characters.",
+                              "description": "Title of the dataset limited to 150 characters. It should provide a short description of the dataset and be unique across the gateway. If your title is not unique, please add a prefix with your organisation name or identifier to differentiate it from other datasets within the Gateway. Good titles should summarise the content of the dataset and if relevant, the region the dataset covers.",
                               "examples": [
-                                    "Linked multi-omic dataset in oesophageal cancer (OCCAMS)",
-                                    "Non-small cell lung cancer (NSCLC) real-world dataset"
-
-
+                                    "North West London COVID-19 Patient Level Situation Report",
+                                    "Scottish Morbidity Record (SMR)"
                               ],
-                              "guidance": "- Use the **title** the dataset is best known by. Expand **acronyms**, adding the acronym in brackets.\\n- Use a **unique** title. adding a **prefix** with your organisation name or identifier where necessary",
+                              "guidance": "- The **title** should provide a short description of the dataset and be **unique** across the gateway.\\n- If your title is not unique, please **add a prefix with your organisation name or identifier** to differentiate it from other datasets within the Gateway.\\n- If an accronym is widely used the dataset name, please add it in brackets () at the end of the title.\\n- Good titles should summarise the content of the dataset and if relevant, **the region the dataset covers**.\\n- **Example**: North West London COVID-19 Patient Level Situation Report",
                               "title": "Title"
                         },
                         "funders": {
@@ -2520,12 +2625,11 @@
                                           "$ref": "#/$defs/AbstractText"
                                     }
                               ],
-                              "description": "Optimal length one paragraph. Limited to 255 characters. Avoid long sentences and abbreviations.",
+                              "description": "Provide a clear and brief descriptive signpost for researchers who are searching for data that may be relevant to their research. The abstract should allow the reader to determine the scope of the data collection and accurately summarise its content. The optimal length is one paragraph (limited to 255 characters) and effective abstracts should avoid long sentences and abbreviations where possible.",
                               "examples": [
-                                    "Anonymised real-world clinical data from patients with advanced or metastatic non-small cell lung cancer.  Data includes treatments, imaging, long-term follow up and outcomes. Database size = 774 in 2025 + 150 patients/year."
+                                    "CPRD Aurum contains primary care data contributed by General Practitioner (GP) practices using EMIS Web\u00ae including patient registration information and all care events that GPs have chosen to record as part of their usual medical practice."
                               ],
-                              "guidance": "- A **clear and brief descriptive signpost** for researchers, summarising the dataset's scope and contents.\\n- The first line of the abstract is visible to readers when searching for datasets.\\n- **Abstracts should be different from the full description** for a dataset.",
-
+                              "guidance": "- The abstract should provide a **clear and brief descriptive** signpost for researchers who are searching for data that may be relevant to their research.\\n- The abstract should allow the reader to determine the **scope of the data collection and accurately summarise its content**.\\n- Effective abstracts should **avoid long sentences and abbreviations** where possible.\\n- **Note**: Researchers will view Titles and the first line of Abstracts (list view) when searching for datasets and choosing whether to explore their content further.\\n- **Abstracts should be different from the full description** for a dataset.\\n- **Example**: CPRD Aurum contains primary care data contributed by General Practitioner (GP) practices using EMIS Web\u00ae including patient registration information and all care events that GPs have chosen to record as part of their usual medical practice.",
                               "title": "Dataset abstract"
                         },
                         "dataCustodian": {
@@ -2534,9 +2638,7 @@
                                           "$ref": "#/$defs/Organisation"
                                     }
                               ],
-                              "description": "Organisation responsible for queries and data access requests.",
-                              "examples" : ["Cancer Research Horizons","Histo-Mol GBM Collaborative"],
-                              "guidance" : "Generally the HDRUK Organisation. However, in some cases the HDRUK organisation coordinates for more than one Data Access Custodian [**Note that it is a little strange to refer to HDRUK here - what is the alternative.**]",
+                              "description": "This is the organisation responsible for running or supporting the data access request process, as well as enquiries about a dataset. In most this will be the same as the HDR UK Organisation (Hub or Alliance Member). However, in some cases this will be different i.e. Tissue Directory are an HDR UK Gateway organisation but coordinate activities across a number of data publishers i.e. Cambridge Blood and Stem Cell Biobank.",
                               "title": "Dataset Custodian"
                         },
                         "populationSize": {
@@ -2544,7 +2646,7 @@
                               "examples": [
                                     1000
                               ],
-                              "guidance": "Enables researchers to find datasets reaching above a population threshold.",
+                              "guidance": "This number informs a filter for Researchers to differentiate dataset search results based on the number of people in the dataset, and does not pull from the **Observations** fields. The filter also allows for Researchers to search datasets which have no population size reported, but will **not** pull any population size captured in the **Observations** section.",
                               "title": "Dataset population size",
                               "type": "integer"
                         },
@@ -2561,14 +2663,16 @@
                                     }
                               ],
                               "default": null,
-                              "description": "If not included in abstract, title or filters, please provide one or more keywords or short phrases to improve search engine optimisation.",
+                              "description": "Please provide a list of relevant and specific keywords that can improve the search engine optimisation (SEO) of your dataset as a comma separated list. Notes: Onboarding portal will suggest keywords based on title, abstract and description. We are compiling a standardised list of keywords and synonyms across datasets to make filtering easier for users.",
                               "examples": [
-                                    "Hedgehog pathway",
-                                    "p53 hotspot mutation",
-                                    "Oxaliplatin",
+                                    "Outpatient Care",
+                                    "Socioeconomic Deprivation",
+                                    "Infant Morbidity",
+                                    "Learning disability",
+                                    "Primary Care Prescription",
                                     "Accident and Emergency Admissions"
                               ],
-                              "guidance": "- Keywords need not repeat information provided in the title, abstract or filters.\\n - If needed they should refer to specific additional details of the dataset.\\n - Include one per line.   ",
+                              "guidance": "- Please provide **relevant** and **specific keywords** that can **improve the search engine optimization** of your dataset.\\n- Please **enter one keyword at a time** and click **Add New Field** to add further keywords.\\n- Text from the title is automatically included in the search, there is no need to include this in the keywords.\\n- Include words that researcher may include in their searches.",
                               "title": "Keywords"
                         },
                         "doiName": {
@@ -2581,11 +2685,11 @@
                                     }
                               ],
                               "default": null,
-                              "description": "DOI associated with the dataset not publication.",
+                              "description": "DOI associated to this dataset. Find out more about DOIs here: [https://www.doi.org/the-identifier/what-is-a-doi/](https://www.doi.org/the-identifier/what-is-a-doi/)",
                               "examples": [
                                     "10.1093/ije/dyx196"
                               ],
-                              "guidance": "- A dataset DOI provides a permanent link to the dataset facilitating discoverability and helping you track impact through citations.\\n - Please note: It is **not** the same as the DOI of any associated publication.\\n- All CRUK datasets should either have a **DOI** or be working towards obtaining one.\\n- **What happens if I do not have a DOI?**: Academic organisations may have an existing relationship with a DOI provider. Otherwise, sites such as figshare offer free services to mint a DOI for your dataset. **We will need to decide our approach towards subsequent versions of HDRUK's Metadata Exchange which will provide a DOI minting service.**",
+                              "guidance": "- Please note: This is **not** the DOI of the publication(s) associated with the dataset.\\n- All HDR UK registered **datasets** should either have a **(DOI)** or be working towards obtaining one.\\n- If a DOI is available, please provide the DOI.\\n- **What happens if I do not have a DOI?**: Contact your academic organisation to find out if there is an existing relationship with a DOI provider. If that is not available, sites such as figshare offer free services to mint a DOI for your dataset. Subsequent versions of the Metadata Exchange will provide a DOI minting service.",
                               "title": "Digital Object Identifier (DOI) for dataset"
                         },
                         "contactPoint": {
@@ -2594,11 +2698,11 @@
                                           "$ref": "#/$defs/EmailAddress"
                                     }
                               ],
-                              "description": "Email address for coodinating data access requests.",
+                              "description": "Please provide a valid email address that can be used to coordinate data access requests.",
                               "examples": [
                                     "gateway@hdruk.ac.uk"
                               ],
-                              "guidance": "This should be a **dedicated email address** associated with the data access request process. It defaults to the teams support email provided in the teams setting.\\n**Note:** An employee's email address can only be provided on a temporary basis and if one is provided, **you must obtain explicit consent for this purpose**.",
+                              "guidance": "Organisations are expected to provide a dedicated email address associated with the data access request process. If no contact point is provided in this field, this field will be defaulted to the teams support email provided in the teams setting.\\n**Note:** An employee's email address can only be provided on a temporary basis and if one is provided, **you must obtain explicit consent for this purpose**.",
                               "title": "Contact point"
                         },
                         "datasetAliases": {
@@ -2966,8 +3070,7 @@
                               "$ref": "#/$defs/Summary"
                         }
                   ],
-                  "description": "Summary of metadata describing key pieces of information.",
-                  "title": "Summary"
+                  "description": "Summary of metadata describing key pieces of information."
             },
             "documentation": {
                   "anyOf": [
@@ -2981,6 +3084,18 @@
                   "default": null,
                   "description": "Documentation can include a rich text description of the dataset or links to media such as documents, images, presentations, videos or links to data dictionaries, profiles or dashboards. Organisations are required to confirm that they have permission to distribute any additional media.",
                   "title": "Documentation"
+            },
+            "datasetFilters": {
+                  "anyOf": [
+                        {
+                              "$ref": "#/$defs/DatasetFilters"
+                        },
+                        {
+                              "type": "null"
+                        }
+                  ],
+                  "default": null,
+                  "description": "Categorization tags regarding cancer type, data type, and access."
             },
             "coverage": {
                   "anyOf": [
@@ -3014,8 +3129,7 @@
                               "$ref": "#/$defs/Accessibility"
                         }
                   ],
-                  "description": "Accessibility information allows researchers to understand access, usage, limitations, formats, standards and linkage or interoperability with toolsets.",
-                  "title": "Accessibility"
+                  "description": "Accessibility information allows researchers to understand access, usage, limitations, formats, standards and linkage or interoperability with toolsets."
             },
             "enrichmentAndLinkage": {
                   "anyOf": [
@@ -3051,6 +3165,21 @@
                   "description": "Descriptions of all tables and data elements that can be included in the dataset.",
                   "title": "Structural metadata"
             },
+            "erd": {
+                  "anyOf": [
+                        {
+                              "$ref": "#/$defs/Image"
+                        },
+                        {
+                              "type": "null"
+                        }
+                  ],
+                  "default": null,
+                  "description": "Visual representation of data table relationships.",
+                  "title": "Entity Relationship Diagram",
+                  "guidance": "Please upload an image file (max 5MB) showing the relationship between the different tables"
+
+            },
             "demographicFrequency": {
                   "anyOf": [
                         {
@@ -3063,6 +3192,19 @@
                   "default": null,
                   "description": "The statistical characteristics of a population or group within the dataset.",
                   "title": "Demographic frequency"
+            },
+            "omics": {
+                  "anyOf": [
+                        {
+                              "$ref": "#/$defs/Omics"
+                        },
+                        {
+                              "type": "null"
+                        }
+                  ],
+                  "default": null,
+                  "description": "Omics",
+                  "title": "Omics"
             }
       },
       "required": [
@@ -3075,6 +3217,6 @@
             "accessibility",
             "observations"
       ],
-      "title": "CRUK100",
+      "title": "Hdruk400",
       "type": "object"
 }

@@ -1,0 +1,59 @@
+{
+    "$defs": {
+        "Summary": {
+            "properties": {
+                "title": {
+                    "description": "Up to 150 characters.",
+                    "examples": [
+                        "Linked multi-omic dataset in oesophageal cancer (OCCAMS)",
+                        "Non-small cell lung cancer (NSCLC) real-world dataset"
+                    ],
+                    "guidance": "- Use the **title** the dataset is best known by. Expand **acronyms**, adding the acronym in brackets.\\n- Use a **unique** title. adding a **prefix** with your organisation name or identifier where necessary"
+                },
+                "abstract": {
+                    "description": "Optimal length one paragraph. Limited to 255 characters. Avoid long sentences and abbreviations.",
+                    "examples": [
+                        "Anonymised real-world clinical data from patients with advanced or metastatic non-small cell lung cancer.  Data includes treatments, imaging, long-term follow up and outcomes. Database size = 774 in 2025 + 150 patients/year."
+                    ],
+                    "guidance": "- A **clear and brief descriptive signpost** for researchers, summarising the dataset's scope and contents.\\n- The first line of the abstract is visible to readers when searching for datasets.\\n- **Abstracts should be different from the full description** for a dataset."
+                },
+                "dataCustodian": {
+                    "description": "Organisation responsible for queries and data access requests.",
+                    "examples": [
+                        "Cancer Research Horizons",
+                        "Histo-Mol GBM Collaborative"
+                    ]
+                },
+                "keywords": {
+                    "description": "If not included in abstract, title or filters, please provide one or more keywords or short phrases to improve search engine optimisation.",
+                    "examples": [
+                        "Hedgehog pathway",
+                        "p53 hotspot mutation",
+                        "Oxaliplatin",
+                        "Accident and Emergency Admissions"
+                    ],
+                    "guidance": "- Keywords need not repeat information provided in the title, abstract or filters.\\n - If needed they should refer to specific additional details of the dataset.\\n - Include one per line.   "
+                },
+                "contactPoint": {
+                    "description": "Email address for coodinating data access requests.",
+                    "examples": [
+                        "researcher@university.ac.uk"
+                    ],
+                    "guidance": "This should be a **dedicated email address** associated with the data access request process. \\n**Note:** An employee's email address can only be provided on a temporary basis and if one is provided, **you must obtain explicit consent for this purpose**."
+                }
+            }
+        }
+    },
+    "properties": {
+        "version": {
+            "description": "Three numbers - Major.Minor.Patch e.g. 1.1.0",
+            "guidance": "Dataset metadata version should follow standard SEMVER naming conventions (https://semver.org). For example: 1.1.0 major.minor.patch.\\nMajor: Significant/breaking changes. \\n eg The dataset has now been populated \\n The access conditions have changed \\nThe purpose of the dataset has changed significantly \\n There is a change to the type of datasets collected\\nMinor: New features and bug fixes.\\n eg More samples have been added. \\nPatch: Minor fixes without new features. \\neg more information about the dataset has been added"
+        },
+        "summary": {
+            "title": "Summary"
+        },
+        "accessibility": {
+            "title": "Accessibility"
+        }
+    }
+}
