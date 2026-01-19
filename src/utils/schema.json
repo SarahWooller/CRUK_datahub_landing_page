@@ -3064,6 +3064,14 @@
                   "title": "Last Modified Datetime",
                   "type": "string"
             },
+            "project": {
+                  "allOf": [
+                        {
+                              "$ref": "#/$defs/Project"
+                        }
+                  ],
+                  "description": "Metadata describing the originating project."
+            },
             "summary": {
                   "allOf": [
                         {
@@ -3072,6 +3080,7 @@
                   ],
                   "description": "Summary of metadata describing key pieces of information."
             },
+
             "documentation": {
                   "anyOf": [
                         {
