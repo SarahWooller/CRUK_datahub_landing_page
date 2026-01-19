@@ -281,18 +281,75 @@ const FilterChipArea = ({
     );
 };
 
+// --- NEW COMPONENT: Help Overlay ---
+const HelpOverlay = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
 
+    return (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black bg-opacity-50">
+            <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div className="p-6">
+                    <div className="flex justify-between items-center mb-6 border-b pb-4">
+                        <h2 className="text-3xl font-bold text-[var(--cruk-blue)]">How to use filters</h2>
+                        <button
+                            onClick={onClose}
+                            className="text-gray-500 hover:text-gray-700 p-2"
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div className="space-y-6 text-lg text-gray-700">
+
+                        <section>
+                            <p>The list of studies can be filtered to pick out those with relating to specific cancers, including particular data or matching your accessibility needs.</p>
+                        </section>
+
+                        <section>
+                            <h3 className="font-bold text-[var(--cruk-pink)] mb-2">1. Selecting Categories</h3>
+                            <p>Use the top tabs to switch between <strong>Cancer Type</strong>, <strong>Data Type</strong>, and <strong>Accessibility</strong> categories.</p>
+                            <p>You can search for cancers using CRUK terms, TCGA codes, or ICD-O classifications.</p>
+                        </section>
+
+                        <section>
+                            <h3 className="font-bold text-[var(--cruk-pink)] mb-2">2. Searching for Terms</h3>
+                            <p>In each category, use the search bar to find specific terms. You must enter at least <strong>4 characters</strong> to start the search.</p>
+                        </section>
+
+                        <section>
+                            <h3 className="font-bold text-[var(--cruk-pink)] mb-2">3. Expanding Options</h3>
+                            <p>Wherever there is a <strong>chevron (&gt;)</strong> next to a filter name, you can click to see more specific sub-categories.</p>
+                        </section>
+
+                        <section>
+                            <h3 className="font-bold text-[var(--cruk-pink)] mb-2">4. Adjusting Logic</h3>
+                            <p>Filters appear as chips. You can manually edit the <strong>Filter Logic</strong> text box if you need to combine filters using specific logic (e.g., AND/OR).</p>
+                        </section>
+                    </div>
+
+                    <div className="mt-8 pt-4 border-t flex justify-end">
+                        <button
+                            onClick={onClose}
+                            className="bg-[var(--cruk-blue)] text-white font-bold py-2 px-6 rounded-lg hover:opacity-90"
+                        >
+                            Got it
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 // Main Application Component
 export const FilterApp = () => {
     const [activePanel, setActivePanel] = useState(null);
     const [selectedFilters, setSelectedFilters] = useState(new Set());
-    // NEW STATE FOR EDITABLE LOGIC MESSAGE
     const [logicMessage, setLogicMessage] = useState("");
     const [isMessageManuallyEdited, setIsMessageManuallyEdited] = useState(false);
-    // END NEW STATE
-
-    // NEW SEARCH STATE
+    const [showHelp, setShowHelp] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredIds, setFilteredIds] = useState(null); // Set of IDs that match the current search
     const [isSearching, setIsSearching] = useState(false); // Flag for search status
@@ -505,6 +562,7 @@ export const FilterApp = () => {
 
     return (
         <div className="p-2 sm:p-8 bg-gray-50">
+            <HelpOverlay isOpen={showHelp} onClose={() => setShowHelp(false)} />
             <div id="filter-container" className="w-full flex flex-col">
 
                 {/* Main Filter Layout: New Horizontal Nav (Top) and Content/Actions (Below) */}
@@ -514,9 +572,17 @@ export const FilterApp = () => {
                     <div id="filter-navbar" className="flex flex-col sm:flex-row flex-shrink-0 w-full bg-gray-50 border-b border-gray-200">
                         {/* Title and Category Buttons */}
                         <div className="flex flex-col sm:flex-row sm:items-stretch sm:w-3/4">
-                            <h2 className="p-4 text-3xl sm:text-4xl font-bold text-[var(--cruk-blue)] sm:pr-8 sm:w-1/4 flex items-center border-b sm:border-b-0 sm:border-r border-gray-200">
-                                Study Filters
-                            </h2>
+                            <div className="p-4 sm:pr-8 sm:w-1/4 flex items-center justify-between border-b sm:border-b-0 sm:border-r border-gray-200">
+                                <h2 className="text-3xl sm:text-4xl font-bold text-[var(--cruk-blue)]">
+                                    Study Filters
+                                </h2>
+                                <button
+                                    onClick={() => setShowHelp(true)}
+                                    className="ml-4 px-3 py-1 font-bold text-xs text-white bg-[var(--cruk-blue)] rounded-lg shadow-sm hover:opacity-90 transition duration-150 whitespace-nowrap"
+                                >
+                                    Help
+                                </button>
+                            </div>
                             {/* Category Buttons - CLEAR SEARCH TERM WHEN SWITCHING PANELS */}
                             <div className="flex flex-grow justify-around sm:w-3/4">
                                 <button onClick={() => { setActivePanel('cancer'); setSearchTerm(''); }} className={getNavButtonClasses('cancer')}>
@@ -531,21 +597,24 @@ export const FilterApp = () => {
                             </div>
                         </div>
 
-                        {/* Action Buttons (Right Side of Horizontal Nav) */}
-                        <div className="flex flex-row sm:flex-col sm:w-1/4 p-2 sm:p-0 border-t sm:border-t-0 sm:border-l border-gray-200 justify-around items-center space-x-2 sm:space-x-0 sm:space-y-2">
-                            <button onClick={clearAllFilters} className="w-1/2 sm:w-auto px-4 py-2 font-medium text-sm text-gray-500 hover:var(--cruk-pink) hover:text-[var(--cruk-pink)] transition duration-150 bg-white rounded-lg shadow-sm border border-gray-300">
-                                Clear Filters
+                          {/* Action Buttons (Right Side of Horizontal Nav) - Help removed from here */}
+                        <div className="flex flex-row sm:flex-col sm:w-1/4 p-2 sm:p-2 border-t sm:border-t-0 sm:border-l border-gray-200 justify-around items-center space-x-2 sm:space-x-0 sm:space-y-2">
+                            <button
+                                onClick={clearAllFilters}
+                                className="w-1/2 sm:w-auto px-4 py-2 font-medium text-sm text-gray-500 hover:text-[var(--cruk-pink)] transition duration-150 bg-white rounded-lg shadow-sm border border-gray-300"
+                            >
+                                Clear
                             </button>
                             <button
                                 onClick={handleFindStudies}
-                                className={`w-1/2 sm:w-auto bg-[var(--cruk-pink)] text-white font-bold py-3 px-8 rounded-lg shadow-md transition duration-150 ${isFindStudiesDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'}`}
+                                className={`w-1/2 sm:w-auto bg-[var(--cruk-pink)] text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-150 ${isFindStudiesDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'}`}
                                 disabled={isFindStudiesDisabled}
                             >
-                                Find Studies ({counts.total})
+                                Find ({counts.total})
                             </button>
                         </div>
                     </div>
-                    {/* --- End Horizontal Navigation Bar --- */}
+                      {/* --- End Horizontal Navigation Bar --- */}
 
                     {/* --- Filter Content Panel (Content Below Nav) --- */}
                     <div className="flex-grow w-full p-0">
