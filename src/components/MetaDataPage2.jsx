@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom/client';
 
 // 1. IMPORT DATA FROM UTILS
-import studyData from '../utils/dummy_data/dataset_01.json';
+import studyData from '../utils/dummy_data/dataset_03.json';
 import { filterData } from '../utils/longer_filter_data.js';
 
 
@@ -513,14 +513,44 @@ const MetadataPage = () => {
             )}
         </div>
 
-        {/* --- Stat Cards --- */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
-          <StatCard label="Population" value={population?.toLocaleString()} colorClass="bg-blue-50" />
-          <StatCard label="Age Range" value={ageRange} colorClass="bg-green-50" />
-          <StatCard label="Access" value={leadTime || "Restricted"} colorClass="bg-purple-50" />
-          <StatCard label="Follow Up" value={followUp} colorClass="bg-yellow-50" />
-          <StatCard label="Formats" value={fileTypes} colorClass="bg-red-50" />
-        </div>
+    {/* --- Stat Cards (Conditional Rendering) --- */}
+    <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+      {population && (
+        <StatCard
+          label="Population"
+          value={population.toLocaleString()}
+          colorClass="bg-blue-50"
+        />
+      )}
+      {ageRange && (
+        <StatCard
+          label="Age Range"
+          value={ageRange}
+          colorClass="bg-green-50"
+        />
+      )}
+      {leadTime && (
+        <StatCard
+          label="Access"
+          value={leadTime}
+          colorClass="bg-purple-50"
+        />
+      )}
+      {followUp && (
+        <StatCard
+          label="Follow Up"
+          value={followUp}
+          colorClass="bg-yellow-50"
+        />
+      )}
+      {fileTypes && fileTypes !== "Various" && (
+        <StatCard
+          label="Formats"
+          value={fileTypes}
+          colorClass="bg-red-50"
+        />
+      )}
+    </div>
 
         {/* Summary */}
         <SectionHeading id="summary" title="Summary" />
