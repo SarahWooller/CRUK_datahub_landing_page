@@ -2,7 +2,9 @@ import React, { useState, useMemo, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom/client';
 
 // 1. IMPORT DATA FROM UTILS
-import mammogramData from '../utils/mammogram.json';
+import studyData from '../utils/dummy_data/dataset_03.json';
+import { filterData } from '../utils/longer_filter_data.js';
+
 
 // 2. IMPORT ICONS
 import animalIcon from '../assets/animal.webp';
@@ -33,6 +35,66 @@ const ICON_MAPPING = {
 };
 
 // --- Utility Functions ---
+
+/**
+ * Flattens the nested filter tree into a Map for O(1) lookup.
+ */
+const flattenFilterTree = (nodes, parentPath = []) => {
+    let map = {};
+    if (!nodes || typeof nodes !== 'object') return map;
+
+    Object.values(nodes).forEach(node => {
+        const currentPath = [...parentPath, node.label];
+        const fullPathString = currentPath.join(" > ");
+
+        map[node.id] = {
+            label: node.label,
+            fullPath: fullPathString,
+            rawPath: currentPath
+        };
+
+        if (node.children) {
+            Object.assign(map, flattenFilterTree(node.children, currentPath));
+        }
+    });
+    return map;
+};
+
+/**
+ * Categorizes an ID based on specific prefixes.
+ */
+/**
+ * Maps an ID to a Group, a specific Category Label, and path visibility settings.
+ */
+const getFilterConfig = (id) => {
+    // --- CANCER FILTERS ---
+    // CRUK Terms (0_0_2): Bold label only, no path
+    if (id.startsWith("0_0_2")) return { group: "Cancer Filters", category: "CRUK Cancer Terms", showPath: false };
+
+    // TCGA Terms (0_0_4): Bold label only, no path
+    if (id.startsWith("0_0_4")) return { group: "Cancer Filters", category: "TCGA Terms", showPath: false };
+
+    // ICD-O Topography (0_0_0): Show path (sliced)
+    if (id.startsWith("0_0_0")) return { group: "Cancer Filters", category: "ICD-O Topography", showPath: true, slice: 2 };
+
+    // ICD-O Histology (0_0_1): Show path (sliced)
+    if (id.startsWith("0_0_1")) return { group: "Cancer Filters", category: "ICD-O Histology", showPath: true, slice: 2 };
+
+    // General Cancer fallback
+    if (id.startsWith("0_0")) return { group: "Cancer Filters", category: "Other Cancer Types", showPath: true, slice: 1 };
+
+    // --- DATA FILTERS ---
+    // Data Types (0_2): Show path (sliced)
+    if (id.startsWith("0_2")) return { group: "Data Filters", category: "Data Types", showPath: true, slice: 1 };
+
+    // --- ACCESS FILTERS ---
+    // Access Types (0_1): Bold label only, no path
+    if (id.startsWith("0_1")) return { group: "Access Filters", category: "Access Types", showPath: false };
+
+    return { group: "Other Filters", category: "Miscellaneous", showPath: true, slice: 0 };
+};
+
+
 
 const getFirstTwoSentences = (text) => {
   if (!text) return "";
@@ -122,7 +184,7 @@ const AccessItem = ({ label, value, isLink }) => {
 // --- Main Component ---
 
 const MetadataPage = () => {
-  const data = mammogramData;
+  const data = studyData;
   const [expandedTables, setExpandedTables] = useState({});
   const [showEmailMenu, setShowEmailMenu] = useState(false);
 
@@ -138,9 +200,6 @@ const MetadataPage = () => {
 
   // 2. Keywords is now an array in summary.keywords
   const keywords = useMemo(() => normalizeList(data.summary.keywords), [data]);
-
-  // 3. Icons are derived from provenance.origin.datasetType
-  const activeIcons = useMemo(() => getActiveIcons(data.filters), [data]);
 
   // 4. Structural Metadata is now inside an object with a 'tables' key
   const groupedMetadata = useMemo(() => {
@@ -166,22 +225,6 @@ const MetadataPage = () => {
     }, {});
   }, [data]);
 
-  // 5. Construct Filter Tree for Sidebar (Derived from Dataset Types in new schema)
-  const derivedFilters = useMemo(() => {
-    // If old 'filters' object exists, use it. Otherwise derive from provenance.
-    if (data.filters) return data.filters;
-
-    const datasetTypes = data.provenance?.origin?.datasetType || [];
-    const filterObj = {};
-
-    datasetTypes.forEach(dt => {
-        if(dt.name && dt.subTypes) {
-            filterObj[dt.name] = dt.subTypes;
-        }
-    });
-    return filterObj;
-  }, [data]);
-
   // 6. Accessors for Stat Cards (New Schema Paths)
   const population = data.summary.populationSize;
   const ageRange = data.coverage.typicalAgeRangeMin && data.coverage.typicalAgeRangeMax
@@ -195,6 +238,73 @@ const MetadataPage = () => {
   const fileTypes = data.accessibility.formatAndStandards?.format
     ? data.accessibility.formatAndStandards.format.map(f => f.split('/')[1] || f).join(', ')
     : "Various";
+// --- NEW: Filter Processing Logic ---
+
+  // A. Create lookup map from the reference file (Memoized)
+  const filterLookupMap = useMemo(() => flattenFilterTree(filterData), []);
+
+  // B. Process datasetFilters from studyData
+  const { derivedFilters, activeIcons } = useMemo(() => {
+    // Structure: { "Group Name": { "Category Name": [items] } }
+    const filters = {};
+    const icons = new Set();
+    const targetIconKeys = Object.keys(ICON_MAPPING);
+
+    const filterIds = data.datasetFilters || [];
+
+    filterIds.forEach(id => {
+        const filterInfo = filterLookupMap[id];
+
+        if (filterInfo) {
+            const config = getFilterConfig(id);
+
+            // 1. Prepare Path Display
+            let finalPathString = null;
+            if (config.showPath) {
+                const segments = [...filterInfo.rawPath];
+                // Slice off generic parents based on config
+                if (segments.length > config.slice) {
+                    finalPathString = segments.slice(config.slice).join(" > ");
+                } else {
+                    finalPathString = segments.join(" > ");
+                }
+            }
+
+            // 2. Organize into Nested Group Structure
+            if (!filters[config.group]) {
+                filters[config.group] = {};
+            }
+            if (!filters[config.group][config.category]) {
+                filters[config.group][config.category] = [];
+            }
+
+            filters[config.group][config.category].push({
+                label: filterInfo.label,
+                path: finalPathString
+            });
+
+            // 3. Icon Detection
+            if (id.startsWith("0_2")) {
+                filterInfo.rawPath.forEach(pathPart => {
+                    if (targetIconKeys.includes(pathPart)) {
+                        icons.add(pathPart);
+                    }
+                });
+            }
+        }
+    });
+
+    // Sort items alphabetically within each category
+    Object.keys(filters).forEach(group => {
+        Object.keys(filters[group]).forEach(cat => {
+            filters[group][cat].sort((a, b) => a.label.localeCompare(b.label));
+        });
+    });
+
+    const mappedIcons = Array.from(icons).map(key => ICON_MAPPING[key]);
+
+    return { derivedFilters: filters, activeIcons: mappedIcons };
+  }, [data, filterLookupMap]);
 
   // --- Resizing Handlers ---
   const startResizing = useCallback(() => {
@@ -241,33 +351,6 @@ const MetadataPage = () => {
     const newState = {};
     Object.keys(groupedMetadata).forEach(key => { newState[key] = shouldExpand; });
     setExpandedTables(newState);
-  };
-
-  const renderFilterTree = (obj) => {
-    if (Array.isArray(obj)) {
-      return (
-        <ul className="pl-4 list-disc text-sm text-gray-600">
-          {obj.map((item, idx) => (
-            <li key={idx} className="mb-1">
-                {typeof item === 'object' ? renderFilterTree(item) : item}
-            </li>
-          ))}
-        </ul>
-      );
-    }
-    if (typeof obj === 'object' && obj !== null) {
-      return (
-        <ul className="pl-2">
-          {Object.entries(obj).map(([key, value]) => (
-            <li key={key} className="mb-2">
-              <span className="font-semibold text-sm text-gray-700 block mb-1">{key}</span>
-              {renderFilterTree(value)}
-            </li>
-          ))}
-        </ul>
-      );
-    }
-    return <span className="text-sm text-gray-600">{obj}</span>;
   };
 
   const handleEmailAction = (action) => {
@@ -430,14 +513,44 @@ const MetadataPage = () => {
             )}
         </div>
 
-        {/* --- Stat Cards --- */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
-          <StatCard label="Population" value={population?.toLocaleString()} colorClass="bg-blue-50" />
-          <StatCard label="Age Range" value={ageRange} colorClass="bg-green-50" />
-          <StatCard label="Access" value={leadTime || "Restricted"} colorClass="bg-purple-50" />
-          <StatCard label="Follow Up" value={followUp} colorClass="bg-yellow-50" />
-          <StatCard label="Formats" value={fileTypes} colorClass="bg-red-50" />
-        </div>
+    {/* --- Stat Cards (Conditional Rendering) --- */}
+    <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+      {population && (
+        <StatCard
+          label="Population"
+          value={population.toLocaleString()}
+          colorClass="bg-blue-50"
+        />
+      )}
+      {ageRange && (
+        <StatCard
+          label="Age Range"
+          value={ageRange}
+          colorClass="bg-green-50"
+        />
+      )}
+      {leadTime && (
+        <StatCard
+          label="Access"
+          value={leadTime}
+          colorClass="bg-purple-50"
+        />
+      )}
+      {followUp && (
+        <StatCard
+          label="Follow Up"
+          value={followUp}
+          colorClass="bg-yellow-50"
+        />
+      )}
+      {fileTypes && fileTypes !== "Various" && (
+        <StatCard
+          label="Formats"
+          value={fileTypes}
+          colorClass="bg-red-50"
+        />
+      )}
+    </div>
 
         {/* Summary */}
         <SectionHeading id="summary" title="Summary" />
@@ -572,22 +685,46 @@ const MetadataPage = () => {
                 ))}
             </ul>
         </div>
-
-        {/* Filters */}
-        <div className="space-y-4">
-            {/* Citation of Resource Creator */}
+      {/* Filters */}
+        <div className="space-y-6">
+             {/* Resource Creator */}
              <div className="mb-4">
-                 <h4 className="font-semibold text-blue-900 mb-2 border-b border-gray-100 pb-1">Resource Creator</h4>
+                 <h4 className="font-bold text-blue-900 mb-2 border-b border-gray-200 pb-1 text-base">Resource Creator</h4>
                  <p className="text-sm text-gray-600">{resourceCreators}</p>
              </div>
 
-             {/* Dynamic Filters from Dataset Types */}
-             {Object.entries(derivedFilters).map(([category, contents]) => (
-                 <div key={category}>
-                     <h4 className="font-semibold text-blue-900 mb-2 border-b border-gray-100 pb-1">{category}</h4>
-                     {renderFilterTree(contents)}
+             {/* Dynamic Nested Filters */}
+             {Object.entries(derivedFilters).map(([groupName, categories]) => (
+                 <div key={groupName}>
+                     {/* Main Group Header (e.g. Cancer Filters) */}
+                     <h4 className="font-bold text-blue-900 mb-3 border-b border-gray-200 pb-1 text-base">{groupName}</h4>
+
+                     {/* Loop through Sub-Categories (e.g. CRUK Terms, TCGA Terms) */}
+                     {Object.entries(categories).map(([categoryName, items]) => (
+                        <div key={categoryName} className="mb-4 pl-1">
+                            {/* Sub-Category Header - Small & Uppercase */}
+                            <h5 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{categoryName}</h5>
+
+                            <ul className="pl-2 border-l-2 border-gray-100 ml-1">
+                                {items.map((filter, idx) => (
+                                    <li key={idx} className="mb-2 text-sm">
+                                        <span className="text-gray-800 font-medium block">{filter.label}</span>
+                                        {filter.path && (
+                                            <span className="text-xs text-gray-500 block break-words mt-0.5">
+                                                {filter.path}
+                                            </span>
+                                        )}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                     ))}
                  </div>
              ))}
+
+             {Object.keys(derivedFilters).length === 0 && (
+                <p className="text-sm text-gray-400 italic">No dataset filters applied.</p>
+             )}
         </div>
       </aside>
 
