@@ -253,6 +253,14 @@ export const StudiesSection = () => {
                     border-color: #0056b3 transparent transparent transparent;
                 }
 
+                .custom-tooltip.large {
+                    white-space: normal;      /* Overrides nowrap to allow wrapping */
+                    width: 300px;             /* Sets a fixed width for the box */
+                    line-height: 1.4;         /* Improves readability for multi-line text */
+                    text-align: left;         /* Better for longer descriptive text */
+                    padding: 10px 15px;       /* Increased padding for the larger content */
+                    font-size: 1.1rem;        /* Slightly larger font for clarity */
+                }
                 .icon-container:hover .custom-tooltip {
                     visibility: visible;
                     opacity: 1;
@@ -404,21 +412,27 @@ export const StudiesSection = () => {
                         />
                     </div>
 
-                    {/* Cart Icon in Header */}
-                    <div className="cart-container" onClick={() => setShowCartModal(true)}>
-                        <span title="View Cart">🛒</span>
-                        <span className="cart-badge">{cart.length}</span>
-                    </div>
-
-                    <div>
+                    <div className="icon-container" style={{ display: 'flex', alignItems: 'center' }}>
                         <input
                             type="checkbox"
                             id="deep_search"
                             checked={isDeepSearch}
                             onChange={(e) => setIsDeepSearch(e.target.checked)}
-                            style={{ transform: "scale(1.5)", marginRight: "10px", marginLeft: "20px" }}
+                            style={{
+                                transform: "scale(1.5)",
+                                marginRight: "10px",
+                                marginLeft: "20px",
+                                cursor: 'pointer'
+                            }}
                         />
-                        <label htmlFor="deep_search">Deep Search</label>
+                        <label htmlFor="deep_search" style={{ cursor: 'pointer' }}>
+                            Deep Search
+                        </label>
+                        <span className="custom-tooltip large">
+                            Deep Search scans for close matches in the abstract, keywords,
+                            description, title, concepts from data enrichment, and Data
+                            Custodian for each study.
+                        </span>
                     </div>
 
                     {/* Sort Dropdown */}
