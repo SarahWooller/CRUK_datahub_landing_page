@@ -1,0 +1,8 @@
+{
+    "properties": {
+        "welcome": {
+            "title": "Welcome to the CRUK Data Portal Upload Page",
+            "description": "As part of the FAIR (findable, accessible, interoperable and reusable) data principles and our research data strategy, CRUK expect all grant holders to make public metadata about the data that they will collect, and to make the data accessible in line with the data management and sharing plan agreed as part of the funding decision. Details from CRUK agreed proposal have therefore been entered into data portal. Please check these now. You will be sent update requests every six months for the duration of the project so that you can add details as they become available."
+        }
+    }
+}

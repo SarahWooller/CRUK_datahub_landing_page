@@ -10,7 +10,10 @@ const links =
             <a href="./src/meta.html"> meta.html- For displaying the metadata of the selected dataset. </a>
         </p>
         <p>
-            <a href="./src/upload.html"> upload.html - for uploading data. </a>
+            <a href="./src/upload.html"> upload.html - for uploading data about an established dataset. </a>
+        </p>
+        <p>
+            <a href="./src/upload.html?mode=newProject"> upload.html - for uploading data about a new project. </a>
         </p>
 
         <p> Older versions are also included </p>
