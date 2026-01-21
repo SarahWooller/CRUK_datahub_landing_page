@@ -1,0 +1,32 @@
+/* Custom Styling for a Visible Developer Note */
+.dev-note {
+    /* Background and text color to make it stand out */
+    background-color: #FFFFAA; /* Bright yellow/light-gold background */
+    color: #555500; /* Darker text for readability */
+
+    /* Strong border to separate it from surrounding content */
+    border: 3px dashed #FFCC00;
+    border-radius: 6px;
+
+    /* Padding and Margin for spacing */
+    padding: 10px 15px;
+    margin: 20px 0;
+
+    /* Typography to ensure distinction */
+    font-family: monospace, sans-serif; /* Use a monospaced font or a distinct, small font */
+    font-size: 0.9em;
+    line-height: 1.4;
+
+    /* Ensure it is easily recognizable as a note */
+    text-transform: none;
+    font-weight: normal;
+}
+
+/* Optional: Emphasize the instruction type */
+.dev-note strong {
+    color: #FF6600; /* Use a strong orange for emphasis */
+}
+/* Add this class to your metadata.css */
+.dev-note.hidden {
+    display: none !important;
+}
