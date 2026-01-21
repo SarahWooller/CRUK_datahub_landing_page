@@ -1,0 +1,117 @@
+{
+  "identifier": "fa4c21a5-0e15-4ace-b2eb-9b339e1f6b4b",
+  "version": "1.0.0",
+  "revisions": [],
+  "issued": "2024-01-01T00:00:00.000Z",
+  "modified": "2024-01-01T00:00:00.000Z",
+  "summary": {
+    "title": "Triple-Negative Breast Cancer (TNBC) Transcriptomics",
+    "abstract": "Whole transcriptome sequencing (RNA-Seq) of 500 TNBC core biopsies collected prior to neoadjuvant chemotherapy. Correlated with Pathological Complete Response (pCR) rates.",
+    "dataCustodian": {
+      "identifier": "https://ror.org/custodian-3",
+      "name": "BREAST-PREDICT Consortium",
+      "contactPoint": "access@custodian-3.org"
+    },
+    "funders": "CRUK\nNIHR",
+    "grantNumbers": "GRANT-3-2024",
+    "populationSize": 3880,
+    "keywords": [
+      "Triple-Negative",
+      "Breast",
+      "Cancer",
+      "(TNBC)",
+      "Transcriptomics"
+    ],
+    "doiName": "10.1000/data.3",
+    "contactPoint": "access@custodian-3.org"
+  },
+  "documentation": {
+    "description": "Whole transcriptome sequencing (RNA-Seq) of 500 TNBC core biopsies collected prior to neoadjuvant chemotherapy. Correlated with Pathological Complete Response (pCR) rates. This is a dummy description generated for testing purposes.",
+    "inPipeline": "Available"
+  },
+  "coverage": {
+    "spatial": "United Kingdom",
+    "followUp": "1 - 10 Years"
+  },
+  "provenance": {
+    "origin": {
+      "purpose": [
+        "Study"
+      ],
+      "datasetType": [
+        "Health and disease"
+      ]
+    },
+    "temporal": {
+      "publishingFrequency": "Annual",
+      "startDate": "2020-01-01",
+      "timeLag": "1-2 months"
+    }
+  },
+  "accessibility": {
+    "usage": {
+      "dataUseLimitation": [
+        "General research use"
+      ]
+    },
+    "access": {
+      "accessRights": "Open access upon request.",
+      "jurisdiction": [
+        "GB-ENG"
+      ]
+    },
+    "formatAndStandards": {
+      "vocabularyEncodingScheme": [
+        "ICD10"
+      ],
+      "conformsTo": [
+        "OMOP"
+      ],
+      "language": [
+        "en"
+      ],
+      "format": [
+        "text/csv"
+      ]
+    }
+  },
+  "observations": [
+    {
+      "observedNode": "Persons",
+      "measuredValue": 928,
+      "observationDate": "2023-12-31",
+      "measuredProperty": "Count"
+    }
+  ],
+  "demographicFrequency": {
+    "age": [
+      {
+        "bin": "50-54 years",
+        "count": 10
+      },
+      {
+        "bin": "55-59 years",
+        "count": 20
+      }
+    ],
+    "ethnicity": [
+      {
+        "bin": "White - British",
+        "count": 25
+      },
+      {
+        "bin": "Not stated",
+        "count": 5
+      }
+    ]
+  },
+  "datasetFilters": [
+    "0_0_0_9",
+    "0_0_1_8_0",
+    "0_2_3_4",
+    "0_2_3_5",
+    "0_1_3",
+    "0_0_2_15",
+    "0_0_4_2"
+  ]
+}

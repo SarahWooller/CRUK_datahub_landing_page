@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import SchemaPage from './components/SchemaPage2.jsx';
+import SchemaPage from './components/SchemaPage.jsx';
 import { Header } from './components/Header.jsx'
 
 function renderReactComponent(targetId, Component) {

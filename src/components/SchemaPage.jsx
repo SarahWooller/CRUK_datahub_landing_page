@@ -17,11 +17,12 @@ const METADATA_PRIORITY_SECTIONS = [
 const VISIBLE_SECTIONS = [
     "welcome",
     "version",
+    "project",
     "summary",
     "documentation",
     "datasetFilters",
     "structuralMetadata",
-    "erd", // Preserved ERD section
+    "erd",
     "coverage",
     "provenance",
     "accessibility",
