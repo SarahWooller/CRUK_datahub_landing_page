@@ -1,5 +1,6 @@
 {
     "$defs": {
+
         "Documentation": {
             "properties": {
                 "description": {
@@ -159,6 +160,10 @@
         },
         "accessibility": {
             "title": "Accessibility"
+        },
+        "enrichmentAndLinkage" : {
+            "title": "Tools and Publications"
         }
+
     }
 }
