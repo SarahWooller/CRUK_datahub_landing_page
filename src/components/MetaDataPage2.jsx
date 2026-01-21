@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom/client';
 
 // 1. IMPORT DATA FROM UTILS
-import studyData from '../utils/dummy_data/dataset_03.json';
+import studyData from '../utils/dummy_data/dataset_01.json';
 import { filterData } from '../utils/longer_filter_data.js';
 
 
@@ -381,7 +381,7 @@ const MetadataPage = () => {
       >
         <h3 className="text-xl font-bold text-blue-900 mb-6 border-b pb-2">Overview</h3>
         <ul className="space-y-3 mb-8">
-          {['Summary', 'Documentation','Structural Metadata',  'Entity Relationship Diagrams', 'Observations'].map((item) => (
+          {['Project','Summary', 'Documentation','Structural Metadata',  'Entity Relationship Diagrams', 'Observations'].map((item) => (
             <li key={item}>
               <a
                 href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
@@ -551,6 +551,48 @@ const MetadataPage = () => {
         />
       )}
     </div>
+
+    {/* Project */}
+    <SectionHeading id="project" title="CRUK Project" />
+    <div className="prose max-w-none text-gray-700 mb-8 bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <div>
+          <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Project Name</span>
+          <p className="text-lg font-semibold text-blue-900 m-0">{data.project.projectName}</p>
+        </div>
+
+        <div>
+          <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Lead Researcher</span>
+          <p className="text-base text-gray-800 m-0">
+            {data.project.leadResearcher} — <span className="italic">{data.project.leadResearchInstitute}</span>
+          </p>
+        </div>
+
+        <div>
+          <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Timeline</span>
+          <p className="text-sm text-gray-700 m-0">
+            {data.project.projectStartDate} to {data.project.projectEndDate}
+          </p>
+        </div>
+
+        <div>
+          <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Grant Number(s)</span>
+          <p className="text-sm font-mono text-gray-700 m-0">{data.project.grantNumbers}</p>
+        </div>
+
+        {/* This div now spans both columns on medium screens and larger */}
+        <div className="md:col-span-2 border-t border-gray-100 pt-4">
+          <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Project Scope</span>
+          <p className="text-sm text-gray-700 m-0 leading-relaxed">
+          </p>
+            {data.project.projectScope}
+        </div>
+
+      </div>
+    </div>
+
+
 
         {/* Summary */}
         <SectionHeading id="summary" title="Summary" />
