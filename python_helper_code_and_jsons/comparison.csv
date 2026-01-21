@@ -1,0 +1,9 @@
+change,address,,,,,reason
+added,$defs/DataTable/properties/size,,,,,in the original proposal
+added,$defs/DatasetFilters,,,,,critical to overall usage
+added,$defs/Image,,,,,in the original proposal
+added,$defs/LineSeparatedValues,,,,,used for defining funders
+added,$defs/Summary/properties/funders,,,,,necessary to disambiguate
+added,$defs/Summary/properties/grantNumbers,,,,,CRUK id
+added,properties/erd,,,,,in the original proposal
+added,properties/datasetFilters,,,,,critical to overall usage

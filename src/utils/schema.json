@@ -2261,6 +2261,98 @@
                   "title": "Politics",
                   "type": "object"
             },
+            "Project": {
+                  "properties" : {
+                        "projectName": {
+                              "allOf": [
+                                    {
+                                          "$ref": "#/$defs/OneHundredFiftyCharacters"
+                                    }
+                              ],
+                              "title": "Project Title",
+                              "description": "May or may not be different to the Dataset Title"
+                        },
+                        "leadResearcher": {
+                              "allOf": [
+                                    {
+                                          "$ref": "#/$defs/OneHundredFiftyCharacters"
+                                    }
+                              ],
+                              "examples": [
+                                    "Dr Smith"
+                              ],
+                              "title": "Lead Researcher",
+                              "description": ""
+
+                        },
+                        "leadResearchInstitute": {
+                              "allOf": [
+                                    {
+                                          "$ref": "#/$defs/OneHundredFiftyCharacters"
+                                    }
+                              ],
+                              "examples": [
+                                    "Sussex University"
+                              ],
+                              "title": "Lead Research Institute",
+                              "description": ""
+
+                        },
+                        "grantNumbers": {
+                              "allOf": [
+                                    {
+                                          "$ref": "#/$defs/LineSeparatedValues"
+                                    }
+                              ],
+                              "description": "List of grant numbers separated by a line break",
+
+                              "examples": [
+                                    "A354t",
+                                    "ropguadg"
+                              ],
+                              "guidance": "Normally specified on the grant acceptance letter",
+
+                              "title": "Grant number(s)"
+                        },
+
+                        "projectStartDate": {
+                              "allOf": [
+                                    {
+                                          "$ref": "#/$defs/StartDate"
+                                    }
+                              ],
+                              "description": "Starting date of project grant.",
+                              "guidance": "Date on which the dataset project starts. This is normally set out in the grant contract and will be different from the start of any data collection",
+                              "title": "Project Start Date"
+                        },
+                        "projectEndDate": {
+                              "allOf": [
+                                    {
+                                          "$ref": "#/$defs/EndDate"
+                                    }
+                              ],
+                              "description": "Current end date of project grant.",
+                              "guidance": "Date on which the dataset project is currently projected to finish. This is normally set out in the grant contract and will be different from the end of any data collection",
+                              "title": "Project End Date"
+                        },
+                        "projectScope": {
+                              "anyOf": [
+                                    {
+                                          "maxLength": 500,
+                                          "minLength": 5,
+                                          "type": "string"
+                                    },
+                                    {
+                                          "type": "null"
+                                    }],
+                              "description": "data and biospecimens expected to result from the grant.",
+                              "guidance": "Short paragraph setting out the types of data / biospecimens likely to result from the grant and the cancers covered",
+                              "examples": ["Longitudinal genomic data including somatic mutations"],
+                              "title": "Project Scope"
+
+                        }
+                  }
+            },
             "Provenance": {
                   "additionalProperties": false,
                   "properties": {
@@ -2601,22 +2693,6 @@
                               "guidance": "Put each funder on a new line",
 
                               "title": "Funded by"
-                        },
-                        "grantNumbers": {
-                              "allOf": [
-                                    {
-                                          "$ref": "#/$defs/LineSeparatedValues"
-                                    }
-                              ],
-                              "description": "List of grant numbers separated by a line break",
-
-                              "examples": [
-                                    "A354t",
-                                    "ropguadg"
-                              ],
-                              "guidance": "Is it helpful to have a record of all the grant numbers included here to enable tracking of what happens to CRUK funded datasets? An alternative is to put in the original grant proposal title, but the grant can wander. If so what is the exact format of the grant number? How would we deal with long term datasets that may be the result of more than one grant? ",
-
-                              "title": "Grant numbers"
                         },
 
                         "abstract": {
@@ -3069,8 +3145,8 @@
                         {
                               "$ref": "#/$defs/Project"
                         }
-                  ],
-                  "description": "Metadata describing the originating project."
+                  ]
+
             },
             "summary": {
                   "allOf": [

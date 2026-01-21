@@ -1,0 +1,120 @@
+{
+  "identifier": "b7969be5-a41e-46df-b9fc-07d2c5119283",
+  "version": "1.0.0",
+  "revisions": [],
+  "issued": "2024-01-01T00:00:00.000Z",
+  "modified": "2024-01-01T00:00:00.000Z",
+  "summary": {
+    "title": "Pan-Cancer Whole Genome Sequencing (WGS) of Metastasis",
+    "abstract": "WGS data from metastatic biopsy sites across 20 different solid tumor types. Focus on mutational signatures and structural variants driving metastasis.",
+    "dataCustodian": {
+      "identifier": "https://ror.org/custodian-14",
+      "name": "Hartwig Medical Foundation (UK Node)",
+      "contactPoint": "access@custodian-14.org"
+    },
+    "funders": "CRUK\nNIHR",
+    "grantNumbers": "GRANT-14-2024",
+    "populationSize": 2961,
+    "keywords": [
+      "Pan-Cancer",
+      "Whole",
+      "Genome",
+      "Sequencing",
+      "(WGS)"
+    ],
+    "doiName": "10.1000/data.14",
+    "contactPoint": "access@custodian-14.org"
+  },
+  "documentation": {
+    "description": "WGS data from metastatic biopsy sites across 20 different solid tumor types. Focus on mutational signatures and structural variants driving metastasis. This is a dummy description generated for testing purposes.",
+    "inPipeline": "Available"
+  },
+  "coverage": {
+    "spatial": "United Kingdom",
+    "followUp": "1 - 10 Years"
+  },
+  "provenance": {
+    "origin": {
+      "purpose": [
+        "Study"
+      ],
+      "datasetType": [
+        "Health and disease"
+      ]
+    },
+    "temporal": {
+      "publishingFrequency": "Annual",
+      "startDate": "2020-01-01",
+      "timeLag": "1-2 months"
+    }
+  },
+  "accessibility": {
+    "usage": {
+      "dataUseLimitation": [
+        "General research use"
+      ]
+    },
+    "access": {
+      "accessRights": "Open access upon request.",
+      "jurisdiction": [
+        "GB-ENG"
+      ]
+    },
+    "formatAndStandards": {
+      "vocabularyEncodingScheme": [
+        "ICD10"
+      ],
+      "conformsTo": [
+        "OMOP"
+      ],
+      "language": [
+        "en"
+      ],
+      "format": [
+        "text/csv"
+      ]
+    }
+  },
+  "observations": [
+    {
+      "observedNode": "Persons",
+      "measuredValue": 1113,
+      "observationDate": "2023-12-31",
+      "measuredProperty": "Count"
+    }
+  ],
+  "demographicFrequency": {
+    "age": [
+      {
+        "bin": "50-54 years",
+        "count": 10
+      },
+      {
+        "bin": "55-59 years",
+        "count": 20
+      }
+    ],
+    "ethnicity": [
+      {
+        "bin": "White - British",
+        "count": 25
+      },
+      {
+        "bin": "Not stated",
+        "count": 5
+      }
+    ]
+  },
+  "datasetFilters": [
+    "0_0_0_2_4",
+    "0_0_0_9",
+    "0_0_0_1_3",
+    "0_2_3_4",
+    "0_2_0",
+    "0_1_3",
+    "0_0_2_51",
+    "0_0_2_15",
+    "0_0_2_12",
+    "0_0_1_1_0"
+  ]
+}
