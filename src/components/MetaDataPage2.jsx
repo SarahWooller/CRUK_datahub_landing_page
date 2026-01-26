@@ -244,67 +244,48 @@ const MetadataPage = () => {
   const filterLookupMap = useMemo(() => flattenFilterTree(filterData), []);
 
   // B. Process datasetFilters from studyData
-  const { derivedFilters, activeIcons } = useMemo(() => {
-    // Structure: { "Group Name": { "Category Name": [items] } }
+// Replace the existing derivedFilters / activeIcons useMemo block
+const { derivedFilters, activeIcons } = useMemo(() => {
     const filters = {};
     const icons = new Set();
     const targetIconKeys = Object.keys(ICON_MAPPING);
 
-    const filterIds = data.datasetFilters || [];
 
-    filterIds.forEach(id => {
-        const filterInfo = filterLookupMap[id];
+    const filterObjects = data.datasetFilters || [];
 
-        if (filterInfo) {
-            const config = getFilterConfig(id);
+        filterObjects.forEach(filter => {
+            // Use properties directly from the stored object
+            const groupName = filter.primaryGroup || "Other Filters";
+            const categoryName = filter.category || "Miscellaneous";
 
-            // 1. Prepare Path Display
-            let finalPathString = null;
-            if (config.showPath) {
-                const segments = [...filterInfo.rawPath];
-                // Slice off generic parents based on config
-                if (segments.length > config.slice) {
-                    finalPathString = segments.slice(config.slice).join(" > ");
-                } else {
-                    finalPathString = segments.join(" > ");
-                }
-            }
+            if (!filters[groupName]) filters[groupName] = {};
+            if (!filters[groupName][categoryName]) filters[groupName][categoryName] = [];
 
-            // 2. Organize into Nested Group Structure
-            if (!filters[config.group]) {
-                filters[config.group] = {};
-            }
-            if (!filters[config.group][config.category]) {
-                filters[config.group][config.category] = [];
-            }
-
-            filters[config.group][config.category].push({
-                label: filterInfo.label,
-                path: finalPathString
+            filters[groupName][categoryName].push({
+                label: filter.label,
+                // You can still display description if available
+                description: filter.description
             });
 
-            // 3. Icon Detection
-            if (id.startsWith("0_2")) {
-                filterInfo.rawPath.forEach(pathPart => {
-                    if (targetIconKeys.includes(pathPart)) {
-                        icons.add(pathPart);
-                    }
-                });
+            // Icon Detection (using the stored label or category as the key)
+            if (targetIconKeys.includes(filter.label)) {
+                icons.add(filter.label);
+            } else if (targetIconKeys.includes(filter.category)) {
+                icons.add(filter.category);
             }
-        }
-    });
-
-    // Sort items alphabetically within each category
-    Object.keys(filters).forEach(group => {
-        Object.keys(filters[group]).forEach(cat => {
-            filters[group][cat].sort((a, b) => a.label.localeCompare(b.label));
         });
-    });
 
-    const mappedIcons = Array.from(icons).map(key => ICON_MAPPING[key]);
+        // Sort items alphabetically within each category
+        Object.keys(filters).forEach(group => {
+            Object.keys(filters[group]).forEach(cat => {
+                filters[group][cat].sort((a, b) => a.label.localeCompare(b.label));
+            });
+        });
 
-    return { derivedFilters: filters, activeIcons: mappedIcons };
-  }, [data, filterLookupMap]);
+        const mappedIcons = Array.from(icons).map(key => ICON_MAPPING[key]);
+
+        return { derivedFilters: filters, activeIcons: mappedIcons };
+    }, [data]);
 
   // --- Resizing Handlers ---
   const startResizing = useCallback(() => {
@@ -749,11 +730,12 @@ const MetadataPage = () => {
 
                             <ul className="pl-2 border-l-2 border-gray-100 ml-1">
                                 {items.map((filter, idx) => (
-                                    <li key={idx} className="mb-2 text-sm">
+                                    <li key={idx} className="mb-2 text-sm group/filter">
                                         <span className="text-gray-800 font-medium block">{filter.label}</span>
-                                        {filter.path && (
-                                            <span className="text-xs text-gray-500 block break-words mt-0.5">
-                                                {filter.path}
+                                        {/* Replace filter.path with filter.description if you want to show it */}
+                                        {filter.description && (
+                                            <span className="text-xs text-gray-500 block break-words mt-0.5 italic">
+                                                {filter.description}
                                             </span>
                                         )}
                                     </li>

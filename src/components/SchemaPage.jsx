@@ -71,8 +71,13 @@ const DATA_SCHEMA = deepMerge(RAW_SCHEMA, OVERLAY_SCHEMA);
 const EXTRA_VALIDATIONS = {
     "datasetFilters": (value) => {
         if (!Array.isArray(value)) return false;
-        const idPattern = /^(\d+_){0,5}\d+$/;
-        return value.every(item => typeof item === 'string' && idPattern.test(item));
+        // Validate that each item is an object with the required search metadata
+        return value.every(item =>
+            typeof item === 'object' &&
+            item !== null &&
+            typeof item.id === 'string' &&
+            typeof item.label === 'string'
+        );
     }
 };
 
@@ -128,7 +133,10 @@ const calculateSectionStatus = (sectionKey, formData) => {
         let hasData = false;
         let hasAccess = false;
 
-        tags.forEach(id => {
+        tags.forEach(tag => {
+            // Extract ID from the object structure
+            const id = typeof tag === 'object' ? tag.id : tag;
+
             if (!hasTopo && idExistsInBranch(id, topographyBranch)) hasTopo = true;
             if (!hasHisto && idExistsInBranch(id, histologyBranch)) hasHisto = true;
             if (!hasData && idExistsInBranch(id, dataTypeBranch)) hasData = true;
@@ -286,14 +294,15 @@ const WelcomeSection = ({ onUpload }) => (
     <div className="p-8 overflow-y-auto pb-20 w-full">
         <h1 className="text-3xl font-extrabold mb-4 text-gray-900">Guide to Uploading and Modifying Metadata</h1>
 
-        <p className="text-sm text-gray-600 mb-1 leading-relaxed">
+        {/* Change <p> to <div> here to allow the JsonUpload div descendant */}
+        <div className="text-sm text-gray-600 mb-1 leading-relaxed">
             If this is a new dataset, you can either input the metadata manually or, if you have done this before, you can directly upload a json with some or all of the required information.
             <JsonUpload
                 schema={DATA_SCHEMA}
                 onUpload={onUpload}
                 additionalValidations={EXTRA_VALIDATIONS}
             />
-        </p>
+        </div>
 
         <p className="text-sm text-gray-600 mb-3 leading-relaxed">
             To modify an existing dataset, choose from your existing datasets below to retrieve the existing information for manual adjustment, to download the data, or to upload amendments.
@@ -1127,9 +1136,10 @@ const SchemaPage = () => {
         setVisitedSections(new Set([...allSections, 'datasetFilters', 'welcome']));
     }, [DATA_SCHEMA]);
 
-    const handleTagRemove = (id) => {
+    const handleTagRemove = (idToRemove) => {
         const currentTags = formData['datasetFilters'] || [];
-        const newTags = currentTags.filter(tagId => tagId !== id);
+        // Filter by the id property within the objects
+        const newTags = currentTags.filter(tag => tag.id !== idToRemove);
         handleDataChange(['datasetFilters'], newTags);
     };
 
