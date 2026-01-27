@@ -190,7 +190,9 @@ const CancerTypePanel = ({ handleFilterChange, selectedFiltersSet, searchTerm, s
 };
 
 const DataTypePanel = ({ handleFilterChange, selectedFiltersSet, searchTerm, setSearchTerm, filteredIds, pruneHierarchy }) => {
+    const [expandedSection, setExpandedSection] = useState(null); // Default first one open
     const dataTypeGroups = filterData['0_2'].children;
+
     const sections = [
         { title: "Biobank", items: dataTypeGroups['0_2_0'].children },
         { title: "In Vitro", items: dataTypeGroups['0_2_1'].children },
@@ -200,21 +202,47 @@ const DataTypePanel = ({ handleFilterChange, selectedFiltersSet, searchTerm, set
     ];
 
     return (
-        <div>
+        <div className="flex flex-col h-full">
             <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} isSearching={false} placeholder="Search data types..." />
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
-                {sections.map((sec, idx) => (
-                    <div key={idx} className="border p-3 rounded-lg bg-gray-50">
-                        <h4 className="text-sm font-bold text-gray-700 mb-2 border-b pb-1">{sec.title}</h4>
-                        <div className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
-                            <NestedFilterList
-                                items={pruneHierarchy(sec.items, filteredIds)}
-                                handleFilterChange={handleFilterChange}
-                                selectedFiltersSet={selectedFiltersSet}
-                            />
+
+            {/* 1) grid-cols-2 creates the 2-column width.
+                2) grid-auto-rows-fr ensures rows take equal height. */}
+            <div className="grid grid-cols-2 grid-auto-rows-fr gap-4 overflow-y-auto pr-2">
+                {sections.map((sec, idx) => {
+                    const isOpen = expandedSection === idx;
+
+                    return (
+                        <div
+                            key={idx}
+                            className={`flex flex-col border rounded-lg transition-all duration-200 shadow-sm ${isOpen ? 'bg-white border-indigo-300 ring-1 ring-indigo-50' : 'bg-gray-50 border-gray-200'}`}
+                        >
+                            {/* Header acts as the toggle for the accordion */}
+                            <button
+                                onClick={() => setExpandedSection(isOpen ? null : idx)}
+                                className="w-full flex items-center justify-between p-3 text-left hover:bg-gray-100 rounded-t-lg transition-colors"
+                            >
+                                <h4 className="text-sm font-bold text-gray-700 uppercase tracking-tight">{sec.title}</h4>
+                                <svg
+                                    className={`w-4 h-4 text-gray-400 transform transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+
+                            {/* Collapsible Content */}
+                            {isOpen && (
+                                <div className="p-3 pt-0 border-t border-gray-100 h-64 overflow-y-auto">
+                                    <NestedFilterList
+                                        items={pruneHierarchy(sec.items, filteredIds)}
+                                        handleFilterChange={handleFilterChange}
+                                        selectedFiltersSet={selectedFiltersSet}
+                                    />
+                                </div>
+                            )}
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
         </div>
     );
