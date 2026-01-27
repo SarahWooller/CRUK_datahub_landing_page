@@ -153,9 +153,9 @@ export const StudiesSection = () => {
                 const isFavB = favourites.includes(b.id);
                 if (isFavA === isFavB) return 0;
                 if (sortConfig.direction === 'desc') {
-                    return isFavA ? -1 : 1;
-                } else {
                     return isFavA ? 1 : -1;
+                } else {
+                    return isFavA ? -1 : 1;
                 }
             }
 
@@ -546,7 +546,7 @@ export const StudiesSection = () => {
                                                 </div>
 
                                                 {/* Title Link */}
-                                                <a href="../metadata.html" className="study-title-link">
+                                                <a href="../src/meta.html" className="study-title-link">
                                                     {study.studyTitle}
                                                 </a>
 
