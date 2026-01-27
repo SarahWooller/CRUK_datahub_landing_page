@@ -196,7 +196,7 @@ const DataTypePanel = ({ handleFilterChange, selectedFiltersSet, searchTerm, set
         { title: "In Vitro", items: dataTypeGroups['0_2_1'].children },
         { title: "Model Organisms", items: dataTypeGroups['0_2_2'].children },
         { title: "Patient Studies", items: dataTypeGroups['0_2_3'].children },
-        { title: "Non-Bio", items: dataTypeGroups['0_2_4'].children }
+        { title: "Techniques", items: dataTypeGroups['0_2_4'].children }
     ];
 
     return (
