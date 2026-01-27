@@ -6,22 +6,19 @@ import "../styles/style.css"
 
 export const FilterChipArea = ({ selectedFilters, handleFilterChange }) => {
     const chips = useMemo(() => {
-        return selectedFilters.map(fullId => {
-            const details = filterDetailsMap.get(fullId);
-            if (!details) return null;
-
-            const isCancer = details.group === 'cancer-type';
+        return selectedFilters.map(item => {
+            const isCancer = item.primaryGroup === 'cancer-type';
             const chipClass = isCancer
                 ? 'bg-[var(--cruk-white)] text-[var(--cruk-pink)] border border-[var(--cruk-pink)]'
                 : 'bg-[var(--cruk-white)] text-[var(--cruk-blue)] border border-[var(--cruk-blue)]';
 
             return {
-                fullId,
-                label: details.label,
-                category: details.category,
+                fullId: item.id,
+                label: item.label,
+                category: item.category,
                 chipClass,
             };
-        }).filter(Boolean);
+        });
     }, [selectedFilters]);
 
     if (chips.length === 0) return <p className="text-sm text-gray-500 italic">No filters selected.</p>;
@@ -236,7 +233,7 @@ const AccessibilityPanel = ({ handleFilterChange, selectedFiltersSet, searchTerm
                         <input
                             type="checkbox"
                             className="rounded text-[var(--cruk-pink)] border-gray-300 mr-2"
-                            checked={selectedFiltersSet.has(item.id)}
+                            checked={selectedFiltersSet.has(item.id)} // This works because our Set now holds IDs
                             onChange={() => handleFilterChange(item.id)}
                         />
                         <span className="text-sm text-gray-700">{item.label}</span>
@@ -253,7 +250,9 @@ const DataTagger = ({ value = [], onChange }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredIds, setFilteredIds] = useState(null);
 
-    const selectedFiltersSet = useMemo(() => new Set(value), [value]);
+    const selectedFiltersSet = useMemo(() => {
+        return new Set(value.map(item => item.id));
+    }, [value]);
     const allFiltersArray = useMemo(() => Array.from(filterDetailsMap.values()), []);
 
     useEffect(() => {
@@ -289,10 +288,32 @@ const DataTagger = ({ value = [], onChange }) => {
     }, []);
 
     const handleFilterChange = (id) => {
-        const newSet = new Set(selectedFiltersSet);
-        if (newSet.has(id)) newSet.delete(id);
-        else newSet.add(id);
-        onChange(Array.from(newSet));
+        // 1. Get current selection (which is now an array of objects)
+        const currentSelection = value || [];
+        const isAlreadySelected = currentSelection.some(item => item.id === id);
+
+        let nextSelection;
+        if (isAlreadySelected) {
+            // Remove the object
+            nextSelection = currentSelection.filter(item => item.id !== id);
+        } else {
+            // 2. Look up the full metadata from the utility map
+            const details = filterDetailsMap.get(id);
+            if (details) {
+                // Add the full object (id, label, category, primaryGroup/group, and description)
+                nextSelection = [...currentSelection, {
+                    id: details.id,
+                    label: details.label,
+                    category: details.category,
+                    primaryGroup: details.group,
+                    description: details.description || ""
+                }];
+            } else {
+                nextSelection = currentSelection;
+            }
+        }
+
+        onChange(nextSelection);
     };
 
     const props = { handleFilterChange, selectedFiltersSet, searchTerm, setSearchTerm, filteredIds, pruneHierarchy };
