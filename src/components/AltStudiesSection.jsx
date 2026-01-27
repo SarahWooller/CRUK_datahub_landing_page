@@ -153,9 +153,9 @@ export const StudiesSection = () => {
                 const isFavB = favourites.includes(b.id);
                 if (isFavA === isFavB) return 0;
                 if (sortConfig.direction === 'desc') {
-                    return isFavA ? -1 : 1;
-                } else {
                     return isFavA ? 1 : -1;
+                } else {
+                    return isFavA ? -1 : 1;
                 }
             }
 
