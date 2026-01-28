@@ -99,17 +99,23 @@ const NestedFilterItem = ({ item, handleFilterChange, selectedFiltersSet, level 
                     onChange={() => handleFilterChange(fullId)}
                 />
 
-                <div className="relative flex-grow flex items-center group/tooltip hover:z-20">
-                    <label htmlFor={fullId} className="text-gray-700 select-none flex-grow cursor-pointer text-sm flex items-center">
+                <div className="relative flex-grow flex items-center group/tooltip">
+                    <label htmlFor={fullId} className="text-gray-700 select-none cursor-pointer text-sm flex items-center">
                         {item.label}
-                        {/* Count Removed Here */}
-                        {hasDescription && (
-                            <svg className="w-3 h-3 ml-1 text-gray-400 opacity-50 group-hover/tooltip:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg>
-                        )}
                     </label>
+
                     {hasDescription && (
-                        <div className="absolute top-full left-4 mt-1 hidden group-hover/tooltip:block w-64 p-2 bg-[var(--cruk-blue)] text-white text-xs rounded shadow-xl z-50 whitespace-normal">
-                            {item.description}
+                        <div className="flex items-center ml-1">
+                            {/* Unified Info Icon */}
+                            <svg className="w-3.5 h-3.5 text-gray-400 opacity-60 group-hover/tooltip:opacity-100 transition-opacity cursor-help" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                            </svg>
+
+                            {/* Tooltip Box - Now properly anchored to the group/tooltip div */}
+                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/tooltip:block w-56 p-2 bg-gray-900 text-white text-[11px] leading-relaxed rounded shadow-2xl z-[100] pointer-events-none">
+                                {item.description}
+                                <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                            </div>
                         </div>
                     )}
                 </div>
