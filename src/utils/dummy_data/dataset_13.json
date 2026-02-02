@@ -1,1 +1,167 @@
-{"identifier": "9896ab5b-5205-415f-85cb-1e69928ea03e", "version": "1.0.0", "revisions": [], "issued": "2024-01-01T00:00:00.000Z", "modified": "2024-01-01T00:00:00.000Z", "summary": {"title": "Lung Cancer Screening Low-Dose CT (LDCT) Cohort", "abstract": "LDCT scans from a pilot screening program in high-risk areas. Includes follow-up data on nodule management and lung cancer diagnosis rates.", "dataCustodian": {"identifier": "https://ror.org/custodian-13", "name": "SUMMIT Study Group", "contactPoint": "access@custodian-13.org"}, "funders": "CRUK\nNIHR", "populationSize": 1315, "keywords": ["Lung", "Cancer", "Screening", "Low-Dose", "CT"], "doiName": "10.1000/data.13", "contactPoint": "access@custodian-13.org"}, "documentation": {"description": "LDCT scans from a pilot screening program in high-risk areas. Includes follow-up data on nodule management and lung cancer diagnosis rates. This is a dummy description generated for testing purposes.", "inPipeline": "Available"}, "coverage": {"spatial": "United Kingdom", "followUp": "1 - 10 Years"}, "provenance": {"origin": {"purpose": ["Study"], "datasetType": ["Health and disease"]}, "temporal": {"publishingFrequency": "Annual", "startDate": "2020-01-01", "timeLag": "1-2 months"}}, "accessibility": {"usage": {"dataUseLimitation": ["General research use"]}, "access": {"accessRights": "Open access upon request.", "jurisdiction": ["GB-ENG"]}, "formatAndStandards": {"vocabularyEncodingScheme": ["ICD10"], "conformsTo": ["OMOP"], "language": ["en"], "format": ["text/csv"]}}, "observations": [{"observedNode": "Persons", "measuredValue": 4110, "observationDate": "2023-12-31", "measuredProperty": "Count"}], "demographicFrequency": {"age": [{"bin": "50-54 years", "count": 10}, {"bin": "55-59 years", "count": 20}], "ethnicity": [{"bin": "White - British", "count": 25}, {"bin": "Not stated", "count": 5}]}, "datasetFilters": ["0_0_0_2_4", "0_2_3_2", "0_2_3_6", "0_1_4", "0_0_2_51", "0_0_4_19", "0_0_1_1_0"], "project": {"projectName": "LDCT-SCREEN: Optimizing Low-Dose CT for Lung Cancer Screening", "leadResearcher": "Dr P.L. Robinson", "leadResearchInstitute": "John Innes Centre", "grantNumbers": "RFZYVHFIMG_349222874", "projectStartDate": "2025-01-05", "projectEndDate": "2028-01-05", "projectScope": "Low-dose CT (LDCT) screening images and associated pathology results from a large-scale lung cancer screening cohort."}}
+{
+  "identifier": "9896ab5b-5205-415f-85cb-1e69928ea03e",
+  "version": "1.0.0",
+  "revisions": [],
+  "issued": "2024-01-01T00:00:00.000Z",
+  "modified": "2024-01-01T00:00:00.000Z",
+  "summary": {
+    "title": "Lung Cancer Screening Low-Dose CT (LDCT) Cohort",
+    "abstract": "LDCT scans from a pilot screening program in high-risk areas. Includes follow-up data on nodule management and lung cancer diagnosis rates.",
+    "dataCustodian": {
+      "identifier": "https://ror.org/custodian-13",
+      "name": "SUMMIT Study Group",
+      "contactPoint": "access@custodian-13.org"
+    },
+    "funders": "CRUK\nNIHR",
+    "populationSize": 1315,
+    "keywords": [
+      "Lung",
+      "Cancer",
+      "Screening",
+      "Low-Dose",
+      "CT"
+    ],
+    "doiName": "10.1000/data.13",
+    "contactPoint": "access@custodian-13.org"
+  },
+  "documentation": {
+    "description": "LDCT scans from a pilot screening program in high-risk areas. Includes follow-up data on nodule management and lung cancer diagnosis rates. This is a dummy description generated for testing purposes.",
+    "inPipeline": "Available"
+  },
+  "coverage": {
+    "spatial": "United Kingdom",
+    "followUp": "1 - 10 Years"
+  },
+  "provenance": {
+    "origin": {
+      "purpose": [
+        "Study"
+      ],
+      "datasetType": [
+        "Health and disease"
+      ]
+    },
+    "temporal": {
+      "publishingFrequency": "Annual",
+      "startDate": "2020-01-01",
+      "timeLag": "1-2 months"
+    }
+  },
+  "accessibility": {
+    "usage": {
+      "dataUseLimitation": [
+        "General research use"
+      ]
+    },
+    "access": {
+      "accessRights": "Open access upon request.",
+      "jurisdiction": [
+        "GB-ENG"
+      ]
+    },
+    "formatAndStandards": {
+      "vocabularyEncodingScheme": [
+        "ICD10"
+      ],
+      "conformsTo": [
+        "OMOP"
+      ],
+      "language": [
+        "en"
+      ],
+      "format": [
+        "text/csv"
+      ]
+    }
+  },
+  "observations": [
+    {
+      "observedNode": "Persons",
+      "measuredValue": 4110,
+      "observationDate": "2023-12-31",
+      "measuredProperty": "Count"
+    }
+  ],
+  "demographicFrequency": {
+    "age": [
+      {
+        "bin": "50-54 years",
+        "count": 10
+      },
+      {
+        "bin": "55-59 years",
+        "count": 20
+      }
+    ],
+    "ethnicity": [
+      {
+        "bin": "White - British",
+        "count": 25
+      },
+      {
+        "bin": "Not stated",
+        "count": 5
+      }
+    ]
+  },
+  "datasetFilters": [
+    {
+      "id": "0_0_0_2_4",
+      "label": "C34 Bronchus and lung",
+      "category": "C30-C39 Respiratory system and intrathoracic organs",
+      "primaryGroup": "cancer-type",
+      "description": ""
+    },
+    {
+      "id": "0_2_3_2",
+      "label": "Imaging Data",
+      "category": "Patient study",
+      "primaryGroup": "data-type",
+      "description": ""
+    },
+    {
+      "id": "0_2_3_6",
+      "label": "Clinical Trial",
+      "category": "Patient study",
+      "primaryGroup": "data-type",
+      "description": ""
+    },
+    {
+      "id": "0_1_4",
+      "label": "Open to applicants",
+      "category": "accessType",
+      "primaryGroup": "access-type",
+      "description": ""
+    },
+    {
+      "id": "0_0_2_51",
+      "label": "Lung cancer",
+      "category": "crukTerms",
+      "primaryGroup": "cancer-type",
+      "description": ""
+    },
+    {
+      "id": "0_0_4_19",
+      "label": "LUAD (Lung adenocarcinoma)",
+      "category": "cancerTypes",
+      "primaryGroup": "cancer-type",
+      "description": ""
+    },
+    {
+      "id": "0_0_1_1_0",
+      "label": "8010/0 Epithelial tumor, benign",
+      "category": "801-804 Epithelial neoplasms, NOS",
+      "primaryGroup": "cancer-type",
+      "description": ""
+    }
+  ],
+  "project": {
+    "projectName": "LDCT-SCREEN: Optimizing Low-Dose CT for Lung Cancer Screening",
+    "leadResearcher": "Dr P.L. Robinson",
+    "leadResearchInstitute": "John Innes Centre",
+    "grantNumbers": "RFZYVHFIMG_349222874",
+    "projectStartDate": "2025-01-05",
+    "projectEndDate": "2028-01-05",
+    "projectScope": "Low-dose CT (LDCT) screening images and associated pathology results from a large-scale lung cancer screening cohort."
+  }
+}
