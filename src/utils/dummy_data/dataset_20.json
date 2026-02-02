@@ -1,1 +1,174 @@
-{"identifier": "3c948757-39e5-4ee6-8bf8-4be4439d8707", "version": "1.0.0", "revisions": [], "issued": "2024-01-01T00:00:00.000Z", "modified": "2024-01-01T00:00:00.000Z", "summary": {"title": "Bladder Cancer Cystoscopy and Recurrence Registry", "abstract": "Registry data tracking recurrence patterns in non-muscle invasive bladder cancer. Includes frequency of cystoscopy and intravesical therapy details.", "dataCustodian": {"identifier": "https://ror.org/custodian-20", "name": "Action Bladder Cancer UK", "contactPoint": "access@custodian-20.org"}, "funders": "CRUK\nNIHR", "populationSize": 1867, "keywords": ["Bladder", "Cancer", "Cystoscopy", "and", "Recurrence"], "doiName": "10.1000/data.20", "contactPoint": "access@custodian-20.org"}, "documentation": {"description": "Registry data tracking recurrence patterns in non-muscle invasive bladder cancer. Includes frequency of cystoscopy and intravesical therapy details. This is a dummy description generated for testing purposes.", "inPipeline": "Available"}, "coverage": {"spatial": "United Kingdom", "followUp": "1 - 10 Years"}, "provenance": {"origin": {"purpose": ["Study"], "datasetType": ["Health and disease"]}, "temporal": {"publishingFrequency": "Annual", "startDate": "2020-01-01", "timeLag": "1-2 months"}}, "accessibility": {"usage": {"dataUseLimitation": ["General research use"]}, "access": {"accessRights": "Open access upon request.", "jurisdiction": ["GB-ENG"]}, "formatAndStandards": {"vocabularyEncodingScheme": ["ICD10"], "conformsTo": ["OMOP"], "language": ["en"], "format": ["text/csv"]}}, "observations": [{"observedNode": "Persons", "measuredValue": 3949, "observationDate": "2023-12-31", "measuredProperty": "Count"}], "demographicFrequency": {"age": [{"bin": "50-54 years", "count": 10}, {"bin": "55-59 years", "count": 20}], "ethnicity": [{"bin": "White - British", "count": 25}, {"bin": "Not stated", "count": 5}]}, "datasetFilters": ["0_0_0_12_1", "0_2_3_6", "0_2_3_3", "0_2_3_5", "0_1_4", "0_0_2_9", "0_0_4_1", "0_0_1_1_0"], "project": {"projectName": "CYSTO-TRACK: A Registry for Bladder Cancer Recurrence and Surveillance", "leadResearcher": "Dr M.E. Stewart", "leadResearchInstitute": "Manchester University NHS Foundation Trust", "grantNumbers": "EMHOSUBLLC_942975658", "projectStartDate": "2026-01-10", "projectEndDate": "2030-01-10", "projectScope": "Serial cystoscopy records and longitudinal recurrence data for patients with non-muscle invasive bladder cancer."}}
+{
+  "identifier": "3c948757-39e5-4ee6-8bf8-4be4439d8707",
+  "version": "1.0.0",
+  "revisions": [],
+  "issued": "2024-01-01T00:00:00.000Z",
+  "modified": "2024-01-01T00:00:00.000Z",
+  "summary": {
+    "title": "Bladder Cancer Cystoscopy and Recurrence Registry",
+    "abstract": "Registry data tracking recurrence patterns in non-muscle invasive bladder cancer. Includes frequency of cystoscopy and intravesical therapy details.",
+    "dataCustodian": {
+      "identifier": "https://ror.org/custodian-20",
+      "name": "Action Bladder Cancer UK",
+      "contactPoint": "access@custodian-20.org"
+    },
+    "funders": "CRUK\nNIHR",
+    "populationSize": 1867,
+    "keywords": [
+      "Bladder",
+      "Cancer",
+      "Cystoscopy",
+      "and",
+      "Recurrence"
+    ],
+    "doiName": "10.1000/data.20",
+    "contactPoint": "access@custodian-20.org"
+  },
+  "documentation": {
+    "description": "Registry data tracking recurrence patterns in non-muscle invasive bladder cancer. Includes frequency of cystoscopy and intravesical therapy details. This is a dummy description generated for testing purposes.",
+    "inPipeline": "Available"
+  },
+  "coverage": {
+    "spatial": "United Kingdom",
+    "followUp": "1 - 10 Years"
+  },
+  "provenance": {
+    "origin": {
+      "purpose": [
+        "Study"
+      ],
+      "datasetType": [
+        "Health and disease"
+      ]
+    },
+    "temporal": {
+      "publishingFrequency": "Annual",
+      "startDate": "2020-01-01",
+      "timeLag": "1-2 months"
+    }
+  },
+  "accessibility": {
+    "usage": {
+      "dataUseLimitation": [
+        "General research use"
+      ]
+    },
+    "access": {
+      "accessRights": "Open access upon request.",
+      "jurisdiction": [
+        "GB-ENG"
+      ]
+    },
+    "formatAndStandards": {
+      "vocabularyEncodingScheme": [
+        "ICD10"
+      ],
+      "conformsTo": [
+        "OMOP"
+      ],
+      "language": [
+        "en"
+      ],
+      "format": [
+        "text/csv"
+      ]
+    }
+  },
+  "observations": [
+    {
+      "observedNode": "Persons",
+      "measuredValue": 3949,
+      "observationDate": "2023-12-31",
+      "measuredProperty": "Count"
+    }
+  ],
+  "demographicFrequency": {
+    "age": [
+      {
+        "bin": "50-54 years",
+        "count": 10
+      },
+      {
+        "bin": "55-59 years",
+        "count": 20
+      }
+    ],
+    "ethnicity": [
+      {
+        "bin": "White - British",
+        "count": 25
+      },
+      {
+        "bin": "Not stated",
+        "count": 5
+      }
+    ]
+  },
+  "datasetFilters": [
+    {
+      "id": "0_0_0_12_1",
+      "label": "C65 Renal pelvis",
+      "category": "C64-C68 Urinary tract",
+      "primaryGroup": "cancer-type",
+      "description": ""
+    },
+    {
+      "id": "0_2_3_6",
+      "label": "Clinical Trial",
+      "category": "Patient study",
+      "primaryGroup": "data-type",
+      "description": ""
+    },
+    {
+      "id": "0_2_3_3",
+      "label": "Longitudinal Follow up",
+      "category": "Patient study",
+      "primaryGroup": "data-type",
+      "description": ""
+    },
+    {
+      "id": "0_2_3_5",
+      "label": "Treatments",
+      "category": "Patient study",
+      "primaryGroup": "data-type",
+      "description": ""
+    },
+    {
+      "id": "0_1_4",
+      "label": "Open to applicants",
+      "category": "accessType",
+      "primaryGroup": "access-type",
+      "description": ""
+    },
+    {
+      "id": "0_0_2_9",
+      "label": "Bladder cancer",
+      "category": "crukTerms",
+      "primaryGroup": "cancer-type",
+      "description": ""
+    },
+    {
+      "id": "0_0_4_1",
+      "label": "BLCA (Bladder Urothelial Carcinoma)",
+      "category": "cancerTypes",
+      "primaryGroup": "cancer-type",
+      "description": ""
+    },
+    {
+      "id": "0_0_1_1_0",
+      "label": "8010/0 Epithelial tumor, benign",
+      "category": "801-804 Epithelial neoplasms, NOS",
+      "primaryGroup": "cancer-type",
+      "description": ""
+    }
+  ],
+  "project": {
+    "projectName": "CYSTO-TRACK: A Registry for Bladder Cancer Recurrence and Surveillance",
+    "leadResearcher": "Dr M.E. Stewart",
+    "leadResearchInstitute": "Manchester University NHS Foundation Trust",
+    "grantNumbers": "EMHOSUBLLC_942975658",
+    "projectStartDate": "2026-01-10",
+    "projectEndDate": "2030-01-10",
+    "projectScope": "Serial cystoscopy records and longitudinal recurrence data for patients with non-muscle invasive bladder cancer."
+  }
+}
