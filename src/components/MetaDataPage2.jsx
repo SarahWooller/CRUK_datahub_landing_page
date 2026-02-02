@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom/client';
 
 // 1. IMPORT DATA FROM UTILS
-import studyData from '../utils/dummy_data/dataset_01.json';
+import studyData from '../utils/dummy_data/optimam_partial.json';
 import { filterData } from '../utils/longer_filter_data.js';
 
 
