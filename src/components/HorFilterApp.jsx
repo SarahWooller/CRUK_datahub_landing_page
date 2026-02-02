@@ -969,10 +969,10 @@ const DataTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setSea
                             />
                         </div>
                     </div>
-                    {/* Non-biological Studies (0_2_4) */}
+                    {/* Techniques (0_2_4) */}
                     <div className="border p-3 rounded-lg bg-gray-50">
-                        <h4 className="text-sm font-bold text-gray-700 mb-2 border-b pb-1">Non-biological Studies</h4>
-                        <div id="nonbio-studies-list" className={listClass}>
+                        <h4 className="text-sm font-bold text-gray-700 mb-2 border-b pb-1">Techniques</h4>
+                        <div id="techniques-studies-list" className={listClass}>
                             <NestedFilterList
                                 items={filteredNonBioItems} // USE FILTERED DATA
                                 {...{handleFilterChange, selectedFilters}}

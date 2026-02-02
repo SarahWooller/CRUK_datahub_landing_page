@@ -546,7 +546,7 @@ export const StudiesSection = () => {
                                                 </div>
 
                                                 {/* Title Link */}
-                                                <a href="../metadata.html" className="study-title-link">
+                                                <a href="../src/meta.html" className="study-title-link">
                                                     {study.studyTitle}
                                                 </a>
 

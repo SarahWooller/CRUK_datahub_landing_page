@@ -99,17 +99,23 @@ const NestedFilterItem = ({ item, handleFilterChange, selectedFiltersSet, level 
                     onChange={() => handleFilterChange(fullId)}
                 />
 
-                <div className="relative flex-grow flex items-center group/tooltip hover:z-20">
-                    <label htmlFor={fullId} className="text-gray-700 select-none flex-grow cursor-pointer text-sm flex items-center">
+                <div className="relative flex-grow flex items-center group/tooltip">
+                    <label htmlFor={fullId} className="text-gray-700 select-none cursor-pointer text-sm flex items-center">
                         {item.label}
-                        {/* Count Removed Here */}
-                        {hasDescription && (
-                            <svg className="w-3 h-3 ml-1 text-gray-400 opacity-50 group-hover/tooltip:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg>
-                        )}
                     </label>
+
                     {hasDescription && (
-                        <div className="absolute top-full left-4 mt-1 hidden group-hover/tooltip:block w-64 p-2 bg-[var(--cruk-blue)] text-white text-xs rounded shadow-xl z-50 whitespace-normal">
-                            {item.description}
+                        <div className="flex items-center ml-1">
+                            {/* Unified Info Icon */}
+                            <svg className="w-3.5 h-3.5 text-gray-400 opacity-60 group-hover/tooltip:opacity-100 transition-opacity cursor-help" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                            </svg>
+
+                            {/* Tooltip Box - Now properly anchored to the group/tooltip div */}
+                            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover/tooltip:block w-56 p-2 bg-gray-900 text-white text-[11px] leading-relaxed rounded shadow-2xl z-[100] pointer-events-none">
+                                {item.description}
+                                <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-900"></div>
+                            </div>
                         </div>
                     )}
                 </div>
@@ -190,31 +196,59 @@ const CancerTypePanel = ({ handleFilterChange, selectedFiltersSet, searchTerm, s
 };
 
 const DataTypePanel = ({ handleFilterChange, selectedFiltersSet, searchTerm, setSearchTerm, filteredIds, pruneHierarchy }) => {
+    const [expandedSection, setExpandedSection] = useState(null); // Default first one open
     const dataTypeGroups = filterData['0_2'].children;
+
     const sections = [
         { title: "Biobank", items: dataTypeGroups['0_2_0'].children },
         { title: "In Vitro", items: dataTypeGroups['0_2_1'].children },
         { title: "Model Organisms", items: dataTypeGroups['0_2_2'].children },
         { title: "Patient Studies", items: dataTypeGroups['0_2_3'].children },
-        { title: "Non-Bio", items: dataTypeGroups['0_2_4'].children }
+        { title: "Techniques", items: dataTypeGroups['0_2_4'].children }
     ];
 
     return (
-        <div>
+        <div className="flex flex-col h-full">
             <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} isSearching={false} placeholder="Search data types..." />
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
-                {sections.map((sec, idx) => (
-                    <div key={idx} className="border p-3 rounded-lg bg-gray-50">
-                        <h4 className="text-sm font-bold text-gray-700 mb-2 border-b pb-1">{sec.title}</h4>
-                        <div className="h-40 overflow-y-auto space-y-1 text-sm pr-2">
-                            <NestedFilterList
-                                items={pruneHierarchy(sec.items, filteredIds)}
-                                handleFilterChange={handleFilterChange}
-                                selectedFiltersSet={selectedFiltersSet}
-                            />
+
+            {/* 1) grid-cols-2 creates the 2-column width.
+                2) grid-auto-rows-fr ensures rows take equal height. */}
+            <div className="grid grid-cols-2 grid-auto-rows-fr gap-4 overflow-y-auto pr-2">
+                {sections.map((sec, idx) => {
+                    const isOpen = expandedSection === idx;
+
+                    return (
+                        <div
+                            key={idx}
+                            className={`flex flex-col border rounded-lg transition-all duration-200 shadow-sm ${isOpen ? 'bg-white border-indigo-300 ring-1 ring-indigo-50' : 'bg-gray-50 border-gray-200'}`}
+                        >
+                            {/* Header acts as the toggle for the accordion */}
+                            <button
+                                onClick={() => setExpandedSection(isOpen ? null : idx)}
+                                className="w-full flex items-center justify-between p-3 text-left hover:bg-gray-100 rounded-t-lg transition-colors"
+                            >
+                                <h4 className="text-sm font-bold text-gray-700 uppercase tracking-tight">{sec.title}</h4>
+                                <svg
+                                    className={`w-4 h-4 text-gray-400 transform transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                                    fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+
+                            {/* Collapsible Content */}
+                            {isOpen && (
+                                <div className="p-3 pt-0 border-t border-gray-100 h-64 overflow-y-auto">
+                                    <NestedFilterList
+                                        items={pruneHierarchy(sec.items, filteredIds)}
+                                        handleFilterChange={handleFilterChange}
+                                        selectedFiltersSet={selectedFiltersSet}
+                                    />
+                                </div>
+                            )}
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
         </div>
     );
