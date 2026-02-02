@@ -1,5 +1,36 @@
 import { filterDetailsMap } from './filter-setup.js';
 
+const sortFiltersAlphabetically = (items) => {
+    if (!items) return [];
+    const itemsArray = Array.isArray(items) ? items : Object.values(items);
+
+    return [...itemsArray].sort((a, b) => {
+        const labelA = a.label?.toLowerCase() || "";
+        const labelB = b.label?.toLowerCase() || "";
+        return labelA.localeCompare(labelB);
+    });
+};
+
+const sortHierarchically = (items, filterDetailsMap) => {
+    const getFullPath = (id) => {
+        const details = filterDetailsMap.get(id);
+        if (!details) return "";
+        // If there's a parentId in your map, you'd recurse here.
+        // Otherwise, we use the label as the primary sort key.
+        return details.label || "";
+    };
+
+    return [...items].sort((a, b) => {
+        const itemA = typeof a === 'object' ? a : filterDetailsMap.get(a);
+        const itemB = typeof b === 'object' ? b : filterDetailsMap.get(b);
+
+        const pathA = (itemA?.label || "").toLowerCase();
+        const pathB = (itemB?.label || "").toLowerCase();
+
+        return pathA.localeCompare(pathB);
+    });
+};
+
 const filterType = (id) => {
     const info = id.split("_");
     if (info.length < 3) return "unknown";
@@ -106,5 +137,7 @@ export {
     includeParents,
     plusParents,
     getMessage,
-    calculateLogicMessage
+    calculateLogicMessage,
+    sortFiltersAlphabetically,
+    sortHierarchically
 };

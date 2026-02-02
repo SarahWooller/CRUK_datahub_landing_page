@@ -1,5 +1,5 @@
 import { filterDetailsMap, filterData } from '../utils/filter-setup';
-import { filterType, includeParents, plusParents, getMessage, calculateLogicMessage
+import { filterType, includeParents, plusParents, getMessage, calculateLogicMessage, sortFiltersAlphabetically
 } from '../utils/logic-utils';
 import { executeFilterLogic } from '../utils/filterLogic.js';
 import React from 'react'; // React is now imported from node_modules
@@ -15,7 +15,14 @@ const { useState, useMemo, useCallback, useEffect } = React;
 // Utility component for nested filters with toggle
 const NestedFilterList = ({ items, handleFilterChange, selectedFilters, level = 0 }) => {
     if (!items || items.length === 0) return null;
-    const itemsArray = Array.isArray(items) ? items : Object.values(items);
+    let itemsArray = Array.isArray(items) ? items : Object.values(items);
+
+    // Apply sorting ONLY if the items belong to the dataType branch (primaryGroup: 'data-type')
+    // We check the first item in the list to determine the group
+    const firstItem = itemsArray[0];
+    if (firstItem?.id?.startsWith('0_2')) {
+        itemsArray = sortFiltersAlphabetically(itemsArray);
+    }
 
     return (
         <div className="nested-list space-y-1">

@@ -48,7 +48,18 @@ export const FilterChipArea = ({ selectedFilters, handleFilterChange }) => {
 // Nested List Components
 const NestedFilterList = ({ items, handleFilterChange, selectedFiltersSet, level = 0 }) => {
     if (!items || items.length === 0) return null;
-    const itemsArray = Array.isArray(items) ? items : Object.values(items);
+
+    let itemsArray = Array.isArray(items) ? items : Object.values(items);
+
+    // Sorting logic inside the list component
+    const firstItem = itemsArray[0];
+    if (firstItem?.id?.startsWith('0_2')) {
+        itemsArray = [...itemsArray].sort((a, b) => {
+            const labelA = (a.label || "").toLowerCase();
+            const labelB = (b.label || "").toLowerCase();
+            return labelA.localeCompare(labelB);
+        });
+    }
 
     return (
         <div className="nested-list space-y-1">
@@ -57,7 +68,7 @@ const NestedFilterList = ({ items, handleFilterChange, selectedFiltersSet, level
                     key={item.id}
                     item={item}
                     handleFilterChange={handleFilterChange}
-                    selectedFiltersSet={selectedFiltersSet}
+                    selectedFiltersSet={selectedFiltersSet} // Corrected prop name
                     level={level}
                 />
             ))}
@@ -309,15 +320,23 @@ const DataTagger = ({ value = [], onChange }) => {
 
     const pruneHierarchy = useCallback((nodes, currentIds) => {
         if (!nodes) return null;
-        if (!currentIds) return nodes;
+
         const filtered = {};
         const arr = Array.isArray(nodes) ? nodes : Object.values(nodes);
+
+        // Alphabetize the array BEFORE processing children if it's a data-type branch
+        if (arr.length > 0 && arr[0].id?.startsWith('0_2')) {
+            arr.sort((a, b) => (a.label || "").localeCompare(b.label || ""));
+        }
+
         arr.forEach(item => {
             const kids = pruneHierarchy(item.children, currentIds);
-            if (currentIds.has(item.id) || (kids && Object.keys(kids).length > 0)) {
+            // If there is no search active (currentIds is null) or there is a match
+            if (!currentIds || currentIds.has(item.id) || (kids && Object.keys(kids).length > 0)) {
                 filtered[item.id] = { ...item, children: kids };
             }
         });
+
         return Object.keys(filtered).length > 0 ? filtered : null;
     }, []);
 
