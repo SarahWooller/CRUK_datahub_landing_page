@@ -254,25 +254,34 @@ const DataTypePanel = ({ handleFilterChange, selectedFiltersSet, searchTerm, set
     );
 };
 
-const AccessibilityPanel = ({ handleFilterChange, selectedFiltersSet, searchTerm, setSearchTerm, filteredIds }) => {
-    const items = Object.values(filterData['0_1'].children);
-    const visibleItems = filteredIds ? items.filter(i => filteredIds.has(i.id)) : items;
+const AccessibilityPanel = ({
+    handleFilterChange,
+    selectedFiltersSet,
+    searchTerm,
+    setSearchTerm,
+    filteredIds,
+    pruneHierarchy
+}) => {
+    const accessGroups = filterData['0_1'].children;
+
+    // Apply the hierarchy pruning for search support
+    const visibleItems = pruneHierarchy(accessGroups, filteredIds);
 
     return (
-        <div>
-            <SearchInput searchTerm={searchTerm} setSearchTerm={setSearchTerm} isSearching={false} placeholder="Search access types..." />
+        <div className="flex flex-col h-full">
+            <SearchInput
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                isSearching={false}
+                placeholder="Search access types..."
+            />
             <div className="h-64 overflow-y-auto border p-3 rounded-lg bg-white">
-                {visibleItems.map(item => (
-                    <div key={item.id} className="flex items-center mb-2">
-                        <input
-                            type="checkbox"
-                            className="rounded text-[var(--cruk-pink)] border-gray-300 mr-2"
-                            checked={selectedFiltersSet.has(item.id)} // This works because our Set now holds IDs
-                            onChange={() => handleFilterChange(item.id)}
-                        />
-                        <span className="text-sm text-gray-700">{item.label}</span>
-                    </div>
-                ))}
+                {/* Use NestedFilterList to handle the two-level hierarchy */}
+                <NestedFilterList
+                    items={visibleItems}
+                    handleFilterChange={handleFilterChange}
+                    selectedFiltersSet={selectedFiltersSet}
+                />
             </div>
         </div>
     );
