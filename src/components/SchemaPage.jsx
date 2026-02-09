@@ -5,6 +5,7 @@ import DataTagger, { FilterChipArea } from './DataTagger';
 import JsonUpload from './JsonUpload';
 import UploadTopBar from './UploadTopBar';
 import { filterData } from '../utils/filter-setup';
+import prefixIconMapping from '../utils/prefix_icon_mapping.json';
 
 // --- CONFIGURATION: Priority Sections ---
 // Sections in this list will prioritize the property's own metadata (Title, Description, Guidance)
@@ -413,9 +414,7 @@ const FrequencyGrid = ({ value, onChange, enumOptions, label }) => {
         <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 mb-6">
             <h3 className="text-lg font-bold text-gray-800 mb-4">{label} Breakdown</h3>
             <div className="grid grid-cols-2 gap-x-8 gap-y-4 max-w-4xl">
-                {/* Headers */}
-                <div className="font-semibold text-gray-500 text-sm uppercase tracking-wider border-b pb-2">Age Group</div>
-                <div className="font-semibold text-gray-500 text-sm uppercase tracking-wider border-b pb-2">Count</div>
+
 
                 {/* Rows */}
                 {enumOptions.map((binLabel) => {
@@ -655,7 +654,27 @@ const FieldRenderer = ({
             </div>
         );
     }
-
+    // --- RENDER: NESTED OBJECT TYPES ---
+    if (fieldDef.type === 'object' && fieldDef.properties && !isArray) {
+        return (
+            <div className={`border-l-2 border-gray-200 pl-4 mb-6 ${level > 0 ? 'mt-4' : ''}`}>
+                <h3 className="text-md font-bold text-gray-700 mb-4">{prop.title || propKey}</h3>
+                {Object.keys(fieldDef.properties).map((childKey) => (
+                    <FieldRenderer
+                        key={childKey}
+                        propKey={childKey}
+                        prop={fieldDef.properties[childKey]}
+                        path={[...path, childKey]} // Correctly extends the data path
+                        formData={formData}
+                        onChange={onChange}
+                        isRequired={fieldDef.required?.includes(childKey)}
+                        setActiveGuidance={setActiveGuidance}
+                        level={level + 1}
+                    />
+                ))}
+            </div>
+        );
+    }
     // --- RENDER: STANDARD INPUTS ---
     let inputType = 'text';
     let rows = 1;
@@ -885,7 +904,17 @@ const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance, onU
 
             {isContainer ? (
                 <div className="space-y-6">
-                    {Object.keys(definition.properties).map((propKey) => {
+                    {Object.keys(definition.properties)
+                        .filter((propKey) => {
+                            if (sectionKey === 'demographicFrequency') {
+                                return propKey === 'ethnicity';
+                            }
+                            if (sectionKey === 'provenance') {
+                                    return propKey === 'temporal';
+                                }
+                            return true;
+                        })
+                        .map((propKey) => {
                         return (
                             <FieldRenderer
                                 key={propKey}
@@ -1143,8 +1172,38 @@ const SchemaPage = () => {
         handleDataChange(['datasetFilters'], newTags);
     };
 
+
+    const associateIcons = (formData, prefixIconMapping) => {
+        if (!formData.datasetFilters || !Array.isArray(formData.datasetFilters)) {
+            return { ...formData, icons: [] };
+        }
+
+        // Extract IDs that start with "0_2"
+        const dataIds = formData.datasetFilters
+            .map(item => (typeof item === 'object' ? item.id : item))
+            .filter(id => id && id.startsWith("0_2"));
+
+        // Generate prefixes (truncations of length 5 and 7)
+        const truncs = new Set();
+        dataIds.forEach(id => {
+            if (id.length >= 5) truncs.add(id.substring(0, 5));
+            if (id.length >= 7) truncs.add(id.substring(0, 7));
+        });
+
+        // Find intersection of mapping keys and truncations, then map to icon values
+        const icons = Object.keys(prefixIconMapping)
+            .filter(key => truncs.has(key))
+            .map(key => prefixIconMapping[key]);
+
+        // Return new object with icons array (unique values)
+        return {
+            ...formData,
+            icons: [...new Set(icons)]
+        };
+    };
     const downloadJSON = () => {
-        const fileData = JSON.stringify(formData, null, 2);
+        const processedData = associateIcons(formData, prefixIconMapping);
+        const fileData = JSON.stringify(processedData, null, 2);
         const blob = new Blob([fileData], { type: "application/json" });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");

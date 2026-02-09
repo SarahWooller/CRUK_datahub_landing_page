@@ -1,6 +1,5 @@
 {
     "$defs": {
-
         "Documentation": {
             "properties": {
                 "description": {
@@ -79,6 +78,7 @@
                         }
                   }
             },
+
         "StructuralMetadata": {
             "properties": {
                 "syntheticDataWebLink": {
@@ -132,12 +132,106 @@
             }
         },
         "Temporal": {
-            "endDate": {
-                "examples": [
-                    "YYYY-MM-DD"
-                ]
+                  "additionalProperties": false,
+                  "properties": {
+                        "publishingFrequency": {
+                              "allOf": [
+                                    {
+                                          "$ref": "#/$defs/PeriodicityV2"
+                                    }
+                              ],
+                              "description": "Frequency of distribution release",
+                              "examples": [
+                                    "Continuous"
+                              ],
+                              "guidance": "Please indicate the frequency of publishing.\\n- If a dataset is published regularly please choose a publishing periodicity from the constrained list and indicate the next release date.\\n- When the release date becomes historical, a new release date will be calculated based on the publishing periodicity.\\n- If a dataset has been published and will remain static please indicate that it is static and indicate when it was released.\\n- If a dataset is released on an irregular basis or \u201con-demand\u201d please indicate that it is Irregular and leave release date as null.\\n- If a dataset can be published in real-time or near-real-time please indicate that it is continuous and leave release date as null.\\n- Notes: see https://www.dublincore.org/specifications/dublin-core/collection-description/frequency/.\\n\\n  Options:\\n- **Static**: Dataset published once.\\n- **Irregular**: Dataset published at uneven intervals.\\n- **Continuous**: Dataset published without interruption.\\n- **Biennial**: Dataset published every two years.\\n- **Annual**: Dataset published occurs once a year.\\n- **Biannual**: Dataset published twice a year.\\n- **Quarterly**: Dataset published every three months.\\n- **Bimonthly**: Dataset published every two months.\\n- **Monthly**: Dataset published once a month.\\n- **Biweekly**: Dataset published every two weeks.\\n- **Weekly**: Dataset published once a week.\\n- **Twice weekly**: Dataset published twice a week.\\n- **Daily**: Dataset published once a day.\\n- **Other**: Dataset published using other interval.",
+                              "title": "Publishing frequency"
+                        },
+                        "distributionReleaseDate": {
+                              "anyOf": [
+                                    {
+                                          "format": "date",
+                                          "type": "string"
+                                    },
+                                    {
+                                          "format": "date-time",
+                                          "type": "string"
+                                    },
+                                    {
+                                          "type": "null"
+                                    }
+                              ],
+                              "default": null,
+                              "description": "Latest release date",
+                              "examples": [
+                                    "YYYY-MM-DD"
+                              ],
+                              "guidance": "- Please indicate the frequency the dataset is published.\\n- If a dataset is published regularly please choose a publishing periodicity from the constrained list and indicate the next release date.\\n- When the release date becomes historical, a new release date will be calculated based on the publishing periodicity.\\n- If a dataset has been published and will remain static please indicate that it is static and indicate when it was released.\\n- If a dataset is released on an irregular basis or \u201con-demand\u201d please indicate that it is Irregular and leave release date as null.\\n- If a dataset can be published in real-time or near-real-time please indicate that it is continuous and leave release date as null.\\n- Notes: see [https://www.dublincore.org/specifications/dublin-core/collection-description/frequency/](https://www.dublincore.org/specifications/dublin-core/collection-description/frequency/)",
+                              "title": "Distribution release date"
+                        },
+                        "startDate": {
+                              "anyOf": [
+                                    {
+                                          "format": "date",
+                                          "type": "string"
+                                    },
+                                    {
+                                          "format": "date-time",
+                                          "type": "string"
+                                    }
+                              ],
+                              "description": "The start of the time period that the dataset provides coverage for.",
+                              "examples": [
+                                    "YYYY-MM-DD"
+                              ],
+                              "guidance": "- The start of the time period that the dataset provides coverage for.\\n- If there are multiple cohorts in the dataset with varying start dates, please provide the earliest date and use the description or the media attribute to provide more information.",
+                              "title": "Start date"
+                        },
+                        "endDate": {
+                              "anyOf": [
+                                    {
+                                          "format": "date",
+                                          "type": "string"
+                                    },
+                                    {
+                                          "format": "date-time",
+                                          "type": "string"
+                                    },
+                                    {
+                                          "$ref": "#/$defs/EndDateEnum"
+                                    },
+                                    {
+                                          "type": "null"
+                                    }
+                              ],
+                              "default": null,
+                              "description": "The end of the time period that the dataset provides coverage for.",
+                              "examples": [
+                                    "YYYY-MM-DD"
+                              ],
+                              "guidance": "- The end of the time period that the dataset provides coverage for.\\n- If the dataset is **\u201cContinuous\u201d** and has no known end date, **please leave blank**.\\n- If there are **multiple cohorts** in the dataset with varying end dates, please provide the **latest date**.",
+                              "title": "End date"
+                        },
+                        "timeLag": {
+                              "allOf": [
+                                    {
+                                          "$ref": "#/$defs/TimeLagV2"
+                                    }
+                              ],
+                              "description": "Typical time-lag between events and data appearing in the dataset.",
+                              "examples": [
+                                    "Not applicable"
+                              ],
+                              "guidance": "Please indicate the typical time-lag between an event and the data for that event appearing in the dataset.\\n- **Less than 1 week**: Typical time lag of less than a week.\\n- **1-2 weeks**: Typical time-lag of one to two weeks.\\n- **2-4 weeks**: Typical time-lag of two to four weeks.\\n- **1-2 months**: Typical time-lag of one to two months.\\n- **2-6 months**: Typical time-lag of two to six months.\\n- **6 months plus**: Typical time-lag of more than six months.\\n- **Variable**: Variable time-lag.\\n- **Not applicable**: Not Applicable i.e. static dataset.\\n- **Other**: Other time-lag.",
+                              "title": "Time lag"
+                        }
+                  },
+                  "required": [
+
+                  ],
+                  "title": "Temporal",
+                  "type": "object"
             }
-        }
     },
     "properties": {
         "welcome": {
@@ -155,6 +249,10 @@
                 "title": "CRUK project information."
 
         },
+        "provenance": {
+            "description": "Optional information setting out how often the information is updated and the time period covered.",
+            "title": "Dateset Timelines"
+        },
         "summary": {
             "title": "Summary"
         },
@@ -164,6 +262,7 @@
         "enrichmentAndLinkage" : {
             "title": "Tools and Publications"
         }
+
 
     }
 }
