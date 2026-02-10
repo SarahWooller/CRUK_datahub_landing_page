@@ -1178,7 +1178,7 @@ const SchemaPage = () => {
             return { ...formData, icons: [] };
         }
 
-        // Extract IDs that start with "0_2"
+        // Extract data IDs ()start with "0_2")
         const dataIds = formData.datasetFilters
             .map(item => (typeof item === 'object' ? item.id : item))
             .filter(id => id && id.startsWith("0_2"));
