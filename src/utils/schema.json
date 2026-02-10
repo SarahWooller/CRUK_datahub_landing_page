@@ -1326,6 +1326,21 @@
                   "title": "HealthAndDiseaseSubTypes",
                   "type": "string"
             },
+            "Icons": {
+      "anyOf": [
+            {
+                  "items": {
+                        "type": "string"
+                  },
+                  "type": "array"
+            },
+            {
+                  "type": "null"
+            }
+      ],
+      "description": "A list of icon identifiers associated with the dataset, derived from dataset filters.",
+      "title": "Icons"
+},
             "Image": {
                   "additionalProperties": false,
                   "properties": {
@@ -1805,17 +1820,18 @@
             "Observation": {
                   "additionalProperties": false,
                   "properties": {
-                        "observedNode": {
+                        "observedNode":
+                        {
                               "allOf": [
                                     {
-                                          "$ref": "#/$defs/StatisticalPopulationConstrainedV2"
+                                          "$ref": "#/$defs/AbstractText"
                                     }
                               ],
-                              "description": "Please select one of the following broad notes for your measured observation. Indicating whether the measured property is a recording of unique persons, events, findings or scans per modality.",
+                              "description": "Brief description of what is being measured.",
                               "examples": [
                                     "Persons"
                               ],
-                              "guidance": "- **Persons**: Unique persons recorded in the dataset\\n- **Events**: Unique events such as procedures and prescriptions within the dataset\\n-**Findings**: Unique findings included in the dataset such as diagnoses'\\n-**Number of scans per modality**: Unique scans for a specified imaging method modality (e.g. 12 x-rays)",
+                              "guidance": "Limit to between 5 and 500 characters",
                               "title": "Dataset volume measure"
                         },
                         "measuredValue": {
@@ -3081,6 +3097,15 @@
       },
       "additionalProperties": false,
       "properties": {
+            "icons": {
+                  "allOf": [
+                        {
+                              "$ref": "#/$defs/Icons"
+                        }
+                  ],
+                  "description": "Calculated categorization icons added during export.",
+                  "title": "Icons"
+            },
             "identifier": {
                   "anyOf": [
                         {
@@ -3291,6 +3316,7 @@
                   "description": "Omics",
                   "title": "Omics"
             }
+
       },
       "required": [
             "identifier",

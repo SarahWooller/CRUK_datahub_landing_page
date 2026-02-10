@@ -15,24 +15,7 @@ const METADATA_PRIORITY_SECTIONS = [
 ];
 
 // --- USER CONFIGURATION: Sidebar Section Order & Visibility ---
-const VISIBLE_SECTIONS = [
-    "welcome",
-    "version",
-    "project",
-    "summary",
-    "documentation",
-    "datasetFilters",
-    "structuralMetadata",
-    "erd",
-    "coverage",
-    "provenance",
-    "accessibility",
-    "access",
-    "enrichmentAndLinkage",
-    "observations",
-    "demographicFrequency",
-    "omics"
-];
+
 // --- Utility: Deep Merge Schemas ---
 const deepMerge = (target, source) => {
     // If either is not an object, return the source (override) or target
@@ -67,7 +50,7 @@ const OVERLAY_SCHEMA = semanticSchema.properties ? semanticSchema : (semanticSch
 
 // This creates a new object where semanticSchema properties overwrite rawSchema properties
 const DATA_SCHEMA = deepMerge(RAW_SCHEMA, OVERLAY_SCHEMA);
-
+const VISIBLE_SECTIONS = DATA_SCHEMA.visibleSections
 // --- CUSTOM VALIDATION RULES ---
 const EXTRA_VALIDATIONS = {
     "datasetFilters": (value) => {
@@ -184,12 +167,18 @@ const calculateSectionStatus = (sectionKey, formData) => {
     }
 
     // Object Types
+    // Object Types
     const requiredProps = definition.required || [];
     const allProps = definition.properties ? Object.keys(definition.properties) : [];
     const dataObj = sectionData || {};
 
     for (const req of requiredProps) {
-        if (isEmpty(dataObj[req])) return 'incomplete';
+        // Check for value in formData, then fallback to schema default
+        const value = dataObj[req];
+        const defaultValue = definition.properties[req]?.default;
+        const effectiveValue = (value !== undefined && value !== null) ? value : defaultValue;
+
+        if (isEmpty(effectiveValue)) return 'incomplete';
     }
 
     const optionalProps = allProps.filter(p => !requiredProps.includes(p));
@@ -508,7 +497,9 @@ const FieldRenderer = ({
     };
 
     const { definition: fieldDef, enumValues, isArray } = getDefinitionAndEnum(prop);
-    const currentValue = getValueByPath(formData, path);
+    const rawValue = getValueByPath(formData, path);
+    // Use rawValue if it exists, otherwise use the property default or an empty string
+    const currentValue = (rawValue !== undefined && rawValue !== null) ? rawValue : (prop.default !== undefined ? prop.default : '');
     // --- SPECIAL RENDER: Age Frequency Grid ---
     // Check if this is the "Age" field inside "DemographicFrequency"
     // We identify it by checking the path or the definition structure
@@ -654,17 +645,26 @@ const FieldRenderer = ({
             </div>
         );
     }
-    // --- RENDER: NESTED OBJECT TYPES ---
-    if (fieldDef.type === 'object' && fieldDef.properties && !isArray) {
-        return (
-            <div className={`border-l-2 border-gray-200 pl-4 mb-6 ${level > 0 ? 'mt-4' : ''}`}>
-                <h3 className="text-md font-bold text-gray-700 mb-4">{prop.title || propKey}</h3>
-                {Object.keys(fieldDef.properties).map((childKey) => (
+// --- RENDER: NESTED OBJECT TYPES ---
+if (fieldDef.type === 'object' && fieldDef.properties && !isArray) {
+    return (
+        <div className={`border-l-2 border-gray-200 pl-4 mb-6 ${level > 0 ? 'mt-4' : ''}`}>
+            <h3 className="text-md font-bold text-gray-700 mb-4">{prop.title || propKey}</h3>
+            {Object.keys(fieldDef.properties)
+                .filter((childKey) => {
+                    // Respect the inclusion list for this specific object key
+                    const includedFields = DATA_SCHEMA.included?.[propKey];
+                    if (includedFields && Array.isArray(includedFields)) {
+                        return includedFields.includes(childKey);
+                    }
+                    return true;
+                })
+                .map((childKey) => (
                     <FieldRenderer
                         key={childKey}
                         propKey={childKey}
                         prop={fieldDef.properties[childKey]}
-                        path={[...path, childKey]} // Correctly extends the data path
+                        path={[...path, childKey]}
                         formData={formData}
                         onChange={onChange}
                         isRequired={fieldDef.required?.includes(childKey)}
@@ -672,9 +672,9 @@ const FieldRenderer = ({
                         level={level + 1}
                     />
                 ))}
-            </div>
-        );
-    }
+        </div>
+    );
+}
     // --- RENDER: STANDARD INPUTS ---
     let inputType = 'text';
     let rows = 1;
@@ -904,17 +904,24 @@ const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance, onU
 
             {isContainer ? (
                 <div className="space-y-6">
-                    {Object.keys(definition.properties)
-                        .filter((propKey) => {
-                            if (sectionKey === 'demographicFrequency') {
-                                return propKey === 'ethnicity';
-                            }
-                            if (sectionKey === 'provenance') {
-                                    return propKey === 'temporal';
-                                }
+                   {Object.keys(definition.properties)
+                    .filter((propKey) => {
+                        // 1. Check top-level inclusion (e.g., summary)
+                        const sectionIncluded = DATA_SCHEMA.included?.[sectionKey];
+                        if (sectionIncluded && !sectionIncluded.includes(propKey)) return false;
+
+                        // 2. Check if this specific field has its own inclusion list (e.g., datasetCustodian)
+                        // This is what was missing!
+                        const fieldIncluded = DATA_SCHEMA.included?.[propKey];
+                        if (fieldIncluded && Array.isArray(fieldIncluded)) {
+                            // If the field is an object (like datasetCustodian), we keep it
+                            // but the FieldRenderer below will filter its children.
                             return true;
-                        })
-                        .map((propKey) => {
+                        }
+
+                        return true;
+                    })
+                    .map((propKey) => {
                         return (
                             <FieldRenderer
                                 key={propKey}
@@ -1174,45 +1181,115 @@ const SchemaPage = () => {
 
 
     const associateIcons = (formData, prefixIconMapping) => {
+        // 1. Safety check: if no filters exist, return empty icons array
         if (!formData.datasetFilters || !Array.isArray(formData.datasetFilters)) {
             return { ...formData, icons: [] };
         }
 
-        // Extract data IDs ()start with "0_2")
+        // 2. Extract unique data IDs that specifically start with "0_2"
         const dataIds = formData.datasetFilters
             .map(item => (typeof item === 'object' ? item.id : item))
             .filter(id => id && id.startsWith("0_2"));
 
-        // Generate prefixes (truncations of length 5 and 7)
-        const truncs = new Set();
+        // 3. Use a Set to collect unique icon strings directly
+        const uniqueIcons = new Set();
+
         dataIds.forEach(id => {
-            if (id.length >= 5) truncs.add(id.substring(0, 5));
-            if (id.length >= 7) truncs.add(id.substring(0, 7));
+            // Check both potential truncation lengths
+            const trunc5 = id.substring(0, 5);
+            const trunc7 = id.substring(0, 7);
+
+            // If a mapping exists for either truncation, add it to our Set
+            if (prefixIconMapping[trunc5]) {
+                uniqueIcons.add(prefixIconMapping[trunc5]);
+            }
+            if (prefixIconMapping[trunc7]) {
+                uniqueIcons.add(prefixIconMapping[trunc7]);
+            }
         });
 
-        // Find intersection of mapping keys and truncations, then map to icon values
-        const icons = Object.keys(prefixIconMapping)
-            .filter(key => truncs.has(key))
-            .map(key => prefixIconMapping[key]);
-
-        // Return new object with icons array (unique values)
+        // 4. Return the new object with a deduplicated array of icons
         return {
             ...formData,
-            icons: [...new Set(icons)]
+            icons: Array.from(uniqueIcons)
         };
     };
-    const downloadJSON = () => {
-        const processedData = associateIcons(formData, prefixIconMapping);
+const downloadJSON = () => {
+        // 1. Associate icons based on dataset filters
+        let processedData = associateIcons(formData, prefixIconMapping);
+
+        // 2. Apply Semantic Defaults
+        const applyDefaults = (data, sectionKey) => {
+            if (!data) return data;
+
+            // Resolve the definition specifically from $defs where Summary is stored
+            const sectionSchema = DATA_SCHEMA.properties[sectionKey];
+            let definition = sectionSchema;
+
+            if (sectionSchema?.$ref) {
+                definition = resolveRef(sectionSchema.$ref);
+            } else if (sectionSchema?.allOf) {
+                const refItem = sectionSchema.allOf.find(i => i.$ref);
+                if (refItem) definition = resolveRef(refItem.$ref);
+            }
+
+            const sectionProps = definition?.properties;
+            if (!sectionProps) return data;
+
+            const updated = { ...data };
+            Object.keys(sectionProps).forEach(key => {
+                // If field is empty, apply default (e.g., populationSize: 0)
+                if (isEmpty(updated[key]) && sectionProps[key].default !== undefined) {
+                    updated[key] = sectionProps[key].default;
+                }
+            });
+            return updated;
+        };
+
+        // Apply defaults to the summary section
+        if (processedData.summary) {
+            processedData.summary = applyDefaults(processedData.summary, 'summary');
+        }
+
+        // 3. Version & Revision Logic
+        const currentVersion = processedData.version;
+        const revisions = processedData.revisions || [];
+
+        if (currentVersion) {
+            const versionExists = revisions.some(rev => rev.version === currentVersion);
+
+            if (!versionExists) {
+                const newRevision = {
+                    version: currentVersion,
+                    url: null
+                };
+
+                processedData = {
+                    ...processedData,
+                    revisions: [...revisions, newRevision]
+                };
+            }
+        }
+
+        // 4. Update Timestamps
+        processedData.modified = new Date().toISOString();
+
+        // 5. Generate and trigger download
         const fileData = JSON.stringify(processedData, null, 2);
         const blob = new Blob([fileData], { type: "application/json" });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
-        link.download = "dataset_metadata.json";
+
+        const fileName = processedData.summary?.title
+            ? `${processedData.summary.title.replace(/\s+/g, '_')}_metadata.json`
+            : "dataset_metadata.json";
+
+        link.download = fileName;
         link.href = url;
         link.click();
+
         URL.revokeObjectURL(url);
     };
-
     return (
         <div className="flex flex-col min-h-screen font-sans bg-white">
             {/* Top Bar Added Here */}
