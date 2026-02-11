@@ -2316,16 +2316,20 @@
 
                         },
                         "grantNumbers": {
-                              "allOf": [
+                              "anyOf": [
                                     {
-                                          "$ref": "#/$defs/LineSeparatedValues"
+                                          "type": "string"
+                                    },
+                                    {
+                                          "items": {
+                                                "type": "string"
+                                          },
+                                          "type": "array"
                                     }
                               ],
-                              "description": "List of grant numbers separated by a line break",
-
+                              "description": "List of CRUK and any other grant numbers.",
                               "examples": [
-                                    "A354t",
-                                    "ropguadg"
+                                    "ABC123"
                               ],
                               "guidance": "Normally specified on the grant acceptance letter",
 
