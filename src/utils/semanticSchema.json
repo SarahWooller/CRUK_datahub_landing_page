@@ -104,20 +104,6 @@
               "description": "The title may be different to the Dataset Title",
               "guidance": "The title should be that set out on the grant acceptance letter."
             },
-            "grantNumbers": {
-              "allOf": [
-                {
-                  "$ref": "#/$defs/LineSeparatedValues"
-                }
-              ],
-              "description": "List of CRUK and any other grant numbers separated by a line break",
-              "examples": [
-                "A354t",
-                "ropguadg"
-              ],
-              "guidance": "Normally specified on the grant acceptance letter",
-              "title": "Grant number(s)"
-            },
             "projectStartDate": {
               "anyOf": [
                       {
