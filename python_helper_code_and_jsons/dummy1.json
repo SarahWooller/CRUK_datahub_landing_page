@@ -1,0 +1,29 @@
+{"datasetFilters": [
+    {
+      "id": "0_0_0_9",
+      "label": "C50 Breast",
+      "category": "icdOTopography",
+      "primaryGroup": "cancer-type",
+      "description": ""
+    },
+    {
+      "id": "0_0_1_9",
+      "label": "850-854 Ductal and lobular neoplasms",
+      "category": "icdOHistology",
+      "primaryGroup": "cancer-type",
+      "description": ""
+    },
+    {
+      "id": "0_2_3_0",
+      "label": "Background",
+      "category": "Patient study",
+      "primaryGroup": "data-type",
+      "description": ""
+    },
+    {
+      "id": "0_2_3_1",
+      "label": "Biopsy Reports and Lab Results",
+      "category": "Patient study",
+      "primaryGroup": "data-type",
+      "description": ""
+    }]}

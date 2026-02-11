@@ -1,0 +1,4 @@
+const theFilters =
+{"0_0": {"id": "0_0", "label": "cancerTypes", "category": "filters", "primaryGroup": "cancer-type", "children": {"0_0_0": {"id": "0_0_0", "label": "icdOTopography", "category": "cancerTypes", "primaryGroup": "cancer-type", "children": {"0_0_0_0": {"id": "0_0_0_0", "label": "C00-C14 Lip, oral cavity and pharynx", "category": "icdOTopography", "primaryGroup": "cancer-type", "children": {"0_0_0_0_0": {"id": "0_0_0_0_0", "label": "C00 Lip", "category": "C00-C14 Lip, oral cavity and pharynx", "primaryGroup": "cancer-type", "children": {"0_0_0_0_0_0": {"id": "0_0_0_0_0_0", "label": "C00.0 External upper lip", "category": "C00 Lip", "primaryGroup": "cancer-type"}, // rest of filters here//
+}}};
+export const filterData = theFilters;

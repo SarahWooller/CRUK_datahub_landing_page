@@ -534,7 +534,8 @@
                   "type": "array",
                   "items": {
                         "type": "string",
-                        "pattern": "^(\\d+_){0,5}\\d+$"
+                        "pattern": "\\{\\s*\"id\":\\s*\"(\\d+_){0,5}\\d+\",\\s*\"label\":\\s*\".{0,150}\",\\s*\"category\":\\s*\".{0,150}\",\\s*\"primaryGroup\":\\s*\"(cancer-type|data-type|access-type)\",\\s*\"description\":\\s*\".{0,150}\"\\s*\\}"
+
                   },
                   "title": "Dataset Filters",
                   "description": "A list of categorization tags (ids) for the dataset."
@@ -1325,6 +1326,21 @@
                   "title": "HealthAndDiseaseSubTypes",
                   "type": "string"
             },
+            "Icons": {
+      "anyOf": [
+            {
+                  "items": {
+                        "type": "string"
+                  },
+                  "type": "array"
+            },
+            {
+                  "type": "null"
+            }
+      ],
+      "description": "A list of icon identifiers associated with the dataset, derived from dataset filters.",
+      "title": "Icons"
+},
             "Image": {
                   "additionalProperties": false,
                   "properties": {
@@ -1804,17 +1820,18 @@
             "Observation": {
                   "additionalProperties": false,
                   "properties": {
-                        "observedNode": {
+                        "observedNode":
+                        {
                               "allOf": [
                                     {
-                                          "$ref": "#/$defs/StatisticalPopulationConstrainedV2"
+                                          "$ref": "#/$defs/AbstractText"
                                     }
                               ],
-                              "description": "Please select one of the following broad notes for your measured observation. Indicating whether the measured property is a recording of unique persons, events, findings or scans per modality.",
+                              "description": "Brief description of what is being measured.",
                               "examples": [
                                     "Persons"
                               ],
-                              "guidance": "- **Persons**: Unique persons recorded in the dataset\\n- **Events**: Unique events such as procedures and prescriptions within the dataset\\n-**Findings**: Unique findings included in the dataset such as diagnoses'\\n-**Number of scans per modality**: Unique scans for a specified imaging method modality (e.g. 12 x-rays)",
+                              "guidance": "Limit to between 5 and 500 characters",
                               "title": "Dataset volume measure"
                         },
                         "measuredValue": {
@@ -2316,21 +2333,39 @@
                         },
 
                         "projectStartDate": {
-                              "allOf": [
-                                    {
-                                          "$ref": "#/$defs/StartDate"
-                                    }
-                              ],
+
+                              "anyOf": [
+                                  {
+                                    "format": "date",
+                                    "type": "string"
+                                  },
+                                  {
+                                    "format": "date-time",
+                                    "type": "string"
+                                  }
+                                ]
+                              ,
                               "description": "Starting date of project grant.",
                               "guidance": "Date on which the dataset project starts. This is normally set out in the grant contract and will be different from the start of any data collection",
                               "title": "Project Start Date"
                         },
                         "projectEndDate": {
-                              "allOf": [
-                                    {
-                                          "$ref": "#/$defs/EndDate"
-                                    }
-                              ],
+                              "anyOf": [
+                                  {
+                                    "format": "date",
+                                    "type": "string"
+                                  },
+                                  {
+                                    "format": "date-time",
+                                    "type": "string"
+                                  },
+                                  {
+                                    "$ref": "#/$defs/EndDateEnum"
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ],
                               "description": "Current end date of project grant.",
                               "guidance": "Date on which the dataset project is currently projected to finish. This is normally set out in the grant contract and will be different from the end of any data collection",
                               "title": "Project End Date"
@@ -2814,7 +2849,6 @@
                         "abstract",
                         "dataCustodian",
                         "funders",
-                        "grantNumbers",
                         "populationSize",
                         "contactPoint"
                   ],
@@ -3081,6 +3115,15 @@
       },
       "additionalProperties": false,
       "properties": {
+            "icons": {
+                  "allOf": [
+                        {
+                              "$ref": "#/$defs/Icons"
+                        }
+                  ],
+                  "description": "Calculated categorization icons added during export.",
+                  "title": "Icons"
+            },
             "identifier": {
                   "anyOf": [
                         {
@@ -3291,6 +3334,7 @@
                   "description": "Omics",
                   "title": "Omics"
             }
+
       },
       "required": [
             "identifier",

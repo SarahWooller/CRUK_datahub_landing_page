@@ -1,0 +1,42 @@
+{
+  "Model Organisms" : {
+    "url": "../assets/animal.webp",
+    "prefix": "0_2_2"
+  },
+  "Background Information": {
+    "url": "../assets/background.webp",
+    "prefix": "0_2_3_0"
+  },
+  "Samples Available": {
+    "url": "../assets/biobank.webp",
+    "prefix": "0_2_0"
+  },
+  "In Vitro Study": {
+    "url": "../assets/invitro.webp",
+    "prefix": "0_2_1"
+  },
+  "Lab Results": {
+    "url": "../assets/lab_results.webp",
+    "prefix": "0_2_2_2"
+  },
+  "Longitudinal Study":{
+    "url": "../assets/longitudinal.webp",
+    "prefix": "0_2_3_2"
+  },
+  "Medical Imaging": {
+    "url": "../assets/medical_imaging.webp",
+    "prefix": "0_2_4_2"
+  },
+  "Multi-omic Data": {
+    "url": "../assets/omics.webp",
+    "prefix": "0_2_4_4"
+  },
+  "Patient Study": {
+    "url": "../assets/population.webp",
+    "prefix": "0_2_3"
+  },
+  "Treatments": {
+    "url": "../assets/treatments.webp",
+    "prefix": "0_2_3_3"
+  }
+}

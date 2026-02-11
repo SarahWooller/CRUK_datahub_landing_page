@@ -1,169 +1,337 @@
 {
+    "included": {
+        "demographicFrequency": ["ethnicity"],
+        "provenance": ["temporal"],
+        "coverage": ["typicalAgeRangeMin", "typicalAgeRangeMax", "datasetCompleteness"],
+        "dataCustodian": ["identifier", "name", "contactPoint", "description"]
+    },
+    "visibleSections": [
+      "welcome",
+      "version",
+      "project",
+      "summary",
+      "documentation",
+      "datasetFilters",
+      "structuralMetadata",
+      "erd",
+      "coverage",
+      "provenance",
+      "accessibility",
+      "access",
+      "enrichmentAndLinkage",
+      "observations",
+      "demographicFrequency",
+      "omics"
+    ],
     "$defs": {
-
-        "Documentation": {
-            "properties": {
-                "description": {
-                    "description": "Free-text description of the dataset.",
-                    "examples": ["OPTIMAM is a database of mammogram images and associated clinical data from multiple NHS Breast Cancer screening sites across the UK. The automated process of image collection, processing and storage enables easy expansion across new imaging sites and continual collection of new data."]
-                },
-                "associatedMedia": {
-                    "description": "Url linking to associated media. Note: media asset can be hosted by the organisation or uploaded using the onboarding portal."
+      "Documentation": {
+        "properties": {
+          "description": {
+            "description": "Free-text description of the dataset.",
+            "examples": [
+              "OPTIMAM is a database of mammogram images and associated clinical data from multiple NHS Breast Cancer screening sites across the UK. The automated process of image collection, processing and storage enables easy expansion across new imaging sites and continual collection of new data."
+            ]
+          },
+          "associatedMedia": {
+            "description": "Url linking to associated media. Note: media asset can be hosted by the organisation or uploaded using the onboarding portal."
+          }
+        }
+      },
+      "Image": {
+        "properties": {
+          "image": {
+            "guidance": "Upload an image file (PNG, JPG, SVG) of an Entity Relationship Diagram. The ERD should show how the different tables relate to one another for example via foreignID keys. Max file size: 5MB."
+          },
+          "description": {
+            "guidance": "Short textual description of the ERD"
+          }
+        }
+      },
+      "Organisation": {
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "allOf": [
+              {
+                "$ref": "#/$defs/OneHundredFiftyCharacters"
+              }
+            ],
+            "description": "The organisation responsible for running or supporting the data access request process, as well as publishing and maintaining the metadata.",
+            "examples": [
+              "Cancer Research Horizons"
+            ],
+            "guidance": "In most this will be the same as the Team you have on the Hub, but may be different.",
+            "title": "Name of Data Custodian"
+          },
+          "logo": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Url"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "URL for logo associated with the Data Custodian.",
+            "guidance": "Please provide a logo associated with the Data Custodian using a valid URL. The following formats will be accepted .jpg, .png or .svg.  If a logo is not submitted this will default to the logo for the team submitting the metadata.",
+            "title": "Organisation Logo"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/Description"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Please provide a URL that describes the organisation.  If a description is not provided this will default to the description of the team submitting the metadata.",
+            "title": "Organisation Description"
+          }
+        }
+      },
+      "Project": {
+          "properties": {
+            "projectName": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/OneHundredFiftyCharacters"
                 }
-            }
-        },
-        "Image": {
-            "properties": {
-                "image": {
-                    "guidance": "Upload an image file (PNG, JPG, SVG) of an Entity Relationship Diagram. The ERD should show how the different tables relate to one another for example via foreignID keys. Max file size: 5MB."
-                },
-                "description": {
-                    "guidance": "Short textual description of the ERD"
-                }
-            }
-        },
-        "Project": {
-                  "properties" : {
-                        "projectName": {
-                              "allOf": [
-                                    {
-                                          "$ref": "#/$defs/OneHundredFiftyCharacters"
-                                    }
-                              ],
-                              "title": "Project Title",
-                              "description": "The title may be different to the Dataset Title",
-                              "guidance" :"The title should be that set out on the grant acceptance letter."
-                        },
-                        "grantNumbers": {
-                              "allOf": [
-                                    {
-                                          "$ref": "#/$defs/LineSeparatedValues"
-                                    }
-                              ],
-                              "description": "List of CRUK and any other grant numbers separated by a line break",
-
-                              "examples": [
-                                    "A354t",
-                                    "ropguadg"
-                              ],
-                              "guidance": "Normally specified on the grant acceptance letter",
-
-                              "title": "Grant number(s)"
-                        },
-
-                        "projectStartDate": {
-                              "allOf": [
-                                    {
-                                          "$ref": "#/$defs/StartDate"
-                                    }
-                              ],
-                              "description": "Starting date of project grant.",
-                              "guidance": "Date on which the dataset project starts. This is normally set out in the grant contract and will be different from the start of any data collection",
-                              "title": "Project Start Date",
-                              "examples": [
-                                  "YYYY-MM-DD"
-                              ]
-                        },
-                        "projectEndDate": {
-                              "allOf": [
-                                    {
-                                          "$ref": "#/$defs/EndDate"
-                                    }
-                              ],
-                              "description": "Current end date of project grant.",
-                              "guidance": "Date on which the dataset project is currently projected to finish. This is normally set out in the grant contract and will be different from the end of any data collection",
-                              "title": "Project End Date",
-                              "examples": [
-                                  "YYYY-MM-DD"
-                              ]
-                        }
-                  }
+              ],
+              "title": "Project Title",
+              "description": "The title may be different to the Dataset Title",
+              "guidance": "The title should be that set out on the grant acceptance letter."
             },
-        "StructuralMetadata": {
-            "properties": {
-                "syntheticDataWebLink": {
-                    "description":  "Artificial datasets that share the properties of the original data but contain no sensitive information can be very useful for researchers wishing to explore the properties of a dataset, and can be generated using entirely local solutions such as python's Synthetic Data Vault. Please provide the website address(es) with information on any related synthetic datasets. For example: https://digital.nhs.uk/ndrs/data/data-outputs/cancer-publications-and-tools/simulacrum"
-
-
+            "grantNumbers": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/LineSeparatedValues"
                 }
+              ],
+              "description": "List of CRUK and any other grant numbers separated by a line break",
+              "examples": [
+                "A354t",
+                "ropguadg"
+              ],
+              "guidance": "Normally specified on the grant acceptance letter",
+              "title": "Grant number(s)"
+            },
+            "projectStartDate": {
+              "anyOf": [
+                      {
+                            "format": "date",
+                            "type": "string"
+                      },
+                      {
+                            "format": "date-time",
+                            "type": "string"
+                      }
+                ],
+              "description": "Starting date of project grant.",
+              "guidance": "Date on which the dataset project starts. This is normally set out in the grant contract and will be different from the start of any data collection",
+              "title": "Project Start Date",
+              "examples": [
+                "YYYY-MM-DD"
+              ]
+            },
+            "projectEndDate": {
+                "anyOf": [
+                      {
+                            "format": "date",
+                            "type": "string"
+                      },
+                      {
+                            "format": "date-time",
+                            "type": "string"
+                      }
+                ],
+              "description": "Current end date of project grant.",
+              "guidance": "Date on which the dataset project is currently projected to finish. This is normally set out in the grant contract and will be different from the end of any data collection",
+              "title": "Project End Date",
+              "examples": [
+                "YYYY-MM-DD"
+              ]
             }
+          }
+    },
+      "StructuralMetadata": {
+          "properties": {
+            "syntheticDataWebLink": {
+              "description": "Artificial datasets that share the properties of the original data but contain no sensitive information can be very useful for researchers wishing to explore the properties of a dataset, and can be generated using entirely local solutions such as python's Synthetic Data Vault. Please provide the website address(es) with information on any related synthetic datasets."
+            }
+          }
         },
-        "Summary": {
-            "properties": {
-                "title": {
-                    "description": "Up to 150 characters.",
-                    "examples": [
-                        "Linked multi-omic dataset in oesophageal cancer (OCCAMS)",
-                        "Non-small cell lung cancer (NSCLC) real-world dataset"
-                    ],
-                    "guidance": "- Use the **title** the dataset is best known by. Expand **acronyms**, adding the acronym in brackets.\\n- Use a **unique** title. adding a **prefix** with your organisation name or identifier where necessary"
-                },
-                "abstract": {
-                    "description": "Optimal length one paragraph. Limited to 255 characters. Avoid long sentences and abbreviations.",
-                    "examples": [
-                        "Anonymised real-world clinical data from patients with advanced or metastatic non-small cell lung cancer.  Data includes treatments, imaging, long-term follow up and outcomes. Database size = 774 in 2025 + 150 patients/year."
-                    ],
-                    "guidance": "- A **clear and brief descriptive signpost** for researchers, summarising the dataset's scope and contents.\\n- The first line of the abstract is visible to readers when searching for datasets.\\n- **Abstracts should be different from the full description** for a dataset."
-                },
-                "dataCustodian": {
-                    "description": "Organisation responsible for queries and data access requests.",
-                    "examples": [
-                        "Cancer Research Horizons",
-                        "Histo-Mol GBM Collaborative"
-                    ]
-                },
-                "keywords": {
-                    "description": "If not included in abstract, title or filters, please provide one or more keywords or short phrases to improve search engine optimisation.",
-                    "examples": [
-                        "Hedgehog pathway",
-                        "p53 hotspot mutation",
-                        "Oxaliplatin",
-                        "Accident and Emergency Admissions"
-                    ],
-                    "guidance": "- Keywords need not repeat information provided in the title, abstract or filters.\\n - If needed they should refer to specific additional details of the dataset.\\n - Include one per line.   "
-                },
-                "contactPoint": {
-                    "description": "Email address for coodinating data access requests.",
-                    "examples": [
-                        "researcher@university.ac.uk"
-                    ],
-                    "guidance": "This should be a **dedicated email address** associated with the data access request process. \\n**Note:** An employee's email address can only be provided on a temporary basis and if one is provided, **you must obtain explicit consent for this purpose**."
+      "Summary": {
+          "properties": {
+            "title": {
+              "description": "Up to 150 characters.",
+              "examples": [
+                "Linked multi-omic dataset in oesophageal cancer (OCCAMS)",
+                "Non-small cell lung cancer (NSCLC) real-world dataset"
+              ],
+              "guidance": "- Use the **title** the dataset is best known by. Expand **acronyms**, adding the acronym in brackets.\\n- Use a **unique** title. adding a **prefix** with your organisation name or identifier where necessary"
+            },
+            "abstract": {
+              "description": "Optimal length one paragraph. Limited to 255 characters. Avoid long sentences and abbreviations.",
+              "examples": [
+                "Anonymised real-world clinical data from patients with advanced or metastatic non-small cell lung cancer.  Data includes treatments, imaging, long-term follow up and outcomes. Database size = 774 in 2025 + 150 patients/year."
+              ],
+              "guidance": "- A **clear and brief descriptive signpost** for researchers, summarising the dataset's scope and contents.\\n- The first line of the abstract is visible to readers when searching for datasets.\\n- **Abstracts should be different from the full description** for a dataset."
+            },
+            "dataCustodian": {
+              "description": "Organisation responsible for queries and data access requests."
+            },
+            "keywords": {
+              "description": "If not included in abstract, title or filters, please provide one or more keywords or short phrases to improve search engine optimisation.",
+              "examples": [
+                "Hedgehog pathway",
+                "p53 hotspot mutation",
+                "Oxaliplatin",
+                "Accident and Emergency Admissions"
+              ],
+              "guidance": "- Keywords need not repeat information provided in the title, abstract or filters.\\n - If needed they should refer to specific additional details of the dataset.\\n - Include one per line.   "
+            },
+            "contactPoint": {
+              "description": "Email address for coodinating data access requests.",
+              "examples": [
+                "researcher@university.ac.uk"
+              ],
+              "guidance": "This should be a **dedicated email address** associated with the data access request process. \\n**Note:** An employee's email address can only be provided on a temporary basis and if one is provided, **you must obtain explicit consent for this purpose**."
+            },
+            "populationSize": {
+              "default": 0,
+              "description": "Input the number of people captured within the dataset. Defaults to 0.",
+              "guidance": "Defaults to 0 for none human populations."
+
+            }
+          }
+        },
+      "Temporal": {
+          "additionalProperties": false,
+          "properties": {
+            "publishingFrequency": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/PeriodicityV2"
                 }
-            }
-        },
-        "Temporal": {
+              ],
+              "description": "Frequency of distribution release",
+              "examples": [
+                "Continuous"
+              ],
+              "guidance": "Please indicate the frequency of publishing.\\n- If a dataset is published regularly please choose a publishing periodicity from the constrained list and indicate the next release date.\\n- When the release date becomes historical, a new release date will be calculated based on the publishing periodicity.\\n- If a dataset has been published and will remain static please indicate that it is static and indicate when it was released.\\n- If a dataset is released on an irregular basis or \u201con-demand\u201d please indicate that it is Irregular and leave release date as null.\\n- If a dataset can be published in real-time or near-real-time please indicate that it is continuous and leave release date as null.\\n- Notes: see https://www.dublincore.org/specifications/dublin-core/collection-description/frequency/.\\n\\n  Options:\\n- **Static**: Dataset published once.\\n- **Irregular**: Dataset published at uneven intervals.\\n- **Continuous**: Dataset published without interruption.\\n- **Biennial**: Dataset published every two years.\\n- **Annual**: Dataset published occurs once a year.\\n- **Biannual**: Dataset published twice a year.\\n- **Quarterly**: Dataset published every three months.\\n- **Bimonthly**: Dataset published every two months.\\n- **Monthly**: Dataset published once a month.\\n- **Biweekly**: Dataset published every two weeks.\\n- **Weekly**: Dataset published once a week.\\n- **Twice weekly**: Dataset published twice a week.\\n- **Daily**: Dataset published once a day.\\n- **Other**: Dataset published using other interval.",
+              "title": "Publishing frequency"
+            },
+            "distributionReleaseDate": {
+              "anyOf": [
+                {
+                  "format": "date",
+                  "type": "string"
+                },
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "Latest release date",
+              "examples": [
+                "YYYY-MM-DD"
+              ],
+              "guidance": "- Please indicate the frequency the dataset is published.\\n- If a dataset is published regularly please choose a publishing periodicity from the constrained list and indicate the next release date.\\n- When the release date becomes historical, a new release date will be calculated based on the publishing periodicity.\\n- If a dataset has been published and will remain static please indicate that it is static and indicate when it was released.\\n- If a dataset is released on an irregular basis or \u201con-demand\u201d please indicate that it is Irregular and leave release date as null.\\n- If a dataset can be published in real-time or near-real-time please indicate that it is continuous and leave release date as null.\\n- Notes: see [https://www.dublincore.org/specifications/dublin-core/collection-description/frequency/](https://www.dublincore.org/specifications/dublin-core/collection-description/frequency/)",
+              "title": "Distribution release date"
+            },
+            "startDate": {
+              "anyOf": [
+                {
+                  "format": "date",
+                  "type": "string"
+                },
+                {
+                  "format": "date-time",
+                  "type": "string"
+                }
+              ],
+              "description": "The start of the time period that the dataset provides coverage for.",
+              "examples": [
+                "YYYY-MM-DD"
+              ],
+              "guidance": "- The start of the time period that the dataset provides coverage for.\\n- If there are multiple cohorts in the dataset with varying start dates, please provide the earliest date and use the description or the media attribute to provide more information.",
+              "title": "Start date"
+            },
             "endDate": {
-                "examples": [
-                    "YYYY-MM-DD"
-                ]
+              "anyOf": [
+                {
+                  "format": "date",
+                  "type": "string"
+                },
+                {
+                  "format": "date-time",
+                  "type": "string"
+                },
+                {
+                  "$ref": "#/$defs/EndDateEnum"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "description": "The end of the time period that the dataset provides coverage for.",
+              "examples": [
+                "YYYY-MM-DD"
+              ],
+              "guidance": "- The end of the time period that the dataset provides coverage for.\\n- If the dataset is **\u201cContinuous\u201d** and has no known end date, **please leave blank**.\\n- If there are **multiple cohorts** in the dataset with varying end dates, please provide the **latest date**.",
+              "title": "End date"
+            },
+            "timeLag": {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/TimeLagV2"
+                }
+              ],
+              "description": "Typical time-lag between events and data appearing in the dataset.",
+              "examples": [
+                "Not applicable"
+              ],
+              "guidance": "Please indicate the typical time-lag between an event and the data for that event appearing in the dataset.\\n- **Less than 1 week**: Typical time lag of less than a week.\\n- **1-2 weeks**: Typical time-lag of one to two weeks.\\n- **2-4 weeks**: Typical time-lag of two to four weeks.\\n- **1-2 months**: Typical time-lag of one to two months.\\n- **2-6 months**: Typical time-lag of two to six months.\\n- **6 months plus**: Typical time-lag of more than six months.\\n- **Variable**: Variable time-lag.\\n- **Not applicable**: Not Applicable i.e. static dataset.\\n- **Other**: Other time-lag.",
+              "title": "Time lag"
             }
+          },
+          "title": "Temporal",
+          "type": "object"
         }
     },
     "properties": {
         "welcome": {
-            "title": "Guide to Uploading and Modifying Metadata",
-            "description": "IF this is a new dataset, you can either input the metadata manually or, if you have done this before, you can directly upload a json with some or all of the required information."
+          "title": "Guide to Uploading and Modifying Metadata",
+          "description": "IF this is a new dataset, you can either input the metadata manually or, if you have done this before, you can directly upload a json with some or all of the required information."
         },
         "version": {
-            "description": "Three numbers - Major.Minor.Patch e.g. 1.1.0",
-            "guidance": "Dataset metadata version should follow standard SEMVER naming conventions (https://semver.org). For example: 1.1.0 major.minor.patch.\\nMajor: Significant/breaking changes. \\n eg The dataset has now been populated \\n The access conditions have changed \\nThe purpose of the dataset has changed significantly \\n There is a change to the type of datasets collected\\nMinor: New features and bug fixes.\\n eg More samples have been added. \\nPatch: Minor fixes without new features. \\neg more information about the dataset has been added"
+          "description": "Three numbers - Major.Minor.Patch e.g. 1.1.0",
+          "guidance": "Dataset metadata version should follow standard SEMVER naming conventions (https://semver.org). For example: 1.1.0 major.minor.patch.\\nMajor: Significant/breaking changes. \\n eg The dataset has now been populated \\n The access conditions have changed \\nThe purpose of the dataset has changed significantly \\n There is a change to the type of datasets collected\\nMinor: New features and bug fixes.\\n eg More samples have been added. \\nPatch: Minor fixes without new features. \\neg more information about the dataset has been added"
         },
         "project": {
-                "description": "Metadata describing the originating CRUK project. For new projects this information will be pre-filled from the grant contract.",
-
-
-                "title": "CRUK project information."
-
+          "description": "Metadata describing the originating CRUK project. For new projects this information will be pre-filled from the grant contract.",
+          "title": "CRUK project information."
+        },
+        "provenance": {
+          "description": "Optional information setting out how often the information is updated and the time period covered.",
+          "title": "Dateset Timelines"
         },
         "summary": {
-            "title": "Summary"
+          "title": "Summary"
         },
         "accessibility": {
-            "title": "Accessibility"
+          "title": "Accessibility"
         },
-        "enrichmentAndLinkage" : {
-            "title": "Tools and Publications"
+        "enrichmentAndLinkage": {
+          "title": "Tools and Publications"
         }
-
-    }
+      }
 }
