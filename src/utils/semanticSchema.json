@@ -2,7 +2,7 @@
     "included": {
         "demographicFrequency": ["ethnicity"],
         "provenance": ["temporal"],
-        "coverage": ["typicalAgeRangeMin", "typicalAgeRangeMax", "datasetCompleteness", "materialType"],
+        "coverage": ["typicalAgeRangeMin", "typicalAgeRangeMax", "datasetCompleteness"],
         "dataCustodian": ["identifier", "name", "contactPoint", "description"]
     },
     "visibleSections": [
@@ -119,11 +119,16 @@
               "title": "Grant number(s)"
             },
             "projectStartDate": {
-              "allOf": [
-                {
-                  "$ref": "#/$defs/StartDate"
-                }
-              ],
+              "anyOf": [
+                      {
+                            "format": "date",
+                            "type": "string"
+                      },
+                      {
+                            "format": "date-time",
+                            "type": "string"
+                      }
+                ],
               "description": "Starting date of project grant.",
               "guidance": "Date on which the dataset project starts. This is normally set out in the grant contract and will be different from the start of any data collection",
               "title": "Project Start Date",
@@ -132,11 +137,16 @@
               ]
             },
             "projectEndDate": {
-              "allOf": [
-                {
-                  "$ref": "#/$defs/EndDate"
-                }
-              ],
+                "anyOf": [
+                      {
+                            "format": "date",
+                            "type": "string"
+                      },
+                      {
+                            "format": "date-time",
+                            "type": "string"
+                      }
+                ],
               "description": "Current end date of project grant.",
               "guidance": "Date on which the dataset project is currently projected to finish. This is normally set out in the grant contract and will be different from the end of any data collection",
               "title": "Project End Date",
