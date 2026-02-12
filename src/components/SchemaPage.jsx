@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Panel, Group, Separator } from "react-resizable-panels";
-import FeedbackModal from './FeedbackModal.jsx'
+import FeedbackModal from './FeedbackModal.jsx';
+import questionData from '../feedback/questions.json';
 import schema from '../utils/schema.json';
 import semanticSchema from '../utils/semanticSchema.json';
 import DataTagger, { FilterChipArea } from './DataTagger';
@@ -1092,11 +1093,15 @@ const SchemaPage = () => {
     const [allFeedback, setAllFeedback] = useState({}); // Stores { sectionKey: "comment string" }
     const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
-    const handleSaveDraftFeedback = (section, comment) => {
-        setAllFeedback(prev => ({
-            ...prev,
-            [section]: comment
-        }));
+    const handleSaveDraftFeedback = (section, answers) => {
+        setAllFeedback(prev => {
+            const updated = {
+                ...prev,
+                [section]: answers
+            };
+            console.log("Feedback Drafts Updated:", updated); // Debugging line
+            return updated;
+        });
     };
 
 const handleFinalSubmit = (currentSection, currentAnswers) => {
@@ -1106,7 +1111,7 @@ const handleFinalSubmit = (currentSection, currentAnswers) => {
         [currentSection]: currentAnswers
     };
 
-    // 2. Filter out sections that are empty or have no text
+    // 2. Filter out empty sections
     const feedbackEntries = Object.entries(finalData).filter(([_, answers]) => {
         if (!answers) return false;
         return Object.values(answers).some(val => val !== undefined && val !== null && val !== "");
@@ -1117,24 +1122,34 @@ const handleFinalSubmit = (currentSection, currentAnswers) => {
         return;
     }
 
-    const recipient = "skw24@sussex.ac.uk"; //
-    const subject = encodeURIComponent("CRUK Datahub - Academic Feedback");
+    const recipient = "skw24@sussex.ac.uk";
+    const subject = "CRUK Datahub Feedback";
 
-    // 3. Map each section's object to the specific keys for that section
-    const feedbackReport = feedbackEntries
-        .map(([section, answers]) => {
-            const formattedAnswers = Object.entries(answers)
-                .map(([key, value]) => `  - ${key}: ${value}`)
-                .join('\n');
+    // 3. Build the report using friendly names from the nested JSON structure
+    const report = feedbackEntries
+        .map(([sectionKey, answers]) => {
+            // Updated access path for the new nested structure
+            const sectionConfig = questionData[sectionKey] || questionData.default;
+            const displayTitle = sectionConfig?.sectionTitle || sectionKey.toUpperCase();
 
-            return `SECTION: ${section.toUpperCase()}\n${formattedAnswers}`;
+            const lines = Object.entries(answers)
+                .map(([qId, val]) => {
+                    // Find the label from the nested questions array
+                    const question = sectionConfig?.questions?.find(q => q.id === qId);
+                    const label = question ? question.label : qId;
+                    return `${label}: ${val}`;
+                })
+                .join('%0D%0A'); // URL-safe newline for mailto
+
+            return `SECTION: ${displayTitle}%0D%0A${lines}`;
         })
-        .join('\n\n------------------------------\n\n');
+        .join('%0D%0A%0D%0A-----------------%0D%0A%0D%0A');
 
-    const body = encodeURIComponent(feedbackReport);
+    // 4. Trigger the email client
+    window.location.href = `mailto:${recipient}?subject=${subject}&body=${report}`;
 
-    setAllFeedback(finalData);
-    window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+    setAllFeedback({});
+    setIsFeedbackOpen(false);
 };
 
     const [formData, setFormData] = useState({});
