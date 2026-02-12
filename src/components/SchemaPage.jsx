@@ -1,4 +1,6 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { Panel, Group, Separator } from "react-resizable-panels";
+import FeedbackModal from './FeedbackModal.jsx'
 import schema from '../utils/schema.json';
 import semanticSchema from '../utils/semanticSchema.json';
 import DataTagger, { FilterChipArea } from './DataTagger';
@@ -13,6 +15,28 @@ import prefixIconMapping from '../utils/prefix_icon_mapping.json';
 const METADATA_PRIORITY_SECTIONS = [
     "version"
 ];
+
+const welcomeGuidance = {
+    title: "Quick Start Guide",
+    guidance: `Welcome to the CRUK Datahub. [cite_start]This tool helps you prepare metadata for the Health Data Gateway. [cite: 2] \\n\\n **Steps to success:** \\n 1. Review the **Checklist** in this panel. [cite_start]\\n 2. Use **Manual Entry** or **JSON Upload** to start. [cite: 27, 28] [cite_start]\\n 3. Complete all sections until you see **Green Ticks**. [cite: 21] [cite_start]\\n 4. **Download** your final JSON for submission. [cite: 47]`
+};
+
+const ensureMinimumEntries = (data, schemaDef) => {
+    if (!schemaDef || !schemaDef.properties) return data;
+
+    const updated = { ...data };
+    Object.keys(schemaDef.properties).forEach(key => {
+        const prop = schemaDef.properties[key];
+        // If it's an array and empty, give it one empty slot
+        if (prop.type === 'array' || (prop.items && !updated[key])) {
+            if (!updated[key] || updated[key].length === 0) {
+                // Initialize with one empty string or one empty object
+                updated[key] = prop.items?.type === 'object' ? [{}] : [''];
+            }
+        }
+    });
+    return updated;
+};
 
 // --- USER CONFIGURATION: Sidebar Section Order & Visibility ---
 
@@ -250,28 +274,55 @@ const renderGuidance = (guidanceText) => {
 
 const MarkdownRenderer = ({ content }) => {
     if (!content) return null;
-    const lineBlocks = content.split('\n');
+
+    // Handle both literal newlines and the escaped \\n found in JSON schemas
+    const lines = content.replace(/\\n/g, '\n').split('\n');
+
     return (
-        <div className="markdown-output space-y-2 text-sm text-gray-700">
-            {lineBlocks.map((line, lineIndex) => {
-                if (!line.trim()) return <p key={lineIndex} className="mb-0">&nbsp;</p>;
-                const parts = line.split(/(\*\*.*?\*\*|\*.*?\*|\[.*?\]\(.*?\))/g);
+        <div className="markdown-output space-y-3 text-sm text-gray-700">
+            {lines.map((line, index) => {
+                const trimmed = line.trim();
+                if (!trimmed) return <div key={index} className="h-1" />;
+
+                // 1. Headers (### Title)
+                if (trimmed.startsWith('#')) {
+                    const level = (trimmed.match(/^#+/) || ['#'])[0].length;
+                    const text = trimmed.replace(/^#+\s*/, '');
+                    const sizeClass = level === 1 ? 'text-xl' : level === 2 ? 'text-lg' : 'text-md';
+                    return (
+                        <h4 key={index} className={`${sizeClass} font-bold text-gray-900 mt-4 mb-2 border-b pb-1 border-gray-100`}>
+                            {parseInline(text)}
+                        </h4>
+                    );
+                }
+
+                // 2. Numbered Lists (1. Item)
+                if (/^\d+\.\s/.test(trimmed)) {
+                    const text = trimmed.replace(/^\d+\.\s*/, '');
+                    const number = trimmed.match(/^\d+/)[0];
+                    return (
+                        <div key={index} className="flex items-start gap-3 ml-1">
+                            <span className="font-bold text-indigo-600 min-w-[1.25rem]">{number}.</span>
+                            <span className="leading-relaxed">{parseInline(text)}</span>
+                        </div>
+                    );
+                }
+
+                // 3. Bullet Points (* Item or - Item)
+                if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
+                    const text = trimmed.replace(/^[*|-]\s*/, '');
+                    return (
+                        <div key={index} className="flex items-start gap-3 ml-2">
+                            <span className="mt-2 w-1.5 h-1.5 rounded-full bg-indigo-400 flex-shrink-0" />
+                            <span className="leading-relaxed">{parseInline(text)}</span>
+                        </div>
+                    );
+                }
+
+                // 4. Standard Paragraph
                 return (
-                    <p key={lineIndex} className="mb-0">
-                        {parts.map((part, partIndex) => {
-                            if (part.startsWith('**') && part.endsWith('**')) {
-                                return <strong key={partIndex}>{part.slice(2, -2)}</strong>;
-                            } else if (part.startsWith('*') && part.endsWith('*')) {
-                                return <em key={partIndex}>{part.slice(1, -1)}</em>;
-                            } else if (part.startsWith('[') && part.includes('](') && part.endsWith(')')) {
-                                const match = part.match(/\[(.*?)\]\((.*?)\)/);
-                                if (match && match.length === 3) {
-                                    const [_, text, url] = match;
-                                    return <a key={partIndex} href={url} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline">{text}</a>;
-                                }
-                            }
-                            return <span key={partIndex}>{part}</span>;
-                        })}
+                    <p key={index} className="leading-relaxed">
+                        {parseInline(line)}
                     </p>
                 );
             })}
@@ -279,6 +330,34 @@ const MarkdownRenderer = ({ content }) => {
     );
 };
 
+// Helper function to handle inline formatting (Bold, Italic, Links)
+const parseInline = (text) => {
+    const parts = text.split(/(\*\*.*?\*\*|\*.*?\*|\[.*?\]\(.*?\))/g);
+    return parts.map((part, i) => {
+        if (!part) return null;
+
+        // Bold
+        if (part.startsWith('**') && part.endsWith('**')) {
+            return <strong key={i} className="font-bold text-gray-900">{part.slice(2, -2)}</strong>;
+        }
+        // Italic
+        if (part.startsWith('*') && part.endsWith('*')) {
+            return <em key={i} className="italic text-gray-800">{part.slice(1, -1)}</em>;
+        }
+        // Links
+        if (part.startsWith('[') && part.includes('](')) {
+            const match = part.match(/\[(.*?)\]\((.*?)\)/);
+            if (match) {
+                return (
+                    <a key={i} href={match[2]} target="_blank" rel="noopener noreferrer" className="text-indigo-600 font-medium hover:underline">
+                        {match[1]}
+                    </a>
+                );
+            }
+        }
+        return part;
+    });
+};
 // --- Component: Welcome Section (RESTORED) ---
 const WelcomeSection = ({ onUpload }) => (
     <div className="p-8 overflow-y-auto pb-20 w-full">
@@ -541,110 +620,77 @@ const FieldRenderer = ({
         }
     }
     // --- RENDER: ARRAY TYPES (e.g. Tables, Columns) ---
-    if (isArray) {
-        const items = Array.isArray(currentValue) ? currentValue : [];
+if (isArray) {
+    // Force at least one row for array fields like contactPoint or tables
+    const items = Array.isArray(currentValue) && currentValue.length > 0
+        ? currentValue
+        : (fieldDef.items?.type === 'object' ? [{}] : ['']);
 
-        const handleAdd = () => {
-            let itemSchema = fieldDef.items || {};
-            let resolvedItemDef = itemSchema;
+    const handleInputChange = (index, newVal) => {
+        const newArr = [...items];
+        newArr[index] = newVal;
 
-            // Resolve Item Definition logic...
-            const resolve = (obj) => (obj && obj.$ref ? resolveRef(obj.$ref) : obj);
+        // Auto-expand logic: add a new empty entry when the current last entry is used
+        if (index === items.length - 1 && newVal !== '') {
+            newArr.push(fieldDef.items?.type === 'object' ? {} : '');
+        }
+        onChange(path, newArr);
+    };
 
-            if (itemSchema.$ref) {
-                resolvedItemDef = resolveRef(itemSchema.$ref);
-            } else if (itemSchema.anyOf) {
-                 const validItem = itemSchema.anyOf.find(i => {
-                     const r = i.$ref ? resolveRef(i.$ref) : i;
-                     return r && r.type !== 'null';
-                 });
-                 if (validItem) resolvedItemDef = validItem.$ref ? resolveRef(validItem.$ref) : validItem;
-            }
-
-            // If the item is an Object (like DataTable or DataColumn), initialize as empty object {}
-            const isObject = resolvedItemDef && (resolvedItemDef.type === 'object' || resolvedItemDef.properties);
-            const newItem = isObject ? {} : '';
-
-            // Update parent array (Append new item)
-            onChange(path, [...items, newItem]);
-        };
-
-        const handleRemove = (index) => {
-            onChange(path, items.filter((_, i) => i !== index));
-        };
-
-        return (
-            <div className={`bg-gray-50 p-4 rounded-lg border border-gray-200 mb-6 ${level > 0 ? 'mt-4' : ''}`}>
-                <label className="block text-lg font-bold text-gray-800 mb-2">{prop.title || propKey}</label>
-                <p className="text-sm text-gray-600 mb-4">{prop.description}</p>
-
-                <div className="space-y-4">
-                    {items.map((item, index) => (
-                        <div key={index} className="relative border-l-4 border-indigo-400 pl-4 py-4 bg-white rounded shadow-sm">
-                            <button
-                                onClick={() => handleRemove(index)}
-                                className="absolute top-2 right-2 text-red-500 hover:text-red-700 text-xs font-bold px-2 py-1 border border-red-200 rounded z-10"
-                            >
-                                Remove
-                            </button>
-                            <h4 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-2">
-                                {fieldDef.title ? `${fieldDef.title} #${index + 1}` : `Item #${index + 1}`}
-                            </h4>
-
-                            {/* Render Inner Item Fields */}
-                            {(() => {
-                                let itemSchema = fieldDef.items || {};
-                                let resolvedItemDef = itemSchema;
-                                const resolve = (obj) => (obj && obj.$ref ? resolveRef(obj.$ref) : obj);
-                                resolvedItemDef = resolve(itemSchema);
-
-                                if (!resolvedItemDef.properties && resolvedItemDef.anyOf) {
-                                     const valid = resolvedItemDef.anyOf.find(i => resolve(i).type !== 'null');
-                                     if(valid) resolvedItemDef = resolve(valid);
-                                }
-
-                                if (resolvedItemDef && resolvedItemDef.properties) {
-                                    return Object.keys(resolvedItemDef.properties).map(childKey => (
-                                        <FieldRenderer
-                                            key={childKey}
-                                            propKey={childKey}
-                                            prop={resolvedItemDef.properties[childKey]}
-                                            path={[...path, index, childKey]}
-                                            formData={formData}
-                                            onChange={onChange}
-                                            isRequired={resolvedItemDef.required?.includes(childKey)}
-                                            setActiveGuidance={setActiveGuidance}
-                                            level={level + 1}
-                                        />
-                                    ));
-                                } else {
-                                    return (
-                                        <input
-                                            type="text"
-                                            value={item || ''}
-                                            onChange={(e) => {
-                                                const newArr = [...items];
-                                                newArr[index] = e.target.value;
-                                                onChange(path, newArr);
-                                            }}
-                                            className="w-full p-2 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500"
-                                        />
-                                    );
-                                }
-                            })()}
-                        </div>
-                    ))}
-                </div>
-
-                <button
-                    onClick={handleAdd}
-                    className="mt-4 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded hover:bg-indigo-700 transition"
-                >
-                    + Add {prop.title ? prop.title.slice(0, -1) : 'Item'}
-                </button>
+    return (
+        <div className="mb-10">
+            {/* Array Section Header - Rendered once at the top */}
+            <div className="mb-4">
+                <h3 className="text-xl font-bold text-gray-800">{prop.title || propKey}</h3>
+                {prop.description && <p className="text-base text-gray-600">{prop.description}</p>}
             </div>
-        );
-    }
+
+            <div className="space-y-4">
+                {items.map((item, index) => {
+                    const itemSchema = fieldDef.items || {};
+                    const resolvedItemDef = itemSchema.$ref ? resolveRef(itemSchema.$ref) : itemSchema;
+
+                    return (
+                        <div key={index} className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                            {resolvedItemDef.properties ? (
+                                // Object items: Render properties directly (e.g., Table rows)
+                                Object.keys(resolvedItemDef.properties).map(childKey => (
+                                    <FieldRenderer
+                                        key={childKey}
+                                        propKey={childKey}
+                                        prop={resolvedItemDef.properties[childKey]}
+                                        path={[...path, index, childKey]}
+                                        formData={formData}
+                                        onChange={(newPath, newVal) => {
+                                            handleInputChange(index, item);
+                                            onChange(newPath, newVal);
+                                        }}
+                                        isRequired={resolvedItemDef.required?.includes(childKey)}
+                                        setActiveGuidance={setActiveGuidance}
+                                        level={level + 1}
+                                    />
+                                ))
+                            ) : (
+                                // Simple items: Standard base styling for strings (e.g., Contact Point)
+                                <input
+                                    type="text"
+                                    className="w-full p-3 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500 text-lg"
+                                    placeholder={prop.examples ? prop.examples.join(', ') : "Enter value..."}
+                                    value={item || ''}
+                                    onFocus={() => {
+                                        const guidance = prop.guidance || prop.description || 'No guidance provided.';
+                                        setActiveGuidance({ title: prop.title || propKey, guidance });
+                                    }}
+                                    onChange={(e) => handleInputChange(index, e.target.value)}
+                                />
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    );
+}
 // --- RENDER: NESTED OBJECT TYPES ---
 if (fieldDef.type === 'object' && fieldDef.properties && !isArray) {
     return (
@@ -730,7 +776,7 @@ if (fieldDef.type === 'object' && fieldDef.properties && !isArray) {
             <label className="block text-sm font-bold text-gray-700 mb-1">
                 {prop.title || propKey} {isRequired && <span className="text-red-500">*</span>}
             </label>
-            <p className="text-xs text-gray-500 mb-2">{prop.description}</p>
+            <p className="text-base text-gray-500 mb-4">{prop.description}</p>
 
             {/* PREVIEW for File Upload */}
             {inputType === 'file' && currentValue && (
@@ -845,10 +891,11 @@ const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance, onU
     // 1. Data Tagger
     if (sectionKey === 'datasetFilters') {
         return (
-            <div className="w-2/4 p-8 overflow-y-auto pb-20">
+            <div className="w-full p-8 overflow-y-auto pb-20">
                 <h1 className="text-3xl font-extrabold mb-2 text-gray-800">Dataset Filters</h1>
                 <p className="text-gray-600 mb-8 border-b pb-4">
-                    Tag your dataset with specific filters (Cancer Type, Data Type, Access) to improve searchability.
+                    Please tag your dataset with specific filters identifying the type of cancer covered, the type of data it contains and accessibility. This improves the searchability of your dataset.
+
                     <br/><span className="text-sm text-red-600 font-bold mt-2 block">
                         Required: At least one Topography, one Histology, one Data Type, and one Access Type.
                     </span>
@@ -883,24 +930,11 @@ const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance, onU
     const isContainer = definition && (definition.type === 'object' || definition.properties);
 
     return (
-        <div className="w-2/4 p-8 overflow-y-auto pb-20">
+        <div className="w-full p-8 overflow-y-auto pb-20">
             <h1 className="text-3xl font-extrabold mb-2 text-gray-800">
                 {sectionSchema.title || sectionKey}
             </h1>
             <p className="text-gray-600 mb-8 border-b pb-4">{sectionSchema.description}</p>
-
-            {/* --- NEW: Example Image for ERD Section --- */}
-            {sectionKey === 'erd' && (
-                <div className="mb-8 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-                    <p className="text-sm font-bold text-gray-700 mb-2">Example of expected ERD format:</p>
-                    <img
-                        src='../assets/erd.png'
-                        alt="Example Entity Relationship Diagram"
-                        className="max-w-full h-auto border border-gray-300 shadow-sm"
-                    />
-                </div>
-            )}
-            {/* ------------------------------------------ */}
 
             {isContainer ? (
                 <div className="space-y-6">
@@ -955,7 +989,7 @@ const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance, onU
 // --- Component: Navigation & Download ---
 const SchemaNav = ({ activeSection, setActiveSection, onDownload, formData, visitedSections }) => {
     return (
-        <div className="w-1/5 border-r border-gray-200 bg-gray-50 h-full overflow-y-auto flex-shrink-0">
+        <div className="w-full border-r border-gray-200 bg-gray-50 h-full overflow-y-auto flex-shrink-0">
             <div className="p-6">
                 <h2 className="text-lg font-bold mb-4 text-gray-700">Metadata Sections</h2>
                 <ul className="space-y-2">
@@ -1016,17 +1050,18 @@ const SchemaNav = ({ activeSection, setActiveSection, onDownload, formData, visi
     );
 };
 
-// --- Component: Guidance Panel ---
-const GuidancePanel = ({ activeGuidance }) => (
-    <div className="w-1/4 border-l border-gray-200 p-6 bg-gray-50 h-full overflow-y-auto flex-shrink-0">
-        <h2 className="text-lg font-bold mb-4 text-gray-700">Field Guidance</h2>
+// --- Component: Guidance Panel (Updated) ---
+const GuidancePanel = ({ activeGuidance, children }) => (
+    <div className="w-full border-l border-gray-200 p-6 bg-gray-50 h-full overflow-y-auto flex-shrink-0">
+
         <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100">
             {activeGuidance ? (
                 <>
-                    <h3 className="text-md font-bold text-indigo-700 mb-3 border-b pb-2">{activeGuidance.title}</h3>
-                    <div className="text-sm text-gray-600 leading-relaxed">
-                        {renderGuidance(activeGuidance.guidance)}
-                    </div>
+                    <h3 className="text-md font-bold text-indigo-700 mb-3 border-b pb-2">
+                        {activeGuidance.title}
+                    </h3>
+                    {/* Swapped renderGuidance for the more capable MarkdownRenderer */}
+                    <MarkdownRenderer content={activeGuidance.guidance} />
                 </>
             ) : (
                 <div className="text-center py-10 text-gray-400">
@@ -1034,6 +1069,13 @@ const GuidancePanel = ({ activeGuidance }) => (
                 </div>
             )}
         </div>
+
+        {/* Render children (like the ERD image) here */}
+        {children && (
+            <div className="mt-6">
+                {children}
+            </div>
+        )}
     </div>
 );
 
@@ -1047,8 +1089,64 @@ const SchemaPage = () => {
             </div>
         );
     }
+    const [allFeedback, setAllFeedback] = useState({}); // Stores { sectionKey: "comment string" }
+    const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+
+    const handleSaveDraftFeedback = (section, comment) => {
+        setAllFeedback(prev => ({
+            ...prev,
+            [section]: comment
+        }));
+    };
+
+const handleFinalSubmit = (currentSection, currentAnswers) => {
+    // 1. Merge current modal answers into the global feedback state
+    const finalData = {
+        ...allFeedback,
+        [currentSection]: currentAnswers
+    };
+
+    // 2. Filter out sections that are empty or have no text
+    const feedbackEntries = Object.entries(finalData).filter(([_, answers]) => {
+        if (!answers) return false;
+        return Object.values(answers).some(val => val !== undefined && val !== null && val !== "");
+    });
+
+    if (feedbackEntries.length === 0) {
+        alert("No feedback recorded yet");
+        return;
+    }
+
+    const recipient = "skw24@sussex.ac.uk"; //
+    const subject = encodeURIComponent("CRUK Datahub - Academic Feedback");
+
+    // 3. Map each section's object to the specific keys for that section
+    const feedbackReport = feedbackEntries
+        .map(([section, answers]) => {
+            const formattedAnswers = Object.entries(answers)
+                .map(([key, value]) => `  - ${key}: ${value}`)
+                .join('\n');
+
+            return `SECTION: ${section.toUpperCase()}\n${formattedAnswers}`;
+        })
+        .join('\n\n------------------------------\n\n');
+
+    const body = encodeURIComponent(feedbackReport);
+
+    setAllFeedback(finalData);
+    window.location.href = `mailto:${recipient}?subject=${subject}&body=${body}`;
+};
 
     const [formData, setFormData] = useState({});
+    const [welcomeGuidanceContent, setWelcomeGuidanceContent] = useState('');
+        useEffect(() => {
+            fetch('/guidance.md')
+                .then(response => response.text())
+                .then(text => {
+                    setWelcomeGuidanceContent(text);
+                })
+                .catch(err => console.error("Failed to load guidance.md:", err));
+        }, []);
 
     // Initialize with Welcome section
     const initialSection = VISIBLE_SECTIONS[0] || Object.keys(DATA_SCHEMA.properties)[0];
@@ -1057,7 +1155,14 @@ const SchemaPage = () => {
 
     // Track visited sections (Start with the initial one)
     const [visitedSections, setVisitedSections] = useState(new Set([initialSection]));
-
+    const currentGuidance = useMemo(() => {
+        if (activeSection === 'welcome') {
+            return {
+                guidance: welcomeGuidanceContent
+            };
+        }
+        return activeGuidance;
+    }, [activeSection, activeGuidance, welcomeGuidanceContent]);
     const handleNavChange = (key) => {
         setVisitedSections(prev => new Set(prev).add(key));
         setActiveSection(key);
@@ -1214,37 +1319,37 @@ const SchemaPage = () => {
             icons: Array.from(uniqueIcons)
         };
     };
-const downloadJSON = () => {
-        // 1. Associate icons based on dataset filters
-        let processedData = associateIcons(formData, prefixIconMapping);
+        const downloadJSON = () => {
+                // 1. Associate icons based on dataset filters
+                let processedData = associateIcons(formData, prefixIconMapping);
 
-        // 2. Apply Semantic Defaults
-        const applyDefaults = (data, sectionKey) => {
-            if (!data) return data;
+                // 2. Apply Semantic Defaults
+                const applyDefaults = (data, sectionKey) => {
+                    if (!data) return data;
 
-            // Resolve the definition specifically from $defs where Summary is stored
-            const sectionSchema = DATA_SCHEMA.properties[sectionKey];
-            let definition = sectionSchema;
+                    // Resolve the definition specifically from $defs where Summary is stored
+                    const sectionSchema = DATA_SCHEMA.properties[sectionKey];
+                    let definition = sectionSchema;
 
-            if (sectionSchema?.$ref) {
-                definition = resolveRef(sectionSchema.$ref);
-            } else if (sectionSchema?.allOf) {
-                const refItem = sectionSchema.allOf.find(i => i.$ref);
-                if (refItem) definition = resolveRef(refItem.$ref);
-            }
+                    if (sectionSchema?.$ref) {
+                        definition = resolveRef(sectionSchema.$ref);
+                    } else if (sectionSchema?.allOf) {
+                        const refItem = sectionSchema.allOf.find(i => i.$ref);
+                        if (refItem) definition = resolveRef(refItem.$ref);
+                    }
 
-            const sectionProps = definition?.properties;
-            if (!sectionProps) return data;
+                    const sectionProps = definition?.properties;
+                    if (!sectionProps) return data;
 
-            const updated = { ...data };
-            Object.keys(sectionProps).forEach(key => {
-                // If field is empty, apply default (e.g., populationSize: 0)
-                if (isEmpty(updated[key]) && sectionProps[key].default !== undefined) {
-                    updated[key] = sectionProps[key].default;
-                }
-            });
-            return updated;
-        };
+                    const updated = { ...data };
+                    Object.keys(sectionProps).forEach(key => {
+                        // If field is empty, apply default (e.g., populationSize: 0)
+                        if (isEmpty(updated[key]) && sectionProps[key].default !== undefined) {
+                            updated[key] = sectionProps[key].default;
+                        }
+                    });
+                    return updated;
+                };
 
         // Apply defaults to the summary section
         if (processedData.summary) {
@@ -1290,45 +1395,65 @@ const downloadJSON = () => {
 
         URL.revokeObjectURL(url);
     };
-    return (
+
+return (
         <div className="flex flex-col min-h-screen font-sans bg-white">
-            {/* Top Bar Added Here */}
-            <UploadTopBar formData={formData} schema={DATA_SCHEMA} />
+            <FeedbackModal
+                isOpen={isFeedbackOpen}
+                onClose={() => setIsFeedbackOpen(false)}
+                activeSection={activeSection}
+                // Check this line below - you must pass the state!
+                allFeedback={allFeedback}
+                onSaveDraft={handleSaveDraftFeedback}
+                onFinalSubmit={handleFinalSubmit}
+            />
 
-            <div className="flex flex-grow overflow-hidden h-[calc(100vh-40px)]">
-                <SchemaNav
-                    activeSection={activeSection}
-                    setActiveSection={handleNavChange}
-                    onDownload={downloadJSON}
-                    formData={formData}
-                    visitedSections={visitedSections}
-                />
+            <UploadTopBar
+                formData={formData}
+                schema={DATA_SCHEMA}
+                prefixIconMapping={prefixIconMapping}
+            />
+            <button
+            onClick={() => setIsFeedbackOpen(true)}
+            className="fixed bottom-6 right-6 bg-orange-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 z-40 font-bold"
+        >
+            Feedback
+            </button>
+            <div className="flex-grow overflow-hidden h-[calc(100vh-40px)]">
+                <Group orientation="horizontal">
 
-                {/* Middle and Right Columns Logic */}
-                {activeSection === 'welcome' ? (
-                    // Welcome Section spans 80% (4/5) because nav is 20% (1/5)
-                    <div className="w-4/5 flex h-full">
-                        <SchemaForm
-                            sectionKey={activeSection}
+                    {/* LEFT PANEL: Navigation */}
+                    <Panel defaultSize={20} minSize={15}>
+                        <SchemaNav
+                            activeSection={activeSection}
+                            setActiveSection={handleNavChange}
+                            onDownload={downloadJSON}
                             formData={formData}
-                            onFormChange={handleDataChange}
-                            setActiveGuidance={setActiveGuidance}
-                            onUpload={handleJsonUpload}
+                            visitedSections={visitedSections}
                         />
-                    </div>
-                ) : (
-                    <>
-                        <SchemaForm
-                            sectionKey={activeSection}
-                            formData={formData}
-                            onFormChange={handleDataChange}
-                            setActiveGuidance={setActiveGuidance}
-                            onUpload={handleJsonUpload}
-                        />
+                    </Panel>
 
-                        {/* Right Column Logic */}
+                    <Separator className="w-1 bg-gray-200 hover:bg-indigo-400 transition-colors cursor-col-resize" />
+
+                    {/* MIDDLE PANEL: Main Form */}
+                    <Panel defaultSize={55} minSize={30}>
+                        <div className="h-full flex justify-center">
+                            <SchemaForm
+                                sectionKey={activeSection}
+                                formData={formData}
+                                onFormChange={handleDataChange}
+                                setActiveGuidance={setActiveGuidance}
+                                onUpload={handleJsonUpload}
+                            />
+                        </div>
+                    </Panel>
+
+                    <Separator className="w-1 bg-gray-200 hover:bg-indigo-400 transition-colors cursor-col-resize" />
+
+                    {/* RIGHT PANEL: Guidance or Tags */}
+                    <Panel defaultSize={25} minSize={20}>
                         {activeSection === 'datasetFilters' ? (
-                            <div className="w-1/4 border-l border-gray-200 p-6 bg-gray-50 h-full overflow-y-auto">
+                            <div className="p-6 bg-gray-50 h-full overflow-y-auto">
                                 <h2 className="text-lg font-bold mb-4 text-gray-700">Active Tags</h2>
                                 <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100 min-h-[200px]">
                                     <FilterChipArea
@@ -1338,12 +1463,22 @@ const downloadJSON = () => {
                                 </div>
                             </div>
                         ) : (
-                            <GuidancePanel
-                                activeGuidance={activeGuidance}
-                            />
+                            <GuidancePanel activeGuidance={currentGuidance}>
+                                {activeSection === 'erd' && (
+                                    <div className="p-4 bg-gray-100 border border-gray-200 rounded-lg mt-4">
+                                        <p className="text-xs font-bold text-gray-700 mb-2">Visual Schema Linkage</p>
+                                        <img
+                                            src='../assets/erd.png'
+                                            alt="Entity Relationship Diagram"
+                                            className="max-w-full h-auto border border-gray-300 shadow-sm"
+                                        />
+                                    </div>
+                                )}
+                            </GuidancePanel>
                         )}
-                    </>
-                )}
+                    </Panel>
+
+                </Group>
             </div>
         </div>
     );

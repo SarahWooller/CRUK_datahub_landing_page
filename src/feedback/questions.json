@@ -1,0 +1,30 @@
+{
+  "default": [
+    { "id": "ease", "label": "Is this section 1. Poor, 2. Fair, 3. Good, 4. Very Good, 5. Excellent", "type": "number", "min": 1, "max": 5 },
+    { "id": "comment", "label": "General Comments", "type": "textarea" }
+  ],
+  "welcome": [
+    { "id": "ease", "label": "Is this section 1. Poor, 2. Fair, 3. Good, 4. Very Good, 5. Excellent", "type": "number", "min": 1, "max": 5 },
+    { "id": "guide", "label": "Is the guide clear? Do you know what the purpose of the page is?", "type": "textarea" }
+  ],
+  "project": [
+    { "id": "ease", "label": "Is this section 1. Poor, 2. Fair, 3. Good, 4. Very Good, 5. Excellent", "type": "number", "min": 1, "max": 5 },
+    { "id": "scope", "label": "Is this a reasonable balance between preserving the privacy of the project owner and ensuring that funding for Cancer Research is well spent by ensuring transparency ", "type": "textarea" }
+  ],
+  "summary": [
+    { "id": "ease", "label": "Is this section 1. Poor, 2. Fair, 3. Good, 4. Very Good, 5. Excellent", "type": "number", "min": 1, "max": 5 },
+    { "id": "abstract", "label": "Did the guidance for the 'Abstract' help you summarize the dataset?", "type": "textarea" }
+  ],
+  "datasetFilters": [
+    { "id": "ease", "label": "Is this section 1. Poor, 2. Fair, 3. Good, 4. Very Good, 5. Excellent", "type": "number", "min": 1, "max": 5 },
+    { "id": "tagger", "label": "How intuitive was the Tagging/Filter interface?", "type": "textarea" }
+  ],
+  "structuralMetadata": [
+    { "id": "ease", "label": "Is this section 1. Poor, 2. Fair, 3. Good, 4. Very Good, 5. Excellent", "type": "number", "min": 1, "max": 5 },
+    { "id": "tables", "label": "Did the Table/Column layout make sense for your data?", "type": "textarea" }
+  ],
+  "demographicFrequency": [
+    { "id": "ease", "label": "Is this section 1. Poor, 2. Fair, 3. Good, 4. Very Good, 5. Excellent", "type": "number", "min": 1, "max": 5 },
+    { "id": "grid", "label": "Was the Age/Ethnicity Frequency Grid easy to populate?", "type": "textarea" }
+  ]
+}
