@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-// Assuming the example file exists at this path as requested
+// Assuming the example file exists at this path
 import exampleData from '../utils/dummy_data/example_for_download.json';
 
 // --- Icons ---
@@ -20,11 +20,10 @@ const ChartIcon = () => (
 );
 
 // --- Component ---
-const UploadTopBar = ({ formData, schema }) => {
+const UploadTopBar = ({ formData, schema, prefixIconMapping }) => {
 
-    // --- 1. Helper Logic for Calculation ---
+    // --- 1. Helper Logic ---
 
-    // Resolve References (simplified version of the one in SchemaPage)
     const resolveRef = (ref) => {
         if (!ref || typeof ref !== 'string' || !ref.startsWith('#/$defs/')) return null;
         const defKey = ref.split('/').pop();
@@ -46,7 +45,25 @@ const UploadTopBar = ({ formData, schema }) => {
         return false;
     };
 
-    // Calculate Percentages
+    const associateIcons = (data, mapping) => {
+        if (!data.datasetFilters || !Array.isArray(data.datasetFilters) || !mapping) {
+            return { ...data, icons: [] };
+        }
+        const dataIds = data.datasetFilters
+            .map(item => (typeof item === 'object' ? item.id : item))
+            .filter(id => id && id.startsWith("0_2"));
+
+        const uniqueIcons = new Set();
+        dataIds.forEach(id => {
+            const trunc5 = id.substring(0, 5);
+            const trunc7 = id.substring(0, 7);
+            if (mapping[trunc5]) uniqueIcons.add(mapping[trunc5]);
+            if (mapping[trunc7]) uniqueIcons.add(mapping[trunc7]);
+        });
+
+        return { ...data, icons: Array.from(uniqueIcons) };
+    };
+
     const completionStats = useMemo(() => {
         let reqTotal = 0;
         let reqFilled = 0;
@@ -55,13 +72,11 @@ const UploadTopBar = ({ formData, schema }) => {
 
         if (!schema || !schema.properties) return { req: 0, opt: 0 };
 
-        // Iterate over all top-level sections (Summary, Coverage, etc.)
         Object.keys(schema.properties).forEach(sectionKey => {
             const sectionSchema = schema.properties[sectionKey];
             const definition = getDefinition(sectionSchema);
             const sectionData = formData[sectionKey] || {};
 
-            // If it's a complex object, check its properties
             if (definition && definition.properties) {
                 const requiredProps = definition.required || [];
                 const allProps = Object.keys(definition.properties);
@@ -82,7 +97,6 @@ const UploadTopBar = ({ formData, schema }) => {
             }
         });
 
-        // Add special handling for datasetFilters if needed (treating as 1 required field)
         const filters = formData['datasetFilters'];
         reqTotal++;
         if (filters && filters.length > 0) reqFilled++;
@@ -96,7 +110,8 @@ const UploadTopBar = ({ formData, schema }) => {
 
     // --- 2. Action Handlers ---
 
-    const handleDownload = () => {
+    // RESTORED: Download the template example
+    const handleDownloadExample = () => {
         try {
             const blob = new Blob([JSON.stringify(exampleData, null, 2)], { type: "application/json" });
             const url = URL.createObjectURL(blob);
@@ -109,22 +124,97 @@ const UploadTopBar = ({ formData, schema }) => {
             URL.revokeObjectURL(url);
         } catch (e) {
             console.error("Error downloading example:", e);
-            alert("Could not download example file.");
         }
     };
 
+    // MOVED: Download the user's current work
+    const handleDownloadProgress = () => {
+        try {
+            let processedData = associateIcons(formData, prefixIconMapping);
+
+            if (processedData.summary) {
+                const summarySchema = schema.properties?.summary;
+                let summaryDef = summarySchema;
+                if (summarySchema?.$ref) summaryDef = resolveRef(summarySchema.$ref);
+
+                if (summaryDef?.properties) {
+                    Object.keys(summaryDef.properties).forEach(key => {
+                        if (isEmpty(processedData.summary[key]) && summaryDef.properties[key].default !== undefined) {
+                            processedData.summary[key] = summaryDef.properties[key].default;
+                        }
+                    });
+                }
+            }
+
+            if (processedData.version) {
+                const revisions = processedData.revisions || [];
+                if (!revisions.some(rev => rev.version === processedData.version)) {
+                    processedData.revisions = [...revisions, { version: processedData.version, url: null }];
+                }
+            }
+            processedData.modified = new Date().toISOString();
+
+            const fileData = JSON.stringify(processedData, null, 2);
+            const blob = new Blob([fileData], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+
+            const fileName = processedData.summary?.title
+                ? `${processedData.summary.title.replace(/\s+/g, '_')}_metadata.json`
+                : "dataset_metadata.json";
+
+            link.download = fileName;
+            link.href = url;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        } catch (e) {
+            console.error("Error exporting progress:", e);
+        }
+    };
+    const handleDownloadGuide = () => {
+        // This assumes your file is named 'guidance.pdf' in the public folder
+        const link = document.createElement("a");
+        link.href = "/guidance.pdf";
+        link.download = "CRUK_Datahub_Guide.pdf";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
     // --- 3. Render ---
     return (
         <div className="w-full h-10 bg-[var(--cruk-darkblue)] text-white flex items-center px-6 shadow-md z-20 relative text-sm font-medium">
 
-            {/* Left: Download */}
-            <div className="flex-1 flex justify-start">
+            {/* Left: Dual Download Actions */}
+            <div className="flex-1 flex justify-start space-x-6">
                 <button
-                    onClick={handleDownload}
+                    onClick={handleDownloadExample}
                     className="flex items-center hover:opacity-80 transition-opacity focus:outline-none"
+                    title="Download a template metadata file"
                 >
                     <DownloadIcon />
                     Download example
+                </button>
+
+                <div className="w-px h-4 bg-white opacity-20 self-center"></div>
+
+                <button
+                    onClick={handleDownloadProgress}
+                    className="flex items-center hover:opacity-80 transition-opacity focus:outline-none"
+                    title="Export your current progress as a JSON file"
+                >
+                    <DownloadIcon />
+                    Download progress to date
+                </button>
+                <div className="w-px h-4 bg-white opacity-20 self-center"></div>
+                <button
+                    onClick={handleDownloadGuide}
+                    className="flex items-center hover:opacity-80 transition-opacity focus:outline-none"
+                    title="Download the PDF user guide"
+                >
+                    <DownloadIcon />
+                    Download guide to uploading
                 </button>
             </div>
 

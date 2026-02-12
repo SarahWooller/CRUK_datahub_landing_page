@@ -24,3 +24,7 @@ Using the search filters
 If someone searches for "0_1_2_3" then you should include a search for all the parents I think. 
 
 Start and End Date - Fixed the non-existent references in #def in schema
+
+---------------
+Wednesday afternoon
+Currently including some guidance in the side panel
