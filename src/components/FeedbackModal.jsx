@@ -4,11 +4,21 @@ import Draggable from 'react-draggable';
 import { Resizable } from 're-resizable';
 import questionData from '../feedback/questions.json';
 
+const generalCommentField = {
+    id: "general_comments",
+    label: "General Comments",
+    type: "textarea"
+};
+
 const FeedbackModal = ({ isOpen, onClose, activeSection, allFeedback, onSaveDraft, onFinalSubmit }) => {
     const nodeRef = useRef(null);
     const { register, handleSubmit, reset, setValue, watch } = useForm();
 
-    const currentQuestions = questionData[activeSection] || questionData.default;
+    // NEW LOGIC: Extract data from the nested object structure [cite: 26-02-05]
+    const sectionData = questionData[activeSection] || questionData.default;
+    const currentQuestions = [...sectionData.questions, generalCommentField];
+    const displayTitle = sectionData.sectionTitle;
+
     const formValues = watch();
 
     const filterDataForSection = (data) => {
@@ -23,12 +33,15 @@ const FeedbackModal = ({ isOpen, onClose, activeSection, allFeedback, onSaveDraf
 
     useEffect(() => {
         if (isOpen) {
+            // Reset wipes internal memory to prevent data accumulation across sections [cite: 26-02-05]
+            reset({});
+
             const savedSectionData = allFeedback[activeSection] || {};
             currentQuestions.forEach(q => {
                 setValue(q.id, savedSectionData[q.id] || "");
             });
         }
-    }, [activeSection, isOpen, allFeedback, setValue, currentQuestions]);
+    }, [activeSection, isOpen, allFeedback, setValue, currentQuestions, reset]);
 
     const onSave = (data) => {
         onSaveDraft(activeSection, filterDataForSection(data));
@@ -45,7 +58,6 @@ const FeedbackModal = ({ isOpen, onClose, activeSection, allFeedback, onSaveDraf
                         defaultSize={{ width: 520, height: 'auto' }}
                         className="bg-white rounded-xl shadow-2xl border border-gray-300 flex flex-col overflow-hidden"
                     >
-                        {/* Header with explicit inline styles to force dark blue */}
                         <div className="drag-handle bg-gray-50 border-b border-gray-200 p-5 flex justify-between items-center cursor-grab">
                             <div className="flex flex-col">
                                 <h2
@@ -58,7 +70,8 @@ const FeedbackModal = ({ isOpen, onClose, activeSection, allFeedback, onSaveDraf
                                     style={{ color: '#00007a', opacity: 0.7 }}
                                     className="text-xs font-black uppercase tracking-widest"
                                 >
-                                    Section: {activeSection}
+                                    {/* Using the friendly title from JSON [cite: 26-02-05] */}
+                                    Section: {displayTitle}
                                 </span>
                             </div>
                             <button
@@ -83,6 +96,8 @@ const FeedbackModal = ({ isOpen, onClose, activeSection, allFeedback, onSaveDraf
                                         <input
                                             type="number"
                                             {...register(q.id)}
+                                            min={q.min}
+                                            max={q.max}
                                             className="w-24 p-3 border border-gray-300 rounded-lg text-lg"
                                         />
                                     ) : (
@@ -99,7 +114,7 @@ const FeedbackModal = ({ isOpen, onClose, activeSection, allFeedback, onSaveDraf
                                     type="submit"
                                     className="w-full py-4 bg-indigo-50 text-indigo-700 rounded-lg font-bold text-base hover:bg-indigo-100 transition-colors"
                                 >
-                                    Save Notes for {activeSection}
+                                    Save Notes for {displayTitle}
                                 </button>
                                 <button
                                     type="button"
