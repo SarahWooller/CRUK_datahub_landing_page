@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mockup Page for metadata</title>
+    <link rel="stylesheet" href="./assets/css/metadata.css">
+    <link rel="stylesheet" href="./assets/css/dev_note.css">
+    <link rel="stylesheet" href="./assets/css/structural_metadata.css">
+</head>
+<body>
+    <div class="container">
+
+        <nav class="navbar">
+            <div class="dev-note">
+           <p>Note the change in order to give prominence to the structural metadata</p>
+        </div>
+            <h3>Overview</h3>
+            <ul id="name-list">
+                </ul>
+        </nav>
+
+        <main class="content">
+            <div style="margin-bottom: 20px;">
+                <button class="keyword-button" id="toggleDevNotes">
+                    Hide Developer Notes
+                </button>
+            </div>
+
+        <div class="dev-note">
+           <p>CRUK styling as before and buttons for general enquiry etc. Note however, that at present the metadata and structural metadata can only be downloaded separately.</p>
+            <p> I'm unclear why this is. If you download the two together as a json, it's much easier for searching </p>
+        </div>
+            <h1>Comprehensive Renal Carcinoma Cohort</h1>
+
+            <div class="image-gallery">
+                <div class="image-box">
+                    <div class="image-tooltip">
+                        <img src="./assets/population.png" alt="population">
+                        <span class="tooltip-text">Population Size</span>
+                    </div>
+                </div>
+                <div class="image-box">
+                    <div class="image-tooltip">
+                        <img src="./assets/background.png" alt="background">
+                        <span class="tooltip-text">Background</span>
+                    </div>
+                </div>
+                <div class="image-box">
+                    <div class="image-tooltip">
+                        <img src="./assets/biobank.png" alt="biobank">
+                        <span class="tooltip-text">Biobank Samples</span>
+                    </div>
+                </div>
+                <div class="image-box">
+                    <div class="image-tooltip">
+                        <img src="./assets/longitudinal.png" alt="longitudinal">
+                        <span class="tooltip-text">Longitudinal</span>
+                    </div>
+                </div>
+                <div class="image-box">
+                    <div class="image-tooltip">
+                        <img src="./assets/treatments.png" alt="treatments">
+                        <span class="tooltip-text">Treatments</span>
+                    </div>
+                </div>
+            </div>
+            <div class="dev-note">
+                <p>The icons above should reflect whether the upload includes any filters from the following
+                areas: Background, Animal Model, Biobank Samples, Biopsy Reports and Lab Results,
+                Multi-omic Data, Treatments, Imaging Data, and Longitudinal Follow up</p>
+            </div>
+            <div class="text-content">
+                <h2 id="keywords">Keywords</h2>
+                <div class="button-group">
+                    <button class="keyword-button">Kidney Cancer</button>
+                    <button class="keyword-button">Longitudinal</button>
+                    <button class="keyword-button">Medical Protocols</button>
+                    <button class="keyword-button">Biobank Samples</button>
+                    <button class="keyword-button">Radiology</button>
+                </div>
+                <h2 id="summary">Summary</h2>
+                <p>The Kidney Cancer Longitudinal Dataset is a rich, integrated. focused on understanding the etiology, progression, and treatment response of various kidney cancers, primarily Renal Cell Carcinoma (RCC) subtypes. It follows patients over time, linking diverse data streams to provide a holistic view of the disease journey.</p>
+                <p>The website associated with the dataset is at</p> <a href="https://www.iccr-cancer.org/datasets/published-datasets/urinary-male-genital/renal-tubular/">https://www.iccr-cancer.org/datasets/published-datasets/urinary-male-genital/renal-tubular/</a>
+                <h2 id="structural-metadata">Structural Metadata</h2>
+                    <div class="dev-note">
+                            <p>The Structural Metadata table can be styled much as before.
+                            However, it would be good to put the description of each table next to or underneath
+                            the table header to draw attention to it, and to keep the structural metadata table
+                            inline with the rest of the text.</p>
+
+                    </div>
+                <details class="collapsible-text">
+                    <summary class = "collapsible-header">
+                            <h3>Metadata table</h3>
+                    </summary>
+                    <div class="collapsible-content">
+                        <div id="metadata-container">
+                        </div>
+
+                    </div>
+                </details>
+                <h2 id="documentation">Documentation</h2>
+                <details class="collapsible-text">
+                    <summary class = "collapsible-header">
+
+                            <h3>Key Data Components.</h3>
+                            <p>The CRCC includes 5,500 patient records and is structured into five core, linked domains:</p>
+
+                    </summary>
+                    <div class="collapsible-content">
+                        <h4>1. Patient Demographics & Background Environment</h4>
+                            <p>This domain captures non-clinical factors potentially influencing cancer risk and outcomes.</p>
+                                <ul>
+                                    <li>Demographics: Age at diagnosis, sex, ethnicity, geographic location (initial residence).</li>
+                                    <li>Environmental Data: Detailed residential and occupational history (e.g., exposure to known carcinogens, industrial pollutants, heavy metals), lifestyle factors (smoking status, alcohol consumption, physical activity, diet).</li>
+                                    <li>Comorbidities: Pre-existing conditions (e.g., hypertension, diabetes, obesity) and family history of cancer.</li>
+
+                                </ul>
+                                <h4>2. Clinical and Treatment Data</h4>
+                                <p>This longitudinal component tracks the patient's medical course from initial presentation through follow-up.</p>
+                                <ul>
+                                    <li>Diagnosis and Staging: Cancer type and subtype (e.g., clear cell, papillary), tumor size, TNM staging (at diagnosis and recurrence), grade.</li>
+                                    <li> Medical Protocols and Treatments: Detailed records of all interventions:</li>
+                                    <li>Surgery: Type of nephrectomy (partial vs. radical), lymphadenectomy, date of procedure.</li>
+                                    <li>Systemic Therapy: Specific drug regimens, including targeted therapies (e.g., tyrosine kinase inhibitors), immunotherapy (e.g., checkpoint inhibitors), and chemotherapy; dosage, duration, and dates.</li>
+                                    <li>Radiation Therapy: Dosing, fractionation, and targets.</li>
+                                    <li>Outcomes: Disease-Free Survival (DFS), Overall Survival (OS), site and date of recurrence, treatment response criteria (e.g., RECIST scores).</li>
+                                </ul>
+                                <p> etc etc ...</p>
+                    </div>
+                </details>
+
+
+                <h2>Data Access Request</h2>
+                          <div class="dev-note">
+                <p>The remainder can be styled as before</p>
+            </div>
+                <h2 id="entity-relationship-diagrams"> Entity Relationship Diagrams </h2> <button class="keyword-button">Download</button>
+                <div class="large-image-box">
+                    <img src="./assets/erd.png" alt="entity relationship diagram">
+                </div>
+                <h2 id="provenance">Provenance</h2>
+                <h2 id="observations">Observations</h2>
+
+            </div>
+        </main>
+
+        <aside class="right-panel">
+            <div class="dev-note">
+           <p>All of the cruk filters to appear here. May need to make scrollable.</p>
+        </div>
+            <div id="right-panel-content">
+                </div>
+        </aside>
+    </div>
+
+    <script src="./metadata.js"></script>
+    <script src="./dev_note.js"></script>
+    <script src="./structural_metadata.js"></script>
+</body>
+</html>
