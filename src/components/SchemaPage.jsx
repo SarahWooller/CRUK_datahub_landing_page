@@ -1145,6 +1145,14 @@ const handleFinalSubmit = (currentSection, currentAnswers) => {
         })
         .join('%0D%0A%0D%0A-----------------%0D%0A%0D%0A');
 
+    const plainTextReport = report.replace(/%0D%0A/g, '\n'); // Convert URL breaks to newlines
+
+    // Copy to clipboard as a fallback
+    navigator.clipboard.writeText(plainTextReport).then(() => {
+        console.log("Feedback report copied to clipboard as fallback");
+    }).catch(err => {
+        console.error("Could not copy text: ", err);
+    });
     // 4. Trigger the email client
     window.location.href = `mailto:${recipient}?subject=${subject}&body=${report}`;
 
