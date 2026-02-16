@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Panel, Group, Separator } from "react-resizable-panels";
 import FeedbackModal from './FeedbackModal.jsx';
-import questionData from '../feedback/questions.json';
+import questionData from '../feedback/upload_questions.json';
 import schema from '../utils/schema.json';
 import semanticSchema from '../utils/semanticSchema.json';
 import DataTagger, { FilterChipArea } from './DataTagger';
@@ -9,6 +9,7 @@ import JsonUpload from './JsonUpload';
 import UploadTopBar from './UploadTopBar';
 import { filterData } from '../utils/filter-setup';
 import prefixIconMapping from '../utils/prefix_icon_mapping.json';
+
 
 // --- CONFIGURATION: Priority Sections ---
 // Sections in this list will prioritize the property's own metadata (Title, Description, Guidance)
@@ -1468,6 +1469,7 @@ return (
                 allFeedback={allFeedback}
                 onSaveDraft={handleSaveDraftFeedback}
                 onFinalSubmit={handleFinalSubmit}
+                questionData ={questionData}
             />
 
             <UploadTopBar
