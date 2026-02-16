@@ -1104,17 +1104,15 @@ const SchemaPage = () => {
         });
     };
 
-const handleFinalSubmit = (currentSection, currentAnswers) => {
-    // 1. Merge current modal answers into the global feedback state
-    const finalData = {
-        ...allFeedback,
-        [currentSection]: currentAnswers
-    };
+// Inside the SchemaPage component
+const [fallbackData, setFallbackData] = useState(null);
 
-    // 2. Filter out empty sections
+const handleFinalSubmit = (currentSection, currentAnswers) => {
+    const finalData = { ...allFeedback, [currentSection]: currentAnswers };
+
     const feedbackEntries = Object.entries(finalData).filter(([_, answers]) => {
         if (!answers) return false;
-        return Object.values(answers).some(val => val !== undefined && val !== null && val !== "");
+        return Object.values(answers).some(val => val !== "" && val !== null);
     });
 
     if (feedbackEntries.length === 0) {
@@ -1125,36 +1123,36 @@ const handleFinalSubmit = (currentSection, currentAnswers) => {
     const recipient = "skw24@sussex.ac.uk";
     const subject = "CRUK Datahub Feedback";
 
-    // 3. Build the report using friendly names from the nested JSON structure
     const report = feedbackEntries
         .map(([sectionKey, answers]) => {
-            // Updated access path for the new nested structure
             const sectionConfig = questionData[sectionKey] || questionData.default;
             const displayTitle = sectionConfig?.sectionTitle || sectionKey.toUpperCase();
-
             const lines = Object.entries(answers)
                 .map(([qId, val]) => {
-                    // Find the label from the nested questions array
                     const question = sectionConfig?.questions?.find(q => q.id === qId);
                     const label = question ? question.label : qId;
                     return `${label}: ${val}`;
                 })
-                .join('%0D%0A'); // URL-safe newline for mailto
-
+                .join('%0D%0A');
             return `SECTION: ${displayTitle}%0D%0A${lines}`;
         })
         .join('%0D%0A%0D%0A-----------------%0D%0A%0D%0A');
 
-    const plainTextReport = report.replace(/%0D%0A/g, '\n'); // Convert URL breaks to newlines
+    const plainTextReport = report.replace(/%0D%0A/g, '\n');
 
-    // Copy to clipboard as a fallback
-    navigator.clipboard.writeText(plainTextReport).then(() => {
-        console.log("Feedback report copied to clipboard as fallback");
-    }).catch(err => {
-        console.error("Could not copy text: ", err);
-    });
-    // 4. Trigger the email client
+    let appWasDetected = false;
+    const triggerDetection = () => { appWasDetected = true; };
+    window.addEventListener('blur', triggerDetection);
+
     window.location.href = `mailto:${recipient}?subject=${subject}&body=${report}`;
+
+    setTimeout(() => {
+        window.removeEventListener('blur', triggerDetection);
+        if (!appWasDetected) {
+            // Trigger the fallback box instead of just a console log
+            setFallbackData(plainTextReport);
+        }
+    }, 1000);
 
     setAllFeedback({});
     setIsFeedbackOpen(false);
@@ -1421,6 +1419,47 @@ const handleFinalSubmit = (currentSection, currentAnswers) => {
 
 return (
         <div className="flex flex-col min-h-screen font-sans bg-white">
+            {/* Fallback Box for missing Email App */}
+                {fallbackData && (
+                    <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black bg-opacity-60 p-4 pointer-events-auto">
+                        {/* Added 'relative' to allow absolute positioning of the 'x' button */}
+                        <div className="bg-white rounded-xl shadow-2xl p-8 max-w-2xl w-full border border-gray-300 relative">
+
+                            {/* The 'x' Dismiss Button */}
+                            <button
+                                onClick={() => setFallbackData(null)}
+                                className="absolute top-4 right-6 text-4xl text-gray-400 hover:text-red-600 transition-colors leading-none"
+                                aria-label="Close"
+                            >
+                                &times;
+                            </button>
+
+                            <h2 className="text-2xl font-bold text-red-700 mb-4 pr-8">
+                                Email Client Not Found
+                            </h2>
+
+                            <p className="text-lg text-gray-700 mb-6 leading-relaxed">
+                                Unable to open your email app. Please copy to clipboard and manually email to skw24@sussex.ac.uk.
+                            </p>
+
+                            <textarea
+                                readOnly
+                                className="w-full h-48 p-4 border border-gray-200 rounded-lg bg-gray-50 text-base mb-6 font-mono focus:ring-2 focus:ring-indigo-500"
+                                value={fallbackData}
+                            />
+
+                            <button
+                                onClick={() => {
+                                    navigator.clipboard.writeText(fallbackData);
+                                    setFallbackData(null);
+                                }}
+                                className="w-full py-5 bg-indigo-700 text-white font-bold rounded-lg text-lg hover:bg-indigo-800 transition-all shadow-lg active:scale-[0.98]"
+                            >
+                                Copy to Clipboard & Close
+                            </button>
+                        </div>
+                    </div>
+                )}
             <FeedbackModal
                 isOpen={isFeedbackOpen}
                 onClose={() => setIsFeedbackOpen(false)}
