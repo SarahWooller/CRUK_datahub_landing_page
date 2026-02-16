@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client';
 import { Introduction } from './components/Introduction.jsx'
 import { FilterApp } from './components/HorFilterApp.jsx'; // 👈 Note the named import for Filters
 import { Header } from './components/Header.jsx'
-import { StudiesSection } from './components/AltStudiesSection.jsx'
+import { StudiesSection } from './components/StudiesSection.jsx'
 
 
 function renderReactComponent(targetId, Component) {
