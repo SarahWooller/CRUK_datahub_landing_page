@@ -24,6 +24,29 @@
       "omics"
     ],
     "$defs": {
+      "DataColumn": {
+        "properties": {
+          "name": {
+            "description": "Name of a column in the table named above.",
+            "examples": ["Treatment Code"]
+          },
+          "dataType": {
+            "guidance": "Where necessary it is helpful to specify the language or disambiguate eg True vs true",
+            "examples": ["string"]
+          },
+          "description": {
+            "examples": ["Codes are drawn from table 2, listing chEMBL codes for small molecules"],
+            "guidance": "Where values within the column are drawn from another table, please name it here. Alternatively if there are a limited number of frequent values list them below"
+          }
+        }
+      },
+      "DataTable": {
+        "properties": {
+          "columns": {
+            "description": "The columns in the above table."
+          }
+        }
+      },
       "Documentation": {
         "properties": {
           "description": {
@@ -62,6 +85,9 @@
             ],
             "guidance": "In most this will be the same as the Team you have on the Hub, but may be different.",
             "title": "Name of Data Custodian"
+          },
+          "identifier": {
+            "examples": ["https://ror.org/00ayhx656"]
           },
           "logo": {
             "anyOf": [
