@@ -31,17 +31,19 @@ const FeedbackModal = ({ isOpen, onClose, activeSection, allFeedback, onSaveDraf
         return filtered;
     };
 
-    useEffect(() => {
-        if (isOpen) {
-            // Reset wipes internal memory to prevent data accumulation across sections [cite: 26-02-05]
-            reset({});
+useEffect(() => {
+    if (isOpen) {
+        // Reset wipes internal memory to prevent data accumulation across sections
+        reset({});
 
-            const savedSectionData = allFeedback[activeSection] || {};
-            currentQuestions.forEach(q => {
-                setValue(q.id, savedSectionData[q.id] || "");
-            });
-        }
-    }, [activeSection, isOpen, allFeedback, setValue, currentQuestions, reset]);
+        // Only pull from allFeedback when the modal is opened or section changed
+        const savedSectionData = allFeedback[activeSection] || {};
+        currentQuestions.forEach(q => {
+            setValue(q.id, savedSectionData[q.id] || "");
+        });
+    }
+    // REMOVED allFeedback and currentQuestions from this array to break the loop
+}, [activeSection, isOpen, setValue, reset]);
 
     const onSave = (data) => {
         onSaveDraft(activeSection, filterDataForSection(data));
