@@ -1,0 +1,305 @@
+/* Basic Reset and Setup */
+:root {
+    --cruk-white: #FFFFFF;
+    --cruk-blue: #00468C; /* Primary Blue */
+    --cruk-pink: #D10A6F; /* Accent Pink */
+    --cruk-gradient-start: #00468C; /* Blue for gradient */
+    --cruk-gradient-end: #D10A6F;   /* Pink for gradient */
+    --cruk-light-bg: #F0F2F5; /* Slightly off-white background */
+    --cruk-dark-text: #2A2A2A;
+    --cruk-border-strong: #AAB7C4; /* Stronger grey for borders */
+    --brand: #0a66c2;
+    --bg: #ffffff;
+    --muted: #f5f7fa;
+    --text: #1f2937;
+    --border: #e5e7eb;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex; /* Helps ensure container fills viewport */
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Prevent body from scrolling */
+}
+
+/* Main Layout Container */
+.container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+/* Left Navigation Bar (Fixed, Non-scrolling) */
+.navbar {
+    width: 20%; /* Takes up 20% of the width */
+    height: 100%; /* Full height of the container/viewport */
+    background-color: #f4f4f4;
+    padding: 20px;
+    box-sizing: border-box; /* Include padding in the width calculation */
+    overflow: hidden; /* No scrolling for the navbar */
+    flex-shrink: 0; /* Prevents it from shrinking */
+    border-right: 1px solid #ccc;
+}
+
+.navbar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.navbar li {
+    padding: 8px 0;
+    cursor: pointer;
+    border-bottom: 1px dotted #e0e0e0;
+}
+
+.navbar li:hover {
+    color: var(--cruk-blue); /* Use a defined variable for a hover effect */
+}
+
+/* NEW Right-Hand Panel (Fixed, Non-scrolling) */
+.right-panel {
+    width: 20%; /* Takes up 20% of the width */
+    height: 100%; /* Full height */
+    background-color: #f4f4f4;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto; /* Allows scrolling if content is long */
+    flex-shrink: 0;
+    border-left: 1px solid #ccc;
+}
+
+/* Right-Hand Panel List Styling */
+.right-panel h4 {
+    color: var(--cruk-pink);
+    border-bottom: 2px solid var(--cruk-pink);
+    padding-bottom: 5px;
+    margin-top: 20px;
+}
+
+.right-panel ul {
+    list-style-type: none; /* Remove default bullets */
+    padding-left: 15px;
+    margin-bottom: 15px;
+}
+
+.right-panel ul li {
+    position: relative;
+    padding: 3px 0;
+    font-size: 0.95em;
+    color: var(--cruk-dark-text);
+}
+
+.right-panel ul li::before {
+    content: "\2022"; /* Custom bullet point (large dot) */
+    color: var(--cruk-blue);
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+}
+
+/* Style for the nested UL (second layer) */
+.right-panel ul ul {
+    padding-left: 25px; /* Deeper indent for sub-items */
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.right-panel ul ul li::before {
+    content: "\2013"; /* Em dash for nested bullet */
+    color: var(--cruk-pink);
+}
+
+
+/* Main Content Area (Scrolling) */
+.content {
+    /* Adjusted width for 3-column layout (100% - 20% - 20% = 60%) */
+    width: 60%;
+    padding: 20px 40px; /* Padding for the content */
+    overflow-y: auto; /* IMPORTANT: Allows the content to scroll vertically */
+    box-sizing: border-box;
+}
+
+.large-image-box {
+    box-sizing: border-box;
+    width: calc(100%) !important;
+    /* Ensures the image never exceeds the width of its parent container */
+}
+
+.large-image-box img{
+    max-width: 100%;
+    /* Maintains the image's aspect ratio */
+    height: auto;
+    /* Ensures the image is treated as a block element */
+    display: block;
+
+}
+
+/* Image Gallery Layout */
+.image-gallery {
+    display: flex;
+    justify-content: flex-start; /* Ensure items start on the left */
+    gap: 10px;
+    margin: 20px 0;
+}
+
+
+/* HIGHLY SPECIFIC RULE: Ensures this width is prioritized */
+/* NOTE: The width calculation is based on the new 60% content area */
+.image-gallery .image-box {
+    /* KEY FIX: Use the specific width calculation and reinforce it */
+    width: calc((100% - 60px) / 7) !important;
+
+    flex-shrink: 0 !important; /* Prevents the box from shrinking */
+    flex-grow: 0 !important;   /* Prevents the box from growing */
+
+    aspect-ratio: 1 / 1;
+    background-color: #ddd;
+    border: 1px solid #aaa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9em;
+    color: #666;
+    position: relative;
+    overflow: hidden;
+}
+/* Text Content Styling (for visual separation) */
+.text-content {
+    line-height: 1.6;
+    color: #333;
+}
+
+
+
+/* Styling for the new tooltip container */
+.image-tooltip {
+    position: relative; /* Essential: This establishes the positioning context for the tooltip text */
+    width: 100%;
+    height: 100%;
+}
+
+/* Styling for the info box itself */
+.tooltip-text {
+    visibility: hidden; /* Hide the box by default */
+    background-color: rgba(20, 20, 20, 0.7); /* Dark background with transparency */
+    color: white;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 4px;
+
+    /* Positioning the box over the image */
+    position: absolute;
+    z-index: 10; /* Ensures it sits above other content */
+    bottom: 10%; /* Start position: halfway up the box */
+    left: 50%;
+    transform: translate(-50%, 50%); /* Centers the box */
+
+    /* Basic styling for the text */
+    font-size: 1em;
+    white-space: nowrap; /* Keep the text on one line */
+    opacity: 0; /* Start fully transparent */
+    transition: opacity 0.3s ease; /* Smooth fade effect */
+}
+
+/* Hover effect: Show the tooltip text when hovering over the parent container */
+.image-tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1; /* Make it fully visible */
+}
+
+/* Ensure the image still fills the box, referencing the new parent structure */
+.image-tooltip img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Styling for a small, CRUK-branded button */
+.keyword-button {
+    /* Colors from your defined variables */
+    background-color: var(--cruk-blue);
+    color: var(--cruk-white);
+
+    /* Sizing and Shape */
+    padding: 8px 16px; /* Vertical and horizontal padding */
+    border: none;
+    border-radius: 4px; /* Slightly rounded corners */
+
+    /* Typography */
+    font-family: Arial, sans-serif;
+    font-size: 0.9em; /* Small text size */
+    font-weight: bold;
+
+    /* Interaction */
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/* Optional: Add a subtle hover effect for better user experience */
+.keyword-button:hover {
+    background-color: #0056a8; /* A slightly darker blue for hover */
+}
+
+.button-group {
+    /* Turns the container into a flexible box layout */
+    display: flex;
+    /* Aligns items side by side */
+    flex-direction: row;
+    /* Adds space between the buttons */
+    gap: 10px;
+    /* Optional: Controls overall alignment of the group */
+    justify-content: flex-start; /* Aligns group to the left */
+}
+
+/* Base styling for the collapsible block */
+.collapsible-text {
+    border: 1px solid var(--cruk-border-strong);
+    border-radius: 4px;
+    margin-bottom: 15px;
+    padding: 0; /* Padding is handled by the summary/header */
+}
+
+/* Styling for the visible header (the summary tag) */
+.collapsible-header {
+    background-color: var(--cruk-light-bg);
+    color: var(--cruk-dark-text);
+    padding: 10px 15px;
+    cursor: pointer;
+    font-weight: bold;
+    list-style: none; /* Crucial: removes the default browser arrow/triangle */
+    position: relative;
+}
+
+/* Custom indicator icon (a plus/minus sign) */
+.collapsible-header::before {
+    content: "+"; /* Use a plus sign when closed */
+    display: inline-block;
+    width: 1em;
+    font-size: 1.2em;
+    margin-right: 10px;
+    transition: transform 0.2s;
+    color: var(--cruk-blue);
+}
+
+/* State when the details block is open */
+.collapsible-text[open] > .collapsible-header {
+    background-color: #e8ecf2; /* Subtle change when active */
+    border-bottom: 1px solid var(--cruk-border-strong);
+}
+
+/* Change the indicator to a minus sign when open */
+.collapsible-text[open] > .collapsible-header::before {
+    content: "−"; /* Use a minus sign when open */
+    color: var(--cruk-pink);
+}
+
+/* Styling for the hidden content area */
+.collapsible-content {
+    padding: 10px 15px 15px;
+    line-height: 1.5;
+    /* Optional: Add a smooth animation if you decide to use JavaScript for compatibility */
+}
+
