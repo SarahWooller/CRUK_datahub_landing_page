@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import Draggable from 'react-draggable';
 import { Resizable } from 're-resizable';
-import questionData from '../feedback/questions.json';
 
 const generalCommentField = {
     id: "general_comments",
@@ -13,7 +12,7 @@ const generalCommentField = {
 
 // ... (imports remain the same)
 
-const FeedbackModal = ({ isOpen, onClose, activeSection, allFeedback, onSaveDraft, onFinalSubmit }) => {
+const FeedbackModal = ({ isOpen, onClose, activeSection, allFeedback, onSaveDraft, onFinalSubmit, questionData }) => {
     const nodeRef = useRef(null);
     const { register, handleSubmit, reset, setValue, watch } = useForm();
 

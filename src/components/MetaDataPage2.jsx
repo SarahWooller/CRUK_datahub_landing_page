@@ -4,7 +4,10 @@ import ReactDOM from 'react-dom/client';
 // 1. IMPORT DATA FROM UTILS
 import studyData from '../utils/dummy_data/optimam_partial.json';
 import { filterData } from '../utils/longer_filter_data.js';
-
+import FeedbackModal from './FeedbackModal.jsx';
+import FeedbackFallback from './FeedbackFallback.jsx';
+import { useFeedback } from '../hooks/useFeedback';
+import viewQuestions from '../feedback/meta_data_questions.json';
 
 // 2. IMPORT ICONS
 import animalIcon from '../assets/animal.webp';
@@ -184,6 +187,10 @@ const AccessItem = ({ label, value, isLink }) => {
 // --- Main Component ---
 
 const MetadataPage = () => {
+  const {
+        allFeedback, isFeedbackOpen, setIsFeedbackOpen,
+        fallbackData, setFallbackData, handleSaveDraft, handleFinalSubmit
+    } = useFeedback(viewQuestions);
   const data = studyData;
   const [expandedTables, setExpandedTables] = useState({});
   const [showEmailMenu, setShowEmailMenu] = useState(false);
@@ -354,7 +361,23 @@ const { derivedFilters, activeIcons } = useMemo(() => {
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 font-sans text-gray-800">
-
+        <FeedbackFallback
+                data={fallbackData}
+                onDismiss={() => setFallbackData(null)}
+                onCopy={(text) => {
+                    navigator.clipboard.writeText(text);
+                    setFallbackData(null);
+                }}
+            />
+        <FeedbackModal
+                isOpen={isFeedbackOpen}
+                onClose={() => setIsFeedbackOpen(false)}
+                activeSection="metadata_view" // Custom ID for this page
+                allFeedback={allFeedback}
+                onSaveDraft={handleSaveDraft}
+                onFinalSubmit={handleFinalSubmit}
+                questionData={viewQuestions}
+            />
       {/* --- Left Navigation Panel --- */}
       <nav
         style={{ '--sidebar-width': `${sidebarWidth}px` }}
@@ -751,7 +774,13 @@ const { derivedFilters, activeIcons } = useMemo(() => {
              )}
         </div>
       </aside>
-
+    {/* 3. The Feedback Button */}
+            <button
+                onClick={() => setIsFeedbackOpen(true)}
+                className="fixed bottom-6 right-6 bg-orange-600 text-white p-4 rounded-full shadow-lg hover:bg-orange-700 z-40 font-bold"
+            >
+                Feedback
+            </button>
     </div>
   );
 };
