@@ -1162,7 +1162,7 @@ const handleFinalSubmit = (currentSection, currentAnswers) => {
     const [formData, setFormData] = useState({});
     const [welcomeGuidanceContent, setWelcomeGuidanceContent] = useState('');
         useEffect(() => {
-            fetch('/guidance.md')
+            fetch('../guidance.md')
                 .then(response => response.text())
                 .then(text => {
                     setWelcomeGuidanceContent(text);
