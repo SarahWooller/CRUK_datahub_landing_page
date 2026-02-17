@@ -66,6 +66,7 @@ const App = () => {
           </p>
           <p>
             <a href="./src/upload.html"><b> The upload page </b> - For uploading data.</a>
+
           </p>
 
         </div>
