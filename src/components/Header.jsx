@@ -22,8 +22,12 @@ export const Header = () => {
                 <h2 className="strap-line">CRUK Data Hub</h2>
 
                 <div className="header-buttons">
+                    <a href="./sign_in.html">
                     <button className="btn">Sign in</button>
-                    <button className="btn">Help</button>
+                    </a>
+                    <a href="https://fdm2p6.csb.app/">
+                      <button className="btn">Help</button>
+                    </a>
                 </div>
             </div>
 
@@ -35,8 +39,8 @@ export const Header = () => {
                             CRUK Data Strategy
                         </a>
                     </li>
-                    <li><a href="./protect_data.html">How we protect your data</a></li>
-                    <li><a href="./protect_data.html">Data Custodian Area</a></li>
+                    <li><a href="./protect.html">How we protect your data</a></li>
+                    <li><a href="./upload.html">Data Custodian Area</a></li>
 
                 </ul>
             </nav>
