@@ -1,4 +1,5 @@
 import React from 'react';
+import { createPortal } from 'react-dom';
 import FeedbackModal from './FeedbackModal.jsx';
 import FeedbackFallback from './FeedbackFallback.jsx';
 import { useFeedback } from '../hooks/useFeedback';
@@ -16,7 +17,7 @@ export const FeedbackWidget = () => {
         handleFinalSubmit
     } = useFeedback(viewQuestions);
 
-    return (
+    const widgetJSX = (
         <>
             {/* 1. The Fallback Toast/Notification */}
             <FeedbackFallback
@@ -42,10 +43,11 @@ export const FeedbackWidget = () => {
             {/* 3. The Floating Trigger Button */}
             <button
                 onClick={() => setIsFeedbackOpen(true)}
-                className="fixed bottom-6 right-6 bg-orange-600 text-white p-4 rounded-full shadow-lg hover:bg-orange-700 z-50 font-bold"
+                className="fixed bottom-6 right-6 bg-orange-600 text-white p-4 rounded-full shadow-lg hover:bg-orange-700 z-[9999] font-bold"
             >
                 Feedback
             </button>
         </>
     );
+    return createPortal(widgetJSX, document.body);
 };
