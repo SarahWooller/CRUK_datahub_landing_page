@@ -26,7 +26,6 @@ export default defineConfig({
         top_bar: resolve(__dirname, 'src/top_bar.html'),
         alt_studies: resolve(__dirname, 'src/alt_studies.html'),
         just_vert_bar: resolve(__dirname, 'src/just_vert_bar.html'),
-        protect: resolve(__dirname, 'src/protect.html'),
         upload: resolve(__dirname, 'src/upload.html'),
       },
     },
