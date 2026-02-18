@@ -6,6 +6,8 @@ import { Header } from './components/Header.jsx';
 import { StudiesSection } from './components/AltStudiesSection.jsx';
 // Import the new widget
 import { FeedbackWidget } from './components/FeedbackWidget.jsx';
+import { InstructionsWidget } from './components/InstructionsWidget.jsx';
+
 
 function renderReactComponent(targetId, Component) {
   const targetElement = document.getElementById(targetId);
@@ -26,3 +28,7 @@ renderReactComponent('introduction', <Introduction/>);
 renderReactComponent('filter_navbar', <FilterApp/>);
 renderReactComponent('studies', <StudiesSection/>);
 renderReactComponent('feedback_widget', <FeedbackWidget/>);
+renderReactComponent(
+  'instructions_widget',
+  <InstructionsWidget fileUrl="/studies_help.md" />
+);
