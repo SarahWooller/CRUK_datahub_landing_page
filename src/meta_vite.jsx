@@ -1,8 +1,10 @@
-import React from 'react';
+
+import React from 'react'; // React is now imported from node_modules
 import ReactDOM from 'react-dom/client';
-import SchemaPage from './components/SchemaPage.jsx';
+import { MetadataPage} from './components/MetadataPage2.jsx'; // 👈 Note the named import for Filters
 import { Header } from './components/Header.jsx'
 import { InstructionsWidget } from './components/InstructionsWidget.jsx';
+
 
 function renderReactComponent(targetId, Component) {
   // 1. Get the target DOM element
@@ -25,9 +27,9 @@ function renderReactComponent(targetId, Component) {
 }
 
 renderReactComponent('header', <Header/>)
-renderReactComponent('upload', <SchemaPage/>)
-renderReactComponent(upload, SchemaPage);
+renderReactComponent('meta', <MetadataPage/>)
 renderReactComponent(
   'instructions_widget',
-  <InstructionsWidget fileUrl="/instructions/upload_help.md" />
+  <InstructionsWidget fileUrl="/instructions/meta_help.md" />
 );
+

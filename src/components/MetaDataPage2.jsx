@@ -186,7 +186,7 @@ const AccessItem = ({ label, value, isLink }) => {
 
 // --- Main Component ---
 
-const MetadataPage = () => {
+export const MetadataPage = () => {
   const {
         allFeedback, isFeedbackOpen, setIsFeedbackOpen,
         fallbackData, setFallbackData, handleSaveDraft, handleFinalSubmit
@@ -784,8 +784,3 @@ const { derivedFilters, activeIcons } = useMemo(() => {
     </div>
   );
 };
-
-const meta = ReactDOM.createRoot(document.getElementById('meta'));
-meta.render(<MetadataPage />);
-
-export default MetadataPage;
