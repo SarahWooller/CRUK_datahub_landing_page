@@ -30,6 +30,6 @@ renderReactComponent('header', <Header/>)
 renderReactComponent('meta', <MetadataPage/>)
 renderReactComponent(
   'instructions_widget',
-  <InstructionsWidget fileUrl="/instructions/meta_help.md" />
+  <InstructionsWidget fileUrl="/meta_help.md" />
 );
 

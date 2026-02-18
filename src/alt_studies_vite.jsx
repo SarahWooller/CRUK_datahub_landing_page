@@ -30,5 +30,5 @@ renderReactComponent('studies', <StudiesSection/>);
 renderReactComponent('feedback_widget', <FeedbackWidget/>);
 renderReactComponent(
   'instructions_widget',
-  <InstructionsWidget fileUrl="/instructions/studies_help.md" />
+  <InstructionsWidget fileUrl="/studies_help.md" />
 );
