@@ -28,6 +28,7 @@
     "re-resizable": "^6.11.2",
     "react-draggable": "^4.5.0",
     "react-hook-form": "^7.71.1",
+    "react-markdown": "^10.1.0",
     "react-resizable-panels": "^4.6.2"
   }
 }
