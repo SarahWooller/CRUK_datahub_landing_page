@@ -344,7 +344,7 @@ const HelpOverlay = ({ isOpen, onClose }) => {
 };
 
 // Main Application Component
-export const FilterApp = () => {
+export const FilterApp = (props) => {
     const [activePanel, setActivePanel] = useState(null);
     const [selectedFilters, setSelectedFilters] = useState(new Set());
     const [logicMessage, setLogicMessage] = useState("");
@@ -495,29 +495,22 @@ export const FilterApp = () => {
     }, []);
 
     const handleFindStudies = useCallback(() => {
-        // Log the current action
-        console.log(`Executing search with ${counts.total} filters. Current logic message: ${logicMessage}`);
-
-        // 1. Check if filters are selected
         if (counts.total > 0 && logicMessage) {
-            // 2. Execute the filter logic from the external utility file
             const results = executeFilterLogic(logicMessage);
 
-            // 3. You can use the results object to update UI or perform further actions
             if (results.success) {
-                // Example: Update the total count found in the button label or display the results studies
-                console.log(`Successfully found ${results.count} studies.`);
+                // Create a custom event with the study IDs
+                const filterEvent = new CustomEvent('cruk-filter-updated', {
+                    detail: { studies: results.studies }
+                });
+                // Dispatch it to the window
+                window.dispatchEvent(filterEvent);
+
+                console.log("Event dispatched with studies:", results.studies);
             }
-        } else {
-             // Optional: Alert the user if they press Find Studies with no filters (though button is disabled)
-             console.log("No studies to find. Please select filters first.");
         }
-
-        // Close the panel after finding studies
         setActivePanel(null);
-
-    }, [counts.total, logicMessage]); // Dependencies remain the same
-
+    }, [counts.total, logicMessage]);
 
     const renderPanel = () => {
         const props = {

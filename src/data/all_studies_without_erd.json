@@ -1,0 +1,3371 @@
+[
+    {
+        "identifier": "6eb0c130-9865-4e10-8e67-a7ec5d307f8r",
+        "version": "1.0.0",
+        "revisions": [],
+        "issued": "2024-01-01T00:00:00.000Z",
+        "modified": "2024-01-01T00:00:00.000Z",
+        "summary": {
+            "title": "Renal Cell Carcinoma (RCC) Histopathology WSI",
+            "abstract": "Whole Slide Images (H&E stained) of 300 clear cell RCC nephrectomy specimens. Annotated for nuclear grade and necrosis.",
+            "dataCustodian": {
+                "identifier": "30f16703-28bc-4f45-9ce5-625d2d3db27d",
+                "name": "CRUK",
+                "logo": "https://www.sussex.ac.uk/brand/",
+                "contactPoint": "test@test.co.uk"
+            },
+            "funders": "CRUK\nNIHR",
+            "populationSize": 1298,
+            "keywords": [
+                "Renal",
+                "Cell",
+                "Carcinoma",
+                "(RCC)",
+                "Histopathology"
+            ],
+            "doiName": "10.1000/data.19",
+            "contactPoint": "access@custodian-19.org"
+        },
+        "documentation": {
+            "description": "Whole Slide Images (H&E stained) of 300 clear cell RCC nephrectomy specimens. Annotated for nuclear grade and necrosis. This is a dummy description generated for testing purposes.",
+            "inPipeline": "Available"
+        },
+        "coverage": {
+            "spatial": "United Kingdom",
+            "followUp": "1 - 10 Years",
+            "typicalAgeRangeMin": 9,
+            "typicalAgeRangeMax": 22
+        },
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Annual",
+                "startDate": "2020-01-01",
+                "timeLag": "1-2 months"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "General research use"
+                ]
+            },
+            "access": {
+                "accessRights": "Open access upon request.",
+                "jurisdiction": [
+                    "GB-ENG"
+                ]
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingScheme": [
+                    "ICD10"
+                ],
+                "conformsTo": [
+                    "OMOP"
+                ],
+                "language": [
+                    "en"
+                ],
+                "format": [
+                    "text/csv"
+                ]
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 4839,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count"
+            }
+        ],
+        "demographicFrequency": {
+            "age": [
+                {
+                    "bin": "50-54 years",
+                    "count": 10
+                },
+                {
+                    "bin": "55-59 years",
+                    "count": 20
+                }
+            ],
+            "ethnicity": [
+                {
+                    "bin": "White - British",
+                    "count": 25
+                },
+                {
+                    "bin": "Not stated",
+                    "count": 5
+                }
+            ]
+        },
+        "datasetFilters": [
+            {
+                "id": "0_0_0_12_0",
+                "label": "C64 Kidney",
+                "category": "C64-C68 Urinary tract",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_2",
+                "label": "Imaging Data",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_0",
+                "label": "Biobank Samples",
+                "category": "dataType",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_4",
+                "label": "Open to applicants",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_46",
+                "label": "Kidney cancer",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_4_13",
+                "label": "KIRC (Kidney renal clear cell carcinoma)",
+                "category": "cancerTypes",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            }
+        ],
+        "project": {
+            "projectName": "RCC-DIGITAL: Whole Slide Imaging for Histopathological Assessment of RCC",
+            "leadResearcher": "Dr A.J. Singh",
+            "leadResearchInstitute": "Barts Health NHS Trust",
+            "grantNumbers": "KUWHVWLHPZ_65282975",
+            "projectStartDate": "2025-12-20",
+            "projectEndDate": "2029-12-20",
+            "projectScope": "Digital whole-slide histopathology images (WSI) of renal cell carcinoma for computer-aided diagnosis and grading."
+        },
+        "icons": [
+            "Patient Study",
+            "Longitudinal Study",
+            "Samples Available"
+        ]
+    },
+    {
+        "identifier": "7a92d7ed-e659-41f3-9dc2-f7339070c805",
+        "version": "1.0.0",
+        "revisions": [],
+        "issued": "2024-01-01T00:00:00.000Z",
+        "modified": "2024-01-01T00:00:00.000Z",
+        "summary": {
+            "title": "Pancreatic Ductal Adenocarcinoma (PDAC) Proteomics Landscape",
+            "abstract": "Mass-spectrometry based proteomics analysis of 200 resected PDAC tumor samples compared with adjacent normal tissue. Includes detailed clinical staging and chemotherapy response data.",
+            "dataCustodian": {
+                "identifier": "30f16703-28bc-4f45-9ce5-625d2d3db27d",
+                "name": "CRUK",
+                "logo": "https://www.sussex.ac.uk/brand/",
+                "contactPoint": "test@test.co.uk"
+            },
+            "funders": "CRUK\nNIHR",
+            "populationSize": 1476,
+            "keywords": [
+                "Pancreatic",
+                "Ductal",
+                "Adenocarcinoma",
+                "(PDAC)",
+                "Proteomics"
+            ],
+            "doiName": "10.1000/data.2",
+            "contactPoint": "access@custodian-2.org"
+        },
+        "documentation": {
+            "description": "Mass-spectrometry based proteomics analysis of 200 resected PDAC tumor samples compared with adjacent normal tissue. Includes detailed clinical staging and chemotherapy response data. This is a dummy description generated for testing purposes.",
+            "inPipeline": "Available"
+        },
+        "coverage": {
+            "spatial": "United Kingdom",
+            "followUp": "1 - 10 Years",
+            "typicalAgeRangeMin": 44,
+            "typicalAgeRangeMax": 78
+        },
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Annual",
+                "startDate": "2020-01-01",
+                "timeLag": "1-2 months"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "General research use"
+                ]
+            },
+            "access": {
+                "accessRights": "Open access upon request.",
+                "jurisdiction": [
+                    "GB-ENG"
+                ]
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingScheme": [
+                    "ICD10"
+                ],
+                "conformsTo": [
+                    "OMOP"
+                ],
+                "language": [
+                    "en"
+                ],
+                "format": [
+                    "text/csv"
+                ]
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 2767,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count"
+            }
+        ],
+        "demographicFrequency": {
+            "age": [
+                {
+                    "bin": "50-54 years",
+                    "count": 10
+                },
+                {
+                    "bin": "55-59 years",
+                    "count": 20
+                }
+            ],
+            "ethnicity": [
+                {
+                    "bin": "White - British",
+                    "count": 25
+                },
+                {
+                    "bin": "Not stated",
+                    "count": 5
+                }
+            ]
+        },
+        "datasetFilters": [
+            {
+                "id": "0_0_0_1_10",
+                "label": "C25 Pancreas",
+                "category": "C15-C26 Digestive organs",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_1_3_0",
+                "label": "8090/3 Basal cell carcinoma, NOS",
+                "category": "809-811 Basal cell neoplasms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_4",
+                "label": "Multi-omic Data",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_0",
+                "label": "Biobank Samples",
+                "category": "dataType",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_4",
+                "label": "Open to applicants",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_75",
+                "label": "Pancreatic cancer",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_4_24",
+                "label": "PAAD (Pancreatic adenocarcinoma)",
+                "category": "cancerTypes",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            }
+        ],
+        "project": {
+            "projectName": "The PAN-PRO Landscape: Proteomic Mapping of Pancreatic Adenocarcinoma",
+            "leadResearcher": "Dr S.V. Nair",
+            "leadResearchInstitute": "Wellcome Sanger Institute",
+            "grantNumbers": "DHKRWVEAZX_68154631",
+            "projectStartDate": "2022-07-22",
+            "projectEndDate": "2026-09-22",
+            "projectScope": "Comprehensive mass spectrometry-based proteomic profiles from PDAC tumor tissues and matched adjacent normal controls."
+        },
+        "icons": [
+            "Patient Study",
+            "Samples Available"
+        ]
+    },
+    {
+        "identifier": "fa4c21a5-0e15-4ace-b2eb-9b339e1f6b4b",
+        "version": "1.0.0",
+        "revisions": [],
+        "issued": "2024-01-01T00:00:00.000Z",
+        "modified": "2024-01-01T00:00:00.000Z",
+        "summary": {
+            "title": "Triple-Negative Breast Cancer (TNBC) Transcriptomics",
+            "abstract": "Whole transcriptome sequencing (RNA-Seq) of 500 TNBC core biopsies collected prior to neoadjuvant chemotherapy. Correlated with Pathological Complete Response (pCR) rates.",
+            "dataCustodian": {
+                "identifier": "30f16703-28bc-4f45-9ce5-625d2d3db27d",
+                "name": "CRUK",
+                "logo": "https://www.sussex.ac.uk/brand/",
+                "contactPoint": "test@test.co.uk"
+            },
+            "funders": "CRUK\nNIHR",
+            "populationSize": 3880,
+            "keywords": [
+                "Triple-Negative",
+                "Breast",
+                "Cancer",
+                "(TNBC)",
+                "Transcriptomics"
+            ],
+            "doiName": "10.1000/data.3",
+            "contactPoint": "access@custodian-3.org"
+        },
+        "documentation": {
+            "description": "Whole transcriptome sequencing (RNA-Seq) of 500 TNBC core biopsies collected prior to neoadjuvant chemotherapy. Correlated with Pathological Complete Response (pCR) rates. This is a dummy description generated for testing purposes.",
+            "inPipeline": "Available"
+        },
+        "coverage": {
+            "spatial": "United Kingdom",
+            "followUp": "1 - 10 Years",
+            "typicalAgeRangeMin": 10,
+            "typicalAgeRangeMax": 35
+        },
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Annual",
+                "startDate": "2020-01-01",
+                "timeLag": "1-2 months"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "General research use"
+                ]
+            },
+            "access": {
+                "accessRights": "Open access upon request.",
+                "jurisdiction": [
+                    "GB-ENG"
+                ]
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingScheme": [
+                    "ICD10"
+                ],
+                "conformsTo": [
+                    "OMOP"
+                ],
+                "language": [
+                    "en"
+                ],
+                "format": [
+                    "text/csv"
+                ]
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 928,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count"
+            }
+        ],
+        "demographicFrequency": {
+            "age": [
+                {
+                    "bin": "50-54 years",
+                    "count": 10
+                },
+                {
+                    "bin": "55-59 years",
+                    "count": 20
+                }
+            ],
+            "ethnicity": [
+                {
+                    "bin": "White - British",
+                    "count": 25
+                },
+                {
+                    "bin": "Not stated",
+                    "count": 5
+                }
+            ]
+        },
+        "datasetFilters": [
+            {
+                "id": "0_0_0_9",
+                "label": "C50 Breast",
+                "category": "icdOTopography",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_1_8_0",
+                "label": "8440/0 Cystadenoma, NOS",
+                "category": "844-849 Cystic, mucinous and serous neoplasms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_4",
+                "label": "Multi-omic Data",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_5",
+                "label": "Treatments",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_3",
+                "label": "Open only through collaboration",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_15",
+                "label": "Breast cancer",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_4_2",
+                "label": "BRCA (Breast invasive carcinoma)",
+                "category": "cancerTypes",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            }
+        ],
+        "project": {
+            "projectName": "TNBC-TRANSCRIPT: Defining the Transcriptomic Architecture of Triple-Negative Breast Cancer",
+            "leadResearcher": "Dr E.O. Adeyemi",
+            "leadResearchInstitute": "The Institute of Cancer Research (ICR)",
+            "grantNumbers": "YSSYADXFZW_76597347",
+            "projectStartDate": "2022-11-04",
+            "projectEndDate": "2027-02-04",
+            "projectScope": "Bulk and single-cell RNA sequencing data of Triple-Negative Breast Cancer tumors to characterize transcriptomic heterogeneity."
+        },
+        "icons": [
+            "Patient Study"
+        ]
+    },
+    {
+        "identifier": "cdd0849d-2c5a-492e-a485-3fee19beca5e",
+        "version": "1.0.0",
+        "revisions": [],
+        "issued": "2024-01-01T00:00:00.000Z",
+        "modified": "2024-01-01T00:00:00.000Z",
+        "summary": {
+            "title": "Metastatic Melanoma Immunotherapy Response Registry",
+            "abstract": "Real-world data on 1200 patients with metastatic melanoma treated with checkpoint inhibitors (anti-PD1/CTLA4). Includes progression-free survival and immune-related adverse events.",
+            "dataCustodian": {
+                "identifier": "30f16703-28bc-4f45-9ce5-625d2d3db27d",
+                "name": "CRUK",
+                "logo": "https://www.sussex.ac.uk/brand/",
+                "contactPoint": "test@test.co.uk"
+            },
+            "funders": "CRUK\nNIHR",
+            "populationSize": 4206,
+            "keywords": [
+                "Metastatic",
+                "Melanoma",
+                "Immunotherapy",
+                "Response",
+                "Registry"
+            ],
+            "doiName": "10.1000/data.4",
+            "contactPoint": "access@custodian-4.org"
+        },
+        "documentation": {
+            "description": "Real-world data on 1200 patients with metastatic melanoma treated with checkpoint inhibitors (anti-PD1/CTLA4). Includes progression-free survival and immune-related adverse events. This is a dummy description generated for testing purposes.",
+            "inPipeline": "Available"
+        },
+        "coverage": {
+            "spatial": "United Kingdom",
+            "followUp": "1 - 10 Years",
+            "typicalAgeRangeMin": 17,
+            "typicalAgeRangeMax": 23
+        },
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Annual",
+                "startDate": "2020-01-01",
+                "timeLag": "1-2 months"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "General research use"
+                ]
+            },
+            "access": {
+                "accessRights": "Open access upon request.",
+                "jurisdiction": [
+                    "GB-ENG"
+                ]
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingScheme": [
+                    "ICD10"
+                ],
+                "conformsTo": [
+                    "OMOP"
+                ],
+                "language": [
+                    "en"
+                ],
+                "format": [
+                    "text/csv"
+                ]
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 3523,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count"
+            }
+        ],
+        "demographicFrequency": {
+            "age": [
+                {
+                    "bin": "50-54 years",
+                    "count": 10
+                },
+                {
+                    "bin": "55-59 years",
+                    "count": 20
+                }
+            ],
+            "ethnicity": [
+                {
+                    "bin": "White - British",
+                    "count": 25
+                },
+                {
+                    "bin": "Not stated",
+                    "count": 5
+                }
+            ]
+        },
+        "datasetFilters": [
+            {
+                "id": "0_0_0_8",
+                "label": "C49 Connective, subcutaneous and other soft tissues",
+                "category": "icdOTopography",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_1_15",
+                "label": "872-879 Nevi and melanomas",
+                "category": "icdOHistology",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_6",
+                "label": "Clinical Trial",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_5",
+                "label": "Treatments",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_4",
+                "label": "Open to applicants",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_56",
+                "label": "Melanoma skin cancer",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_4_29",
+                "label": "SKCM (Skin Cutaneous Melanoma)",
+                "category": "cancerTypes",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            }
+        ],
+        "project": {
+            "projectName": "MEL-REG: A National Registry for Immunotherapy Response in Metastatic Melanoma",
+            "leadResearcher": "Dr L.J. Chen",
+            "leadResearchInstitute": "Medical Research Council Laboratory of Molecular Biology (LMB)",
+            "grantNumbers": "JLSJJLBAMA_413528364",
+            "projectStartDate": "2023-01-19",
+            "projectEndDate": "2028-01-19",
+            "projectScope": "Longitudinal clinical registry data for metastatic melanoma patients, including immunotherapy response, survival, and adverse events."
+        },
+        "icons": [
+            "Patient Study"
+        ]
+    },
+    {
+        "identifier": "6999d0e7-4826-41c2-954f-3a3e75341710",
+        "version": "1.0.0",
+        "revisions": [],
+        "issued": "2024-01-01T00:00:00.000Z",
+        "modified": "2024-01-01T00:00:00.000Z",
+        "summary": {
+            "title": "Early-Stage Non-Small Cell Lung Cancer (NSCLC) CT Imaging",
+            "abstract": "High-resolution CT imaging dataset of 800 Stage I-II NSCLC patients. Includes radiomic feature extractions and annotated nodule segmentations.",
+            "dataCustodian": {
+                "identifier": "30f16703-28bc-4f45-9ce5-625d2d3db27d",
+                "name": "CRUK",
+                "logo": "https://www.sussex.ac.uk/brand/",
+                "contactPoint": "test@test.co.uk"
+            },
+            "funders": "CRUK\nNIHR",
+            "populationSize": 581,
+            "keywords": [
+                "Early-Stage",
+                "Non-Small",
+                "Cell",
+                "Lung",
+                "Cancer"
+            ],
+            "doiName": "10.1000/data.5",
+            "contactPoint": "access@custodian-5.org"
+        },
+        "documentation": {
+            "description": "High-resolution CT imaging dataset of 800 Stage I-II NSCLC patients. Includes radiomic feature extractions and annotated nodule segmentations. This is a dummy description generated for testing purposes.",
+            "inPipeline": "Available"
+        },
+        "coverage": {
+            "spatial": "United Kingdom",
+            "followUp": "1 - 10 Years",
+            "typicalAgeRangeMin": 49,
+            "typicalAgeRangeMax": 81
+        },
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Annual",
+                "startDate": "2020-01-01",
+                "timeLag": "1-2 months"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "General research use"
+                ]
+            },
+            "access": {
+                "accessRights": "Open access upon request.",
+                "jurisdiction": [
+                    "GB-ENG"
+                ]
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingScheme": [
+                    "ICD10"
+                ],
+                "conformsTo": [
+                    "OMOP"
+                ],
+                "language": [
+                    "en"
+                ],
+                "format": [
+                    "text/csv"
+                ]
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 1970,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count"
+            }
+        ],
+        "demographicFrequency": {
+            "age": [
+                {
+                    "bin": "50-54 years",
+                    "count": 10
+                },
+                {
+                    "bin": "55-59 years",
+                    "count": 20
+                }
+            ],
+            "ethnicity": [
+                {
+                    "bin": "White - British",
+                    "count": 25
+                },
+                {
+                    "bin": "Not stated",
+                    "count": 5
+                }
+            ]
+        },
+        "datasetFilters": [
+            {
+                "id": "0_0_0_2_4",
+                "label": "C34 Bronchus and lung",
+                "category": "C30-C39 Respiratory system and intrathoracic organs",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_1_1_0",
+                "label": "8010/0 Epithelial tumor, benign",
+                "category": "801-804 Epithelial neoplasms, NOS",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_2",
+                "label": "Imaging Data",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_6",
+                "label": "Clinical Trial",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_4",
+                "label": "Open to applicants",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_51",
+                "label": "Lung cancer",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_4_20",
+                "label": "LUSC (Lung squamous cell carcinoma)",
+                "category": "cancerTypes",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            }
+        ],
+        "project": {
+            "projectName": "LUNG-SCAN: CT Imaging Biomarkers for Early-Stage NSCLC Detection",
+            "leadResearcher": "Dr M.R. Goldberg",
+            "leadResearchInstitute": "The Royal Marsden NHS Foundation Trust",
+            "grantNumbers": "SMXSHHUESF_208696373",
+            "projectStartDate": "2023-05-30",
+            "projectEndDate": "2026-11-30",
+            "projectScope": "High-resolution CT imaging and radiomic features from patients diagnosed with early-stage non-small cell lung cancer."
+        },
+        "icons": [
+            "Patient Study",
+            "Longitudinal Study"
+        ]
+    },
+    {
+        "identifier": "9b600f60-edfc-4b10-82f1-f558ba71da8b",
+        "version": "1.0.0",
+        "revisions": [],
+        "issued": "2024-01-01T00:00:00.000Z",
+        "modified": "2024-01-01T00:00:00.000Z",
+        "summary": {
+            "title": "Colorectal Cancer Liver Metastases (CRLM) Surgical Outcomes",
+            "abstract": "Clinical outcome data for 1500 patients undergoing liver resection for colorectal metastases. Variables include margin status, recurrence patterns, and 5-year survival.",
+            "dataCustodian": {
+                "identifier": "30f16703-28bc-4f45-9ce5-625d2d3db27d",
+                "name": "CRUK",
+                "logo": "https://www.sussex.ac.uk/brand/",
+                "contactPoint": "test@test.co.uk"
+            },
+            "funders": "CRUK\nNIHR",
+            "populationSize": 1436,
+            "keywords": [
+                "Colorectal",
+                "Cancer",
+                "Liver",
+                "Metastases",
+                "(CRLM)"
+            ],
+            "doiName": "10.1000/data.6",
+            "contactPoint": "access@custodian-6.org"
+        },
+        "documentation": {
+            "description": "Clinical outcome data for 1500 patients undergoing liver resection for colorectal metastases. Variables include margin status, recurrence patterns, and 5-year survival. This is a dummy description generated for testing purposes.",
+            "inPipeline": "Available"
+        },
+        "coverage": {
+            "spatial": "United Kingdom",
+            "followUp": "1 - 10 Years",
+            "typicalAgeRangeMin": 15,
+            "typicalAgeRangeMax": 61
+        },
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Annual",
+                "startDate": "2020-01-01",
+                "timeLag": "1-2 months"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "General research use"
+                ]
+            },
+            "access": {
+                "accessRights": "Open access upon request.",
+                "jurisdiction": [
+                    "GB-ENG"
+                ]
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingScheme": [
+                    "ICD10"
+                ],
+                "conformsTo": [
+                    "OMOP"
+                ],
+                "language": [
+                    "en"
+                ],
+                "format": [
+                    "text/csv"
+                ]
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 4238,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count"
+            }
+        ],
+        "demographicFrequency": {
+            "age": [
+                {
+                    "bin": "50-54 years",
+                    "count": 10
+                },
+                {
+                    "bin": "55-59 years",
+                    "count": 20
+                }
+            ],
+            "ethnicity": [
+                {
+                    "bin": "White - British",
+                    "count": 25
+                },
+                {
+                    "bin": "Not stated",
+                    "count": 5
+                }
+            ]
+        },
+        "datasetFilters": [
+            {
+                "id": "0_0_0_1_3",
+                "label": "C18 Colon",
+                "category": "C15-C26 Digestive organs",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_0_1_7",
+                "label": "C22 Liver and intrahepatic bile ducts",
+                "category": "C15-C26 Digestive organs",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_1_3_0",
+                "label": "8090/3 Basal cell carcinoma, NOS",
+                "category": "809-811 Basal cell neoplasms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_6",
+                "label": "Clinical Trial",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_5",
+                "label": "Treatments",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_4",
+                "label": "Open to applicants",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_12",
+                "label": "Bowel cancer",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_50",
+                "label": "Liver cancer",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_4_6",
+                "label": "COAD (Colon adenocarcinoma)",
+                "category": "cancerTypes",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_4_18",
+                "label": "LIHC (Liver hepatocellular carcinoma)",
+                "category": "cancerTypes",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            }
+        ],
+        "project": {
+            "projectName": "CRLM-SURG: Surgical Management and Outcomes in Colorectal Liver Metastases",
+            "leadResearcher": "Dr J.K. Patel",
+            "leadResearchInstitute": "University College London Hospitals (UCLH) NHS Foundation Trust",
+            "grantNumbers": "BKZTGBNCEA_85616817",
+            "projectStartDate": "2023-08-12",
+            "projectEndDate": "2027-08-12",
+            "projectScope": "Clinical and surgical outcome data for patients undergoing hepatic resection for metastatic colorectal cancer."
+        },
+        "icons": [
+            "Patient Study"
+        ]
+    },
+    {
+        "identifier": "50ccea77-738f-4314-b145-9865bd98eedd",
+        "version": "1.0.0",
+        "revisions": [],
+        "issued": "2024-01-01T00:00:00.000Z",
+        "modified": "2024-01-01T00:00:00.000Z",
+        "summary": {
+            "title": "Prostate Cancer Active Surveillance MRI Cohort",
+            "abstract": "Longitudinal multiparametric MRI data for 600 men on active surveillance for low-to-intermediate risk prostate cancer. Includes biopsy Gleason scores and PSA kinetics.",
+            "dataCustodian": {
+                "identifier": "30f16703-28bc-4f45-9ce5-625d2d3db27d",
+                "name": "CRUK",
+                "logo": "https://www.sussex.ac.uk/brand/",
+                "contactPoint": "test@test.co.uk"
+            },
+            "funders": "CRUK\nNIHR",
+            "populationSize": 3451,
+            "keywords": [
+                "Prostate",
+                "Cancer",
+                "Active",
+                "Surveillance",
+                "MRI"
+            ],
+            "doiName": "10.1000/data.7",
+            "contactPoint": "access@custodian-7.org"
+        },
+        "documentation": {
+            "description": "Longitudinal multiparametric MRI data for 600 men on active surveillance for low-to-intermediate risk prostate cancer. Includes biopsy Gleason scores and PSA kinetics. This is a dummy description generated for testing purposes.",
+            "inPipeline": "Available"
+        },
+        "coverage": {
+            "spatial": "United Kingdom",
+            "followUp": "1 - 10 Years",
+            "typicalAgeRangeMin": 6,
+            "typicalAgeRangeMax": 28
+        },
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Annual",
+                "startDate": "2020-01-01",
+                "timeLag": "1-2 months"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "General research use"
+                ]
+            },
+            "access": {
+                "accessRights": "Open access upon request.",
+                "jurisdiction": [
+                    "GB-ENG"
+                ]
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingScheme": [
+                    "ICD10"
+                ],
+                "conformsTo": [
+                    "OMOP"
+                ],
+                "language": [
+                    "en"
+                ],
+                "format": [
+                    "text/csv"
+                ]
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 2240,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count"
+            }
+        ],
+        "demographicFrequency": {
+            "age": [
+                {
+                    "bin": "50-54 years",
+                    "count": 10
+                },
+                {
+                    "bin": "55-59 years",
+                    "count": 20
+                }
+            ],
+            "ethnicity": [
+                {
+                    "bin": "White - British",
+                    "count": 25
+                },
+                {
+                    "bin": "Not stated",
+                    "count": 5
+                }
+            ]
+        },
+        "datasetFilters": [
+            {
+                "id": "0_0_0_11_1",
+                "label": "C61 Prostate gland",
+                "category": "C60-C63 Male genital organs",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_1_3_0",
+                "label": "8090/3 Basal cell carcinoma, NOS",
+                "category": "809-811 Basal cell neoplasms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_2",
+                "label": "Imaging Data",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_3",
+                "label": "Longitudinal Follow up",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_4",
+                "label": "Open to applicants",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_81",
+                "label": "Prostate cancer",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_4_26",
+                "label": "PRAD (Prostate adenocarcinoma)",
+                "category": "cancerTypes",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            }
+        ],
+        "project": {
+            "projectName": "PRO-SURVEILLANCE: MRI-Guided Protocols for Active Prostate Monitoring",
+            "leadResearcher": "Dr H.I. Mkrtchyan",
+            "leadResearchInstitute": "Cambridge University Hospitals NHS Foundation Trust",
+            "grantNumbers": "VLTWJJPLIW_524634",
+            "projectStartDate": "2023-12-25",
+            "projectEndDate": "2028-12-25",
+            "projectScope": "Prospective multi-parametric MRI (mpMRI) scans and follow-up biopsy results for prostate cancer patients on active surveillance."
+        },
+        "icons": [
+            "Patient Study",
+            "Longitudinal Study",
+            "Treatments"
+        ]
+    },
+    {
+        "identifier": "c506c918-8a5e-4a30-bc36-8e28ad378e71",
+        "version": "1.0.0",
+        "revisions": [],
+        "issued": "2024-01-01T00:00:00.000Z",
+        "modified": "2024-01-01T00:00:00.000Z",
+        "summary": {
+            "title": "Acute Myeloid Leukemia (AML) Minimal Residual Disease Flow Cytometry",
+            "abstract": "Raw flow cytometry files for MRD assessment in 300 AML patients at post-induction and post-consolidation timepoints. Linked to cytogenetic risk groups.",
+            "dataCustodian": {
+                "identifier": "30f16703-28bc-4f45-9ce5-625d2d3db27d",
+                "name": "CRUK",
+                "logo": "https://www.sussex.ac.uk/brand/",
+                "contactPoint": "test@test.co.uk"
+            },
+            "funders": "CRUK\nNIHR",
+            "populationSize": 1794,
+            "keywords": [
+                "Acute",
+                "Myeloid",
+                "Leukemia",
+                "(AML)",
+                "Minimal"
+            ],
+            "doiName": "10.1000/data.8",
+            "contactPoint": "access@custodian-8.org"
+        },
+        "documentation": {
+            "description": "Raw flow cytometry files for MRD assessment in 300 AML patients at post-induction and post-consolidation timepoints. Linked to cytogenetic risk groups. This is a dummy description generated for testing purposes.",
+            "inPipeline": "Available"
+        },
+        "coverage": {
+            "spatial": "United Kingdom",
+            "followUp": "1 - 10 Years",
+            "typicalAgeRangeMin": 37,
+            "typicalAgeRangeMax": 63
+        },
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Annual",
+                "startDate": "2020-01-01",
+                "timeLag": "1-2 months"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "General research use"
+                ]
+            },
+            "access": {
+                "accessRights": "Open access upon request.",
+                "jurisdiction": [
+                    "GB-ENG"
+                ]
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingScheme": [
+                    "ICD10"
+                ],
+                "conformsTo": [
+                    "OMOP"
+                ],
+                "language": [
+                    "en"
+                ],
+                "format": [
+                    "text/csv"
+                ]
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 1500,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count"
+            }
+        ],
+        "demographicFrequency": {
+            "age": [
+                {
+                    "bin": "50-54 years",
+                    "count": 10
+                },
+                {
+                    "bin": "55-59 years",
+                    "count": 20
+                }
+            ],
+            "ethnicity": [
+                {
+                    "bin": "White - British",
+                    "count": 25
+                },
+                {
+                    "bin": "Not stated",
+                    "count": 5
+                }
+            ]
+        },
+        "datasetFilters": [
+            {
+                "id": "0_0_1_45_5",
+                "label": "9808/3 Mixed phenotype acute leukemia, B/myeloid, NOS",
+                "category": "980-994 Leukemias",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_4",
+                "label": "Multi-omic Data",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_0",
+                "label": "Biobank Samples",
+                "category": "dataType",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_5",
+                "label": "Treatments",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_3",
+                "label": "Open only through collaboration",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_3",
+                "label": "Acute myeloid leukaemia (AML)",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_4_15",
+                "label": "LAML (Acute Myeloid Leukemia)",
+                "category": "cancerTypes",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_0_1_1",
+                "label": "C16 Stomach",
+                "category": "C15-C26 Digestive organs",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            }
+        ],
+        "project": {
+            "projectName": "AML-MRD: Standardizing Flow Cytometry for Minimal Residual Disease",
+            "leadResearcher": "Dr F.B. Richards",
+            "leadResearchInstitute": "Oxford University Hospitals NHS Foundation Trust",
+            "grantNumbers": "WCIOTXBQQO_822496771",
+            "projectStartDate": "2024-02-14",
+            "projectEndDate": "2029-02-14",
+            "projectScope": "Multi-color flow cytometry data for the detection of minimal residual disease (MRD) in acute myeloid leukemia."
+        },
+        "icons": [
+            "Patient Study",
+            "Samples Available"
+        ]
+    },
+    {
+        "identifier": "3ab22c0a-712e-4be0-9595-c97f0eac2287",
+        "version": "1.0.0",
+        "revisions": [],
+        "issued": "2024-01-01T00:00:00.000Z",
+        "modified": "2024-01-01T00:00:00.000Z",
+        "summary": {
+            "title": "Diffuse Large B-Cell Lymphoma (DLBCL) PET-CT Staging",
+            "abstract": "Baseline and interim PET-CT scans for 400 DLBCL patients treated with R-CHOP. Includes Deauville scores and metabolic tumor volume calculations.",
+            "dataCustodian": {
+                "identifier": "30f16703-28bc-4f45-9ce5-625d2d3db27d",
+                "name": "CRUK",
+                "logo": "https://www.sussex.ac.uk/brand/",
+                "contactPoint": "test@test.co.uk"
+            },
+            "funders": "CRUK\nNIHR",
+            "populationSize": 4822,
+            "keywords": [
+                "Diffuse",
+                "Large",
+                "B-Cell",
+                "Lymphoma",
+                "(DLBCL)"
+            ],
+            "doiName": "10.1000/data.9",
+            "contactPoint": "access@custodian-9.org"
+        },
+        "documentation": {
+            "description": "Baseline and interim PET-CT scans for 400 DLBCL patients treated with R-CHOP. Includes Deauville scores and metabolic tumor volume calculations. This is a dummy description generated for testing purposes.",
+            "inPipeline": "Available"
+        },
+        "coverage": {
+            "spatial": "United Kingdom",
+            "followUp": "1 - 10 Years",
+            "typicalAgeRangeMin": 31,
+            "typicalAgeRangeMax": 38
+        },
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Annual",
+                "startDate": "2020-01-01",
+                "timeLag": "1-2 months"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "General research use"
+                ]
+            },
+            "access": {
+                "accessRights": "Open access upon request.",
+                "jurisdiction": [
+                    "GB-ENG"
+                ]
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingScheme": [
+                    "ICD10"
+                ],
+                "conformsTo": [
+                    "OMOP"
+                ],
+                "language": [
+                    "en"
+                ],
+                "format": [
+                    "text/csv"
+                ]
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 254,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count"
+            }
+        ],
+        "demographicFrequency": {
+            "age": [
+                {
+                    "bin": "50-54 years",
+                    "count": 10
+                },
+                {
+                    "bin": "55-59 years",
+                    "count": 20
+                }
+            ],
+            "ethnicity": [
+                {
+                    "bin": "White - British",
+                    "count": 25
+                },
+                {
+                    "bin": "Not stated",
+                    "count": 5
+                }
+            ]
+        },
+        "datasetFilters": [
+            {
+                "id": "0_0_1_40_21",
+                "label": "9680/3 Diffuse large B-cell lymphoma, NOS",
+                "category": "959-972 Hodgkin and non-Hodgkin lymphomas",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_2",
+                "label": "Imaging Data",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_6",
+                "label": "Clinical Trial",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_5",
+                "label": "Treatments",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_4",
+                "label": "Open to applicants",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_70",
+                "label": "Non-Hodgkin lymphoma",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_53",
+                "label": "Lymphoma",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_4_7",
+                "label": "DLBC (Lymphoid Neoplasm Diffuse Large B-cell Lymphoma)",
+                "category": "cancerTypes",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_0_1_1",
+                "label": "C16 Stomach",
+                "category": "C15-C26 Digestive organs",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            }
+        ],
+        "project": {
+            "projectName": "DLBCL-PET: Molecular Imaging and Staging in Large B-Cell Lymphoma",
+            "leadResearcher": "Dr C.W. Zhang",
+            "leadResearchInstitute": "Guy's and St Thomas' NHS Foundation Trust",
+            "grantNumbers": "NITJVPKZRR_720961762",
+            "projectStartDate": "2024-04-01",
+            "projectEndDate": "2027-10-01",
+            "projectScope": "Baseline and interim PET-CT imaging datasets used for metabolic staging and treatment response assessment in DLBCL."
+        },
+        "icons": [
+            "Patient Study",
+            "Longitudinal Study"
+        ]
+    },
+    {
+        "identifier": "e27fa1cc-4320-4203-863e-8fc0d97950f6",
+        "version": "1.0.0",
+        "revisions": [],
+        "issued": "2024-01-01T00:00:00.000Z",
+        "modified": "2024-01-01T00:00:00.000Z",
+        "summary": {
+            "title": "Pediatric Medulloblastoma Methylation Classifier Data",
+            "abstract": "Genome-wide DNA methylation profiling of 250 pediatric medulloblastoma samples. Used to define molecular subgroups (WNT, SHH, Group 3, Group 4).",
+            "dataCustodian": {
+                "identifier": "30f16703-28bc-4f45-9ce5-625d2d3db27d",
+                "name": "CRUK",
+                "logo": "https://www.sussex.ac.uk/brand/",
+                "contactPoint": "test@test.co.uk"
+            },
+            "funders": "CRUK\nNIHR",
+            "populationSize": 4423,
+            "keywords": [
+                "Pediatric",
+                "Medulloblastoma",
+                "Methylation",
+                "Classifier",
+                "Data"
+            ],
+            "doiName": "10.1000/data.10",
+            "contactPoint": "access@custodian-10.org"
+        },
+        "documentation": {
+            "description": "Genome-wide DNA methylation profiling of 250 pediatric medulloblastoma samples. Used to define molecular subgroups (WNT, SHH, Group 3, Group 4). This is a dummy description generated for testing purposes.",
+            "inPipeline": "Available"
+        },
+        "coverage": {
+            "spatial": "United Kingdom",
+            "followUp": "1 - 10 Years",
+            "typicalAgeRangeMin": 23,
+            "typicalAgeRangeMax": 31
+        },
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Annual",
+                "startDate": "2020-01-01",
+                "timeLag": "1-2 months"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "General research use"
+                ]
+            },
+            "access": {
+                "accessRights": "Open access upon request.",
+                "jurisdiction": [
+                    "GB-ENG"
+                ]
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingScheme": [
+                    "ICD10"
+                ],
+                "conformsTo": [
+                    "OMOP"
+                ],
+                "language": [
+                    "en"
+                ],
+                "format": [
+                    "text/csv"
+                ]
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 3183,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count"
+            }
+        ],
+        "demographicFrequency": {
+            "age": [
+                {
+                    "bin": "50-54 years",
+                    "count": 10
+                },
+                {
+                    "bin": "55-59 years",
+                    "count": 20
+                }
+            ],
+            "ethnicity": [
+                {
+                    "bin": "White - British",
+                    "count": 25
+                },
+                {
+                    "bin": "Not stated",
+                    "count": 5
+                }
+            ]
+        },
+        "datasetFilters": [
+            {
+                "id": "0_0_0_13_2_9",
+                "label": "C71.9 Brain, nos",
+                "category": "C71 Brain",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_1_35_36",
+                "label": "9470/3 Medulloblastoma, NOS",
+                "category": "938-948 Gliomas",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_4",
+                "label": "Multi-omic Data",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_0",
+                "label": "Biobank Samples",
+                "category": "dataType",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_3",
+                "label": "Open only through collaboration",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_24",
+                "label": "Children's cancers",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_13",
+                "label": "Brain tumours",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            }
+        ],
+        "project": {
+            "projectName": "MED-METHYL: Methylation-Based Classification of Pediatric Medulloblastoma",
+            "leadResearcher": "Dr T.A. Okafor",
+            "leadResearchInstitute": "The Christie NHS Foundation Trust",
+            "grantNumbers": "IKTWFTSXGF_379765634",
+            "projectStartDate": "2024-06-21",
+            "projectEndDate": "2029-06-21",
+            "projectScope": "DNA methylation array data (450K/850K) from pediatric medulloblastoma samples for subgroup classification and risk modeling."
+        },
+        "icons": [
+            "Patient Study",
+            "Samples Available"
+        ]
+    },
+    {
+        "identifier": "d335d6e2-c38c-4f69-bb76-b3bf84c6d148",
+        "version": "1.0.0",
+        "revisions": [],
+        "issued": "2024-01-01T00:00:00.000Z",
+        "modified": "2024-01-01T00:00:00.000Z",
+        "summary": {
+            "title": "High-Risk Neuroblastoma Genomic Variants (WGS)",
+            "abstract": "Whole Genome Sequencing data from 150 high-risk neuroblastoma cases. Focus on MYCN amplification status, ALK mutations, and chromosomal segmental alterations.",
+            "dataCustodian": {
+                "identifier": "30f16703-28bc-4f45-9ce5-625d2d3db27d",
+                "name": "CRUK",
+                "logo": "https://www.sussex.ac.uk/brand/",
+                "contactPoint": "test@test.co.uk"
+            },
+            "funders": "CRUK\nNIHR",
+            "populationSize": 296,
+            "keywords": [
+                "High-Risk",
+                "Neuroblastoma",
+                "Genomic",
+                "Variants",
+                "(WGS)"
+            ],
+            "doiName": "10.1000/data.11",
+            "contactPoint": "access@custodian-11.org"
+        },
+        "documentation": {
+            "description": "Whole Genome Sequencing data from 150 high-risk neuroblastoma cases. Focus on MYCN amplification status, ALK mutations, and chromosomal segmental alterations. This is a dummy description generated for testing purposes.",
+            "inPipeline": "Available"
+        },
+        "coverage": {
+            "spatial": "United Kingdom",
+            "followUp": "1 - 10 Years",
+            "typicalAgeRangeMin": 7,
+            "typicalAgeRangeMax": 13
+        },
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Annual",
+                "startDate": "2020-01-01",
+                "timeLag": "1-2 months"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "General research use"
+                ]
+            },
+            "access": {
+                "accessRights": "Open access upon request.",
+                "jurisdiction": [
+                    "GB-ENG"
+                ]
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingScheme": [
+                    "ICD10"
+                ],
+                "conformsTo": [
+                    "OMOP"
+                ],
+                "language": [
+                    "en"
+                ],
+                "format": [
+                    "text/csv"
+                ]
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 2754,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count"
+            }
+        ],
+        "demographicFrequency": {
+            "age": [
+                {
+                    "bin": "50-54 years",
+                    "count": 10
+                },
+                {
+                    "bin": "55-59 years",
+                    "count": 20
+                }
+            ],
+            "ethnicity": [
+                {
+                    "bin": "White - British",
+                    "count": 25
+                },
+                {
+                    "bin": "Not stated",
+                    "count": 5
+                }
+            ]
+        },
+        "datasetFilters": [
+            {
+                "id": "0_0_1_36_1",
+                "label": "9490/3 Ganglioneuroblastoma",
+                "category": "949-952 Neuroepitheliomatous neoplasms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_4",
+                "label": "Multi-omic Data",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_0",
+                "label": "Biobank Samples",
+                "category": "dataType",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_6",
+                "label": "Clinical Trial",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_4",
+                "label": "Open to applicants",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_24",
+                "label": "Children's cancers",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_67",
+                "label": "Neuroblastoma",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_0_1_1",
+                "label": "C16 Stomach",
+                "category": "C15-C26 Digestive organs",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            }
+        ],
+        "project": {
+            "projectName": "NEURO-GENOME: Whole Genome Analysis of High-Risk Neuroblastoma",
+            "leadResearcher": "Dr S.M. Gupta",
+            "leadResearchInstitute": "Cancer Research UK Scotland Institute",
+            "grantNumbers": "YOAKFVXNSZ_9158630",
+            "projectStartDate": "2024-09-10",
+            "projectEndDate": "2028-09-10",
+            "projectScope": "Whole genome sequencing (WGS) identifying somatic mutations, copy number variations, and structural variants in high-risk neuroblastoma."
+        },
+        "icons": [
+            "Patient Study",
+            "Samples Available"
+        ]
+    },
+    {
+        "identifier": "09a0dc04-2ec2-473c-be74-80119841d3a6",
+        "version": "1.0.0",
+        "revisions": [],
+        "issued": "2024-01-01T00:00:00.000Z",
+        "modified": "2024-01-01T00:00:00.000Z",
+        "summary": {
+            "title": "National Mammography Screening Database: Interval Cancers",
+            "abstract": "Anonymised screening mammograms from 50,000 women, highlighting interval cancers detected between screening rounds. Includes radiologist density scores.",
+            "dataCustodian": {
+                "identifier": "30f16703-28bc-4f45-9ce5-625d2d3db27d",
+                "name": "CRUK",
+                "logo": "https://www.sussex.ac.uk/brand/",
+                "contactPoint": "test@test.co.uk"
+            },
+            "funders": "CRUK\nNIHR",
+            "populationSize": 2210,
+            "keywords": [
+                "National",
+                "Mammography",
+                "Screening",
+                "Database:",
+                "Interval"
+            ],
+            "doiName": "10.1000/data.12",
+            "contactPoint": "access@custodian-12.org"
+        },
+        "documentation": {
+            "description": "Anonymised screening mammograms from 50,000 women, highlighting interval cancers detected between screening rounds. Includes radiologist density scores. This is a dummy description generated for testing purposes.",
+            "inPipeline": "Available"
+        },
+        "coverage": {
+            "spatial": "United Kingdom",
+            "followUp": "1 - 10 Years",
+            "typicalAgeRangeMin": 3,
+            "typicalAgeRangeMax": 30
+        },
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Annual",
+                "startDate": "2020-01-01",
+                "timeLag": "1-2 months"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "General research use"
+                ]
+            },
+            "access": {
+                "accessRights": "Open access upon request.",
+                "jurisdiction": [
+                    "GB-ENG"
+                ]
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingScheme": [
+                    "ICD10"
+                ],
+                "conformsTo": [
+                    "OMOP"
+                ],
+                "language": [
+                    "en"
+                ],
+                "format": [
+                    "text/csv"
+                ]
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 4712,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count"
+            }
+        ],
+        "demographicFrequency": {
+            "age": [
+                {
+                    "bin": "50-54 years",
+                    "count": 10
+                },
+                {
+                    "bin": "55-59 years",
+                    "count": 20
+                }
+            ],
+            "ethnicity": [
+                {
+                    "bin": "White - British",
+                    "count": 25
+                },
+                {
+                    "bin": "Not stated",
+                    "count": 5
+                }
+            ]
+        },
+        "datasetFilters": [
+            {
+                "id": "0_0_0_9",
+                "label": "C50 Breast",
+                "category": "icdOTopography",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_2",
+                "label": "Imaging Data",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_3",
+                "label": "Longitudinal Follow up",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_4",
+                "label": "Open to applicants",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_15",
+                "label": "Breast cancer",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_4_2",
+                "label": "BRCA (Breast invasive carcinoma)",
+                "category": "cancerTypes",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_1_1_0",
+                "label": "8010/0 Epithelial tumor, benign",
+                "category": "801-804 Epithelial neoplasms, NOS",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            }
+        ],
+        "project": {
+            "projectName": "MAMM-INT: Investigating Interval Cancers in the National Screening Database",
+            "leadResearcher": "Dr G.H. Schmidt",
+            "leadResearchInstitute": "The Babraham Institute",
+            "grantNumbers": "YPTCSNPPDW_362891879",
+            "projectStartDate": "2024-11-28",
+            "projectEndDate": "2029-11-28",
+            "projectScope": "Screening mammograms and longitudinal diagnostic data for breast cancers detected between regular screening intervals."
+        },
+        "icons": [
+            "Patient Study",
+            "Longitudinal Study",
+            "Treatments"
+        ]
+    },
+    {
+        "identifier": "9896ab5b-5205-415f-85cb-1e69928ea03e",
+        "version": "1.0.0",
+        "revisions": [],
+        "issued": "2024-01-01T00:00:00.000Z",
+        "modified": "2024-01-01T00:00:00.000Z",
+        "summary": {
+            "title": "Lung Cancer Screening Low-Dose CT (LDCT) Cohort",
+            "abstract": "LDCT scans from a pilot screening program in high-risk areas. Includes follow-up data on nodule management and lung cancer diagnosis rates.",
+            "dataCustodian": {
+                "identifier": "30f16703-28bc-4f45-9ce5-625d2d3db27d",
+                "name": "CRUK",
+                "logo": "https://www.sussex.ac.uk/brand/",
+                "contactPoint": "test@test.co.uk"
+            },
+            "funders": "CRUK\nNIHR",
+            "populationSize": 1315,
+            "keywords": [
+                "Lung",
+                "Cancer",
+                "Screening",
+                "Low-Dose",
+                "CT"
+            ],
+            "doiName": "10.1000/data.13",
+            "contactPoint": "access@custodian-13.org"
+        },
+        "documentation": {
+            "description": "LDCT scans from a pilot screening program in high-risk areas. Includes follow-up data on nodule management and lung cancer diagnosis rates. This is a dummy description generated for testing purposes.",
+            "inPipeline": "Available"
+        },
+        "coverage": {
+            "spatial": "United Kingdom",
+            "followUp": "1 - 10 Years",
+            "typicalAgeRangeMin": 47,
+            "typicalAgeRangeMax": 91
+        },
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Annual",
+                "startDate": "2020-01-01",
+                "timeLag": "1-2 months"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "General research use"
+                ]
+            },
+            "access": {
+                "accessRights": "Open access upon request.",
+                "jurisdiction": [
+                    "GB-ENG"
+                ]
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingScheme": [
+                    "ICD10"
+                ],
+                "conformsTo": [
+                    "OMOP"
+                ],
+                "language": [
+                    "en"
+                ],
+                "format": [
+                    "text/csv"
+                ]
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 4110,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count"
+            }
+        ],
+        "demographicFrequency": {
+            "age": [
+                {
+                    "bin": "50-54 years",
+                    "count": 10
+                },
+                {
+                    "bin": "55-59 years",
+                    "count": 20
+                }
+            ],
+            "ethnicity": [
+                {
+                    "bin": "White - British",
+                    "count": 25
+                },
+                {
+                    "bin": "Not stated",
+                    "count": 5
+                }
+            ]
+        },
+        "datasetFilters": [
+            {
+                "id": "0_0_0_2_4",
+                "label": "C34 Bronchus and lung",
+                "category": "C30-C39 Respiratory system and intrathoracic organs",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_2",
+                "label": "Imaging Data",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_6",
+                "label": "Clinical Trial",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_4",
+                "label": "Open to applicants",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_51",
+                "label": "Lung cancer",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_4_19",
+                "label": "LUAD (Lung adenocarcinoma)",
+                "category": "cancerTypes",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_1_1_0",
+                "label": "8010/0 Epithelial tumor, benign",
+                "category": "801-804 Epithelial neoplasms, NOS",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            }
+        ],
+        "project": {
+            "projectName": "LDCT-SCREEN: Optimizing Low-Dose CT for Lung Cancer Screening",
+            "leadResearcher": "Dr P.L. Robinson",
+            "leadResearchInstitute": "John Innes Centre",
+            "grantNumbers": "RFZYVHFIMG_349222874",
+            "projectStartDate": "2025-01-05",
+            "projectEndDate": "2028-01-05",
+            "projectScope": "Low-dose CT (LDCT) screening images and associated pathology results from a large-scale lung cancer screening cohort."
+        },
+        "icons": [
+            "Patient Study",
+            "Longitudinal Study"
+        ]
+    },
+    {
+        "identifier": "b7969be5-a41e-46df-b9fc-07d2c5119283",
+        "version": "1.0.0",
+        "revisions": [],
+        "issued": "2024-01-01T00:00:00.000Z",
+        "modified": "2024-01-01T00:00:00.000Z",
+        "summary": {
+            "title": "Pan-Cancer Whole Genome Sequencing (WGS) of Metastasis",
+            "abstract": "WGS data from metastatic biopsy sites across 20 different solid tumor types. Focus on mutational signatures and structural variants driving metastasis.",
+            "dataCustodian": {
+                "identifier": "30f16703-28bc-4f45-9ce5-625d2d3db27d",
+                "name": "CRUK",
+                "logo": "https://www.sussex.ac.uk/brand/",
+                "contactPoint": "test@test.co.uk"
+            },
+            "funders": "CRUK\nNIHR",
+            "populationSize": 2961,
+            "keywords": [
+                "Pan-Cancer",
+                "Whole",
+                "Genome",
+                "Sequencing",
+                "(WGS)"
+            ],
+            "doiName": "10.1000/data.14",
+            "contactPoint": "access@custodian-14.org"
+        },
+        "documentation": {
+            "description": "WGS data from metastatic biopsy sites across 20 different solid tumor types. Focus on mutational signatures and structural variants driving metastasis. This is a dummy description generated for testing purposes.",
+            "inPipeline": "Available"
+        },
+        "coverage": {
+            "spatial": "United Kingdom",
+            "followUp": "1 - 10 Years",
+            "typicalAgeRangeMin": 5,
+            "typicalAgeRangeMax": 46
+        },
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Annual",
+                "startDate": "2020-01-01",
+                "timeLag": "1-2 months"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "General research use"
+                ]
+            },
+            "access": {
+                "accessRights": "Open access upon request.",
+                "jurisdiction": [
+                    "GB-ENG"
+                ]
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingScheme": [
+                    "ICD10"
+                ],
+                "conformsTo": [
+                    "OMOP"
+                ],
+                "language": [
+                    "en"
+                ],
+                "format": [
+                    "text/csv"
+                ]
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 1113,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count"
+            }
+        ],
+        "demographicFrequency": {
+            "age": [
+                {
+                    "bin": "50-54 years",
+                    "count": 10
+                },
+                {
+                    "bin": "55-59 years",
+                    "count": 20
+                }
+            ],
+            "ethnicity": [
+                {
+                    "bin": "White - British",
+                    "count": 25
+                },
+                {
+                    "bin": "Not stated",
+                    "count": 5
+                }
+            ]
+        },
+        "datasetFilters": [
+            {
+                "id": "0_0_0_2_4",
+                "label": "C34 Bronchus and lung",
+                "category": "C30-C39 Respiratory system and intrathoracic organs",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_0_9",
+                "label": "C50 Breast",
+                "category": "icdOTopography",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_0_1_3",
+                "label": "C18 Colon",
+                "category": "C15-C26 Digestive organs",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_4",
+                "label": "Multi-omic Data",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_0",
+                "label": "Biobank Samples",
+                "category": "dataType",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_3",
+                "label": "Open only through collaboration",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_51",
+                "label": "Lung cancer",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_15",
+                "label": "Breast cancer",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_12",
+                "label": "Bowel cancer",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_1_1_0",
+                "label": "8010/0 Epithelial tumor, benign",
+                "category": "801-804 Epithelial neoplasms, NOS",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            }
+        ],
+        "project": {
+            "projectName": "META-WGS: Pan-Cancer Whole Genome Sequencing of Metastatic Disease",
+            "leadResearcher": "Dr Y.H. Siddiqui",
+            "leadResearchInstitute": "The Roslin Institute",
+            "grantNumbers": "LUXHHRADUE_404645544",
+            "projectStartDate": "2025-03-22",
+            "projectEndDate": "2030-03-22",
+            "projectScope": "Cross-cancer whole genome sequencing (WGS) of metastatic lesions to identify common drivers of advanced disease."
+        },
+        "icons": [
+            "Patient Study",
+            "Samples Available"
+        ]
+    },
+    {
+        "identifier": "79bc17c5-8504-480c-aae5-c739fbcbe5cd",
+        "version": "1.0.0",
+        "revisions": [],
+        "issued": "2024-01-01T00:00:00.000Z",
+        "modified": "2024-01-01T00:00:00.000Z",
+        "summary": {
+            "title": "Circulating Tumor DNA (ctDNA) in Colorectal Cancer",
+            "abstract": "Serial plasma ctDNA analysis in Stage II/III colorectal cancer patients post-surgery. Correlated with radiological recurrence and adjuvant therapy benefit.",
+            "dataCustodian": {
+                "identifier": "30f16703-28bc-4f45-9ce5-625d2d3db27d",
+                "name": "CRUK",
+                "logo": "https://www.sussex.ac.uk/brand/",
+                "contactPoint": "test@test.co.uk"
+            },
+            "funders": "CRUK\nNIHR",
+            "populationSize": 1834,
+            "keywords": [
+                "Circulating",
+                "Tumor",
+                "DNA",
+                "(ctDNA)",
+                "in"
+            ],
+            "doiName": "10.1000/data.15",
+            "contactPoint": "access@custodian-15.org"
+        },
+        "documentation": {
+            "description": "Serial plasma ctDNA analysis in Stage II/III colorectal cancer patients post-surgery. Correlated with radiological recurrence and adjuvant therapy benefit. This is a dummy description generated for testing purposes.",
+            "inPipeline": "Available"
+        },
+        "coverage": {
+            "spatial": "United Kingdom",
+            "followUp": "1 - 10 Years",
+            "typicalAgeRangeMin": 2,
+            "typicalAgeRangeMax": 21
+        },
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Annual",
+                "startDate": "2020-01-01",
+                "timeLag": "1-2 months"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "General research use"
+                ]
+            },
+            "access": {
+                "accessRights": "Open access upon request.",
+                "jurisdiction": [
+                    "GB-ENG"
+                ]
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingScheme": [
+                    "ICD10"
+                ],
+                "conformsTo": [
+                    "OMOP"
+                ],
+                "language": [
+                    "en"
+                ],
+                "format": [
+                    "text/csv"
+                ]
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 4533,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count"
+            }
+        ],
+        "demographicFrequency": {
+            "age": [
+                {
+                    "bin": "50-54 years",
+                    "count": 10
+                },
+                {
+                    "bin": "55-59 years",
+                    "count": 20
+                }
+            ],
+            "ethnicity": [
+                {
+                    "bin": "White - British",
+                    "count": 25
+                },
+                {
+                    "bin": "Not stated",
+                    "count": 5
+                }
+            ]
+        },
+        "datasetFilters": [
+            {
+                "id": "0_0_0_1_3",
+                "label": "C18 Colon",
+                "category": "C15-C26 Digestive organs",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_1_3_0",
+                "label": "8090/3 Basal cell carcinoma, NOS",
+                "category": "809-811 Basal cell neoplasms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_4",
+                "label": "Multi-omic Data",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_3",
+                "label": "Longitudinal Follow up",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_4",
+                "label": "Open to applicants",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_12",
+                "label": "Bowel cancer",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_4_6",
+                "label": "COAD (Colon adenocarcinoma)",
+                "category": "cancerTypes",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            }
+        ],
+        "project": {
+            "projectName": "LIQUID-CRC: Circulating Tumor DNA for Colorectal Cancer Monitoring",
+            "leadResearcher": "Prof R.D. O\u2019Sullivan",
+            "leadResearchInstitute": "Earlham Institute",
+            "grantNumbers": "REZLMNKEXG_1917972",
+            "projectStartDate": "2025-05-18",
+            "projectEndDate": "2029-05-18",
+            "projectScope": "Longitudinal ctDNA concentrations and sequencing data for monitoring minimal residual disease and recurrence in colorectal cancer."
+        },
+        "icons": [
+            "Patient Study",
+            "Treatments"
+        ]
+    },
+    {
+        "identifier": "906d5fb8-179d-4886-b831-884adea2878a",
+        "version": "1.0.0",
+        "revisions": [],
+        "issued": "2024-01-01T00:00:00.000Z",
+        "modified": "2024-01-01T00:00:00.000Z",
+        "summary": {
+            "title": "Primary Care Referrals for Suspected Cancer (Two-Week Wait)",
+            "abstract": "EHR extract of 10,000 urgent cancer referrals from GP practices. Tracks conversion rates to cancer diagnosis and time-to-treatment intervals.",
+            "dataCustodian": {
+                "identifier": "30f16703-28bc-4f45-9ce5-625d2d3db27d",
+                "name": "CRUK",
+                "logo": "https://www.sussex.ac.uk/brand/",
+                "contactPoint": "test@test.co.uk"
+            },
+            "funders": "CRUK\nNIHR",
+            "populationSize": 631,
+            "keywords": [
+                "Primary",
+                "Care",
+                "Referrals",
+                "for",
+                "Suspected"
+            ],
+            "doiName": "10.1000/data.16",
+            "contactPoint": "access@custodian-16.org"
+        },
+        "documentation": {
+            "description": "EHR extract of 10,000 urgent cancer referrals from GP practices. Tracks conversion rates to cancer diagnosis and time-to-treatment intervals. This is a dummy description generated for testing purposes.",
+            "inPipeline": "Available"
+        },
+        "coverage": {
+            "spatial": "United Kingdom",
+            "followUp": "1 - 10 Years",
+            "typicalAgeRangeMin": 23,
+            "typicalAgeRangeMax": 45
+        },
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Annual",
+                "startDate": "2020-01-01",
+                "timeLag": "1-2 months"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "General research use"
+                ]
+            },
+            "access": {
+                "accessRights": "Open access upon request.",
+                "jurisdiction": [
+                    "GB-ENG"
+                ]
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingScheme": [
+                    "ICD10"
+                ],
+                "conformsTo": [
+                    "OMOP"
+                ],
+                "language": [
+                    "en"
+                ],
+                "format": [
+                    "text/csv"
+                ]
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 670,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count"
+            }
+        ],
+        "demographicFrequency": {
+            "age": [
+                {
+                    "bin": "50-54 years",
+                    "count": 10
+                },
+                {
+                    "bin": "55-59 years",
+                    "count": 20
+                }
+            ],
+            "ethnicity": [
+                {
+                    "bin": "White - British",
+                    "count": 25
+                },
+                {
+                    "bin": "Not stated",
+                    "count": 5
+                }
+            ]
+        },
+        "datasetFilters": [
+            {
+                "id": "0_2_3_6",
+                "label": "Clinical Trial",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_3",
+                "label": "Longitudinal Follow up",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_4",
+                "label": "Open to applicants",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_0_1_1",
+                "label": "C16 Stomach",
+                "category": "C15-C26 Digestive organs",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_1_1_0",
+                "label": "8010/0 Epithelial tumor, benign",
+                "category": "801-804 Epithelial neoplasms, NOS",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            }
+        ],
+        "project": {
+            "projectName": "TWW-PATH: Evaluating Urgent Primary Care Referral Pathways",
+            "leadResearcher": "Dr B.N. Idowu",
+            "leadResearchInstitute": "Quadram Institute Bioscience",
+            "grantNumbers": "FZFMEXVBYA_901200174",
+            "projectStartDate": "2025-07-09",
+            "projectEndDate": "2030-07-09",
+            "projectScope": "Referral pathways and clinical outcomes for patients entering the UK primary care two-week wait system for suspected cancer."
+        },
+        "icons": [
+            "Patient Study",
+            "Treatments"
+        ]
+    },
+    {
+        "identifier": "64662f0a-994a-4d01-a9f0-8fcef365a704",
+        "version": "1.0.0",
+        "revisions": [],
+        "issued": "2024-01-01T00:00:00.000Z",
+        "modified": "2024-01-01T00:00:00.000Z",
+        "summary": {
+            "title": "HES Linked to SACT: Breast Cancer Outcomes",
+            "abstract": "Hospital Episode Statistics linked to Systemic Anti-Cancer Therapy datasets for national breast cancer cohort. Analysis of readmission rates and toxicity.",
+            "dataCustodian": {
+                "identifier": "30f16703-28bc-4f45-9ce5-625d2d3db27d",
+                "name": "CRUK",
+                "logo": "https://www.sussex.ac.uk/brand/",
+                "contactPoint": "test@test.co.uk"
+            },
+            "funders": "CRUK\nNIHR",
+            "populationSize": 2896,
+            "keywords": [
+                "HES",
+                "Linked",
+                "to",
+                "SACT:",
+                "Breast"
+            ],
+            "doiName": "10.1000/data.17",
+            "contactPoint": "access@custodian-17.org"
+        },
+        "documentation": {
+            "description": "Hospital Episode Statistics linked to Systemic Anti-Cancer Therapy datasets for national breast cancer cohort. Analysis of readmission rates and toxicity. This is a dummy description generated for testing purposes.",
+            "inPipeline": "Available"
+        },
+        "coverage": {
+            "spatial": "United Kingdom",
+            "followUp": "1 - 10 Years",
+            "typicalAgeRangeMin": 24,
+            "typicalAgeRangeMax": 29
+        },
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Annual",
+                "startDate": "2020-01-01",
+                "timeLag": "1-2 months"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "General research use"
+                ]
+            },
+            "access": {
+                "accessRights": "Open access upon request.",
+                "jurisdiction": [
+                    "GB-ENG"
+                ]
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingScheme": [
+                    "ICD10"
+                ],
+                "conformsTo": [
+                    "OMOP"
+                ],
+                "language": [
+                    "en"
+                ],
+                "format": [
+                    "text/csv"
+                ]
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 1924,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count"
+            }
+        ],
+        "demographicFrequency": {
+            "age": [
+                {
+                    "bin": "50-54 years",
+                    "count": 10
+                },
+                {
+                    "bin": "55-59 years",
+                    "count": 20
+                }
+            ],
+            "ethnicity": [
+                {
+                    "bin": "White - British",
+                    "count": 25
+                },
+                {
+                    "bin": "Not stated",
+                    "count": 5
+                }
+            ]
+        },
+        "datasetFilters": [
+            {
+                "id": "0_0_0_9",
+                "label": "C50 Breast",
+                "category": "icdOTopography",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_6",
+                "label": "Clinical Trial",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_5",
+                "label": "Treatments",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_3",
+                "label": "Longitudinal Follow up",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_4",
+                "label": "Open to applicants",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_15",
+                "label": "Breast cancer",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_1_1_0",
+                "label": "8010/0 Epithelial tumor, benign",
+                "category": "801-804 Epithelial neoplasms, NOS",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            }
+        ],
+        "project": {
+            "projectName": "SACT-OUTCOMES: RWE in Breast Cancer via HES and Treatment Linkage",
+            "leadResearcher": "Prof K.L. Wong",
+            "leadResearchInstitute": "The Pirbright Institute",
+            "grantNumbers": "DZIERQNWZB_57430661",
+            "projectStartDate": "2025-09-30",
+            "projectEndDate": "2028-09-30",
+            "projectScope": "Real-world evidence datasets linking Hospital Episode Statistics (HES) and SACT treatment data for breast cancer patients."
+        },
+        "icons": [
+            "Patient Study",
+            "Treatments"
+        ]
+    },
+    {
+        "identifier": "20181b5f-066a-4acb-a322-ae3f45a38916",
+        "version": "1.0.0",
+        "revisions": [],
+        "issued": "2024-01-01T00:00:00.000Z",
+        "modified": "2024-01-01T00:00:00.000Z",
+        "summary": {
+            "title": "Ovarian Cancer Ascites Metabolomics",
+            "abstract": "NMR-based metabolomic profiling of ascites fluid from 100 ovarian cancer patients. Identification of metabolic signatures associated with platinum resistance.",
+            "dataCustodian": {
+                "identifier": "30f16703-28bc-4f45-9ce5-625d2d3db27d",
+                "name": "CRUK",
+                "logo": "https://www.sussex.ac.uk/brand/",
+                "contactPoint": "test@test.co.uk"
+            },
+            "funders": "CRUK\nNIHR",
+            "populationSize": 962,
+            "keywords": [
+                "Ovarian",
+                "Cancer",
+                "Ascites",
+                "Metabolomics"
+            ],
+            "doiName": "10.1000/data.18",
+            "contactPoint": "access@custodian-18.org"
+        },
+        "documentation": {
+            "description": "NMR-based metabolomic profiling of ascites fluid from 100 ovarian cancer patients. Identification of metabolic signatures associated with platinum resistance. This is a dummy description generated for testing purposes.",
+            "inPipeline": "Available"
+        },
+        "coverage": {
+            "spatial": "United Kingdom",
+            "followUp": "1 - 10 Years",
+            "typicalAgeRangeMin": 41,
+            "typicalAgeRangeMax": 70
+        },
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Annual",
+                "startDate": "2020-01-01",
+                "timeLag": "1-2 months"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "General research use"
+                ]
+            },
+            "access": {
+                "accessRights": "Open access upon request.",
+                "jurisdiction": [
+                    "GB-ENG"
+                ]
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingScheme": [
+                    "ICD10"
+                ],
+                "conformsTo": [
+                    "OMOP"
+                ],
+                "language": [
+                    "en"
+                ],
+                "format": [
+                    "text/csv"
+                ]
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 3135,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count"
+            }
+        ],
+        "demographicFrequency": {
+            "age": [
+                {
+                    "bin": "50-54 years",
+                    "count": 10
+                },
+                {
+                    "bin": "55-59 years",
+                    "count": 20
+                }
+            ],
+            "ethnicity": [
+                {
+                    "bin": "White - British",
+                    "count": 25
+                },
+                {
+                    "bin": "Not stated",
+                    "count": 5
+                }
+            ]
+        },
+        "datasetFilters": [
+            {
+                "id": "0_0_0_10_5",
+                "label": "C56 Ovary",
+                "category": "C51-C58 Female genital organs",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_1_3_0",
+                "label": "8090/3 Basal cell carcinoma, NOS",
+                "category": "809-811 Basal cell neoplasms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_4",
+                "label": "Multi-omic Data",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_0",
+                "label": "Biobank Samples",
+                "category": "dataType",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_4",
+                "label": "Open to applicants",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_74",
+                "label": "Ovarian cancer",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_4_23",
+                "label": "OV (Ovarian serous cystadenocarcinoma)",
+                "category": "cancerTypes",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            }
+        ],
+        "project": {
+            "projectName": "OVA-METABO: Metabolomic Profiling of Ovarian Cancer Ascites",
+            "leadResearcher": "Dr D.A. Rossi",
+            "leadResearchInstitute": "The Rosalind Franklin Institute",
+            "grantNumbers": "NMVQJGDQWC_998513102",
+            "projectStartDate": "2025-11-12",
+            "projectEndDate": "2030-11-12",
+            "projectScope": "Mass spectrometry-based metabolomic profiles of ascitic fluid obtained from patients with advanced ovarian cancer."
+        },
+        "icons": [
+            "Patient Study",
+            "Samples Available"
+        ]
+    },
+    {
+        "identifier": "6eb0c130-9865-4e10-8e67-a7ec5d307f8e",
+        "version": "1.0.0",
+        "revisions": [],
+        "issued": "2024-01-01T00:00:00.000Z",
+        "modified": "2024-01-01T00:00:00.000Z",
+        "summary": {
+            "title": "Renal Cell Carcinoma (RCC) Histopathology WSI",
+            "abstract": "Whole Slide Images (H&E stained) of 300 clear cell RCC nephrectomy specimens. Annotated for nuclear grade and necrosis.",
+            "dataCustodian": {
+                "identifier": "30f16703-28bc-4f45-9ce5-625d2d3db27d",
+                "name": "CRUK",
+                "logo": "https://www.sussex.ac.uk/brand/",
+                "contactPoint": "test@test.co.uk"
+            },
+            "funders": "CRUK\nNIHR",
+            "populationSize": 1298,
+            "keywords": [
+                "Renal",
+                "Cell",
+                "Carcinoma",
+                "(RCC)",
+                "Histopathology"
+            ],
+            "doiName": "10.1000/data.19",
+            "contactPoint": "access@custodian-19.org"
+        },
+        "documentation": {
+            "description": "Whole Slide Images (H&E stained) of 300 clear cell RCC nephrectomy specimens. Annotated for nuclear grade and necrosis. This is a dummy description generated for testing purposes.",
+            "inPipeline": "Available"
+        },
+        "coverage": {
+            "spatial": "United Kingdom",
+            "followUp": "1 - 10 Years",
+            "typicalAgeRangeMin": 0,
+            "typicalAgeRangeMax": 26
+        },
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Annual",
+                "startDate": "2020-01-01",
+                "timeLag": "1-2 months"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "General research use"
+                ]
+            },
+            "access": {
+                "accessRights": "Open access upon request.",
+                "jurisdiction": [
+                    "GB-ENG"
+                ]
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingScheme": [
+                    "ICD10"
+                ],
+                "conformsTo": [
+                    "OMOP"
+                ],
+                "language": [
+                    "en"
+                ],
+                "format": [
+                    "text/csv"
+                ]
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 4839,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count"
+            }
+        ],
+        "demographicFrequency": {
+            "age": [
+                {
+                    "bin": "50-54 years",
+                    "count": 10
+                },
+                {
+                    "bin": "55-59 years",
+                    "count": 20
+                }
+            ],
+            "ethnicity": [
+                {
+                    "bin": "White - British",
+                    "count": 25
+                },
+                {
+                    "bin": "Not stated",
+                    "count": 5
+                }
+            ]
+        },
+        "datasetFilters": [
+            {
+                "id": "0_0_0_12_0",
+                "label": "C64 Kidney",
+                "category": "C64-C68 Urinary tract",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_2",
+                "label": "Imaging Data",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_0",
+                "label": "Biobank Samples",
+                "category": "dataType",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_4",
+                "label": "Open to applicants",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_46",
+                "label": "Kidney cancer",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_4_13",
+                "label": "KIRC (Kidney renal clear cell carcinoma)",
+                "category": "cancerTypes",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            }
+        ],
+        "project": {
+            "projectName": "RCC-DIGITAL: Whole Slide Imaging for Histopathological Assessment of RCC",
+            "leadResearcher": "Dr A.J. Singh",
+            "leadResearchInstitute": "Barts Health NHS Trust",
+            "grantNumbers": "KUWHVWLHPZ_65282975",
+            "projectStartDate": "2025-12-20",
+            "projectEndDate": "2029-12-20",
+            "projectScope": "Digital whole-slide histopathology images (WSI) of renal cell carcinoma for computer-aided diagnosis and grading."
+        },
+        "icons": [
+            "Patient Study",
+            "Longitudinal Study",
+            "Samples Available"
+        ]
+    },
+    {
+        "identifier": "3c948757-39e5-4ee6-8bf8-4be4439d8707",
+        "version": "1.0.0",
+        "revisions": [],
+        "issued": "2024-01-01T00:00:00.000Z",
+        "modified": "2024-01-01T00:00:00.000Z",
+        "summary": {
+            "title": "Bladder Cancer Cystoscopy and Recurrence Registry",
+            "abstract": "Registry data tracking recurrence patterns in non-muscle invasive bladder cancer. Includes frequency of cystoscopy and intravesical therapy details.",
+            "dataCustodian": {
+                "identifier": "30f16703-28bc-4f45-9ce5-625d2d3db27d",
+                "name": "CRUK",
+                "logo": "https://www.sussex.ac.uk/brand/",
+                "contactPoint": "test@test.co.uk"
+            },
+            "funders": "CRUK\nNIHR",
+            "populationSize": 1867,
+            "keywords": [
+                "Bladder",
+                "Cancer",
+                "Cystoscopy",
+                "and",
+                "Recurrence"
+            ],
+            "doiName": "10.1000/data.20",
+            "contactPoint": "access@custodian-20.org"
+        },
+        "documentation": {
+            "description": "Registry data tracking recurrence patterns in non-muscle invasive bladder cancer. Includes frequency of cystoscopy and intravesical therapy details. This is a dummy description generated for testing purposes.",
+            "inPipeline": "Available"
+        },
+        "coverage": {
+            "spatial": "United Kingdom",
+            "followUp": "1 - 10 Years",
+            "typicalAgeRangeMin": 7,
+            "typicalAgeRangeMax": 24
+        },
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Annual",
+                "startDate": "2020-01-01",
+                "timeLag": "1-2 months"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "General research use"
+                ]
+            },
+            "access": {
+                "accessRights": "Open access upon request.",
+                "jurisdiction": [
+                    "GB-ENG"
+                ]
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingScheme": [
+                    "ICD10"
+                ],
+                "conformsTo": [
+                    "OMOP"
+                ],
+                "language": [
+                    "en"
+                ],
+                "format": [
+                    "text/csv"
+                ]
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 3949,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count"
+            }
+        ],
+        "demographicFrequency": {
+            "age": [
+                {
+                    "bin": "50-54 years",
+                    "count": 10
+                },
+                {
+                    "bin": "55-59 years",
+                    "count": 20
+                }
+            ],
+            "ethnicity": [
+                {
+                    "bin": "White - British",
+                    "count": 25
+                },
+                {
+                    "bin": "Not stated",
+                    "count": 5
+                }
+            ]
+        },
+        "datasetFilters": [
+            {
+                "id": "0_0_0_12_1",
+                "label": "C65 Renal pelvis",
+                "category": "C64-C68 Urinary tract",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_6",
+                "label": "Clinical Trial",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_3",
+                "label": "Longitudinal Follow up",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_5",
+                "label": "Treatments",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_4",
+                "label": "Open to applicants",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_2_9",
+                "label": "Bladder cancer",
+                "category": "crukTerms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_4_1",
+                "label": "BLCA (Bladder Urothelial Carcinoma)",
+                "category": "cancerTypes",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_1_1_0",
+                "label": "8010/0 Epithelial tumor, benign",
+                "category": "801-804 Epithelial neoplasms, NOS",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            }
+        ],
+        "project": {
+            "projectName": "CYSTO-TRACK: A Registry for Bladder Cancer Recurrence and Surveillance",
+            "leadResearcher": "Dr M.E. Stewart",
+            "leadResearchInstitute": "Manchester University NHS Foundation Trust",
+            "grantNumbers": "EMHOSUBLLC_942975658",
+            "projectStartDate": "2026-01-10",
+            "projectEndDate": "2030-01-10",
+            "projectScope": "Serial cystoscopy records and longitudinal recurrence data for patients with non-muscle invasive bladder cancer."
+        },
+        "icons": [
+            "Patient Study",
+            "Treatments"
+        ]
+    }
+]

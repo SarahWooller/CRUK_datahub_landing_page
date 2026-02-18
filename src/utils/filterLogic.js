@@ -139,7 +139,11 @@ const infixToPrefix = (infix) => {
 const parsePrefixExpression = (expression) => {
     expression = expression.trim();
 
-    if (!expression.includes('(')) {
+    // 1. Identify if the string starts with a known operator
+    const isFunctionalExpression = expression.startsWith('AND') || expression.startsWith('OR');
+
+    // 2. If it lacks parentheses OR doesn't start with an operator, it's a label
+    if (!expression.includes('(') || !isFunctionalExpression) {
         // Base case: Operand (filter label)
         // Look up the ID using the label, then get the studies using the ID
         const studyId = filterNameToId[expression];
@@ -147,6 +151,7 @@ const parsePrefixExpression = (expression) => {
         return `new Set([${(studies || []).join(', ')}])`;
     }
 
+    // 3. Only proceed with Regex matching if it passed the operator check
     const match = expression.match(/^([A-Z]+)\s*\((.*)\)$/);
     if (!match) {
         throw new Error(`Prefix parsing error: Invalid format for expression: ${expression}`);
