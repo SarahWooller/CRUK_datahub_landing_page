@@ -29,5 +29,5 @@ renderReactComponent('upload', <SchemaPage/>)
 renderReactComponent(upload, SchemaPage);
 renderReactComponent(
   'instructions_widget',
-  <InstructionsWidget fileUrl="/instructions/upload_help.md" />
+  <InstructionsWidget fileUrl="/upload_help.md" />
 );
