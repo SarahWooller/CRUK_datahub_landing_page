@@ -58,6 +58,9 @@ const App = () => {
             <a href="./src/alt_studies.html"><b>The search page</b> - for finding studies and displaying a brief synopsis.</a>
           </p>
           <p>
+            <a href="./src/studies2.html"><b>Alternative rendition of the search page to emphasise the filters</b> - for finding studies and displaying a brief synopsis.</a>
+          </p>
+          <p>
             <a href="https://gateway-web-five.vercel.app/en/search?type=datasets"><b>We are currently in the process of linking our search page</b> That page should appear here shortly.</a>
           </p>
 
