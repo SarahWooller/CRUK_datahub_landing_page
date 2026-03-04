@@ -8,7 +8,6 @@
     "visibleSections": [
       "welcome",
       "version",
-      "project",
       "summary",
       "documentation",
       "datasetFilters",
