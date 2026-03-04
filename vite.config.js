@@ -28,6 +28,8 @@ export default defineConfig({
         studies2: resolve(__dirname, 'src/studies2.html'),
         just_vert_bar: resolve(__dirname, 'src/just_vert_bar.html'),
         upload: resolve(__dirname, 'src/upload.html'),
+        upload_project: resolve(__dirname, 'src/upload_project.html'),
+        dashboard: resolve(__dirname, 'src/dashboard.html'),
       },
     },
   },
