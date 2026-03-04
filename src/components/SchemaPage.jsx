@@ -73,7 +73,6 @@ const deepMerge = (target, source) => {
 // --- Safe Schema Loading and Merging ---
 const RAW_SCHEMA = schema.properties ? schema : (schema.fullContent || {});
 const OVERLAY_SCHEMA = semanticSchema.properties ? semanticSchema : (semanticSchema.fullContent || semanticSchema);
-
 // This creates a new object where semanticSchema properties overwrite rawSchema properties
 const DATA_SCHEMA = deepMerge(RAW_SCHEMA, OVERLAY_SCHEMA);
 const VISIBLE_SECTIONS = DATA_SCHEMA.visibleSections

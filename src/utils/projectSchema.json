@@ -1,0 +1,127 @@
+{
+  "$defs":
+    {
+      "Project": {
+    "properties": {
+      "pid": {
+                              "anyOf": [
+                                    {
+                                          "$ref": "#/$defs/OneHundredFiftyCharacters"
+                                    },
+                                    {
+                                          "type": "null"
+                                    }
+                              ],
+                              "default": null,
+                              "title": "Persistent identifier of the study"
+                        },
+      "projectName": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/OneHundredFiftyCharacters"
+          }
+        ],
+        "title": "Project Title",
+        "description": "The Project Title should be unique to the CRUK datahub."
+      },
+      "leadResearcher": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/OneHundredFiftyCharacters"
+          }
+        ],
+        "examples": [
+          "Dr Smith"
+        ],
+        "title": "Lead Researcher",
+        "description": ""
+      },
+      "leadResearchInstitute": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/OneHundredFiftyCharacters"
+          }
+        ],
+        "examples": [
+          "Sussex University"
+        ],
+        "title": "Lead Research Institute",
+        "description": ""
+      },
+      "grantNumbers": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        ],
+        "description": "List of CRUK and any other grant numbers.",
+        "examples": [
+          "ABC123"
+        ],
+        "guidance": "Normally specified on the grant acceptance letter",
+        "title": "Grant number(s)"
+      },
+      "projectStartDate": {
+        "anyOf": [
+          {
+            "format": "date",
+            "type": "string"
+          },
+          {
+            "format": "date-time",
+            "type": "string"
+          }
+        ],
+        "description": "Starting date of project grant.",
+        "guidance": "Date on which the dataset project starts. This is normally set out in the grant contract and will be different from the start of any data collection",
+        "title": "Project Start Date"
+      },
+      "projectEndDate": {
+        "anyOf": [
+          {
+            "format": "date",
+            "type": "string"
+          },
+          {
+            "format": "date-time",
+            "type": "string"
+          },
+          {
+            "$ref": "#/$defs/EndDateEnum"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "description": "Current end date of project grant.",
+        "guidance": "Date on which the dataset project is currently projected to finish. This is normally set out in the grant contract and will be different from the end of any data collection",
+        "title": "Project End Date"
+      },
+      "projectScope": {
+        "anyOf": [
+          {
+            "maxLength": 500,
+            "minLength": 5,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "description": "data and biospecimens expected to result from the grant.",
+        "guidance": "Short paragraph setting out the types of data / biospecimens likely to result from the grant and the cancers covered",
+        "examples": [
+          "Longitudinal genomic data including somatic mutations"
+        ],
+        "title": "Project Scope"
+      }
+    }
+  }
+    }
+}

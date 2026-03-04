@@ -55,7 +55,13 @@ const App = () => {
         <p>The most up to date pages are as follows</p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
           <p>
+            <a href="./src/dashboard.html">The dashboard</a>
+          </p>
+          <p>
             <a href="./src/alt_studies.html"><b>The search page</b> - for finding studies and displaying a brief synopsis.</a>
+          </p>
+          <p>
+            <a href="./src/studies2.html"><b>Alternative rendition of the search page to emphasise the filters</b> - for finding studies and displaying a brief synopsis.</a>
           </p>
           <p>
             <a href="https://gateway-web-five.vercel.app/en/search?type=datasets"><b>We are currently in the process of linking our search page</b> That page should appear here shortly.</a>
@@ -65,10 +71,13 @@ const App = () => {
             <a href="./src/meta.html"><b>The metadata details page </b> - For displaying the metadata of the selected dataset.</a>
           </p>
           <p>
-            <a href="./src/upload.html"><b> The upload page </b> - For uploading data.</a>
+            <a href="./src/upload.html"><b> The upload page </b> - For uploading information about datasets.</a>
 
           </p>
+<p>
+            <a href="./src/upload_project.html"><b> The upload page </b> - For uploading information about projects.</a>
 
+          </p>
         </div>
       </div>
 
