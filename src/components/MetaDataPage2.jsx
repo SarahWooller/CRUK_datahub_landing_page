@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom/client';
 // 1. IMPORT DATA FROM UTILS
 import studyData from '../utils/dummy_data/optimam_partial.json';
 import { filterData } from '../utils/longer_filter_data.js';
+
+// Provide opportunity for feedback
 import FeedbackModal from './FeedbackModal.jsx';
 import FeedbackFallback from './FeedbackFallback.jsx';
 import { useFeedback } from '../hooks/useFeedback';
