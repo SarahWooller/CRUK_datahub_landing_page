@@ -939,6 +939,20 @@ const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance, onU
 
             {isContainer ? (
                 <div className="space-y-6">
+                    {sectionKey === 'structuralMetadata' && DATA_SCHEMA.$defs?.FormatAndStandards?.properties?.format && (
+                        <div className="mb-8 border-b-2 border-indigo-100 pb-6 bg-indigo-50/30 p-4 rounded-lg">
+                            <FieldRenderer
+                                propKey="format"
+                                prop={DATA_SCHEMA.$defs.FormatAndStandards.properties.format}
+                                /* This path ensures data is saved to the correct location */
+                                path={['accessibility', 'formatAndStandards', 'format']}
+                                formData={formData}
+                                onChange={onFormChange}
+                                isRequired={true}
+                                setActiveGuidance={setActiveGuidance}
+                            />
+                        </div>
+                    )}
                    {Object.keys(definition.properties)
                     .filter((propKey) => {
                         // 1. Check top-level inclusion (e.g., summary)
