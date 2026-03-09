@@ -57,8 +57,8 @@
           "associatedMedia": {
             "description": "Url linking to associated media. Note: media asset can be hosted by the organisation or uploaded using the onboarding portal."
           }
-        }
-      },
+          }
+          },
       "Image": {
         "properties": {
           "image": {
@@ -334,6 +334,9 @@
         "provenance": {
           "description": "Optional information setting out how often the information is updated and the time period covered.",
           "title": "Dateset Timelines"
+        },
+        "structuralMetadata": {
+          "description": "Descriptions of all data formats and tables."
         },
         "summary": {
           "title": "Summary"

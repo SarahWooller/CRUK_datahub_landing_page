@@ -3167,6 +3167,19 @@
                   "title": "Observations",
                   "type": "array"
             },
+            "nonTabularMetadata": {
+                  "anyOf": [
+                        {
+                              "$ref": "#/$defs/nonTabularMetadata"
+                        },
+                        {
+                              "type": "null"
+                        }
+                  ],
+                  "default": null,
+                  "description": "Descriptions of all data not expressible as tables.",
+                  "title": "Other metadata"
+            },
             "structuralMetadata": {
                   "anyOf": [
                         {
