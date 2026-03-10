@@ -2204,6 +2204,45 @@
             "title": "Origin",
             "type": "object"
         },
+        "OtherDataType": {
+            "additionalProperties": false,
+            "properties": {
+                "title": {
+                    "$ref": "#/$defs/OneHundredFiftyCharacters",
+                    "title": "Title",
+                    "guidance": "Short descriptive titles",
+                    "examples": [
+                        "Mammograms",
+                        "Patient recordings"
+                    ]
+                },
+                "description": {
+                    "$ref": "#/$defs/Description",
+                    "title": "Data description",
+                    "guidance": "A description of the data type.",
+                    "examples": [
+                        "2D images of both normal and malignant breasts",
+                        "audio-tapes of oncology consultations"
+                    ]
+                },
+                "format": {
+                    "items": {
+                        "$ref": "#/$defs/Format"
+                    },
+                    "title": "Format",
+                    "description": "Format drawn from https://www.iana.org/assignments/media-types/media-types.xhtml.",
+                    "guidance": "https://www.iana.org/assignments/media-types/media-types.xhtml lists the commonly used formats for different media (such as video/image/audio) etc. If your format is not included in the list set out there, please indicate other and specify in the description.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "title",
+                "description",
+                "format"
+            ],
+            "title": "Other Data Type",
+            "type": "object"
+        },
         "PeriodicityV2": {
             "enum": [
                 "Static",
@@ -3163,18 +3202,21 @@
             "title": "Observations",
             "type": "array"
         },
-        "nonTabularMetadata": {
+        "otherDataTypes": {
             "anyOf": [
                 {
-                    "$ref": "#/$defs/nonTabularMetadata"
+                    "items": {
+                        "$ref": "#/$defs/OtherDataType"
+                    },
+                    "type": "array",
+                    "title": "Non-tabular data types"
                 },
                 {
                     "type": "null"
                 }
             ],
             "default": null,
-            "description": "Descriptions of all data not expressible as tables.",
-            "title": "Other metadata"
+            "title": "Other data types"
         },
         "structuralMetadata": {
             "anyOf": [

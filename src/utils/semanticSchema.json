@@ -11,8 +11,10 @@
       "summary",
       "documentation",
       "datasetFilters",
+
       "structuralMetadata",
       "erd",
+      "otherDataTypes",
       "coverage",
       "provenance",
       "accessibility",
@@ -37,14 +39,20 @@
             "examples": ["Codes are drawn from table 2, listing chEMBL codes for small molecules"],
             "guidance": "Where values within the column are drawn from another table, please name it here. Alternatively if there are a limited number of frequent values list them below"
           }
-        }
+        },
+        "required": ["name"]
       },
       "DataTable": {
         "properties": {
+          "name": {
+            "guidance": "Please identify each of the tables in the dataset. When you fill in information for the first table, a new box will automatically be added to the end."
+          },
+
           "columns": {
             "description": "The columns in the above table."
           }
-        }
+        },
+        "required": ["name"]
       },
       "Documentation": {
         "properties": {
@@ -59,6 +67,14 @@
           }
           }
           },
+      "FormatAndStandards": {
+        "properties": {
+          "format": {
+            "description": "List the types of data available",
+            "guidance": "Where data includes non-text information such as images etc. please list them here. If multiple formats are available, please specify. See application, audio, image, message, model, multipart, text, video, <https://www.iana.org/assignments/media-types/media-types.xhtml>.\\n- Please **enter one format type at a time** and click **Add New Field** to add further keywords.\\n- Note: If your file format is not included in the current list of formats, please indicate other.\\n- **Example**: text/tab-separated-values, application/sql, text/csv, image/diacom-rle"
+          }
+        }
+      },
       "Image": {
         "properties": {
           "image": {
@@ -336,7 +352,7 @@
           "title": "Dateset Timelines"
         },
         "structuralMetadata": {
-          "description": "Descriptions of all data formats and tables."
+          "description": "Descriptions of all data tables. Space for a new table entry is added at the end when you start typing"
         },
         "summary": {
           "title": "Summary"

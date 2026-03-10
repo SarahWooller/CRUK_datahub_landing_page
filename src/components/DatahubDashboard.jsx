@@ -8,7 +8,7 @@ export const DatahubDashboard = () => {
     padding: '20px',
     fontFamily: 'Arial, sans-serif',
     color: '#003580',
-    fontSize: '1.25rem', // Increased font size
+    fontSize: '1.25rem',
     boxSizing: 'border-box',
     borderRadius: '8px',
     boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
@@ -34,7 +34,7 @@ export const DatahubDashboard = () => {
     maxWidth: '500px',
     borderRadius: '4px',
     boxShadow: '0 2px 15px rgba(0,0,0,0.1)',
-    borderLeft: '6px solid #e40085' // CRUK accent
+    borderLeft: '6px solid #e40085'
   };
 
   const headingStyle = {
@@ -68,16 +68,39 @@ export const DatahubDashboard = () => {
     marginTop: '40px'
   };
 
-  const focusHeadingStyle = {
-    ...headingStyle,
-    fontStyle: 'italic'
+  // Updated CTA Styles
+  const ctaContainerStyle = {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+    borderRadius: '4px',
+    border: '1px solid #d1d1d1',
+    backgroundColor: '#ffffff',
+    textDecoration: 'none',
+    overflow: 'hidden',
+    minHeight: '140px',
+    transition: 'all 0.2s ease'
   };
 
-  const wideButtonStyle = {
-    ...buttonStyle,
-    display: 'inline-block',
-    minWidth: '60%',
-    padding: '20px 40px'
+  const ctaImageStyle = {
+    width: '25%',
+    backgroundImage: 'url("../crh.png")',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat'
+  };
+
+  const ctaTextStyle = {
+    width: '75%',
+    color: '#003580',
+    padding: '20px',
+    fontSize: '1.2rem',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxSizing: 'border-box'
   };
 
   return (
@@ -102,9 +125,11 @@ export const DatahubDashboard = () => {
 
       {/* Research Focus Section */}
       <div style={focusSectionStyle}>
-        <h2 style={headingStyle}>Research focus</h2>
-        <a href="/horizons" style={wideButtonStyle}>
-          Explore Cancer Research Horizons Data Resources
+        <a href="/horizons" style={ctaContainerStyle}>
+          <div style={ctaImageStyle} aria-hidden="true"></div>
+          <div style={ctaTextStyle}>
+            Explore Cancer Research Horizons Data Resources
+          </div>
         </a>
       </div>
     </div>
