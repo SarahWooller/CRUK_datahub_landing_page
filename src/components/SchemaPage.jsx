@@ -517,6 +517,7 @@ const FrequencyGrid = ({ value, onChange, enumOptions, label }) => {
 };
 
 // --- Component: Field Renderer (Recursive) ---
+// --- Component: Field Renderer (Recursive) ---
 const FieldRenderer = ({
     propKey,
     prop,
@@ -528,6 +529,7 @@ const FieldRenderer = ({
     level = 0
 }) => {
     const [isMarkdownToggled, setIsMarkdownToggled] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(true);
 
     // Helper: Robustly resolve definitions (handles anyOf with Nulls)
     const getDefinitionAndEnum = (p) => {
@@ -580,15 +582,9 @@ const FieldRenderer = ({
     const rawValue = getValueByPath(formData, path);
     // Use rawValue if it exists, otherwise use the property default or an empty string
     const currentValue = (rawValue !== undefined && rawValue !== null) ? rawValue : (prop.default !== undefined ? prop.default : '');
-    // --- SPECIAL RENDER: Age Frequency Grid ---
-    // Check if this is the "Age" field inside "DemographicFrequency"
-    // We identify it by checking the path or the definition structure
-    if (propKey === 'age' && path.includes('demographicFrequency')) {
-        // 1. Resolve the Enum options for Age
-        // The schema for age items is: { items: { $ref: "#/$defs/Age" } }
-        // The definition for Age has a property 'bin' which refers to 'AgeEnum'
 
-        // This is a manual lookup based on your known schema structure:
+    // --- SPECIAL RENDER: Age Frequency Grid ---
+    if (propKey === 'age' && path.includes('demographicFrequency')) {
         const ageEnumDef = DATA_SCHEMA.$defs?.AgeEnum;
         const ageOptions = ageEnumDef?.enum || [];
 
@@ -620,108 +616,143 @@ const FieldRenderer = ({
             );
         }
     }
-    // --- RENDER: ARRAY TYPES (e.g. Tables, Columns) ---
-if (isArray) {
-    // Force at least one row for array fields like contactPoint or tables
-    const items = Array.isArray(currentValue) && currentValue.length > 0
-        ? currentValue
-        : (fieldDef.items?.type === 'object' ? [{}] : ['']);
 
-    const handleInputChange = (index, newVal) => {
-        const newArr = [...items];
-        newArr[index] = newVal;
 
-        // Auto-expand logic: add a new empty entry when the current last entry is used
-        if (index === items.length - 1 && newVal !== '') {
-            newArr.push(fieldDef.items?.type === 'object' ? {} : '');
-        }
-        onChange(path, newArr);
-    };
+// --- RENDER: ARRAY TYPES (e.g. Tables, Columns) ---
+    if (isArray) {
+        const items = Array.isArray(currentValue) && currentValue.length > 0
+            ? currentValue
+            : (fieldDef.items?.type === 'object' ? [{}] : ['']);
 
-    return (
-        <div className="mb-10">
-            {/* Array Section Header - Rendered once at the top */}
-            <div className="mb-4">
-                <h3 className="text-xl font-bold text-gray-800">{prop.title || propKey}</h3>
-                {prop.description && <p className="text-base text-gray-600">{prop.description}</p>}
+        // Handler for simple primitive arrays (strings, etc.)
+        const handleSimpleInputChange = (index, newVal) => {
+            const newArr = [...items];
+            newArr[index] = newVal;
+            if (index === items.length - 1 && newVal !== '') {
+                newArr.push('');
+            }
+            onChange(path, newArr);
+        };
+
+        return (
+            <div className="mb-10 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                <div
+                    className="mb-4 flex justify-between items-center cursor-pointer select-none"
+                    onClick={() => setIsExpanded(!isExpanded)}
+                >
+                    <div>
+                        <h3 className="text-xl font-bold text-gray-800">{prop.title || propKey}</h3>
+                        {prop.description && <p className="text-base text-gray-600 mt-1">{prop.description}</p>}
+                    </div>
+                    <div className="text-gray-500">
+                        {isExpanded ? (
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                        ) : (
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
+                        )}
+                    </div>
+                </div>
+
+                {isExpanded && (
+                    <div className="space-y-4">
+                        {items.map((item, index) => {
+                            const itemSchema = fieldDef.items || {};
+                            const resolvedItemDef = itemSchema.$ref ? resolveRef(itemSchema.$ref) : itemSchema;
+
+                            return (
+                                <div key={index} className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                                    {resolvedItemDef.properties ? (
+                                        Object.keys(resolvedItemDef.properties).map(childKey => (
+                                            <FieldRenderer
+                                                key={childKey}
+                                                propKey={childKey}
+                                                prop={resolvedItemDef.properties[childKey]}
+                                                path={[...path, index, childKey]}
+                                                formData={formData}
+                                                onChange={(newPath, newVal) => {
+                                                    // Process the deep property change first
+                                                    onChange(newPath, newVal);
+
+                                                    // Instantly generate the next empty object if this is the last item
+                                                    if (index === items.length - 1) {
+                                                        onChange([...path, items.length], {});
+                                                    }
+                                                }}
+                                                isRequired={resolvedItemDef.required?.includes(childKey)}
+                                                setActiveGuidance={setActiveGuidance}
+                                                level={level + 1}
+                                            />
+                                        ))
+                                    ) : (
+                                        <input
+                                            type="text"
+                                            className="w-full p-3 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500 text-lg"
+                                            placeholder={prop.examples ? prop.examples.join(', ') : "Enter value..."}
+                                            value={item || ''}
+                                            onFocus={() => {
+                                                const guidance = prop.guidance || prop.description || 'No guidance provided.';
+                                                setActiveGuidance({ title: prop.title || propKey, guidance });
+                                            }}
+                                            onChange={(e) => handleSimpleInputChange(index, e.target.value)}
+                                        />
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+                )}
             </div>
+        );
+    }
+    // --- RENDER: NESTED OBJECT TYPES ---
+    if (fieldDef.type === 'object' && fieldDef.properties && !isArray) {
+        return (
+            <div className={`border-l-2 border-indigo-200 pl-4 mb-6 ${level > 0 ? 'mt-4' : ''}`}>
+                <div
+                    className="flex justify-between items-center cursor-pointer mb-4 select-none group"
+                    onClick={() => setIsExpanded(!isExpanded)}
+                >
+                    <h3 className="text-md font-bold text-gray-700 group-hover:text-indigo-600 transition-colors">
+                        {prop.title || propKey}
+                    </h3>
+                    <div className="text-gray-400 group-hover:text-indigo-500 transition-colors">
+                        {isExpanded ? (
+                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                        ) : (
+                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
+                        )}
+                    </div>
+                </div>
 
-            <div className="space-y-4">
-                {items.map((item, index) => {
-                    const itemSchema = fieldDef.items || {};
-                    const resolvedItemDef = itemSchema.$ref ? resolveRef(itemSchema.$ref) : itemSchema;
-
-                    return (
-                        <div key={index} className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                            {resolvedItemDef.properties ? (
-                                // Object items: Render properties directly (e.g., Table rows)
-                                Object.keys(resolvedItemDef.properties).map(childKey => (
-                                    <FieldRenderer
-                                        key={childKey}
-                                        propKey={childKey}
-                                        prop={resolvedItemDef.properties[childKey]}
-                                        path={[...path, index, childKey]}
-                                        formData={formData}
-                                        onChange={(newPath, newVal) => {
-                                            handleInputChange(index, item);
-                                            onChange(newPath, newVal);
-                                        }}
-                                        isRequired={resolvedItemDef.required?.includes(childKey)}
-                                        setActiveGuidance={setActiveGuidance}
-                                        level={level + 1}
-                                    />
-                                ))
-                            ) : (
-                                // Simple items: Standard base styling for strings (e.g., Contact Point)
-                                <input
-                                    type="text"
-                                    className="w-full p-3 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500 text-lg"
-                                    placeholder={prop.examples ? prop.examples.join(', ') : "Enter value..."}
-                                    value={item || ''}
-                                    onFocus={() => {
-                                        const guidance = prop.guidance || prop.description || 'No guidance provided.';
-                                        setActiveGuidance({ title: prop.title || propKey, guidance });
-                                    }}
-                                    onChange={(e) => handleInputChange(index, e.target.value)}
+                {isExpanded && (
+                    <div className="space-y-2">
+                        {Object.keys(fieldDef.properties)
+                            .filter((childKey) => {
+                                const includedFields = DATA_SCHEMA.included?.[propKey];
+                                if (includedFields && Array.isArray(includedFields)) {
+                                    return includedFields.includes(childKey);
+                                }
+                                return true;
+                            })
+                            .map((childKey) => (
+                                <FieldRenderer
+                                    key={childKey}
+                                    propKey={childKey}
+                                    prop={fieldDef.properties[childKey]}
+                                    path={[...path, childKey]}
+                                    formData={formData}
+                                    onChange={onChange}
+                                    isRequired={fieldDef.required?.includes(childKey)}
+                                    setActiveGuidance={setActiveGuidance}
+                                    level={level + 1}
                                 />
-                            )}
-                        </div>
-                    );
-                })}
+                            ))}
+                    </div>
+                )}
             </div>
-        </div>
-    );
-}
-// --- RENDER: NESTED OBJECT TYPES ---
-if (fieldDef.type === 'object' && fieldDef.properties && !isArray) {
-    return (
-        <div className={`border-l-2 border-gray-200 pl-4 mb-6 ${level > 0 ? 'mt-4' : ''}`}>
-            <h3 className="text-md font-bold text-gray-700 mb-4">{prop.title || propKey}</h3>
-            {Object.keys(fieldDef.properties)
-                .filter((childKey) => {
-                    // Respect the inclusion list for this specific object key
-                    const includedFields = DATA_SCHEMA.included?.[propKey];
-                    if (includedFields && Array.isArray(includedFields)) {
-                        return includedFields.includes(childKey);
-                    }
-                    return true;
-                })
-                .map((childKey) => (
-                    <FieldRenderer
-                        key={childKey}
-                        propKey={childKey}
-                        prop={fieldDef.properties[childKey]}
-                        path={[...path, childKey]}
-                        formData={formData}
-                        onChange={onChange}
-                        isRequired={fieldDef.required?.includes(childKey)}
-                        setActiveGuidance={setActiveGuidance}
-                        level={level + 1}
-                    />
-                ))}
-        </div>
-    );
-}
+        );
+    }
+
     // --- RENDER: STANDARD INPUTS ---
     let inputType = 'text';
     let rows = 1;
@@ -729,8 +760,6 @@ if (fieldDef.type === 'object' && fieldDef.properties && !isArray) {
     let placeholder = examples && examples.length > 0 ? examples.join(', ') : 'Enter value...';
     const showMarkdownToggle = prop.showMarkdown === "True";
 
-    // DETECTION LOGIC: File Upload (For ERD)
-    // Check if the schema property has contentMediaType set to an image type
     if (prop.contentMediaType && prop.contentMediaType.startsWith('image/')) {
         inputType = 'file';
     } else if (showMarkdownToggle || (prop.title && (prop.title.includes("Description") || prop.title.includes("Guidance") || prop.title.includes("Abstract")))) {
@@ -756,17 +785,16 @@ if (fieldDef.type === 'object' && fieldDef.properties && !isArray) {
         onChange(path, val);
     };
 
-    // HANDLER: File Upload (Convert to Base64)
     const handleFileChange = (e) => {
         const file = e.target.files[0];
         if (file) {
-            if (file.size > 5 * 1024 * 1024) { // 5MB limit check
+            if (file.size > 5 * 1024 * 1024) {
                 alert("File size exceeds 5MB.");
                 return;
             }
             const reader = new FileReader();
             reader.onloadend = () => {
-                onChange(path, reader.result); // Stores "data:image/png;base64,..."
+                onChange(path, reader.result);
             };
             reader.readAsDataURL(file);
         }
@@ -779,7 +807,6 @@ if (fieldDef.type === 'object' && fieldDef.properties && !isArray) {
             </label>
             <p className="text-base text-gray-500 mb-4">{prop.description}</p>
 
-            {/* PREVIEW for File Upload */}
             {inputType === 'file' && currentValue && (
                 <div className="mb-2 p-2 border border-gray-200 rounded bg-gray-50">
                     <p className="text-xs text-gray-500 mb-1">Current Image:</p>
@@ -829,7 +856,6 @@ if (fieldDef.type === 'object' && fieldDef.properties && !isArray) {
                 />
             ) : inputType === 'checkbox' ? (
                  <div className="flex items-center">
-                    {/* Toggle Switch UI */}
                     <button
                         type="button"
                         className={`${
@@ -838,7 +864,6 @@ if (fieldDef.type === 'object' && fieldDef.properties && !isArray) {
                         role="switch"
                         aria-checked={!!currentValue}
                         onClick={() => {
-                            // Toggle logic
                             onChange(path, !currentValue);
                             handleFocus();
                         }}
@@ -876,7 +901,6 @@ if (fieldDef.type === 'object' && fieldDef.properties && !isArray) {
         </div>
     );
 };
-// --- Component: Main Form Logic ---
 // --- Component: Main Form Logic ---
 const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance, onUpload }) => {
 
@@ -939,20 +963,7 @@ const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance, onU
 
             {isContainer ? (
                 <div className="space-y-6">
-                    {sectionKey === 'structuralMetadata' && DATA_SCHEMA.$defs?.FormatAndStandards?.properties?.format && (
-                        <div className="mb-8 border-b-2 border-indigo-100 pb-6 bg-indigo-50/30 p-4 rounded-lg">
-                            <FieldRenderer
-                                propKey="format"
-                                prop={DATA_SCHEMA.$defs.FormatAndStandards.properties.format}
-                                /* This path ensures data is saved to the correct location */
-                                path={['accessibility', 'formatAndStandards', 'format']}
-                                formData={formData}
-                                onChange={onFormChange}
-                                isRequired={true}
-                                setActiveGuidance={setActiveGuidance}
-                            />
-                        </div>
-                    )}
+
                    {Object.keys(definition.properties)
                     .filter((propKey) => {
                         // 1. Check top-level inclusion (e.g., summary)
