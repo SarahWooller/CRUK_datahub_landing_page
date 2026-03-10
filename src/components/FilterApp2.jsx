@@ -594,7 +594,7 @@ return (
 
                                 </button>
                                 <button onClick={() => { setActivePanel('access'); setSearchTerm(''); }} className={getNavButtonClasses('access')}>
-                                    <span className="text-xl font-extrabold">What level of data access is required? <span className="text-sm opacity-80 font-normal ml-1">({counts.access})</span></span>
+                                    <span className="text-xl font-extrabold">Which access restrictions apply? <span className="text-sm opacity-80 font-normal ml-1">({counts.access})</span></span>
 
                                 </button>
                             </div>
