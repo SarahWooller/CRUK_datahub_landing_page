@@ -274,7 +274,7 @@ const FieldRenderer = ({ propKey, prop, path, formData, onChange, isRequired, se
 };
 
 const SchemaForm = ({ formData, onFormChange, setActiveGuidance }) => {
-    const projectDef = DATA_SCHEMA.$defs?.Project || DATA_SCHEMA;
+    const projectDef = DATA_SCHEMA.$defs?.ProjectGrant || DATA_SCHEMA;
     const properties = projectDef.properties || {};
 
     if (Object.keys(properties).length === 0) return <p className="p-8">No project properties found in schema.</p>;
@@ -283,17 +283,19 @@ const SchemaForm = ({ formData, onFormChange, setActiveGuidance }) => {
         <div className="w-full px-8 pb-12">
             <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">Project Details</h2>
             <div className="space-y-6">
-                {Object.keys(properties).map((propKey) => (
-                    <FieldRenderer
-                        key={propKey}
-                        propKey={propKey}
-                        prop={properties[propKey]}
-                        path={[propKey]}
-                        formData={formData}
-                        onChange={onFormChange}
-                        isRequired={projectDef.required?.includes(propKey)}
-                        setActiveGuidance={setActiveGuidance}
-                    />
+                {Object.keys(properties)
+                    .filter((propKey) => propKey !== 'pid') // Exclude pid from rendering
+                    .map((propKey) => (
+                        <FieldRenderer
+                            key={propKey}
+                            propKey={propKey}
+                            prop={properties[propKey]}
+                            path={[propKey]}
+                            formData={formData}
+                            onChange={onFormChange}
+                            isRequired={projectDef.required?.includes(propKey)}
+                            setActiveGuidance={setActiveGuidance}
+                        />
                 ))}
             </div>
         </div>
@@ -373,7 +375,7 @@ const SchemaPage = () => {
         const blob = new Blob([fileData], { type: "application/json" });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
-        link.download = `${formData.projectName?.replace(/\s+/g, '_') || 'project'}.json`;
+        link.download = `${formData.projectGrantName?.replace(/\s+/g, '_') || 'project'}.json`;
         link.href = url;
         link.click();
         URL.revokeObjectURL(url);
@@ -396,7 +398,7 @@ const SchemaPage = () => {
             <FeedbackModal
                 isOpen={isFeedbackOpen}
                 onClose={() => setIsFeedbackOpen(false)}
-                activeSection="project"
+                activeSection="projectGrant"
                 allFeedback={allFeedback}
                 onSaveDraft={handleSaveDraftFeedback}
                 onFinalSubmit={handleFinalSubmit}

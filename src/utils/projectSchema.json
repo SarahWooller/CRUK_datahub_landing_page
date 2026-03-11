@@ -1,7 +1,7 @@
 {
   "$defs":
     {
-      "Project": {
+      "ProjectGrant": {
     "properties": {
       "pid": {
                               "anyOf": [
@@ -15,14 +15,14 @@
                               "default": null,
                               "title": "Persistent identifier of the study"
                         },
-      "projectName": {
+      "projectGrantName": {
         "allOf": [
           {
             "$ref": "#/$defs/OneHundredFiftyCharacters"
           }
         ],
-        "title": "Project Title",
-        "description": "The Project Title should be unique to the CRUK datahub."
+        "title": "Project Grant Title",
+        "description": "The Project Grant Title should be unique to the CRUK datahub. (Add your institute or name if necessary to disambiguate."
       },
       "leadResearcher": {
         "allOf": [
@@ -48,16 +48,10 @@
         "title": "Lead Research Institute",
         "description": ""
       },
-      "grantNumbers": {
+      "grantNumber": {
         "anyOf": [
           {
             "type": "string"
-          },
-          {
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
           }
         ],
         "description": "List of CRUK and any other grant numbers.",
@@ -67,7 +61,7 @@
         "guidance": "Normally specified on the grant acceptance letter",
         "title": "Grant number(s)"
       },
-      "projectStartDate": {
+      "projectGrantStartDate": {
         "anyOf": [
           {
             "format": "date",
@@ -78,11 +72,11 @@
             "type": "string"
           }
         ],
-        "description": "Starting date of project grant.",
-        "guidance": "Date on which the dataset project starts. This is normally set out in the grant contract and will be different from the start of any data collection",
+        "description": "Starting date of projectGrant grant.",
+        "guidance": "Date on which the dataset projectGrant starts. This is normally set out in the grant contract and will be different from the start of any data collection",
         "title": "Project Start Date"
       },
-      "projectEndDate": {
+      "projectGrantEndDate": {
         "anyOf": [
           {
             "format": "date",
@@ -103,7 +97,7 @@
         "guidance": "Date on which the dataset project is currently projected to finish. This is normally set out in the grant contract and will be different from the end of any data collection",
         "title": "Project End Date"
       },
-      "projectScope": {
+      "projectGrantScope": {
         "anyOf": [
           {
             "maxLength": 500,
