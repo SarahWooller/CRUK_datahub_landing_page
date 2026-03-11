@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import SchemaPage from './components/ProjectSchemaPage.jsx';
+import SchemaPage from './components/ProjectGrantSchemaPage.jsx';
 import { Header } from './components/Header.jsx'
 import { InstructionsWidget } from './components/InstructionsWidget.jsx';
 
