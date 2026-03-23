@@ -12266,7 +12266,7 @@ const theFilters =
             },
             "0_1_8": {
                 "id": "0_1_8",
-                "label": "UK/EU only",
+                "label": "generally available for UK/EU use only",
                 "category": "accessType",
                 "primaryGroup": "access-type",
                 "description": "International collaborations outside the EU not generally permitted."
