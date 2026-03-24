@@ -1,12 +1,18 @@
 import React from 'react';
 import "../styles/style.css"
 
-// Define the functional component called Header
 export const Header = () => {
-    // Define the inline style object for the image
     const logoStyle = {
         width: 'auto',
         height: 'auto',
+    };
+
+    const titleStyle = {
+        fontSize: '2rem',
+        fontWeight: '900',
+        textDecoration: 'none',
+        color: 'inherit',
+        display: 'inline-block'
     };
 
     return (
@@ -19,14 +25,17 @@ export const Header = () => {
                         </a>
                     </p>
                 </div>
-                <h2 className="strap-line">CRUK Data Hub</h2>
+
+                <a href="./dashboard.html" style={titleStyle}>
+                    <h1 className="strap-line">CRUK Data Hub</h1>
+                </a>
 
                 <div className="header-buttons">
                     <a href="./sign_in.html">
-                    <button className="btn">Sign in</button>
+                        <button className="btn">Sign in</button>
                     </a>
                     <a href="https://fdm2p6.csb.app/">
-                      <button className="btn">Help</button>
+                        <button className="btn">Help</button>
                     </a>
                 </div>
             </div>
@@ -35,16 +44,33 @@ export const Header = () => {
                 <ul>
                     <li><a href="./about.html">About</a></li>
                     <li>
-                        <a href="https://www.cancerresearchuk.org/funding-for-researchers/research-opportunities-in-data-science?_gl=1*j2h94s*_gcl_aw*R0NMLjE3NTIwNjY3ODcuQ2p3S0NBandwcmpEQmhCVEVpd0ExbTFkMG9kQ3M5bktReW14VlplOW5FUWJ4R0l2X0E4ekdieVpTaVZaWUNBUm1hZ09BN2t1anhNbTlCb0NNSm9RQXZEX0J3RQ..*_gcl_dc*R0NMLjE3NTIwNjY3ODcuQ2p3S0NBandwcmpEQmhCVEVpd0ExbTFkMG9kQ3M5bktReWymxVplOW5FUWJ4R0l2X0E4ekdieVpTaVZaWUNBUm1hZ09BN2t1anhNbTlCb0NNSm9RQXZEX0J3RQ..*_gcl_au*NTU0Mjk1Mzc0LjE3NDg4NjEwMTc.*_ga*MTg1NjY3MDg4OC4xNzQxMDA5MjYx*_ga_58736Z2GNN*czE3NTUyNTE1NTAkbzY0JGcxJHQxNzU1MjUxNjQ4JGo1MCRsMCRoMA..">
+                        <a href="https://www.cancerresearchuk.org/funding-for-researchers/research-opportunities-in-data-science">
                             CRUK Data Strategy
                         </a>
                     </li>
-                    <li><a href="./protect.html">How we protect your data</a></li>
-                    <li><a href="./upload.html">Data Custodian Area</a></li>
+                    <li><a href="./protect_data.html">How we protect your data</a></li>
 
+                    {/* Data Custodian Area - Hover Only Dropdown */}
+                    <li className="nav-dropdown-container">
+                        <a href="#" className="nav-link-main">
+                            Data Custodian Area
+                        </a>
+
+                        <ul className="nav-dropdown-menu">
+                            <li>
+                                <a href="./upload_project.html">
+                                    upload or change project
+                                </a>
+                            </li>
+                            <li>
+                                <a href="./upload.html">
+                                    upload or change dataset
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
         </header>
     );
 };
-
