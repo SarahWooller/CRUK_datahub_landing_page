@@ -173,43 +173,6 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping }) => {
             console.error("Error exporting progress:", e);
         }
     };
-// uploadTopBar.jsx
-
-    const handleSaveToDatabase = async () => {
-        try {
-            // 1. Prepare the data exactly as the backend expects
-            const processedData = associateIcons(formData, prefixIconMapping);
-
-            // 2. Wrap it in the 'metadata_blob' key defined in your Pydantic schema
-            const payload = {
-                metadata_blob: processedData,
-                status: "DRAFT" // Matches models.Dataset.STATUS_DRAFT
-            };
-
-            // 3. Perform the POST request
-            // NOTE: In a real app, 'your_jwt_token' would come from a Context or LocalStorage
-            const response = await fetch('http://127.0.0.1:8000/datasets/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                },
-                body: JSON.stringify(payload)
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.detail || 'Failed to save to database');
-            }
-
-            const result = await response.json();
-            alert(`Successfully saved! Dataset ID: ${result.datasetid}`);
-
-        } catch (error) {
-            console.error("Save error:", error);
-            alert(`Error: ${error.message}`);
-        }
-    };
     const handleDownloadGuide = () => {
         // This assumes your file is named 'guidance.pdf' in the public folder
         const link = document.createElement("a");
@@ -261,10 +224,7 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping }) => {
                     <ActiveIcon />
                     Make active
                 </button>
-                <button
-                    onClick={handleSaveToDatabase}
-                    className="flex items-center hover:text-green-400 transition-colors focus:outline-none"
-                >
+                <button className="flex items-center hover:opacity-80 transition-opacity cursor-not-allowed opacity-70">
                     <SaveIcon />
                     Save as draft
                 </button>
