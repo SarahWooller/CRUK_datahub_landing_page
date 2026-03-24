@@ -88,10 +88,35 @@ return (
             <SignInModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onLoginSuccess={handleLoginSuccess} />
 
             {/* Standard Nav Links */}
-            <nav className="thin-navbar mt-4">
-                <ul className="flex space-x-6 text-sm">
+            <nav className="thin-navbar">
+                <ul>
                     <li><a href="./about.html">About</a></li>
-                    <li><a href="./protect_data.html">Data Protection</a></li>
+                    <li>
+                        <a href="https://www.cancerresearchuk.org/funding-for-researchers/research-opportunities-in-data-science">
+                            CRUK Data Strategy
+                        </a>
+                    </li>
+                    <li><a href="./protect_data.html">How we protect your data</a></li>
+
+                    {/* Data Custodian Area - Hover Only Dropdown */}
+                    <li className="nav-dropdown-container">
+                        <a href="#" className="nav-link-main">
+                            Data Custodian Area
+                        </a>
+
+                        <ul className="nav-dropdown-menu">
+                            <li>
+                                <a href="./upload_project.html">
+                                    upload or change project
+                                </a>
+                            </li>
+                            <li>
+                                <a href="./upload.html">
+                                    upload or change dataset
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
         </header>
