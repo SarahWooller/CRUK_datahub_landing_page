@@ -21,12 +21,15 @@ export default defineConfig({
 
         // The remaining entry points are still in src/.
         // FIX: Removed leading slash '/' from these paths.
+        about: resolve(__dirname, 'src/about.html'),
         meta: resolve(__dirname, 'src/meta.html'),
+        protect_data: resolve(__dirname, 'src/protect_data.html'),
         vert_bar: resolve(__dirname, 'src/vert_bar.html'),
         top_bar: resolve(__dirname, 'src/top_bar.html'),
         alt_studies: resolve(__dirname, 'src/alt_studies.html'),
         studies2: resolve(__dirname, 'src/studies2.html'),
         just_vert_bar: resolve(__dirname, 'src/just_vert_bar.html'),
+        sign_in: resolve(__dirname, 'src/sign_in.html'),
         upload: resolve(__dirname, 'src/upload.html'),
         upload_project: resolve(__dirname, 'src/upload_project.html'),
         dashboard: resolve(__dirname, 'src/dashboard.html'),
