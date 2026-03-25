@@ -381,6 +381,8 @@ const SchemaPage = () => {
         URL.revokeObjectURL(url);
     };
 
+
+
     return (
         <div className="flex flex-col min-h-screen font-sans bg-white">
             {fallbackData && (
@@ -405,7 +407,7 @@ const SchemaPage = () => {
                 questionData={questionData}
             />
 
-            <UploadTopBar formData={formData} schema={DATA_SCHEMA} prefixIconMapping={prefixIconMapping} />
+            <UploadTopBar formData={formData} schema={DATA_SCHEMA} prefixIconMapping={prefixIconMapping} pageType="project"/>
 
             <button
                 onClick={() => setIsFeedbackOpen(true)}

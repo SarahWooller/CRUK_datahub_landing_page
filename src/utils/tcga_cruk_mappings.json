@@ -1,0 +1,1499 @@
+{
+  "CRUK": {
+    "Acute lymphoblastic leukaemia (ALL)": {
+      "ICD-O topography": [
+        "C42.1 Bone marrow",
+        "C42.4 Hematopoietic system, nos"
+      ],
+      "ICD-O histology": [
+        "9811/3 B lymphoblastic leukemia/lymphoma, NOS",
+        "9815/3 B lymphoblastic leukemia/lymphoma with hyperdiploidy",
+        "9816/3 B lymphoblastic leukemia/lymphoma with hypodiploidy(Hypodiploid ALL)",
+        "9817/3 B lymphoblastic leukemia/lymphoma with t(5;14)(q31;q32); IL3-IGH",
+        "9818/3 B lymphoblastic leukemia/lymphoma with t(1;19)(q23;p13.3); E2A-PBX1(TCF3-PBX1)",
+        "9835/3 Precursor cell lymphoblastic leukemia, NOS",
+        "9837/3 Precursor T-cell lymphoblastic leukemia"
+      ]
+    },
+    "Acute myeloid leukaemia (AML)": {
+      "ICD-O topography": [
+        "C42.1 Bone marrow",
+        "C42.4 Hematopoietic system, nos"
+      ],
+      "ICD-O histology": [
+        "9861/3 Acute myeloid leukemia, NOS",
+        "9872/3 Acute myeloid leukemia, minimal differentiation",
+        "9873/3 Acute myeloid leukemia without maturation",
+        "9874/3 Acute myeloid leukemia with maturation",
+        "9867/3 Acute myelomonocytic leukemia, NOS",
+        "9891/3 Acute monocytic leukemia",
+        "9910/3 Acute megakaryoblastic leukemia"
+      ]
+    },
+    "Adrenal gland tumours": {
+      "ICD-O topography": [
+        "C74 Adrenal gland",
+        "C74.0 Cortex of adrenal gland",
+        "C74.1 Medulla of adrenal gland"
+      ],
+      "ICD-O histology": [
+        "8370/0 Adrenal cortical adenoma, NOS",
+        "8370/3 Adrenal cortical carcinoma",
+        "8700/3 Pheochromocytoma, NOS",
+        "8680/3 Paraganglioma, NOS"
+      ]
+    },
+    "Anal cancer": {
+      "ICD-O topography": [
+        "C21 Anus and anal canal",
+        "C21.0 Anus, nos",
+        "C21.1 Anal canal"
+      ],
+      "ICD-O histology": [
+        "8070/3 Squamous cell carcinoma, NOS",
+        "8123/3 Basaloid carcinoma",
+        "8215/3 Adenocarcinoma of anal glands"
+      ]
+    },
+    "Basal cell skin cancer": {
+      "ICD-O topography": [
+        "C44 Skin"
+      ],
+      "ICD-O histology": [
+        "8090/3 Basal cell carcinoma, NOS",
+        "8091/3 Superficial basal cell carcinoma",
+        "8092/3 Infiltrating basal cell carcinoma, NOS",
+        "8093/3 Basal cell carcinoma, fibroepithelial",
+        "8094/3 Basosquamous carcinoma",
+        "8097/3 Basal cell carcinoma, nodular"
+      ]
+    },
+    "Bile duct cancer": {
+      "ICD-O topography": [
+        "C22.1 Intrahepatic bile duct",
+        "C24.0 Extrahepatic bile duct"
+      ],
+      "ICD-O histology": [
+        "8160/3 Cholangiocarcinoma",
+        "8161/3 Bile duct cystadenocarcinoma",
+        "8162/3 Klatskin tumor"
+      ]
+    },
+    "Bladder cancer": {
+      "ICD-O topography": [
+        "C67 Bladder"
+      ],
+      "ICD-O histology": [
+        "8120/3 Transitional cell carcinoma, NOS",
+        "8130/3 Papillary urothelial neoplasm of low malignant potential",
+        "8070/3 Squamous cell carcinoma, NOS",
+        "8140/3 Adenocarcinoma, NOS"
+      ]
+    },
+    "Bone cancer": {
+      "ICD-O topography": [
+        "C40 Bones, joints and articular cartilage of limbs",
+        "C41 Bones, joints and articular cartilage of other and unspecified sites"
+      ],
+      "ICD-O histology": [
+        "9180/3 Osteosarcoma, NOS",
+        "9220/3 Chondrosarcoma, NOS",
+        "9364/3 Ewing sarcoma",
+        "9250/3 Giant cell tumor of bone, malignant",
+        "9370/3 Chordoma, NOS"
+      ]
+    },
+    "Bowel cancer": {
+      "ICD-O topography": [
+        "C18 Colon",
+        "C19 Rectosigmoid junction",
+        "C20 Rectum",
+        "C17 Small intestine"
+      ],
+      "ICD-O histology": [
+        "8140/3 Adenocarcinoma, NOS",
+        "8144/3 Adenocarcinoma, intestinal type",
+        "8480/3 Mucinous adenocarcinoma",
+        "8490/3 Signet ring cell carcinoma"
+      ]
+    },
+    "Brain tumours": {
+      "ICD-O topography": [
+        "C71 Brain",
+        "C70 Meninges"
+      ],
+      "ICD-O histology": [
+        "9440/3 Glioblastoma, NOS",
+        "9400/3 Astrocytoma, NOS",
+        "9450/3 Oligodendroglioma, NOS",
+        "9391/3 Ependymoma, NOS",
+        "9530/0 Meningioma, NOS",
+        "9470/3 Medulloblastoma, NOS"
+      ]
+    },
+    "Breast cancer": {
+      "ICD-O topography": [
+        "C50 Breast"
+      ],
+      "ICD-O histology": [
+        "8500/3 Infiltrating duct carcinoma, NOS",
+        "8520/3 Lobular carcinoma, NOS",
+        "8522/3 Infiltrating duct and lobular carcinoma",
+        "8503/3 Intraductal papillary adenocarcinoma with invasion",
+        "8541/3 Paget disease and infiltrating duct carcinoma of breast"
+      ]
+    },
+    "Cervical cancer": {
+      "ICD-O topography": [
+        "C53 Cervix uteri"
+      ],
+      "ICD-O histology": [
+        "8070/3 Squamous cell carcinoma, NOS",
+        "8384/3 Adenocarcinoma, endocervical type",
+        "8140/3 Adenocarcinoma, NOS"
+      ]
+    },
+    "Colorectal cancer": {
+      "ICD-O topography": [
+        "C18 Colon",
+        "C19 Rectosigmoid junction",
+        "C20 Rectum"
+      ],
+      "ICD-O histology": [
+        "8140/3 Adenocarcinoma, NOS",
+        "8480/3 Mucinous adenocarcinoma",
+        "8490/3 Signet ring cell carcinoma"
+      ]
+    },
+    "Oesophageal cancer": {
+      "ICD-O topography": [
+        "C15 Esophagus"
+      ],
+      "ICD-O histology": [
+        "8070/3 Squamous cell carcinoma, NOS",
+        "8140/3 Adenocarcinoma, NOS"
+      ]
+    },
+    "Gastric cancer": {
+      "ICD-O topography": [
+        "C16 Stomach"
+      ],
+      "ICD-O histology": [
+        "8140/3 Adenocarcinoma, NOS",
+        "8145/3 Carcinoma, diffuse type",
+        "8490/3 Signet ring cell carcinoma"
+      ]
+    },
+    "Head and neck cancer": {
+      "ICD-O topography": [
+        "C00-C14 Lip, oral cavity and pharynx",
+        "C32 Larynx",
+        "C30 Nasal cavity and middle ear",
+        "C31 Accessory sinuses",
+        "C07 Parotid gland",
+        "C08 Other and unspecified major salivary glands"
+      ],
+      "ICD-O histology": [
+        "8070/3 Squamous cell carcinoma, NOS"
+      ]
+    },
+    "Hodgkin lymphoma": {
+      "ICD-O topography": [
+        "C77 Lymph nodes"
+      ],
+      "ICD-O histology": [
+        "9650/3 Hodgkin lymphoma, NOS",
+        "9663/3 Hodgkin lymphoma, nodular sclerosis, NOS",
+        "9652/3 Hodgkin lymphoma, mixed cellularity, NOS"
+      ]
+    },
+    "Kidney cancer": {
+      "ICD-O topography": [
+        "C64 Kidney"
+      ],
+      "ICD-O histology": [
+        "8312/3 Renal cell carcinoma, NOS",
+        "8310/3 Clear cell adenocarcinoma, NOS",
+        "8260/3 Papillary adenocarcinoma, NOS",
+        "8270/3 Chromophobe carcinoma"
+      ]
+    },
+    "Leukaemia": {
+      "ICD-O topography": [
+        "C42.1 Bone marrow",
+        "C42.4 Hematopoietic system, nos"
+      ],
+      "ICD-O histology": [
+        "9800/3 Leukemia, NOS",
+        "9801/3 Acute leukemia, NOS",
+        "9861/3 Acute myeloid leukemia, NOS",
+        "9820/3 Lymphoid leukemia, NOS"
+      ]
+    },
+    "Liver cancer": {
+      "ICD-O topography": [
+        "C22 Liver and intrahepatic bile ducts"
+      ],
+      "ICD-O histology": [
+        "8170/3 Hepatocellular carcinoma, NOS",
+        "8160/3 Cholangiocarcinoma"
+      ]
+    },
+    "Lung cancer": {
+      "ICD-O topography": [
+        "C34 Bronchus and lung"
+      ],
+      "ICD-O histology": [
+        "8140/3 Adenocarcinoma, NOS",
+        "8070/3 Squamous cell carcinoma, NOS",
+        "8041/3 Small cell carcinoma, NOS",
+        "8012/3 Large cell carcinoma, NOS"
+      ]
+    },
+    "Lymphoma": {
+      "ICD-O topography": [
+        "C77 Lymph nodes"
+      ],
+      "ICD-O histology": [
+        "9590/3 Malignant lymphoma, NOS",
+        "9680/3 Diffuse large B-cell lymphoma, NOS",
+        "9690/3 Follicular lymphoma, NOS",
+        "9650/3 Hodgkin lymphoma, NOS"
+      ]
+    },
+    "Melanoma skin cancer": {
+      "ICD-O topography": [
+        "C44 Skin"
+      ],
+      "ICD-O histology": [
+        "8720/3 Malignant melanoma, NOS",
+        "8721/3 Nodular melanoma",
+        "8742/3 Lentigo maligna melanoma",
+        "8744/3 Acral melanoma"
+      ]
+    },
+    "Mesothelioma": {
+      "ICD-O topography": [
+        "C38.4 Pleura, nos",
+        "C48.2 Peritoneum, nos"
+      ],
+      "ICD-O histology": [
+        "9050/3 Mesothelioma, malignant",
+        "9052/3 Epithelioid mesothelioma, malignant"
+      ]
+    },
+    "Myeloma": {
+      "ICD-O topography": [
+        "C42.1 Bone marrow"
+      ],
+      "ICD-O histology": [
+        "9732/3 Plasma cell myeloma",
+        "9731/3 Plasmacytoma, NOS"
+      ]
+    },
+    "Neuroendocrine tumours": {
+      "ICD-O topography": [
+        "C25 Pancreas",
+        "C17 Small intestine",
+        "C34 Bronchus and lung"
+      ],
+      "ICD-O histology": [
+        "8240/3 Neuroendocrine tumor, NOS",
+        "8246/3 Neuroendocrine carcinoma, NOS",
+        "8241/3 Enterochromaffin cell carcinoid"
+      ]
+    },
+    "Non-Hodgkin lymphoma": {
+      "ICD-O topography": [
+        "C77 Lymph nodes"
+      ],
+      "ICD-O histology": [
+        "9591/3 Malignant lymphoma, non-Hodgkin, NOS",
+        "9680/3 Diffuse large B-cell lymphoma, NOS",
+        "9690/3 Follicular lymphoma, NOS",
+        "9687/3 Burkitt lymphoma, NOS"
+      ]
+    },
+    "Ovarian cancer": {
+      "ICD-O topography": [
+        "C56 Ovary"
+      ],
+      "ICD-O histology": [
+        "8441/3 Serous carcinoma, NOS",
+        "8460/3 Low grade serous carcinoma",
+        "8461/3 High grade serous carcinoma",
+        "8480/3 Mucinous adenocarcinoma",
+        "8380/3 Endometrioid adenocarcinoma, NOS"
+      ]
+    },
+    "Pancreatic cancer": {
+      "ICD-O topography": [
+        "C25 Pancreas"
+      ],
+      "ICD-O histology": [
+        "8140/3 Adenocarcinoma, NOS",
+        "8500/3 Infiltrating duct carcinoma, NOS",
+        "8150/3 Pancreatic neuroendocrine tumor, nonfunctioning"
+      ]
+    },
+    "Prostate cancer": {
+      "ICD-O topography": [
+        "C61 Prostate gland"
+      ],
+      "ICD-O histology": [
+        "8140/3 Adenocarcinoma, NOS",
+        "8550/3 Acinar cell carcinoma"
+      ]
+    },
+    "Stomach cancer": {
+      "ICD-O topography": [
+        "C16 Stomach"
+      ],
+      "ICD-O histology": [
+        "8140/3 Adenocarcinoma, NOS",
+        "8145/3 Carcinoma, diffuse type",
+        "8490/3 Signet ring cell carcinoma"
+      ]
+    },
+    "Testicular cancer": {
+      "ICD-O topography": [
+        "C62 Testis"
+      ],
+      "ICD-O histology": [
+        "9061/3 Seminoma, NOS",
+        "9070/3 Embryonal carcinoma, NOS",
+        "9080/3 Teratoma, malignant, NOS",
+        "9100/3 Choriocarcinoma, NOS"
+      ]
+    },
+    "Thyroid cancer": {
+      "ICD-O topography": [
+        "C73 Thyroid gland"
+      ],
+      "ICD-O histology": [
+        "8260/3 Papillary adenocarcinoma, NOS",
+        "8330/3 Follicular carcinoma, NOS",
+        "8345/3 Medullary thyroid carcinoma"
+      ]
+    },
+    "Uterine cancer": {
+      "ICD-O topography": [
+        "C54 Corpus uteri"
+      ],
+      "ICD-O histology": [
+        "8380/3 Endometrioid adenocarcinoma, NOS",
+        "8441/3 Serous carcinoma, NOS",
+        "8890/3 Leiomyosarcoma, NOS"
+      ]
+    },
+    "Acute lymphoblastic leukaemia (ALL) in children": {
+      "ICD-O topography": [
+        "C42.1 Bone marrow",
+        "C42.4 Hematopoietic system, nos"
+      ],
+      "ICD-O histology": [
+        "9811/3 B lymphoblastic leukemia/lymphoma, NOS",
+        "9812/3 B lymphoblastic leukemia/lymphoma with t(9;22)(q34;q11.2); BCR-ABL1",
+        "9813/3 B lymphoblastic leukemia/lymphoma with t(v;11q23); MLL rearranged",
+        "9814/3 B lymphoblastic leukemia/lymphoma with t(12;21)(p13;q22); TEL-AML1(ETV6-RUNX1)",
+        "9815/3 B lymphoblastic leukemia/lymphoma with hyperdiploidy",
+        "9816/3 B lymphoblastic leukemia/lymphoma with hypodiploidy(Hypodiploid ALL)",
+        "9817/3 B lymphoblastic leukemia/lymphoma with t(5;14)(q31;q32); IL3-IGH",
+        "9818/3 B lymphoblastic leukemia/lymphoma with t(1;19)(q23;p13.3); E2A-PBX1(TCF3-PBX1)",
+        "9819/3 B lymphoblastic leukemia/lymphoma, BCR-ABL1-like",
+        "9835/3 Precursor cell lymphoblastic leukemia, NOS",
+        "9837/3 Precursor T-cell lymphoblastic leukemia"
+      ]
+    },
+    "Ampullary cancer": {
+      "ICD-O topography": [
+        "C24.1 Ampulla of vater"
+      ],
+      "ICD-O histology": [
+        "8140/3 Adenocarcinoma, NOS",
+        "8144/3 Adenocarcinoma, intestinal type",
+        "8260/3 Papillary adenocarcinoma, NOS",
+        "8480/3 Mucinous adenocarcinoma"
+      ]
+    },
+    "Blood cancers": {
+      "ICD-O topography": [
+        "C42.0 Blood",
+        "C42.1 Bone marrow",
+        "C42.4 Hematopoietic system, nos",
+        "C77 Lymph nodes",
+        "C77.0 Lymph nodes of head, face and neck",
+        "C77.1 Intrathoracic lymph nodes",
+        "C77.2 Intra-abdominal lymph nodes",
+        "C77.3 Lymph nodes of axilla or arm",
+        "C77.4 Lymph nodes of inguinal region or leg",
+        "C77.5 Pelvic lymph nodes",
+        "C77.8 Lymph nodes of multiple regions",
+        "C77.9 Lymph node, nos"
+      ],
+      "ICD-O histology": [
+        "9590/3 Malignant lymphoma, NOS",
+        "9591/3 Malignant lymphoma, non-Hodgkin, NOS",
+        "9650/3 Hodgkin lymphoma, NOS",
+        "9673/3 Mantle cell lymphoma",
+        "9680/3 Diffuse large B-cell lymphoma, NOS",
+        "9690/3 Follicular lymphoma, NOS",
+        "9700/3 Mycosis fungoides",
+        "9732/3 Plasma cell myeloma",
+        "9800/3 Leukemia, NOS",
+        "9801/3 Acute leukemia, NOS",
+        "9811/3 B lymphoblastic leukemia/lymphoma, NOS",
+        "9823/3 B-cell chronic lymphocytic leukemia/small lymphocytic lymphoma",
+        "9827/3 Adult T-cell leukemia/lymphoma (HTLV-1 positive)",
+        "9861/3 Acute myeloid leukemia, NOS",
+        "9863/3 Chronic myeloid leukemia, NOS",
+        "9875/3 Chronic myelogenous leukemia, BCR/ABL positive",
+        "9950/3 Polycythemia vera",
+        "9961/3 Primary myelofibrosis",
+        "9962/3 Essential thrombocythemia",
+        "9989/3 Myelodysplastic syndrome, NOS"
+      ]
+    },
+    "Brain tumours in children": {
+      "ICD-O topography": [
+        "C70 Meninges",
+        "C70.0 Cerebral meninges",
+        "C70.1 Spinal meninges",
+        "C70.9 Meninges, nos",
+        "C71 Brain",
+        "C71.0 Cerebrum",
+        "C71.1 Frontal lobe",
+        "C71.2 Temporal lobe",
+        "C71.3 Parietal lobe",
+        "C71.4 Occipital lobe",
+        "C71.5 Ventricle, nos",
+        "C71.6 Cerebellum, nos",
+        "C71.7 Brain stem",
+        "C71.8 Overlapping lesion of brain",
+        "C71.9 Brain, nos",
+        "C72 Spinal cord, cranial nerves, and other parts of central nervous system",
+        "C72.0 Spinal cord",
+        "C72.1 Cauda equina",
+        "C72.2 Olfactory nerve",
+        "C72.3 Optic nerve",
+        "C72.4 Acoustic nerve",
+        "C72.5 Cranial nerve, nos",
+        "C72.8 Overlapping lesion of brain and central nervous system",
+        "C72.9 Nervous system, nos"
+      ],
+      "ICD-O histology": [
+        "9380/3 Glioma, malignant",
+        "9381/3 Gliomatosis cerebri",
+        "9382/3 Oligoastrocytoma, NOS",
+        "9385/3 Diffuse midline glioma, H3 K27M-mutant",
+        "9390/3 Choroid plexus carcinoma",
+        "9391/3 Ependymoma, NOS",
+        "9392/3 Ependymoma, anaplastic",
+        "9393/3 Papillary ependymoma",
+        "9395/3 Papillary tumor of the pineal region",
+        "9396/3 Ependymoma, RELA fusion-positive",
+        "9400/3 Astrocytoma, NOS",
+        "9401/3 Astrocytoma, anaplastic",
+        "9411/3 Gemistocytic astrocytoma, NOS",
+        "9420/3 Fibrillary astrocytoma",
+        "9421/1 Pilocytic astrocytoma",
+        "9423/3 Polar spongioblastoma",
+        "9424/3 Pleomorphic xanthoastrocytoma",
+        "9425/3 Pilomyxoid astrocytoma",
+        "9440/3 Glioblastoma, NOS",
+        "9441/3 Giant cell glioblastoma",
+        "9442/3 Gliosarcoma",
+        "9445/3 Glioblastoma, IDH-mutant",
+        "9450/3 Oligodendroglioma, NOS",
+        "9451/3 Oligodendroglioma, anaplastic, NOS",
+        "9470/3 Medulloblastoma, NOS",
+        "9471/3 Desmoplastic nodular medulloblastoma",
+        "9473/3 CNS embryonal tumor, NOS",
+        "9474/3 Large cell medulloblastoma",
+        "9475/3 Medullobloastoma, WNT-activated, NOS",
+        "9476/3 Medulloblastoma, SHH-activated and TP53-mutant",
+        "9477/3 Medulloblastoma, non-WNT/non-SHH",
+        "9478/3 Embryonal tumor with multilayered rosettes with C19MC alteration",
+        "9508/3 Atypical teratoid/rhabdoid tumor"
+      ]
+    },
+    "Breast cancer in men": {
+      "ICD-O topography": [
+        "C50 Breast",
+        "C50.0 Nipple",
+        "C50.1 Central portion of breast",
+        "C50.2 Upper-inner quadrant of breast",
+        "C50.3 Lower-inner quadrant of breast",
+        "C50.4 Upper-outer quadrant of breast",
+        "C50.5 Lower-outer quadrant of breast",
+        "C50.6 Axillary tail of breast",
+        "C50.8 Overlapping lesion of breast",
+        "C50.9 Breast, nos"
+      ],
+      "ICD-O histology": [
+        "8500/2 Intraductal carcinoma, noninfiltrating, NOS",
+        "8500/3 Infiltrating duct carcinoma, NOS",
+        "8501/2 Comedocarcinoma, noninfiltrating",
+        "8501/3 Comedocarcinoma, NOS",
+        "8502/3 Secretory carcinoma",
+        "8503/2 Noninfiltrating intraductal papillary adenocarcinoma",
+        "8503/3 Intraductal papillary adenocarcinoma with invasion",
+        "8504/2 Encapsulated papillary carcinoma",
+        "8504/3 Encapsulated papillary carcinoma with invasion",
+        "8507/2 Intraductal micropapillary carcinoma",
+        "8507/3 Invasive micropapillary carcinoma of breast",
+        "8509/2 Solid papillary carcinoma in situ",
+        "8509/3 Solid papillary carcinoma with invasion",
+        "8510/3 Medullary carcinoma, NOS",
+        "8513/3 Atypical medullary carcinoma",
+        "8514/3 Duct carcinoma, desmoplastic type",
+        "8519/2 Lobular carcinoma in situ, pleomorphic",
+        "8520/2 Lobular carcinoma in situ, NOS",
+        "8520/3 Lobular carcinoma, NOS",
+        "8521/3 Infiltrating ductular carcinoma",
+        "8522/2 Intraductal carcinoma and lobular carcinoma in situ",
+        "8522/3 Infiltrating duct and lobular carcinoma",
+        "8523/3 Infiltrating duct mixed with other types of carcinoma",
+        "8524/3 Infiltrating lobular mixed with other types of carcinoma",
+        "8525/3 Polymorphous adenocarcinoma",
+        "8530/3 Inflammatory carcinoma",
+        "8540/3 Paget disease, mammary",
+        "8541/3 Paget disease and infiltrating duct carcinoma of breast",
+        "8542/3 Paget disease, extramammary",
+        "8543/3 Paget disease and intraductal carcinoma of breast",
+        "8550/3 Acinar cell carcinoma",
+        "8552/3 Mixed acinar-ductal carcinoma",
+        "8560/3 Adenosquamous carcinoma",
+        "8562/3 Epithelial-myoepithelial carcinoma",
+        "8570/3 Adenocarcinoma with squamous metaplasia",
+        "8571/3 Adenocarcinoma with cartilaginous and osseous metaplasia",
+        "8572/3 Adenocarcinoma with spindle cell metaplasia",
+        "8573/3 Adenocarcinoma with apocrine metaplasia",
+        "8574/3 Adenocarcinoma with neuroendocrine differentiation",
+        "8575/3 Metaplastic carcinoma, NOS",
+        "8576/3 Hepatoid adenocarcinoma"
+      ]
+    }
+  }
+,
+    "Cancer of unknown primary (CUP)": {
+      "ICD-O topography": [
+        "C80 Unknown primary site",
+        "C80.9 Unknown primary site"
+      ],
+      "ICD-O histology": [
+        "8000/3 Neoplasm, malignant",
+        "8000/6 Neoplasm, metastatic",
+        "8000/9 Neoplasm, malignant, uncertain whether primary or metastatic",
+        "8010/3 Carcinoma, NOS",
+        "8010/6 Carcinoma, metastatic, NOS",
+        "8010/9 Carcinomatosis",
+        "8140/6 Adenocarcinoma, metastatic, NOS"
+      ]
+    },
+    "Cancer spread to bone": {
+      "ICD-O topography": [
+        "C40-C41 Bones, joints and articular cartilage",
+        "C40 Bones, joints and articular cartilage of limbs",
+        "C40.0 Long bones of upper limb, scapula and associated joints",
+        "C40.1 Short bones of upper limb and associated joints",
+        "C40.2 Long bones of lower limb and associated joints",
+        "C40.3 Short bones of lower limb and associated joints",
+        "C40.8 Overlapping lesion of bones, joints and articular cartilage of limbs",
+        "C40.9 Bone of limb, nos",
+        "C41 Bones, joints and articular cartilage of other and unspecified sites",
+        "C41.0 Bones of skull and face and associated joints",
+        "C41.1 Mandible",
+        "C41.2 Vertebral column",
+        "C41.3 Rib, sternum, clavicle and associated joints",
+        "C41.4 Pelvic bones, sacrum, coccyx and associated joints",
+        "C41.8 Overlapping lesion of bones, joints and articular cartilage",
+        "C41.9 Bone, nos"
+      ],
+      "ICD-O histology": [
+        "8000/6 Neoplasm, metastatic",
+        "8010/6 Carcinoma, metastatic, NOS",
+        "8070/6 Squamous cell carcinoma, metastatic, NOS",
+        "8140/6 Adenocarcinoma, metastatic, NOS",
+        "8490/6 Metastatic signet ring cell carcinoma"
+      ]
+    },
+    "Cancer spread to brain": {
+      "ICD-O topography": [
+        "C71 Brain",
+        "C71.0 Cerebrum",
+        "C71.1 Frontal lobe",
+        "C71.2 Temporal lobe",
+        "C71.3 Parietal lobe",
+        "C71.4 Occipital lobe",
+        "C71.5 Ventricle, nos",
+        "C71.6 Cerebellum, nos",
+        "C71.7 Brain stem",
+        "C71.8 Overlapping lesion of brain",
+        "C71.9 Brain, nos"
+      ],
+      "ICD-O histology": [
+        "8000/6 Neoplasm, metastatic",
+        "8010/6 Carcinoma, metastatic, NOS",
+        "8070/6 Squamous cell carcinoma, metastatic, NOS",
+        "8140/6 Adenocarcinoma, metastatic, NOS",
+        "8490/6 Metastatic signet ring cell carcinoma"
+      ]
+    },
+    "Cancer spread to liver": {
+      "ICD-O topography": [
+        "C22.0 Liver"
+      ],
+      "ICD-O histology": [
+        "8000/6 Neoplasm, metastatic",
+        "8010/6 Carcinoma, metastatic, NOS",
+        "8070/6 Squamous cell carcinoma, metastatic, NOS",
+        "8140/6 Adenocarcinoma, metastatic, NOS",
+        "8490/6 Metastatic signet ring cell carcinoma"
+      ]
+    },
+    "Cancer spread to lung": {
+      "ICD-O topography": [
+        "C34 Bronchus and lung",
+        "C34.0 Main bronchus",
+        "C34.1 Upper lobe, lung",
+        "C34.2 Middle lobe, lung",
+        "C34.3 Lower lobe, lung",
+        "C34.8 Overlapping lesion of lung",
+        "C34.9 Lung, nos"
+      ],
+      "ICD-O histology": [
+        "8000/6 Neoplasm, metastatic",
+        "8010/6 Carcinoma, metastatic, NOS",
+        "8070/6 Squamous cell carcinoma, metastatic, NOS",
+        "8140/6 Adenocarcinoma, metastatic, NOS",
+        "8490/6 Metastatic signet ring cell carcinoma"
+      ]
+    },
+    "Carcinoid": {
+      "ICD-O topography": [
+        "C16 Stomach",
+        "C17 Small intestine",
+        "C17.0 Duodenum",
+        "C17.1 Jejunum",
+        "C17.2 Ileum",
+        "C18.1 Appendix",
+        "C20 Rectum",
+        "C34 Bronchus and lung"
+      ],
+      "ICD-O histology": [
+        "8240/3 Neuroendocrine tumor, NOS",
+        "8241/3 Enterochromaffin cell carcinoid",
+        "8243/3 Goblet cell carcinoid",
+        "8244/3 Mixed adenoneuroendocrine carcinoma",
+        "8245/1 Tubular carcinoid",
+        "9091/1 Strumal carcinoid"
+      ]
+    },
+    "Children's cancers": {
+      "ICD-O topography": [
+        "C64 Kidney",
+        "C74 Adrenal gland",
+        "C69 Eye and adnexa",
+        "C22.0 Liver",
+        "C40-C41 Bones, joints and articular cartilage",
+        "C49 Connective, subcutaneous and other soft tissues",
+        "C71 Brain"
+      ],
+      "ICD-O histology": [
+        "8960/3 Nephroblastoma, NOS",
+        "9500/3 Neuroblastoma, NOS",
+        "9510/3 Retinoblastoma, NOS",
+        "8970/3 Hepatoblastoma, NOS",
+        "9364/3 Ewing sarcoma",
+        "8910/3 Embryonal rhabdomyosarcoma, NOS",
+        "8920/3 Alveolar rhabdomyosarcoma",
+        "9470/3 Medulloblastoma, NOS",
+        "9471/3 Desmoplastic nodular medulloblastoma"
+      ]
+    },
+    "Cholangiocarcinoma": {
+      "ICD-O topography": [
+        "C22.1 Intrahepatic bile duct",
+        "C24 Other and unspecified parts of biliary tract",
+        "C24.0 Extrahepatic bile duct",
+        "C24.8 Overlapping lesion of biliary tract",
+        "C24.9 Biliary tract, nos"
+      ],
+      "ICD-O histology": [
+        "8160/3 Cholangiocarcinoma",
+        "8162/3 Klatskin tumor"
+      ]
+    },
+    "Chronic lymphocytic leukaemia (CLL)": {
+      "ICD-O topography": [
+        "C42.1 Bone marrow",
+        "C42.4 Hematopoietic system, nos"
+      ],
+      "ICD-O histology": [
+        "9823/3 B-cell chronic lymphocytic leukemia/small lymphocytic lymphoma"
+      ]
+    },
+    "Chronic myeloid leukaemia (CML)": {
+      "ICD-O topography": [
+        "C42.1 Bone marrow",
+        "C42.4 Hematopoietic system, nos"
+      ],
+      "ICD-O histology": [
+        "9863/3 Chronic myeloid leukemia, NOS",
+        "9875/3 Chronic myelogenous leukemia, BCR/ABL positive",
+        "9876/3 Atypical chronic myeloid leukemia, BCR/ABL negative"
+      ]
+    }
+  }
+
+,
+  "TCGA": {
+    "ACC (Adrenocortical carcinoma)": {
+      "ICD-O topography": [
+        "C74 Adrenal gland",
+        "C74.0 Cortex of adrenal gland",
+        "C74.1 Medulla of adrenal gland",
+        "C74.9 Adrenal gland, nos"
+      ],
+      "ICD-O histology": [
+        "8370/3 Adrenal cortical carcinoma"
+      ]
+    },
+    "BLCA (Bladder Urothelial Carcinoma)": {
+      "ICD-O topography": [
+        "C67 Bladder",
+        "C67.0 Trigone of bladder",
+        "C67.1 Dome of bladder",
+        "C67.2 Lateral wall of bladder",
+        "C67.3 Anterior wall of bladder",
+        "C67.4 Posterior wall of bladder",
+        "C67.5 Bladder neck",
+        "C67.8 Overlapping lesion of bladder",
+        "C67.9 Bladder, nos"
+      ],
+      "ICD-O histology": [
+        "8120/2 Urothelial carcinoma in situ",
+        "8120/3 Transitional cell carcinoma, NOS",
+        "8122/3 Urothelial carcinoma, sarcomatoid ",
+        "8130/2 Papillary urothelial carcinoma, non-invasive",
+        "8131/3 Urothelial carcinoma, micropapillary"
+      ]
+    },
+    "BRCA (Breast invasive carcinoma)": {
+      "ICD-O topography": [
+        "C50 Breast",
+        "C50.1 Central portion of breast",
+        "C50.2 Upper-inner quadrant of breast",
+        "C50.3 Lower-inner quadrant of breast",
+        "C50.4 Upper-outer quadrant of breast",
+        "C50.5 Lower-outer quadrant of breast",
+        "C50.6 Axillary tail of breast",
+        "C50.8 Overlapping lesion of breast",
+        "C50.9 Breast, nos"
+      ],
+      "ICD-O histology": [
+        "8500/3 Infiltrating duct carcinoma, NOS",
+        "8519/2 Lobular carcinoma in situ, pleomorphic",
+        "8520/2 Lobular carcinoma in situ, NOS",
+        "8520/3 Lobular carcinoma, NOS",
+        "8521/3 Infiltrating ductular carcinoma",
+        "8522/2 Intraductal carcinoma and lobular carcinoma in situ",
+        "8522/3 Infiltrating duct and lobular carcinoma",
+        "8523/3 Infiltrating duct mixed with other types of carcinoma",
+        "8541/3 Paget disease and infiltrating duct carcinoma of breast"
+      ]
+    },
+    "CESC (Cervical squamous cell carcinoma and endocervical adenocarcinoma)": {
+      "ICD-O topography": [
+        "C53 Cervix uteri",
+        "C53.8 Overlapping lesion of cervix uteri",
+        "C53.9 Cervix uteri"
+      ],
+      "ICD-O histology": [
+        "8052/2 Papillary squamous cell carcinoma, non-invasive",
+        "8052/3 Papillary squamous cell carcinoma",
+        "8070/2 Squamous cell carcinoma in situ, NOS",
+        "8070/3 Squamous cell carcinoma, NOS",
+        "8070/6 Squamous cell carcinoma, metastatic, NOS",
+        "8071/3 Squamous cell carcinoma, keratinizing, NOS",
+        "8072/3 Squamous cell carcinoma, large cell, nonkeratinizing, NOS",
+        "8073/3 Squamous cell carcinoma, small cell, nonkeratinizing",
+        "8074/3 Squamous cell carcinoma, spindle cell",
+        "8075/3 Squamous cell carcinoma, adenoid",
+        "8076/2 Squamous cell carcinoma in situ with questionable stromal invasion",
+        "8076/3 Squamous cell carcinoma, microinvasive",
+        "8078/3 Squamous cell carcinoma with horn formation",
+        "8083/3 Basaloid squamous cell carcinoma",
+        "8084/3 Squamous cell carcinoma, clear cell type",
+        "8085/3 Squamous cell carcinoma, HPV-positive",
+        "8086/3 Squamous cell carcinoma, HPV-negative",
+        "8384/3 Adenocarcinoma, endocervical type"
+      ]
+    },
+    "CHOL (Cholangiocarcinoma)": {
+      "ICD-O topography": [
+        "C22 Liver and intrahepatic bile ducts",
+        "C22.1 Intrahepatic bile duct",
+        "C24.0 Extrahepatic bile duct"
+      ],
+      "ICD-O histology": [
+        "8160/3 Cholangiocarcinoma",
+        "8180/3 Combined hepatocellular carcinoma and cholangiocarcinoma"
+      ]
+    },
+    "CNTL (Controls)": {
+      "ICD-O topography": [],
+      "ICD-O histology": []
+    },
+    "COAD (Colon adenocarcinoma)": {
+      "ICD-O topography": [
+        "C18 Colon",
+        "C18.2 Ascending colon",
+        "C18.3 Hepatic flexure of colon",
+        "C18.4 Transverse colon",
+        "C18.5 Splenic flexure of colon",
+        "C18.6 Descending colon",
+        "C18.7 Sigmoid colon",
+        "C18.8 Overlapping lesion of colon",
+        "C18.9 Colon, nos"
+      ],
+      "ICD-O histology": [
+        "8140/3 Adenocarcinoma, NOS",
+        "8144/3 Adenocarcinoma, intestinal type",
+        "8480/3 Mucinous adenocarcinoma",
+        "8490/3 Signet ring cell carcinoma",
+        "8490/6 Metastatic signet ring cell carcinoma"
+      ]
+    },
+    "DLBC (Lymphoid Neoplasm Diffuse Large B-cell Lymphoma)": {
+      "ICD-O topography": [
+        "C77 Lymph nodes",
+        "C77.0 Lymph nodes of head, face and neck",
+        "C77.1 Intrathoracic lymph nodes",
+        "C77.2 Intra-abdominal lymph nodes",
+        "C77.3 Lymph nodes of axilla or arm",
+        "C77.4 Lymph nodes of inguinal region or leg",
+        "C77.5 Pelvic lymph nodes",
+        "C77.8 Lymph nodes of multiple regions",
+        "C77.9 Lymph node, nos"
+      ],
+      "ICD-O histology": [
+        "9680/3 Diffuse large B-cell lymphoma, NOS",
+        "9738/3 HHV8-positive diffuse large B-cell lymphoma"
+      ]
+    },
+    "ESCA (Esophageal carcinoma)": {
+      "ICD-O topography": [
+        "C15 Esophagus",
+        "C15.0 Cervical esophagus",
+        "C15.1 Thoracic esophagus",
+        "C15.2 Abdominal esophagus",
+        "C15.3 Upper third of esophagus",
+        "C15.4 Middle third of esophagus",
+        "C15.5 Lower third of esophagus",
+        "C15.8 Overlapping lesion of esophagus",
+        "C15.9 Esophagus, nos"
+      ],
+      "ICD-O histology": [
+        "8070/3 Squamous cell carcinoma, NOS",
+        "8140/3 Adenocarcinoma, NOS"
+      ]
+    },
+    "FPPP (FFPE Pilot Phase II)": {
+      "ICD-O topography": [],
+      "ICD-O histology": []
+    },
+    "GBM (Glioblastoma multiforme)": {
+      "ICD-O topography": [
+        "C71 Brain",
+        "C71.7 Brain stem",
+        "C71.8 Overlapping lesion of brain",
+        "C71.9 Brain, nos"
+      ],
+      "ICD-O histology": [
+        "9440/3 Glioblastoma, NOS",
+        "9441/3 Giant cell glioblastoma",
+        "9445/3 Glioblastoma, IDH-mutant"
+      ]
+    },
+    "HNSC (Head and Neck squamous cell carcinoma)": {
+      "ICD-O topography": [
+        "C00-C14 Lip, oral cavity and pharynx",
+        "C00 Lip",
+        "C00.0 External upper lip",
+        "C00.1 External lower lip",
+        "C00.2 External lip, nos",
+        "C00.3 Mucosa of upper lip",
+        "C00.4 Mucosa of lower lip",
+        "C00.5 Mucosa of lip, nos",
+        "C00.6 Commissure of lip",
+        "C00.8 Overlapping lesion of lip",
+        "C00.9 Lip, nos",
+        "C01 Base of tongue",
+        "C01.9 Base of tongue, nos",
+        "C02 Other and unspecified parts of tongue",
+        "C02.0 Dorsal surface of tongue, nos",
+        "C02.1 Border of tongue",
+        "C02.2 Ventral surface of tongue, nos",
+        "C02.3 Anterior 2/3 of tongue, nos",
+        "C02.4 Lingual tonsil",
+        "C02.8 Overlapping lesion of tongue",
+        "C02.9 Tongue, nos",
+        "C03 Gum",
+        "C03.0 Upper gum",
+        "C03.1 Lower gum",
+        "C03.9 Gum, nos",
+        "C04 Floor of mouth",
+        "C04.0 Anterior floor of mouth",
+        "C04.1 Lateral floor of mouth",
+        "C04.8 Overlapping lesion of floor of mouth",
+        "C04.9 Floor of mouth, nos",
+        "C05 Palate",
+        "C05.0 Hard palate",
+        "C05.1 Soft palate, nos",
+        "C05.2 Uvula",
+        "C05.8 Overlapping lesion of palate",
+        "C05.9 Palate, nos",
+        "C06 Other and unspecified parts of mouth",
+        "C06.0 Cheek mucosa",
+        "C06.1 Vestibule of mouth",
+        "C06.2 Retromolar area",
+        "C06.8 Overlapping lesion of other and unspecified parts of mouth",
+        "C06.9 Mouth, nos",
+        "C07 Parotid gland",
+        "C07.9 Parotid gland",
+        "C08 Other and unspecified major salivary glands",
+        "C08.0 Submandibular gland",
+        "C08.1 Sublingual gland",
+        "C08.8 Overlapping lesion of major salivary glands",
+        "C08.9 Major salivary gland, nos",
+        "C09 Tonsil",
+        "C09.0 Tonsillar fossa",
+        "C09.1 Tonsillar pillar",
+        "C09.8 Overlapping lesion of tonsil",
+        "C09.9 Tonsil, nos",
+        "C10 Oropharynx",
+        "C10.0 Vallecula",
+        "C10.1 Anterior surface of epiglottis",
+        "C10.2 Lateral wall of oropharynx",
+        "C10.3 Posterior wall of oropharynx",
+        "C10.4 Branchial cleft",
+        "C10.8 Overlapping lesion of oropharynx",
+        "C10.9 Oropharynx, nos",
+        "C11 Nasopharynx",
+        "C11.0 Superior wall of nasopharynx",
+        "C11.1 Posterior wall of nasopharynx",
+        "C11.2 Lateral wall of nasopharynx",
+        "C11.3 Anterior wall of nasopharynx",
+        "C11.8 Overlapping lesion of nasopharynx",
+        "C11.9 Nasopharynx, nos",
+        "C12 Pyriform sinus",
+        "C12.9 Pyriform sinus",
+        "C13 Hypopharynx",
+        "C13.0 Postcricoid region",
+        "C13.1 Hypopharyngeal aspect of aryepiglottic fold",
+        "C13.2 Posterior wall of hypopharynx",
+        "C13.8 Overlapping lesion of hypopharynx",
+        "C13.9 Hypopharynx, nos",
+        "C14 Other and ill-defined sites in lip, oral cavity and pharynx",
+        "C14.0 Pharynx, nos",
+        "C14.2 Waldeyer ring",
+        "C14.8 Overlapping lesion of lip, oral cavity and pharynx",
+        "C30-C39 Respiratory system and intrathoracic organs",
+        "C30 Nasal cavity and middle ear",
+        "C30.0 Nasal cavity",
+        "C30.1 Middle ear",
+        "C31 Accessory sinuses",
+        "C31.0 Maxillary sinus",
+        "C31.1 Ethmoid sinus",
+        "C31.2 Frontal sinus",
+        "C31.3 Sphenoid sinus",
+        "C31.8 Overlapping lesion of accessory sinuses",
+        "C31.9 Accessory sinus, nos",
+        "C32 Larynx",
+        "C32.0 Glottis",
+        "C32.1 Supraglottis",
+        "C32.2 Subglottis",
+        "C32.3 Laryngeal cartilage",
+        "C32.8 Overlapping lesion of larynx",
+        "C32.9 Larynx, nos"
+      ],
+      "ICD-O histology": [
+        "8052/2 Papillary squamous cell carcinoma, non-invasive",
+        "8052/3 Papillary squamous cell carcinoma",
+        "8070/2 Squamous cell carcinoma in situ, NOS",
+        "8070/3 Squamous cell carcinoma, NOS",
+        "8070/6 Squamous cell carcinoma, metastatic, NOS",
+        "8071/3 Squamous cell carcinoma, keratinizing, NOS",
+        "8072/3 Squamous cell carcinoma, large cell, nonkeratinizing, NOS",
+        "8073/3 Squamous cell carcinoma, small cell, nonkeratinizing",
+        "8074/3 Squamous cell carcinoma, spindle cell",
+        "8075/3 Squamous cell carcinoma, adenoid",
+        "8076/2 Squamous cell carcinoma in situ with questionable stromal invasion",
+        "8076/3 Squamous cell carcinoma, microinvasive",
+        "8078/3 Squamous cell carcinoma with horn formation",
+        "8083/3 Basaloid squamous cell carcinoma",
+        "8084/3 Squamous cell carcinoma, clear cell type",
+        "8085/3 Squamous cell carcinoma, HPV-positive",
+        "8086/3 Squamous cell carcinoma, HPV-negative"
+      ]
+    },
+    "KICH (Kidney Chromophobe)": {
+      "ICD-O topography": [
+        "C64 Kidney",
+        "C64.9 Kidney, nos"
+      ],
+      "ICD-O histology": [
+        "8270/3 Chromophobe carcinoma",
+        "8317/3 Renal cell carcinoma, chromophobe type"
+      ]
+    },
+    "KIRC (Kidney renal clear cell carcinoma)": {
+      "ICD-O topography": [
+        "C64 Kidney",
+        "C64.9 Kidney, nos"
+      ],
+      "ICD-O histology": [
+        "8310/3 Clear cell adenocarcinoma, NOS",
+        "8312/3 Renal cell carcinoma, NOS",
+        "8322/3 Water-clear cell adenocarcinoma"
+      ]
+    },
+    "KIRP (Kidney renal papillary cell carcinoma)": {
+      "ICD-O topography": [
+        "C64 Kidney",
+        "C64.9 Kidney, nos"
+      ],
+      "ICD-O histology": [
+        "8260/3 Papillary adenocarcinoma, NOS",
+        "8050/3 Papillary carcinoma, NOS"
+      ]
+    },
+    "LAML (Acute Myeloid Leukemia)": {
+      "ICD-O topography": [
+        "C42 Hematopoietic and reticuloendothelial systems",
+        "C42.1 Bone marrow",
+        "C42.4 Hematopoietic system, nos"
+      ],
+      "ICD-O histology": [
+        "9861/3 Acute myeloid leukemia, NOS",
+        "9865/3 Acute myeloid leukemia with t(6;9)(p23;q34); DEK-NUP214",
+        "9869/3 Acute myeloid leukemia with inv(3)(q21;q26.2) or t(3;3)(q21;q26.2); RPN1-EVI1",
+        "9871/3 Acute myeloid leukemia with abnormal marrow eosinophils",
+        "9872/3 Acute myeloid leukemia, minimal differentiation",
+        "9873/3 Acute myeloid leukemia without maturation",
+        "9874/3 Acute myeloid leukemia with maturation",
+        "9877/3 Acute myeloid leukemia with mutated NPM1",
+        "9878/3 Acute myeloid leukemia with biallelic mutation of CEBPA",
+        "9879/3 Acute myeloid leukemia with mutated RUNX1",
+        "9895/3 Acute myeloid leukemia with myelodysplasia-related changes",
+        "9896/3 Acute myeloid leukemia, t(8;21)(q22;q22)",
+        "9897/3 Acute myeloid leukemia, 11q23 abnormalities",
+        "9911/3 Acute myeloid leukemia (megakaryoblastic) with t(1;22)(p13;q13); RBM15-MKL1"
+      ]
+    },
+    "LCML (Chronic Myelogenous Leukemia)": {
+      "ICD-O topography": [
+        "C42 Hematopoietic and reticuloendothelial systems",
+        "C42.1 Bone marrow",
+        "C42.4 Hematopoietic system, nos"
+      ],
+      "ICD-O histology": [
+        "9863/3 Chronic myeloid leukemia, NOS",
+        "9875/3 Chronic myelogenous leukemia, BCR/ABL positive",
+        "9876/3 Atypical chronic myeloid leukemia, BCR/ABL negative"
+      ]
+    },
+    "LGG (Brain Lower Grade Glioma)": {
+      "ICD-O topography": [
+        "C71 Brain",
+        "C71.7 Brain stem",
+        "C71.8 Overlapping lesion of brain",
+        "C71.9 Brain, nos"
+      ],
+      "ICD-O histology": [
+        "9382/3 Oligoastrocytoma, NOS",
+        "9400/3 Astrocytoma, NOS",
+        "9401/3 Astrocytoma, anaplastic",
+        "9411/3 Gemistocytic astrocytoma, NOS",
+        "9412/1 Desmoplastic infantile astrocytoma",
+        "9420/3 Fibrillary astrocytoma",
+        "9421/1 Pilocytic astrocytoma",
+        "9424/3 Pleomorphic xanthoastrocytoma",
+        "9425/3 Pilomyxoid astrocytoma",
+        "9450/3 Oligodendroglioma, NOS",
+        "9451/3 Oligodendroglioma, anaplastic, NOS"
+      ]
+    },
+    "LIHC (Liver hepatocellular carcinoma)": {
+      "ICD-O topography": [
+        "C22 Liver and intrahepatic bile ducts",
+        "C22.0 Liver"
+      ],
+      "ICD-O histology": [
+        "8170/3 Hepatocellular carcinoma, NOS",
+        "8171/3 Hepatocellular carcinoma, fibrolamellar",
+        "8172/3 Hepatocellular carcinoma, scirrhous",
+        "8173/3 Hepatocellular carcinoma, spindle cell variant",
+        "8174/3 Hepatocellular carcinoma, clear cell type",
+        "8175/3 Hepatocellular carcinoma, pleomorphic type",
+        "8180/3 Combined hepatocellular carcinoma and cholangiocarcinoma"
+      ]
+    },
+    "LUAD (Lung adenocarcinoma)": {
+      "ICD-O topography": [
+        "C34 Bronchus and lung",
+        "C34.0 Main bronchus",
+        "C34.1 Upper lobe, lung",
+        "C34.2 Middle lobe, lung",
+        "C34.3 Lower lobe, lung",
+        "C34.8 Overlapping lesion of lung",
+        "C34.9 Lung, nos"
+      ],
+      "ICD-O histology": [
+        "8140/3 Adenocarcinoma, NOS",
+        "8250/3 Lepidic adenocarcinoma",
+        "8252/3 Bronchiolo-alveolar carcinoma, non-mucinous",
+        "8253/3 Adenocarcinoma of the lung, mucinous",
+        "8254/3 Adenocarcinoma of the lung, mixed mucinous and non-mucinous",
+        "8260/3 Papillary adenocarcinoma, NOS"
+      ]
+    },
+    "LUSC (Lung squamous cell carcinoma)": {
+      "ICD-O topography": [
+        "C34 Bronchus and lung",
+        "C34.0 Main bronchus",
+        "C34.1 Upper lobe, lung",
+        "C34.2 Middle lobe, lung",
+        "C34.3 Lower lobe, lung",
+        "C34.8 Overlapping lesion of lung",
+        "C34.9 Lung, nos"
+      ],
+      "ICD-O histology": [
+        "8070/2 Squamous cell carcinoma in situ, NOS",
+        "8070/3 Squamous cell carcinoma, NOS",
+        "8071/3 Squamous cell carcinoma, keratinizing, NOS",
+        "8072/3 Squamous cell carcinoma, large cell, nonkeratinizing, NOS",
+        "8073/3 Squamous cell carcinoma, small cell, nonkeratinizing",
+        "8074/3 Squamous cell carcinoma, spindle cell",
+        "8075/3 Squamous cell carcinoma, adenoid",
+        "8076/2 Squamous cell carcinoma in situ with questionable stromal invasion",
+        "8076/3 Squamous cell carcinoma, microinvasive",
+        "8083/3 Basaloid squamous cell carcinoma",
+        "8084/3 Squamous cell carcinoma, clear cell type"
+      ]
+    },
+    "MESO (Mesothelioma)": {
+      "ICD-O topography": [
+        "C38 Heart, mediastinum, and pleura",
+        "C38.1 Anterior mediastinum",
+        "C38.2 Posterior mediastinum",
+        "C38.3 Mediastinum, nos",
+        "C38.4 Pleura, nos",
+        "C38.8 Overlapping lesion of heart, mediastinum and pleura",
+        "C48 Retroperitoneum and peritoneum",
+        "C48.0 Retroperitoneum",
+        "C48.1 Specified parts of peritoneum",
+        "C48.2 Peritoneum, nos",
+        "C48.8 Overlapping lesion of retroperitoneum and peritoneum"
+      ],
+      "ICD-O histology": [
+        "9050/3 Mesothelioma, malignant",
+        "9051/3 Fibrous mesothelioma, malignant",
+        "9052/3 Epithelioid mesothelioma, malignant",
+        "9053/3 Mesothelioma, biphasic, malignant"
+      ]
+    },
+    "MISC (Miscellaneous)": {
+      "ICD-O topography": [],
+      "ICD-O histology": []
+    },
+    "OV (Ovarian serous cystadenocarcinoma)": {
+      "ICD-O topography": [
+        "C56 Ovary",
+        "C56.9 Ovary"
+      ],
+      "ICD-O histology": [
+        "8441/3 Serous carcinoma, NOS",
+        "8460/3 Low grade serous carcinoma",
+        "8461/3 High grade serous carcinoma"
+      ]
+    },
+    "PAAD (Pancreatic adenocarcinoma)": {
+      "ICD-O topography": [
+        "C25 Pancreas",
+        "C25.0 Head of pancreas",
+        "C25.1 Body of pancreas",
+        "C25.2 Tail of pancreas",
+        "C25.7 Other specified parts of pancreas",
+        "C25.8 Overlapping lesion of pancreas",
+        "C25.9 Pancreas, nos"
+      ],
+      "ICD-O histology": [
+        "8140/3 Adenocarcinoma, NOS",
+        "8500/3 Infiltrating duct carcinoma, NOS",
+        "8470/3 Mucinous cystadenocarcinoma, NOS"
+      ]
+    },
+    "PCPG (Pheochromocytoma and Paraganglioma)": {
+      "ICD-O topography": [
+        "C74 Adrenal gland",
+        "C74.0 Cortex of adrenal gland",
+        "C74.1 Medulla of adrenal gland",
+        "C74.9 Adrenal gland, nos",
+        "C75.4 Carotid body",
+        "C75.5 Aortic body and other paraganglia"
+      ],
+      "ICD-O histology": [
+        "8680/3 Paraganglioma, NOS",
+        "8681/3 Sympathetic paraganglioma",
+        "8682/3 Parasympathetic paraganglioma",
+        "8690/3 Middle ear paraganglioma",
+        "8692/3 Carotid body paraganglioma",
+        "8693/3 Extra-adrenal paraganglioma, NOS",
+        "8700/3 Pheochromocytoma, NOS"
+      ]
+    },
+    "PRAD (Prostate adenocarcinoma)": {
+      "ICD-O topography": [
+        "C61 Prostate gland",
+        "C61.9 Prostate gland"
+      ],
+      "ICD-O histology": [
+        "8140/3 Adenocarcinoma, NOS",
+        "8550/3 Acinar cell carcinoma"
+      ]
+    },
+    "READ (Rectum adenocarcinoma)": {
+      "ICD-O topography": [
+        "C19 Rectosigmoid junction",
+        "C19.9 Rectosigmoid junction",
+        "C20 Rectum",
+        "C20.9 Rectum, nos"
+      ],
+      "ICD-O histology": [
+        "8140/3 Adenocarcinoma, NOS",
+        "8144/3 Adenocarcinoma, intestinal type",
+        "8480/3 Mucinous adenocarcinoma",
+        "8490/3 Signet ring cell carcinoma",
+        "8490/6 Metastatic signet ring cell carcinoma"
+      ]
+    },
+    "SARC (Sarcoma)": {
+      "ICD-O topography": [
+        "C40-C41 Bones, joints and articular cartilage",
+        "C47 Peripheral nerves and autonomic nervous system",
+        "C48 Retroperitoneum and peritoneum",
+        "C49 Connective, subcutaneous and other soft tissues"
+      ],
+      "ICD-O histology": [
+        "8800/3 Sarcoma, NOS",
+        "8801/3 Spindle cell sarcoma",
+        "8802/3 Giant cell sarcoma",
+        "8803/3 Small cell sarcoma",
+        "8804/3 Epithelioid sarcoma",
+        "8805/3 Undifferentiated sarcoma",
+        "8810/3 Fibrosarcoma, NOS",
+        "8832/3 Dermatofibrosarcoma protuberans, fibrosarcomatous",
+        "8850/3 Liposarcoma, NOS",
+        "8852/3 Myxoid liposarcoma",
+        "8854/3 Pleomorphic liposarcoma",
+        "8858/3 Dedifferentiated liposarcoma",
+        "8890/3 Leiomyosarcoma, NOS",
+        "8891/3 Epithelioid leiomyosarcoma",
+        "8896/3 Myxoid leiomyosarcoma",
+        "8900/3 Rhabdomyosarcoma, NOS",
+        "8901/3 Pleomorphic rhabdomyosarcoma, adult type",
+        "8902/3 Mixed type rhabdomyosarcoma",
+        "8910/3 Embryonal rhabdomyosarcoma, NOS",
+        "8912/3 Spindle cell rhabdomyosarcoma",
+        "8920/3 Alveolar rhabdomyosarcoma",
+        "8936/3 Gastrointestinal stromal tumor",
+        "9040/3 Synovial sarcoma, NOS",
+        "9041/3 Synovial sarcoma, spindle cell",
+        "9042/3 Synovial sarcoma, epithelioid cell",
+        "9043/3 Synovial sarcoma, biphasic",
+        "9540/3 Malignant peripheral nerve sheath tumor, NOS",
+        "9581/3 Alveolar soft part sarcoma"
+      ]
+    },
+    "SKCM (Skin Cutaneous Melanoma)": {
+      "ICD-O topography": [
+        "C44 Skin",
+        "C44.0 Skin of lip, nos",
+        "C44.3 Skin of other and unspecified parts of face",
+        "C44.4 Skin of scalp and neck",
+        "C44.5 Skin of trunk",
+        "C44.6 Skin of upper limb and shoulder",
+        "C44.7 Skin of lower limb and hip",
+        "C44.8 Overlapping lesion of skin",
+        "C44.9 Skin, nos"
+      ],
+      "ICD-O histology": [
+        "8720/3 Malignant melanoma, NOS",
+        "8721/3 Nodular melanoma",
+        "8723/3 Malignant melanoma, regressing",
+        "8730/3 Amelanotic melanoma",
+        "8742/3 Lentigo maligna melanoma",
+        "8743/3 Low cumulative sun damage melanoma",
+        "8744/3 Acral melanoma",
+        "8745/3 Desmoplastic melanoma",
+        "8771/3 Epithelioid cell melanoma",
+        "8772/3 Spindle cell melanoma, NOS"
+      ]
+    },
+    "STAD (Stomach adenocarcinoma)": {
+      "ICD-O topography": [
+        "C16 Stomach",
+        "C16.0 Cardia, nos",
+        "C16.1 Fundus of stomach",
+        "C16.2 Body of stomach",
+        "C16.3 Gastric antrum",
+        "C16.4 Pylorus",
+        "C16.5 Lesser curvature of stomach, nos",
+        "C16.6 Greater curvature of stomach, nos",
+        "C16.8 Overlapping lesion of stomach",
+        "C16.9 Stomach, nos"
+      ],
+      "ICD-O histology": [
+        "8140/3 Adenocarcinoma, NOS",
+        "8142/3 Linitis plastica",
+        "8144/3 Adenocarcinoma, intestinal type",
+        "8145/3 Carcinoma, diffuse type",
+        "8480/3 Mucinous adenocarcinoma",
+        "8490/3 Signet ring cell carcinoma",
+        "8490/6 Metastatic signet ring cell carcinoma"
+      ]
+    },
+    "TGCT (Testicular Germ Cell Tumors)": {
+      "ICD-O topography": [
+        "C62 Testis",
+        "C62.0 Undescended testis",
+        "C62.1 Descended testis",
+        "C62.9 Testis, nos"
+      ],
+      "ICD-O histology": [
+        "9061/3 Seminoma, NOS",
+        "9062/3 Seminoma, anaplastic",
+        "9063/3 Spermatocytic seminoma",
+        "9064/3 Germinoma",
+        "9065/3 Germ cell tumor, nonseminomatous",
+        "9070/3 Embryonal carcinoma, NOS",
+        "9071/3 Yolk sac tumor, NOS",
+        "9080/0 Teratoma, benign",
+        "9080/1 Teratoma, NOS",
+        "9080/3 Teratoma, malignant, NOS",
+        "9081/3 Teratocarcinoma",
+        "9082/3 Malignant teratoma, undifferentiated",
+        "9083/3 Malignant teratoma, intermediate",
+        "9084/3 Teratoma with malignant transformation",
+        "9085/3 Mixed germ cell tumor",
+        "9100/3 Choriocarcinoma, NOS",
+        "9101/3 Choriocarcinoma combined with other germ cell elements"
+      ]
+    },
+    "THCA (Thyroid carcinoma)": {
+      "ICD-O topography": [
+        "C73 Thyroid gland",
+        "C73.9 Thyroid gland"
+      ],
+      "ICD-O histology": [
+        "8260/3 Papillary adenocarcinoma, NOS",
+        "8330/3 Follicular carcinoma, NOS",
+        "8331/3 Follicular adenocarcinoma, well differentiated",
+        "8332/3 Follicular adenocarcinoma, trabecular",
+        "8335/3 Follicular carcinoma, minimally invasive",
+        "8339/3 Follicular carcinoma, encapsulated, angioinvasive",
+        "8340/3 Papillary carcinoma, follicular variant",
+        "8341/3 Papillary microcarcinoma",
+        "8342/3 Papillary carcinoma, oncocytic variant",
+        "8343/3 Papillary carcinoma, encapsulated of thyroid",
+        "8344/3 Papillary carcinoma, columnar cell"
+      ]
+    },
+    "THYM (Thymoma)": {
+      "ICD-O topography": [
+        "C37 Thymus",
+        "C37.9 Thymus"
+      ],
+      "ICD-O histology": [
+        "8580/0 Microscopic thymoma",
+        "8580/1 Micronodular thymoma with lymphoid stroma",
+        "8580/3 Thymoma, NOS",
+        "8581/3 Thymoma, type A",
+        "8582/3 Thymoma, type AB",
+        "8583/3 Thymoma, type B1",
+        "8584/3 Thymoma, type B2",
+        "8585/3 Thymoma, type B3",
+        "8586/3 Thymic carcinoma, NOS",
+        "8588/3 Spindle epithelial tumor with thymus-like element",
+        "8589/3 Intrathyroid thymic carcinoma"
+      ]
+    },
+    "UCEC (Uterine Corpus Endometrial Carcinoma)": {
+      "ICD-O topography": [
+        "C54 Corpus uteri",
+        "C54.0 Isthmus uteri",
+        "C54.1 Endometrium",
+        "C54.2 Myometrium",
+        "C54.3 Fundus uteri",
+        "C54.8 Overlapping lesion of corpus uteri",
+        "C54.9 Corpus uteri"
+      ],
+      "ICD-O histology": [
+        "8140/3 Adenocarcinoma, NOS",
+        "8380/0 Endometrioid adenoma, NOS",
+        "8380/1 Endometrioid adenoma, borderline malignancy",
+        "8380/2 Endometrioid intraepithelial neoplasia",
+        "8380/3 Endometrioid adenocarcinoma, NOS",
+        "8381/0 Endometrioid adenofibroma, NOS",
+        "8381/1 Endometrioid adenofibroma, borderline malignancy",
+        "8381/3 Endometrioid adenofibroma, malignant",
+        "8382/3 Endometrioid adenocarcinoma, secretory variant",
+        "8383/3 Endometrioid adenocarcinoma, ciliated cell variant",
+        "8441/3 Serous carcinoma, NOS",
+        "8460/3 Low grade serous carcinoma",
+        "8461/3 High grade serous carcinoma"
+      ]
+    },
+    "UCS (Uterine Carcinosarcoma)": {
+      "ICD-O topography": [
+        "C54 Corpus uteri",
+        "C54.0 Isthmus uteri",
+        "C54.1 Endometrium",
+        "C54.2 Myometrium",
+        "C54.3 Fundus uteri",
+        "C54.8 Overlapping lesion of corpus uteri",
+        "C54.9 Corpus uteri"
+      ],
+      "ICD-O histology": [
+        "8950/3 Mullerian mixed tumor",
+        "8951/3 Mesodermal mixed tumor",
+        "8980/3 Carcinosarcoma, NOS",
+        "8981/3 Carcinosarcoma, embryonal"
+      ]
+    },
+    "UVM (Uveal Melanoma)": {
+      "ICD-O topography": [
+        "C69.3 Choroid",
+        "C69.4 Ciliary body",
+        "C69.9 Eye, nos"
+      ],
+      "ICD-O histology": [
+        "8720/2 Melanoma in situ",
+        "8720/3 Malignant melanoma, NOS",
+        "8721/3 Nodular melanoma",
+        "8722/3 Balloon cell melanoma",
+        "8723/3 Malignant melanoma, regressing",
+        "8730/3 Amelanotic melanoma",
+        "8745/3 Desmoplastic melanoma",
+        "8770/3 Malignant Spitz tumor",
+        "8771/3 Epithelioid cell melanoma",
+        "8772/3 Spindle cell melanoma, NOS",
+        "8773/3 Spindle cell melanoma, type A",
+        "8774/3 Spindle cell melanoma, type B"
+      ]
+    }
+  }
+}
