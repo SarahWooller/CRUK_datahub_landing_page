@@ -1500,6 +1500,7 @@ return (
                 formData={formData}
                 schema={DATA_SCHEMA}
                 prefixIconMapping={prefixIconMapping}
+                pageType="dataset"
             />
             <button
             onClick={() => setIsFeedbackOpen(true)}
