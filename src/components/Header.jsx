@@ -11,18 +11,18 @@ export const Header = () => {
 
     useEffect(() => {
     const name = localStorage.getItem('userName');
+    const userId = localStorage.getItem('userId');
     const teamsRaw = localStorage.getItem('userTeams');
 
-    // Check if the data exists and is NOT the literal string "undefined"
-    if (name && teamsRaw && teamsRaw !== "undefined") {
+    if (name && userId && teamsRaw && teamsRaw !== "undefined") {
         try {
             const parsedTeams = JSON.parse(teamsRaw);
-            setUser({ name, teams: parsedTeams });
+            // Reconstruct the full user object including the ID
+            setUser({ name, id: userId, teams: parsedTeams });
             setActiveTeamId(localStorage.getItem('activeTeamId') || "");
         } catch (e) {
-            console.error("Failed to parse teams from localStorage", e);
-            // If data is corrupt, clear it to prevent infinite crashing
-            localStorage.removeItem('userTeams');
+            console.error("Session restoration failed", e);
+            localStorage.clear(); // Wipe corrupt data
         }
     }
 }, []);
@@ -31,6 +31,7 @@ export const Header = () => {
         setUser(userData);
         const firstId = userData.teams?.[0]?.id.toString() || "";
         setActiveTeamId(firstId);
+        localStorage.setItem('userId', userData.id.toString());
         localStorage.setItem('activeTeamId', firstId);
         localStorage.setItem('userTeams', JSON.stringify(userData.teams));
         localStorage.setItem('userName', userData.name);
