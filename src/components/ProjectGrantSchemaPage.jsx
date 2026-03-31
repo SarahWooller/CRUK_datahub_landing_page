@@ -199,6 +199,11 @@ const FieldRenderer = ({ propKey, prop, path, formData, onChange, isRequired, se
         setActiveGuidance({ title: prop.title || propKey, guidance });
     };
 
+    // Special logic for PID: If it already exists (e.g., from a grant stub),
+    // we make it read-only to ensure it remains "Persistent"
+    const isPid = propKey === 'pid';
+    const isReadOnly = isPid && !!currentValue;
+
     if (isArray) {
         const items = Array.isArray(currentValue) && currentValue.length > 0 ? currentValue : [''];
         const handleInputChange = (index, newVal) => {
@@ -221,6 +226,7 @@ const FieldRenderer = ({ propKey, prop, path, formData, onChange, isRequired, se
                             value={item || ''}
                             onFocus={handleFocus}
                             onChange={(e) => handleInputChange(index, e.target.value)}
+                            disabled={isReadOnly}
                         />
                     ))}
                 </div>
@@ -284,7 +290,6 @@ const SchemaForm = ({ formData, onFormChange, setActiveGuidance }) => {
             <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b pb-2">Project Details</h2>
             <div className="space-y-6">
                 {Object.keys(properties)
-                    .filter((propKey) => propKey !== 'pid') // Exclude pid from rendering
                     .map((propKey) => (
                         <FieldRenderer
                             key={propKey}

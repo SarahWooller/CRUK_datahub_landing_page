@@ -18,17 +18,22 @@ const SignInModal = ({ isOpen, onClose, onLoginSuccess }) => {
                 body: formData,
             });
             const data = await response.json();
-            console.log("DEBUG: Raw Login Data:", data);
 
+            console.log("DEBUG: Raw Login Data:", data);
+            const userId = data.user?.id?.toString() || "";
             if (!response.ok) throw new Error(data.detail || 'Login failed');
 
-            // Store credentials and profile
-            localStorage.setItem('token', data.access_token);
-            localStorage.setItem('userName', data.user.name);
-            localStorage.setItem('userTeams', JSON.stringify(data.user.teams));
+                // 1. Store the numeric ID required for project/dataset ownership
+                localStorage.setItem('userId', data.user.id.toString());
+                localStorage.setItem('token', data.access_token);
+                localStorage.setItem('userName', data.user.name);
 
-            onLoginSuccess(data.user);
-            onClose();
+                // 2. Ensure the teams array is stringified for LocalStorage
+                localStorage.setItem('userTeams', JSON.stringify(data.user.teams));
+
+                // 3. Pass the full user object to the Header
+                onLoginSuccess(data.user);
+                onClose();
         } catch (err) {
             alert(err.message);
         }

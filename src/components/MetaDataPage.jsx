@@ -1,19 +1,26 @@
-import React, { useState, useMemo, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom/client';
 
 // 1. IMPORT DATA FROM UTILS
-import mammogramData from '../utils/mammogram.json';
+import studyData from '../utils/dummy_data/optimam_partial.json';
+import { filterData } from '../utils/longer_filter_data.js';
+
+// Provide opportunity for feedback
+import FeedbackModal from './FeedbackModal.jsx';
+import FeedbackFallback from './FeedbackFallback.jsx';
+import { useFeedback } from '../hooks/useFeedback';
+import viewQuestions from '../feedback/meta_data_questions.json';
 
 // 2. IMPORT ICONS
-import animalIcon from '../assets/animal.png';
-import backgroundIcon from '../assets/background.png';
-import biobankIcon from '../assets/biobank.png';
-import invitroIcon from '../assets/invitro.png';
-import longitudinalIcon from '../assets/longitudinal.png';
-import treatmentsIcon from '../assets/treatments.png';
-import omicsIcon from '../assets/omics.png';
-import imagingIcon from '../assets/medical_imaging.png';
-import labResultsIcon from '../assets/lab_results.png';
+import animalIcon from '../assets/animal.webp';
+import backgroundIcon from '../assets/background.webp';
+import biobankIcon from '../assets/biobank.webp';
+import invitroIcon from '../assets/invitro.webp';
+import longitudinalIcon from '../assets/longitudinal.webp';
+import treatmentsIcon from '../assets/treatments.webp';
+import omicsIcon from '../assets/omics.webp';
+import imagingIcon from '../assets/medical_imaging.webp';
+import labResultsIcon from '../assets/lab_results.webp';
 
 // 3. IMPORT ERD IMAGE
 import erdImage from '../assets/erd.png';
@@ -27,11 +34,72 @@ const ICON_MAPPING = {
   "Longitudinal Follow up": { src: longitudinalIcon, label: "Longitudinal" },
   "Treatments": { src: treatmentsIcon, label: "Treatments" },
   "Multi-omic Data": { src: omicsIcon, label: "Multi-omic Data" },
-  "Imaging Data": { src: imagingIcon, label: "Imaging Data" },
+  "Imaging types": { src: imagingIcon, label: "Imaging Data" }, // Updated key to match new JSON
+  "Imaging Data": { src: imagingIcon, label: "Imaging Data" },   // Fallback
   "Biopsy Results and Lab Reports": { src: labResultsIcon, label: "Lab Results" }
 };
 
 // --- Utility Functions ---
+
+/**
+ * Flattens the nested filter tree into a Map for O(1) lookup.
+ */
+const flattenFilterTree = (nodes, parentPath = []) => {
+    let map = {};
+    if (!nodes || typeof nodes !== 'object') return map;
+
+    Object.values(nodes).forEach(node => {
+        const currentPath = [...parentPath, node.label];
+        const fullPathString = currentPath.join(" > ");
+
+        map[node.id] = {
+            label: node.label,
+            fullPath: fullPathString,
+            rawPath: currentPath
+        };
+
+        if (node.children) {
+            Object.assign(map, flattenFilterTree(node.children, currentPath));
+        }
+    });
+    return map;
+};
+
+/**
+ * Categorizes an ID based on specific prefixes.
+ */
+/**
+ * Maps an ID to a Group, a specific Category Label, and path visibility settings.
+ */
+const getFilterConfig = (id) => {
+    // --- CANCER FILTERS ---
+    // CRUK Terms (0_0_2): Bold label only, no path
+    if (id.startsWith("0_0_2")) return { group: "Cancer Filters", category: "CRUK Cancer Terms", showPath: false };
+
+    // TCGA Terms (0_0_4): Bold label only, no path
+    if (id.startsWith("0_0_4")) return { group: "Cancer Filters", category: "TCGA Terms", showPath: false };
+
+    // ICD-O Topography (0_0_0): Show path (sliced)
+    if (id.startsWith("0_0_0")) return { group: "Cancer Filters", category: "ICD-O Topography", showPath: true, slice: 2 };
+
+    // ICD-O Histology (0_0_1): Show path (sliced)
+    if (id.startsWith("0_0_1")) return { group: "Cancer Filters", category: "ICD-O Histology", showPath: true, slice: 2 };
+
+    // General Cancer fallback
+    if (id.startsWith("0_0")) return { group: "Cancer Filters", category: "Other Cancer Types", showPath: true, slice: 1 };
+
+    // --- DATA FILTERS ---
+    // Data Types (0_2): Show path (sliced)
+    if (id.startsWith("0_2")) return { group: "Data Filters", category: "Data Types", showPath: true, slice: 1 };
+
+    // --- ACCESS FILTERS ---
+    // Access Types (0_1): Bold label only, no path
+    if (id.startsWith("0_1")) return { group: "Access Filters", category: "Access Types", showPath: false };
+
+    return { group: "Other Filters", category: "Miscellaneous", showPath: true, slice: 0 };
+};
+
+
 
 const getFirstTwoSentences = (text) => {
   if (!text) return "";
@@ -39,45 +107,57 @@ const getFirstTwoSentences = (text) => {
   return match ? match[0] : text;
 };
 
-const parseKeywords = (keywordString) => {
-  if (!keywordString) return [];
-  return keywordString.split(';,;').map(k => k.trim());
+// Updated to handle both Array (New Schema) and String (Old Schema)
+const normalizeList = (input) => {
+  if (!input) return [];
+  if (Array.isArray(input)) return input;
+  return input.split(';,;').map(k => k.trim());
 };
 
+// Updated to extract icons from filters.Data Types
 const getActiveIcons = (filters) => {
   const activeKeys = new Set();
   const targetKeys = Object.keys(ICON_MAPPING);
 
-  const search = (obj) => {
-    if (!obj) return;
-    if (Array.isArray(obj)) {
-      obj.forEach(item => {
-        if (typeof item === 'string' && targetKeys.includes(item)) {
-          activeKeys.add(item);
-        } else if (typeof item === 'object') {
-          search(item);
+  // Safety check to ensure filters and Data Types exist
+  if (!filters || !filters["Data Types"]) return [];
+
+  const dataTypes = filters["Data Types"];
+
+  // Iterate over categories in Data Types (e.g., "Patient Study")
+  Object.values(dataTypes).forEach(list => {
+    if (Array.isArray(list)) {
+      list.forEach(item => {
+        // 1. Handle Strings (e.g., "Background", "Multi-omic Data")
+        if (typeof item === 'string') {
+          console.log(item);
+          if (targetKeys.includes(item)) {
+            activeKeys.add(item);
+          }
+        }
+        // 2. Handle Objects (e.g., {"Imaging Data": "Radiographic imaging"})
+        else if (typeof item === 'object' && item !== null) {
+          Object.keys(item).forEach(key => {
+            if (targetKeys.includes(key)) {
+              activeKeys.add(key);
+            }
+          });
         }
       });
-      return;
     }
-    if (typeof obj === 'object') {
-      Object.keys(obj).forEach(key => {
-        if (targetKeys.includes(key)) activeKeys.add(key);
-        search(obj[key]);
-      });
-    }
-  };
+  });
 
-  search(filters);
   return Array.from(activeKeys).map(key => ICON_MAPPING[key]);
 };
+
+
 
 // --- Sub-Components ---
 
 const StatCard = ({ label, value, colorClass }) => (
   <div className={`p-4 rounded-lg shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center ${colorClass}`}>
     <span className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">{label}</span>
-    <span className="text-lg font-semibold text-gray-800">{value}</span>
+    <span className="text-lg font-semibold text-gray-800 break-words w-full">{value}</span>
   </div>
 );
 
@@ -90,7 +170,6 @@ const SectionHeading = ({ id, title, children }) => (
   </div>
 );
 
-// Helper for the Data Access sidebar items
 const AccessItem = ({ label, value, isLink }) => {
     if (!value) return null;
     return (
@@ -109,31 +188,113 @@ const AccessItem = ({ label, value, isLink }) => {
 
 // --- Main Component ---
 
-const MetadataPage = () => {
-  const data = mammogramData;
+export const MetadataPage = () => {
+  const {
+        allFeedback, isFeedbackOpen, setIsFeedbackOpen,
+        fallbackData, setFallbackData, handleSaveDraft, handleFinalSubmit
+    } = useFeedback(viewQuestions);
+  const data = studyData;
   const [expandedTables, setExpandedTables] = useState({});
   const [showEmailMenu, setShowEmailMenu] = useState(false);
 
   // --- Resizing State ---
-  const [sidebarWidth, setSidebarWidth] = useState(288); // Default 288px (same as w-72)
+  const [sidebarWidth, setSidebarWidth] = useState(288);
   const isResizingRef = useRef(false);
 
-  // --- Data Processing ---
-  const activeIcons = useMemo(() => getActiveIcons(data.filters), [data]);
-  const keywords = useMemo(() => parseKeywords(data.summary.keywords), [data]);
-  const documentationPreview = useMemo(() => getFirstTwoSentences(data.summary.description), [data]);
+  // --- Data Mapping & Processing (New Schema Handling) ---
 
+  // 1. Description is now in documentation.description
+  const descriptionText = data.documentation?.description || data.summary?.description || "";
+  const documentationPreview = useMemo(() => getFirstTwoSentences(descriptionText), [descriptionText]);
+
+  // 2. Keywords is now an array in summary.keywords
+  const keywords = useMemo(() => normalizeList(data.summary.keywords), [data]);
+
+  // 4. Structural Metadata is now inside an object with a 'tables' key
   const groupedMetadata = useMemo(() => {
-    if (!data.structuralMetadata) return {};
-    return data.structuralMetadata.reduce((acc, item) => {
+    // Handle new schema (.tables) vs old schema (direct array)
+    const tables = data.structuralMetadata?.tables || data.structuralMetadata || [];
+
+    // In new schema, tables are already grouped objects, but let's normalize to ensure
+    // the UI receives the expected structure: { EntityName: { description, columns } }
+    return tables.reduce((acc, item) => {
       const entity = item.name;
+      // In new schema, description is on the table object level
+      const desc = item.description || "";
+
+      // If we encounter the same table name twice (e.g. split across files), merge them
       if (!acc[entity]) {
-        acc[entity] = { description: item.description, columns: [] };
+        acc[entity] = { description: desc, columns: [] };
       }
-      if (item.columns) acc[entity].columns.push(...item.columns);
+
+      if (item.columns) {
+        acc[entity].columns.push(...item.columns);
+      }
       return acc;
     }, {});
   }, [data]);
+
+  // 6. Accessors for Stat Cards (New Schema Paths)
+  const population = data.summary.populationSize;
+  const ageRange = data.coverage.typicalAgeRangeMin && data.coverage.typicalAgeRangeMax
+    ? `${data.coverage.typicalAgeRangeMin} - ${data.coverage.typicalAgeRangeMax}`
+    : data.coverage.typicalAgeRange; // Fallback to old string if present
+
+  const leadTime = data.accessibility.access.deliveryLeadTime;
+  const followUp = data.coverage.followUp;
+
+  // For 'Files' stat, we use the Format from accessibility
+  const fileTypes = data.accessibility.formatAndStandards?.format
+    ? data.accessibility.formatAndStandards.format.map(f => f.split('/')[1] || f).join(', ')
+    : "Various";
+// --- NEW: Filter Processing Logic ---
+
+  // A. Create lookup map from the reference file (Memoized)
+  const filterLookupMap = useMemo(() => flattenFilterTree(filterData), []);
+
+  // B. Process datasetFilters from studyData
+// Replace the existing derivedFilters / activeIcons useMemo block
+const { derivedFilters, activeIcons } = useMemo(() => {
+    const filters = {};
+    const icons = new Set();
+    const targetIconKeys = Object.keys(ICON_MAPPING);
+
+
+    const filterObjects = data.datasetFilters || [];
+
+        filterObjects.forEach(filter => {
+            // Use properties directly from the stored object
+            const groupName = filter.primaryGroup || "Other Filters";
+            const categoryName = filter.category || "Miscellaneous";
+
+            if (!filters[groupName]) filters[groupName] = {};
+            if (!filters[groupName][categoryName]) filters[groupName][categoryName] = [];
+
+            filters[groupName][categoryName].push({
+                label: filter.label,
+                // You can still display description if available
+                description: filter.description
+            });
+
+            // Icon Detection (using the stored label or category as the key)
+            if (targetIconKeys.includes(filter.label)) {
+                icons.add(filter.label);
+            } else if (targetIconKeys.includes(filter.category)) {
+                icons.add(filter.category);
+            }
+        });
+
+        // Sort items alphabetically within each category
+        Object.keys(filters).forEach(group => {
+            Object.keys(filters[group]).forEach(cat => {
+                filters[group][cat].sort((a, b) => a.label.localeCompare(b.label));
+            });
+        });
+
+        const mappedIcons = Array.from(icons).map(key => ICON_MAPPING[key]);
+
+        return { derivedFilters: filters, activeIcons: mappedIcons };
+    }, [data]);
 
   // --- Resizing Handlers ---
   const startResizing = useCallback(() => {
@@ -141,7 +302,7 @@ const MetadataPage = () => {
     document.addEventListener("mousemove", resize);
     document.addEventListener("mouseup", stopResizing);
     document.body.style.cursor = 'col-resize';
-    document.body.style.userSelect = 'none'; // Prevent text selection while dragging
+    document.body.style.userSelect = 'none';
   }, []);
 
   const stopResizing = useCallback(() => {
@@ -154,7 +315,6 @@ const MetadataPage = () => {
 
   const resize = useCallback((mouseEvent) => {
     if (isResizingRef.current) {
-        // Limit width between 200px and 600px to prevent breaking layout
         const newWidth = Math.max(200, Math.min(mouseEvent.clientX, 600));
         setSidebarWidth(newWidth);
     }
@@ -183,54 +343,51 @@ const MetadataPage = () => {
     setExpandedTables(newState);
   };
 
-  const renderFilterTree = (obj) => {
-    if (Array.isArray(obj)) {
-      return (
-        <ul className="pl-4 list-disc text-sm text-gray-600">
-          {obj.map((item, idx) => (
-            <li key={idx} className="mb-1">
-                {typeof item === 'object' ? renderFilterTree(item) : item}
-            </li>
-          ))}
-        </ul>
-      );
-    }
-    if (typeof obj === 'object' && obj !== null) {
-      return (
-        <ul className="pl-2">
-          {Object.entries(obj).map(([key, value]) => (
-            <li key={key} className="mb-2">
-              <span className="font-semibold text-sm text-gray-700 block mb-1">{key}</span>
-              {renderFilterTree(value)}
-            </li>
-          ))}
-        </ul>
-      );
-    }
-    return <span className="text-sm text-gray-600">{obj}</span>;
-  };
-
   const handleEmailAction = (action) => {
     console.log(`User selected: ${action}`);
     setShowEmailMenu(false);
   };
 
-  const { summary, coverage, accessibility, observations, filters } = data;
+  // Aliases for cleaner JSX below
+  const { summary, accessibility, observations } = data;
   const access = accessibility.access || {};
   const usage = accessibility.usage || {};
+  // Handle new resourceCreator being an array
+  const resourceCreators = Array.isArray(usage.resourceCreator)
+    ? usage.resourceCreator.join(', ')
+    : (usage.resourceCreator?.name || usage.resourceCreator || "N/A");
+
+  // Handle data use arrays (new schema) vs string (old schema)
+  const dataUseLimit = Array.isArray(usage.dataUseLimitation) ? usage.dataUseLimitation.join(', ') : usage.dataUseLimitation;
+  const dataUseReq = Array.isArray(usage.dataUseRequirements) ? usage.dataUseRequirements.join(', ') : usage.dataUseRequirement;
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 font-sans text-gray-800">
-
+        <FeedbackFallback
+                data={fallbackData}
+                onDismiss={() => setFallbackData(null)}
+                onCopy={(text) => {
+                    navigator.clipboard.writeText(text);
+                    setFallbackData(null);
+                }}
+            />
+        <FeedbackModal
+                isOpen={isFeedbackOpen}
+                onClose={() => setIsFeedbackOpen(false)}
+                activeSection="metadata_view" // Custom ID for this page
+                allFeedback={allFeedback}
+                onSaveDraft={handleSaveDraft}
+                onFinalSubmit={handleFinalSubmit}
+                questionData={viewQuestions}
+            />
       {/* --- Left Navigation Panel --- */}
-      {/* Note: We use a CSS variable for width so we can control it via state only on desktop (md:) */}
       <nav
         style={{ '--sidebar-width': `${sidebarWidth}px` }}
         className="w-full md:w-[var(--sidebar-width)] bg-white shadow-md flex-shrink-0 p-6 md:h-screen md:sticky md:top-0 overflow-y-auto flex flex-col"
       >
         <h3 className="text-xl font-bold text-blue-900 mb-6 border-b pb-2">Overview</h3>
         <ul className="space-y-3 mb-8">
-          {['Summary', 'Documentation','Structural Metadata',  'Entity Relationship Diagrams', 'Observations'].map((item) => (
+          {['Project','Summary', 'Documentation','Structural Metadata',  'Entity Relationship Diagrams', 'Observations'].map((item) => (
             <li key={item}>
               <a
                 href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
@@ -291,9 +448,9 @@ const MetadataPage = () => {
             <AccessItem label="Data Controller" value={access.dataController} />
             <AccessItem label="Data Processor" value={access.dataProcessor} />
             <AccessItem label="Access Rights" value={access.accessRights} isLink={true} />
-            <AccessItem label="Delivery Lead Time" value={access.deliveryLeadTime} />
-            <AccessItem label="Data Use Requirement" value={usage.dataUseRequirement} />
-            <AccessItem label="Data Use Limitation" value={usage.dataUseLimitation} />
+            <AccessItem label="Delivery Lead Time" value={leadTime} />
+            <AccessItem label="Data Use Requirement" value={dataUseReq} />
+            <AccessItem label="Data Use Limitation" value={dataUseLimit} />
             <AccessItem
                 label="Request Cost"
                 value={access.accessRequestCost || "Information not available"}
@@ -301,7 +458,7 @@ const MetadataPage = () => {
         </div>
       </nav>
 
-      {/* --- Resizer Handle (Hidden on Mobile) --- */}
+      {/* --- Resizer Handle --- */}
       <div
         className="hidden md:block w-1 cursor-col-resize bg-gray-200 hover:bg-blue-400 hover:w-1.5 transition-all z-20 flex-shrink-0 active:bg-blue-600"
         onMouseDown={startResizing}
@@ -315,13 +472,13 @@ const MetadataPage = () => {
             <div>
                 <h1 className="text-4xl font-extrabold text-blue-900 mb-3">{summary.title}</h1>
                 <div className="flex flex-col sm:flex-row sm:items-center text-sm text-gray-600 gap-2 sm:gap-6">
-                    {/* Publisher */}
+                    {/* Data Custodian / Publisher */}
                     <div className="flex items-center">
                         <span className="font-semibold mr-2">Publisher:</span>
-                        {summary.publisher.name}
+                        {summary.dataCustodian?.name || summary.publisher?.name || "Unknown"}
                     </div>
 
-                    {/* Funding */}
+                    {/* Funding (Might not exist in new schema, check safe access) */}
                     {summary.funding && (
                         <div className="flex items-center">
                             <span className="font-semibold mr-2">Funded By:</span>
@@ -362,25 +519,104 @@ const MetadataPage = () => {
             )}
         </div>
 
-        {/* --- Stat Cards --- */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
-          <StatCard label="Population" value={summary.populationSize?.toLocaleString()} colorClass="bg-blue-50" />
-          <StatCard label="Age Range" value={coverage.typicalAgeRange} colorClass="bg-green-50" />
-          <StatCard label="Access" value={access.deliveryLeadTime || "Restricted"} colorClass="bg-purple-50" />
-          <StatCard label="Follow Up" value={coverage.followUp} colorClass="bg-yellow-50" />
-          <StatCard label="Files" value={summary.datasetType} colorClass="bg-red-50" />
+    {/* --- Stat Cards (Conditional Rendering) --- */}
+    <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
+      {population && (
+        <StatCard
+          label="Population"
+          value={population.toLocaleString()}
+          colorClass="bg-blue-50"
+        />
+      )}
+      {ageRange && (
+        <StatCard
+          label="Age Range"
+          value={ageRange}
+          colorClass="bg-green-50"
+        />
+      )}
+      {leadTime && (
+        <StatCard
+          label="Access"
+          value={leadTime}
+          colorClass="bg-purple-50"
+        />
+      )}
+      {followUp && (
+        <StatCard
+          label="Follow Up"
+          value={followUp}
+          colorClass="bg-yellow-50"
+        />
+      )}
+      {fileTypes && fileTypes !== "Various" && (
+        <StatCard
+          label="Formats"
+          value={fileTypes}
+          colorClass="bg-red-50"
+        />
+      )}
+    </div>
+
+    {/* Project */}
+    <SectionHeading id="project" title="CRUK Project" />
+    <div className="prose max-w-none text-gray-700 mb-8 bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <div>
+          <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Project Name</span>
+          <p className="text-lg font-semibold text-blue-900 m-0">{data.project.projectName}</p>
         </div>
+
+        <div>
+          <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Lead Researcher</span>
+          <p className="text-base text-gray-800 m-0">
+            {data.project.leadResearcher} — <span className="italic">{data.project.leadResearchInstitute}</span>
+          </p>
+        </div>
+
+        <div>
+          <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Timeline</span>
+          <p className="text-sm text-gray-700 m-0">
+            {data.project.projectStartDate} to {data.project.projectEndDate}
+          </p>
+        </div>
+
+        <div>
+          <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Grant Number(s)</span>
+          <p className="text-sm font-mono text-gray-700 m-0">{data.project.grantNumbers}</p>
+        </div>
+
+        {/* This div now spans both columns on medium screens and larger */}
+        <div className="md:col-span-2 border-t border-gray-100 pt-4">
+          <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Project Scope</span>
+          <p className="text-sm text-gray-700 m-0 leading-relaxed">
+          </p>
+            {data.project.projectScope}
+        </div>
+
+      </div>
+    </div>
+
+
 
         {/* Summary */}
         <SectionHeading id="summary" title="Summary" />
         <div className="prose max-w-none text-gray-700 mb-8 bg-white p-6 rounded-lg shadow-sm border border-gray-100">
           <p>{summary.abstract}</p>
-          {summary.datasetLinkage?.syntheticDataWebLink && (
+          {data.enrichmentAndLinkage?.syntheticDataWebLink && (
             <div className="mt-4">
               <span className="font-semibold">Associated Website: </span>
-              <a href={summary.datasetLinkage.syntheticDataWebLink} className="text-blue-600 underline">
-                {summary.datasetLinkage.syntheticDataWebLink}
-              </a>
+              {/* Handle Array or Single String for web link */}
+              {Array.isArray(data.enrichmentAndLinkage.syntheticDataWebLink) ? (
+                 data.enrichmentAndLinkage.syntheticDataWebLink.map((link, i) => (
+                    <a key={i} href={link} className="text-blue-600 underline block">{link}</a>
+                 ))
+              ) : (
+                 <a href={data.enrichmentAndLinkage.syntheticDataWebLink} className="text-blue-600 underline">
+                    {data.enrichmentAndLinkage.syntheticDataWebLink}
+                 </a>
+              )}
             </div>
           )}
         </div>
@@ -399,7 +635,7 @@ const MetadataPage = () => {
             <span className="transform group-open:rotate-180 transition-transform duration-200 text-blue-500">▼</span>
           </summary>
           <div className="p-6 text-gray-700 leading-relaxed border-t border-gray-200 whitespace-pre-wrap">
-            {summary.description}
+            {descriptionText}
           </div>
         </details>
 
@@ -436,7 +672,8 @@ const MetadataPage = () => {
                                     <div className="flex items-center">
                                         <span className={`transform transition-transform mr-2 text-blue-500 ${isExpanded ? 'rotate-90' : ''}`}>▶</span>
                                         <span className="font-bold text-blue-900 text-lg">{entityName}</span>
-                                        <span className="ml-4 text-gray-600 text-sm italic">{data.description}</span>
+                                        {/* Handle description being short or long */}
+                                        <span className="ml-4 text-gray-600 text-sm italic truncate max-w-md">{data.description}</span>
                                         <span className="ml-auto text-xs text-gray-400 font-medium">{data.columns.length} columns</span>
                                     </div>
                                 </td>
@@ -496,23 +733,56 @@ const MetadataPage = () => {
                 ))}
             </ul>
         </div>
+      {/* Filters */}
+        <div className="space-y-6">
+             {/* Resource Creator */}
+             <div className="mb-4">
+                 <h4 className="font-bold text-blue-900 mb-2 border-b border-gray-200 pb-1 text-base">Resource Creator</h4>
+                 <p className="text-sm text-gray-600">{resourceCreators}</p>
+             </div>
 
-        {/* Filters */}
-        <div className="space-y-4">
-             {Object.entries(filters).map(([category, contents]) => (
-                 <div key={category}>
-                     <h4 className="font-semibold text-blue-900 mb-2 border-b border-gray-100 pb-1">{category}</h4>
-                     {renderFilterTree(contents)}
+             {/* Dynamic Nested Filters */}
+             {Object.entries(derivedFilters).map(([groupName, categories]) => (
+                 <div key={groupName}>
+                     {/* Main Group Header (e.g. Cancer Filters) */}
+                     <h4 className="font-bold text-blue-900 mb-3 border-b border-gray-200 pb-1 text-base">{groupName}</h4>
+
+                     {/* Loop through Sub-Categories (e.g. CRUK Terms, TCGA Terms) */}
+                     {Object.entries(categories).map(([categoryName, items]) => (
+                        <div key={categoryName} className="mb-4 pl-1">
+                            {/* Sub-Category Header - Small & Uppercase */}
+                            <h5 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{categoryName}</h5>
+
+                            <ul className="pl-2 border-l-2 border-gray-100 ml-1">
+                                {items.map((filter, idx) => (
+                                    <li key={idx} className="mb-2 text-sm group/filter">
+                                        <span className="text-gray-800 font-medium block">{filter.label}</span>
+                                        {/* Replace filter.path with filter.description if you want to show it */}
+                                        {filter.description && (
+                                            <span className="text-xs text-gray-500 block break-words mt-0.5 italic">
+                                                {filter.description}
+                                            </span>
+                                        )}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                     ))}
                  </div>
              ))}
+
+             {Object.keys(derivedFilters).length === 0 && (
+                <p className="text-sm text-gray-400 italic">No dataset filters applied.</p>
+             )}
         </div>
       </aside>
-
+    {/* 3. The Feedback Button */}
+            <button
+                onClick={() => setIsFeedbackOpen(true)}
+                className="fixed bottom-6 right-6 bg-orange-600 text-white p-4 rounded-full shadow-lg hover:bg-orange-700 z-40 font-bold"
+            >
+                Feedback
+            </button>
     </div>
   );
 };
-
-const meta = ReactDOM.createRoot(document.getElementById('meta'));
-meta.render(<MetadataPage />);
-
-export default MetadataPage;

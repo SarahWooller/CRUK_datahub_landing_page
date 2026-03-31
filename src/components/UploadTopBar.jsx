@@ -175,20 +175,21 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType }) => {
             console.error("Error exporting progress:", e);
         }
     };
-// uploadTopBar.jsx
     const transformForPHP = (data) => {
         return {
-            user_id: localStorage.getItem('userId'),
-            team_id: localStorage.getItem('activeTeamId'),
+            // team_id is required so the router can extract it
+            team_id: parseInt(localStorage.getItem('activeTeamId')),
             pid: data.pid || "",
             version: data.version || "1.0",
-            projectGrantName: data.projectGrantName,
-            leadResearcher: data.leadResearcher,
-            leadResearchInstitute: data.leadResearchInstitute,
-            grantNumbers: data.grantNumber, // JSON 'grantNumber' -> PHP 'grantNumbers'
-            projectGrantStartDate: data.projectGrantStartDate,
-            projectGrantEndDate: data.projectGrantEndDate,
-            projectGrantScope: data.projectGrantScope,
+            projectGrantName: data.projectGrantName || "",
+            leadResearcher: data.leadResearcher || "",
+            leadResearchInstitute: data.leadResearchInstitute || "",
+            grantNumbers: data.grantNumbers || "", // Use plural to match models.py
+            projectGrantStartDate: data.projectGrantStartDate || "",
+            projectGrantEndDate: data.projectGrantEndDate || "",
+            projectGrantScope: data.projectGrantScope || "",
+            // Required by ProjectBase schema
+            metadata_blob: {}
         };
     };
 
@@ -221,8 +222,8 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType }) => {
 
             // 2. Wrap it in the 'metadata_blob' key defined in your Pydantic schema
             payload = {
-                    metadata_blob: processedData,
-                    team_id: localStorage.getItem('activeTeamId'),
+                    metadata_blob: associateIcons(formData, prefixIconMapping),
+                    team_id: parseInt(localStorage.getItem('activeTeamId')),
                     status: "DRAFT"
                 };
             }
