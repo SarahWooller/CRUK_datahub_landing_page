@@ -1,0 +1,2733 @@
+{
+    "$defs": {
+        "AbstractText": {
+            "anyOf": [
+                {
+                    "maxLength": 500,
+                    "minLength": 5,
+                    "type": "string"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "title": "AbstractText"
+        },
+        "Access": {
+            "additionalProperties": false,
+            "properties": {
+                "accessRights": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Please provide details for the data access rights.",
+                    "title": "Access Rights",
+                    "examples": [
+                        "In Progress"
+                    ],
+                    "guidance": "- The URL of a webpage where the data access request process and/or guidance is provided. If there is more than one access process i.e. industry vs academic please provide both separated by a comma.\\n- If such a resource or the underlying process doesn’t exist, please provide “In Progress”, until both the process and the documentation are ready."
+                },
+                "accessService": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/LongDescription"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Please provide a brief description of the data access services that are available including: environment that is currently available to researchers;additional consultancy and services;any indication of costs associated. If no environment is currently available, please indicate the current plans and timelines when and how data will be made available to researchers Note: This value will be used as default access environment for all datasets submitted by the organisation. However, there will be the opportunity to overwrite this value for each dataset.",
+                    "examples": [
+                        "https://re-docs.genomicsengland.co.uk/tutorials/",
+                        "https://publichealthscotland.scot/services/data-research-and-innovation-services/electronic-data-research-and-innovation-service-edris/national-safe-haven-nsh/"
+                    ],
+                    "title": "Access service description",
+                    "guidance": "Please provide a brief description of the data access services that are available including:\\n- environment that is currently available to researchers\\n- additional consultancy and services\\n- any indication of costs associated\\n\\n  If no environment is currently available, please indicate the current plans and timelines when and how data will be made available to researchers.\\n  **Note**: This value will be used as default access environment for all datasets submitted by the organisation. However, there will be the opportunity to overwrite this value for each dataset."
+                },
+                "accessRequestCost": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/LongDescription"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Please provide link(s) to a webpage or description detailing the service or cost model for processing data access requests.",
+                    "title": "Access request cost",
+                    "guidance": "This information should cover the costs and/or services available to different audiences (i.e. academic, commercial, non-UK, etc.). This can be in the form of text or a URL."
+                },
+                "deliveryLeadTime": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/DeliveryLeadTimeV2"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Please provide an indication of the typical processing times based on the types of requests typically received.",
+                    "title": "Time to dataset access",
+                    "guidance": "- **Less than 1 week**: Access request process typically processed in less than a week.\\n- **1-2 weeks**: Access request process typically processed in one to two weeks.\\n- **2-4 weeks**: Access request process typically processed in two to four weeks.\\n- **1-2 months**: Access request process typically processed in one to two months.\\n- **2-6 months**: Access request process typically processed in two to six months.\\n- **More than 6 months**: Access request process typically processed in more than six months.\\n- **Variable**: Access request lead time is variable.\\n- **Not applicable**: Access request process duration is not applicable.\\n- **Other**: If the typical timeframe does not fit into the broad ranges i.e. lightweight application vs linked data application, please choose “Other” and indicate the typical timeframe within the description for the dataset."
+                },
+                "jurisdiction": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Please use country code from ISO 3166-1 country codes and the associated ISO 3166-2 for regions, cities, states etc. for the country/state under whose laws the data subjects' data is collected, processed and stored.",
+                    "title": "Jurisdiction",
+                    "guidance": "A full list of country codes can be found here (alpha-2 column): https://www.iso.org/obp/ui/#search/code/"
+                },
+                "dataController": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/LongDescription"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Data Controller means a person/entity who (either alone or jointly or in common with other persons/entities) determines the purposes for which and the way any Data Subject data, specifically personal data or are to be processed.",
+                    "title": "Data Controller",
+                    "examples": [
+                        "NHS England"
+                    ],
+                    "guidance": "- Data Controller means a person/entity who (either alone or jointly or in common with other persons/entities) determines the purposes for which and the way any Data Subject data, specifically personal data or are to be processed.\\n- Notes: For most organisations this will be the same as the Data Custodian of the dataset. If this is not the case, please indicate that there is a different controller.\\n- If there is a different controller please complete the Data Processor attribute to indicate if the Data Custodian is a Processor rather than the Data Controller.\\n- In some cases, there may be multiple Data Controllers i.e. GP data. If this is the case, please indicate the fact in a free-text field and describe the data sharing arrangement or a link to it, so that this can be understood by research users.\\n- Example: NHS England"
+                },
+                "dataProcessor": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/LongDescription"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "A Data Processor, in relation to any Data Subject data, specifically personal data, means any person/entity (other than an employee of the data controller) who processes the data on behalf of the data controller.",
+                    "title": "Data Processor",
+                    "examples": [
+                        "Not Applicable",
+                        "SAIL"
+                    ],
+                    "guidance": "A Data Processor, in relation to any Data Subject data, specifically personal data, means any person/entity (other than an employee of the data controller) who processes the data on behalf of the data controller.\\n- Notes: Required to complete if the Data Custodian is the Data Processor rather than the Data Controller.\\n- If the Publisher is also the Data Controller please provide “Not Applicable”.\\n- Examples: Not Applicable, SAIL"
+                },
+                "accessServiceCategory": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Where access to data come from: TRE/SED, direct access, open acccess, varies based on project.",
+                    "examples": [
+                        "TRE/SDE"
+                    ],
+                    "title": "Access/governance requirements"
+                },
+                "required": [
+                    "accessRights"
+                ]
+            },
+            "title": "Access",
+            "type": "object"
+        },
+        "Accessibility": {
+            "additionalProperties": false,
+            "properties": {
+                "usage": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Usage"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "This section includes information about how the data can be used and how it is currently being used",
+                    "title": "Usage"
+                },
+                "access": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/Access"
+                        }
+                    ],
+                    "description": "Accessibility information allows researchers to understand access, usage, limitations, formats, standards and linkage or interoperability with toolsets.",
+                    "title": "Accessibility"
+                },
+                "formatAndStandards": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/FormatAndStandards"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Section includes technical attributes for language vocabularies, sizes etc. and gives researchers facts about and processing the underlying data in the dataset.",
+                    "title": "Format and Standards"
+                }
+            },
+            "required": [
+                "access"
+            ],
+            "title": "Accessibility",
+            "type": "object"
+        },
+        "Age": {
+            "properties": {
+                "bin": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/AgeEnum"
+                        }
+                    ],
+                    "title": "Age bin"
+                },
+                "count": {
+                    "title": "Age count",
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "bin",
+                "count"
+            ],
+            "title": "Age",
+            "type": "object"
+        },
+        "AgeEnum": {
+            "enum": [
+                "0-6 days",
+                "7-27 days",
+                "1-11 months",
+                "1-4 years",
+                "5-9 years",
+                "10-14 years",
+                "15-19 years",
+                "20-24 years",
+                "25-29 years",
+                "30-34 years",
+                "35-39 years",
+                "40-44 years",
+                "45-49 years",
+                "50-54 years",
+                "55-59 years",
+                "60-64 years",
+                "65-69 years",
+                "70-74 years",
+                "75-79 years",
+                "80-84 years",
+                "85-89 years",
+                "90-94 years",
+                "95-99 years",
+                "100+ years"
+            ],
+            "title": "AgeEnum",
+            "type": "string"
+        },
+        "AgeRange": {
+            "anyOf": [
+                {
+                    "pattern": "Not Known|(150|1[0-4][0-9]|[0-9]|[1-8][0-9]|9[0-9])-(150|1[0-4][0-9]|[0-9]|[1-8][0-9]|9[0-9])",
+                    "type": "string"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "title": "AgeRange"
+        },
+        "Assay": {
+            "enum": [
+                "NMR spectroscopy",
+                "Mass-spectrometry",
+                "Whole genome sequencing",
+                "Exome sequencing",
+                "Genotyping by array",
+                "Transcriptome profiling by high-throughput sequencing",
+                "Transcriptome profiling by array",
+                "Amplicon sequencing",
+                "Methylation binding domain sequencing",
+                "Methylation profiling by high-throughput sequencing",
+                "Genomic variant calling",
+                "Chromatin accessibility profiling by high-throughput sequencing",
+                "Histone modification profiling by high-throughput sequencing",
+                "Chromatin immunoprecipitation sequencing",
+                "Whole genome shotgun sequencing",
+                "Whole transcriptome sequencing",
+                "Targeted mutation analysis"
+            ],
+            "title": "Assay",
+            "type": "string"
+        },
+        "CommaSeparatedValues": {
+            "anyOf": [
+                {
+                    "pattern": "([^,]+)",
+                    "type": "string"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "title": "CommaSeparatedValues"
+        },
+        "Coverage": {
+            "properties": {
+                "spatial": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The geographical area covered by the dataset. It is recommended that links are to entries in a well-maintained gazetteer such as https://www.geonames.org/ or https://what3words.com/daring.lion.race.",
+                    "examples": [
+                        "https://www.geonames.org/2635167/united-kingdom-of-great-britain-and-northern-ireland.html"
+                    ],
+                    "title": "Geographic Coverage",
+                    "guidance": "- The geographical area covered by the dataset.\\n- Please provide a valid location.\\n- For locations in the UK, this location should conform to [ONS standards](https://geoportal.statistics.gov.uk/datasets/208d9884575647c29f0dd5a1184e711a/about).\\n- For locations in other countries we use [ISO 3166-1 & ISO 3166-2](https://github.com/HDRUK/reference-codes)."
+                },
+                "pathway": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/LongDescription"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Please indicate if the dataset is representative of the patient pathway and any limitations the dataset may have with respect to pathway coverage. This could include if the dataset is from a single speciality or area, a single tier of care, linked across two tiers (e.g. primary and secondary care), or an integrated care record covering the whole patient pathway.",
+                    "title": "Pathway"
+                },
+                "followUp": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/FollowupV2"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "If known, what is the typical time span that a patient appears in the dataset (follow up period)",
+                    "title": "Followup"
+                },
+                "typicalAgeRange": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/AgeRange"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Please indicate the age range in whole years of participants in the dataset. Please provide range in the following format '[min age] – [max age]' where both the minimum and maximum are whole numbers (integers).",
+                    "title": "Age Range"
+                },
+                "datasetCompleteness": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Url"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The URL where a Researcher can learn more about the completeness of the dataset.",
+                    "title": "Dataset coverage/completeness/quality",
+                    "examples": [
+                        "https://bhfdatasciencecentre.org/dashboard/"
+                    ],
+                    "guidance": "If your organisation has a publicly available site which contains information on the completeness of a dataset, add that URL here.\\n**Example**: https://bhfdatasciencecentre.org/dashboard/"
+                }
+            },
+            "title": "Coverage",
+            "type": "object"
+        },
+        "DataColumn": {
+            "properties": {
+                "name": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/Name"
+                        }
+                    ],
+                    "description": "Name of a column in the table named above.",
+                    "title": "Column Name",
+                    "examples": [
+                        "Treatment Code"
+                    ]
+                },
+                "dataType": {
+                    "description": "The data type of values in the column.",
+                    "title": "Data type",
+                    "type": "string",
+                    "guidance": "Where necessary it is helpful to specify the language or disambiguate eg True vs true",
+                    "examples": [
+                        "string"
+                    ]
+                },
+                "description": {
+                    "anyOf": [
+                        {
+                            "maxLength": 20000,
+                            "minLength": 1,
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "A description of a column in a table.",
+                    "title": "Column Description",
+                    "examples": [
+                        "Codes are drawn from table 2, listing chEMBL codes for small molecules"
+                    ],
+                    "guidance": "Where values within the column are drawn from another table, please name it here. Alternatively if there are a limited number of frequent values list them below"
+                },
+                "sensitive": {
+                    "description": "A True or False value, indicating if the field is sensitive or not",
+                    "title": "Sensitive",
+                    "type": "boolean"
+                },
+                "values": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "$ref": "#/$defs/DataValue"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "values in a dataset",
+                    "title": "Values"
+                }
+            },
+            "required": [
+                "name"
+            ],
+            "title": "DataColumn",
+            "type": "object"
+        },
+        "DataTable": {
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "anyOf": [
+                        {
+                            "maxLength": 500,
+                            "minLength": 1,
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The name of a table in a dataset.",
+                    "title": "Table Name",
+                    "guidance": "Please identify each of the tables in the dataset. When you fill in information for the first table, a new box will automatically be added to the end."
+                },
+                "description": {
+                    "anyOf": [
+                        {
+                            "maxLength": 20000,
+                            "minLength": 1,
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "A description of a table in a dataset.",
+                    "title": "Table Description'"
+                },
+                "columns": {
+                    "description": "The columns in the above table.",
+                    "items": {
+                        "$ref": "#/$defs/DataColumn"
+                    },
+                    "title": "Data Columns",
+                    "type": "array"
+                },
+                "size": {
+                    "anyOf": [
+                        {
+                            "type": "integer"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Number of Complete Entries.",
+                    "guidance": "Provides a measure of the completeness of the data set. A row which includes n/a against columns that are not relevant or not applicable should still be counted as complete.",
+                    "title": "Table size"
+                }
+            },
+            "required": [
+                "name"
+            ],
+            "title": "DataTable",
+            "type": "object"
+        },
+        "DataValue": {
+            "properties": {
+                "name": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/Name"
+                        }
+                    ],
+                    "description": "Unique value in a column .",
+                    "title": "Value Name"
+                },
+                "description": {
+                    "anyOf": [
+                        {
+                            "maxLength": 20000,
+                            "minLength": 1,
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "A description of a unique value in a column.",
+                    "title": "Value Description"
+                },
+                "frequency": {
+                    "anyOf": [
+                        {
+                            "type": "integer"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The frequency of occurrance of a value in a column",
+                    "title": "Value Frequency"
+                }
+            },
+            "required": [
+                "name"
+            ],
+            "title": "DataValue",
+            "type": "object"
+        },
+        "DatasetDescriptor": {
+            "properties": {
+                "pid": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/OneHundredFiftyCharacters"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Persistent identifier of a dataset"
+                },
+                "title": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/OneHundredFiftyCharacters"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Title of a dataset"
+                },
+                "url": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Url"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Url of a dataset"
+                }
+            },
+            "title": "DatasetDescriptor",
+            "type": "object"
+        },
+        "DatasetLinkage": {
+            "additionalProperties": false,
+            "properties": {
+                "isDerivedFrom": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "$ref": "#/$defs/DatasetDescriptor"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Indicate if derived datasets or predefined extracts are available and the type of derivation available. Notes. Single or multiple dimensions can be provided as a derived extract alongside the dataset",
+                    "examples": [
+                        "Data will be minimised as appropriate relative to the data access application"
+                    ],
+                    "title": "Derivations"
+                },
+                "isPartOf": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "$ref": "#/$defs/DatasetDescriptor"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "If the dataset is part of a group or family",
+                    "examples": [
+                        "UKCRC Tissue Directory and Coordination Centre"
+                    ],
+                    "title": "Is PartOf"
+                },
+                "linkedDatasets": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "$ref": "#/$defs/DatasetDescriptor"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Links to other datasets.",
+                    "examples": [
+                        "Yes. To any SAIL dataset & reference data.,ALL"
+                    ],
+                    "title": "Linked Datasets"
+                },
+                "isMemberOf": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "$ref": "#/$defs/DatasetDescriptor"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Dataset is a member of XXX(?)",
+                    "title": "Is MemberOf"
+                }
+            },
+            "title": "DatasetLinkage",
+            "type": "object"
+        },
+        "DeliveryLeadTimeV2": {
+            "enum": [
+                "Less than 1 week",
+                "1-2 weeks",
+                "2-4 weeks",
+                "1-2 months",
+                "2-6 months",
+                "More than 6 months",
+                "Variable",
+                "Not applicable",
+                "Other"
+            ],
+            "title": "DeliveryLeadTimeV2",
+            "type": "string"
+        },
+        "DemographicFrequency": {
+            "additionalProperties": false,
+            "properties": {
+                "age": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "$ref": "#/$defs/Age"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Array of age bins and their corresponding counts.",
+                    "title": "Age"
+                },
+                "ethnicity": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "$ref": "#/$defs/Ethnicity"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Array of bins, based off the UK Office for National Statistics (ONS) census groupings, and their corresponding counts as represented within the dataset.",
+                    "title": "Ethnicity",
+                    "guidance": "Enter the count of population represented in the dataset within the ethnicity bins provided. Clearly indicate where ethnicity is not stated or not known. Ensure you apply low number suppression and rounding where appropriate."
+                },
+                "disease": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "$ref": "#/$defs/Disease"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Array of diseases and their corresponding counts.",
+                    "title": "Disease"
+                }
+            },
+            "title": "DemographicFrequency",
+            "type": "object"
+        },
+        "Disease": {
+            "properties": {
+                "diseaseCode": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "title": "Disease code"
+                },
+                "diseaseCodeVocabulary": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/DiseaseCodeEnum"
+                        }
+                    ],
+                    "title": "Disease code vocabulary",
+                    "examples": [
+                        "ICD10"
+                    ]
+                },
+                "count": {
+                    "title": "Disease count",
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "diseaseCode",
+                "diseaseCodeVocabulary",
+                "count"
+            ],
+            "title": "Disease",
+            "type": "object"
+        },
+        "DiseaseCodeEnum": {
+            "enum": [
+                "ICD10",
+                "SNOMED CT",
+                "MeSH"
+            ],
+            "title": "DiseaseCodeEnum",
+            "type": "string"
+        },
+        "Doi": {
+            "anyOf": [
+                {
+                    "pattern": "^10.\\d{4,9}/[-._;()/:a-zA-Z0-9]+$",
+                    "type": "string"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "title": "Doi"
+        },
+        "Ethnicity": {
+            "properties": {
+                "bin": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/EthnicityEnum"
+                        }
+                    ],
+                    "title": "Ethnicity bin"
+                },
+                "count": {
+                    "title": "Ethnicity count",
+                    "type": "integer"
+                }
+            },
+            "required": [
+                "bin",
+                "count"
+            ],
+            "title": "Ethnicity",
+            "type": "object"
+        },
+        "EthnicityEnum": {
+            "enum": [
+                "White - British",
+                "White - Irish",
+                "White - Any other White background",
+                "Mixed - White and Black Caribbean",
+                "Mixed - White and Black African",
+                "Mixed - White and Asian",
+                "Mixed - Any other mixed background",
+                "Asian or Asian British - Indian",
+                "Asian or Asian British - Pakistani",
+                "Asian or Asian British - Bangladeshi",
+                "Asian or Asian British - Any other Asian background",
+                "Black or Black British - Caribbean",
+                "Black or Black British - African",
+                "Black or Black British - Any other Black background",
+                "Other Ethnic Groups - Chinese",
+                "Other Ethnic Groups - Any other ethnic group",
+                "Not stated",
+                "Not known"
+            ],
+            "title": "EthnicityEnum",
+            "type": "string"
+        },
+        "FollowupV2": {
+            "enum": [
+                "0 - 6 Months",
+                "6 - 12 Months",
+                "1 - 10 Years",
+                "> 10 Years",
+                "Unknown",
+                "Continuous",
+                "Other",
+                null
+            ],
+            "title": "FollowupV2"
+        },
+        "FormatAndStandards": {
+            "additionalProperties": false,
+            "properties": {
+                "vocabularyEncodingSchemes": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Code value of the ontology vocabulary encoding",
+                    "examples": [
+                        "OPCS4,NHS NATIONAL CODES,ICD10,OTHER"
+                    ],
+                    "title": "Controlled Vocabulary"
+                },
+                "conformsTo": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "What the vocabulary conforms to.",
+                    "examples": [
+                        "LOCAL,NHS DATA DICTIONARY"
+                    ],
+                    "title": "Conforms To"
+                },
+                "languages": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Language code(s) of the language of the dataset metadata and underlying data is made available.",
+                    "examples": [
+                        "en"
+                    ],
+                    "title": "Language Code(s)"
+                },
+                "formats": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Format(s) the dataset can be made available in",
+                    "examples": [
+                        "CSV,JSON,SQL database table"
+                    ],
+                    "title": "Dataset Format"
+                },
+                "format": {
+                    "description": "List the types of data available",
+                    "guidance": "Where data includes non-text information such as images etc. please list them here. If multiple formats are available, please specify. See application, audio, image, message, model, multipart, text, video, <https://www.iana.org/assignments/media-types/media-types.xhtml>.\\n- Please **enter one format type at a time** and click **Add New Field** to add further keywords.\\n- Note: If your file format is not included in the current list of formats, please indicate other.\\n- **Example**: text/tab-separated-values, application/sql, text/csv, image/diacom-rle"
+                }
+            },
+            "title": "FormatAndStandards",
+            "type": "object"
+        },
+        "Linkage": {
+            "additionalProperties": false,
+            "properties": {
+                "isGeneratedUsing": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "??",
+                    "title": "Is Generated Using"
+                },
+                "associatedMedia": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Any media associated with the Gateway Organisation using a valid URI for the content. This is an opportunity to provide additional context that could be useful for researchers wanting to understand more about the dataset and its relevance to their research question",
+                    "examples": [
+                        "https://popdatasci.swan.ac.uk/centres-of-excellence/sail/,https://www.youtube.com/watch?v=ZK9-Jw3uVkw,https://saildatabank.com/,https://saildatabank.com/about-us/"
+                    ],
+                    "title": "Associated Media"
+                },
+                "dataUses": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "??",
+                    "title": "Data Uses"
+                },
+                "isReferenceIn": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The keystone paper associated with the dataset. Also include a list of known citations, if available and should be links to existing resources where the dataset has been used or referenced.',",
+                    "title": "Is Reference in"
+                },
+                "tools": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "URL of any analysis tools or models that have been created for this dataset and are available for further use",
+                    "examples": [
+                        "https://conceptlibrary.saildatabank.com/"
+                    ],
+                    "title": "Tools"
+                },
+                "datasetLinkage": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/DatasetLinkage"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Dataset Linkage copied over from",
+                    "title": "Dataset Linkage"
+                },
+                "investigations": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Please provide the keystone paper associated with the dataset.",
+                    "examples": [
+                        "https://digital.nhs.uk/services/data-access-request-service-dars/register-of-approved-data-releases"
+                    ],
+                    "title": "Investigations"
+                },
+                "syntheticDataWebLink": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Links to locations of information and or raw downloads of synthetic data associated with this dataset",
+                    "title": "Synthetic Data Web Links"
+                },
+                "publicationAboutDataset": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "$ref": "#/$defs/Doi"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "DOIs for publications which describe the dataset.",
+                    "title": "Publication about the dataset"
+                },
+                "publicationUsingDataset": {
+                    "anyOf": [
+                        {
+                            "items": {
+                                "$ref": "#/$defs/Doi"
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "DOIs for publications which use the dataset for analysis.",
+                    "title": "Publication using the dataset"
+                }
+            },
+            "title": "Linkage",
+            "type": "object"
+        },
+        "LongAbstractText": {
+            "anyOf": [
+                {
+                    "maxLength": 5000,
+                    "minLength": 5,
+                    "type": "string"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "title": "LongAbstractText"
+        },
+        "LongDescription": {
+            "anyOf": [
+                {
+                    "maxLength": 50000,
+                    "minLength": 2,
+                    "type": "string"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "title": "LongDescription"
+        },
+        "MeasuredProperty": {
+            "title": "MeasuredProperty"
+        },
+        "Name": {
+            "title": "Name"
+        },
+        "Observation": {
+            "additionalProperties": false,
+            "properties": {
+                "observedNode": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/StatisticalPopulationConstrainedV2"
+                        }
+                    ],
+                    "description": "Please select one of the following statistical populations for you observation",
+                    "examples": [
+                        "PERSONS"
+                    ],
+                    "title": "Statistical Population"
+                },
+                "measuredValue": {
+                    "description": "Please provide the population size associated with the population type the dataset i.e. 1000 people in a study, or 87 images (MRI) of Knee Usage Note: Used with Statistical Population, which specifies the type of the population in the dataset.",
+                    "title": "Measured Value",
+                    "type": "integer"
+                },
+                "disambiguatingDescription": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/AbstractText"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "If SNOMED CT term does not provide sufficient detail, please provide a description that disambiguates the population type.",
+                    "title": "Disambiguating Description"
+                },
+                "observationDate": {
+                    "anyOf": [
+                        {
+                            "format": "date",
+                            "type": "string"
+                        },
+                        {
+                            "format": "date-time",
+                            "type": "string"
+                        }
+                    ],
+                    "description": "Please provide the date that the observation was made. Some datasets may be continuously updated and the number of records will change regularly, so the observation date provides users with the date that the analysis or query was run to generate the particular observation. Multiple observations can be made i.e. an observation of cumulative COVID positive cases by specimen on the 1/1/2021 could be 2M. On the 8/1/2021 a new observation could be 2.1M. Users can add multiple observations.",
+                    "title": "Observation Date"
+                },
+                "measuredProperty": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/MeasuredProperty"
+                        }
+                    ],
+                    "description": "Initially this will be defaulted to \"COUNT\"",
+                    "title": "Measured Property"
+                }
+            },
+            "required": [
+                "observedNode",
+                "measuredValue",
+                "observationDate",
+                "measuredProperty"
+            ],
+            "title": "Observation",
+            "type": "object"
+        },
+        "Omics": {
+            "additionalProperties": false,
+            "properties": {
+                "assay": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Assay"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The specific 'omics assay that generated the dataset.",
+                    "guidance": "The specific 'omics assay that generated the dataset. If the assay used to generate your dataset is not listed, please contract the gateway team by submitting an enquiry.",
+                    "title": "Omics assay"
+                },
+                "platform": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Platform"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The specific technology or infrastructure used to perform the assay. If the omics platform used to create your dataset is not listed, please select other, a member of the gateway team will contact you to add an appropriate term(s) both to your record and to the metadata schema on your behalf.",
+                    "guidance": "The specific technology or infrastructure used to perform the assay. If the omics platform used to create your dataset is not listed, please select other, a member of the gateway team will contact you to add an appropriate term(s) both to your record and to the metadata schema on your behalf.",
+                    "title": "Omics Platform"
+                }
+            },
+            "title": "Omics",
+            "type": "object"
+        },
+        "OneHundredFiftyCharacters": {
+            "maxLength": 150,
+            "minLength": 2,
+            "title": "OneHundredFiftyCharacters",
+            "type": "string"
+        },
+        "Organisation": {
+            "properties": {
+                "name": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Name"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The organisation responsible for running or supporting the data access request process, as well as publishing and maintaining the metadata.",
+                    "title": "Name of Data Custodian",
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/OneHundredFiftyCharacters"
+                        }
+                    ],
+                    "examples": [
+                        "Cancer Research Horizons"
+                    ],
+                    "guidance": "In most this will be the same as the Team you have on the Hub, but may be different."
+                },
+                "gatewayId": {
+                    "anyOf": [
+                        {
+                            "maxLength": 50,
+                            "minLength": 2,
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Identifier on the gateway",
+                    "title": "Organisation Gateway Identifier"
+                },
+                "rorId": {
+                    "anyOf": [
+                        {
+                            "maxLength": 9,
+                            "minLength": 9,
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The Research Organization Registry (ROR) for the organisation, if applicable",
+                    "title": "Research Organization Registry Identifier"
+                },
+                "identifier": {
+                    "examples": [
+                        "https://ror.org/00ayhx656"
+                    ]
+                },
+                "logo": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Url"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "URL for logo associated with the Data Custodian.",
+                    "guidance": "Please provide a logo associated with the Data Custodian using a valid URL. The following formats will be accepted .jpg, .png or .svg.  If a logo is not submitted this will default to the logo for the team submitting the metadata.",
+                    "title": "Organisation Logo"
+                },
+                "description": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Description"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Please provide a URL that describes the organisation.  If a description is not provided this will default to the description of the team submitting the metadata.",
+                    "title": "Organisation Description"
+                }
+            },
+            "title": "Organisation",
+            "type": "object",
+            "additionalProperties": false
+        },
+        "Origin": {
+            "additionalProperties": false,
+            "properties": {
+                "purpose": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Please indicate the purpose(s) that the dataset was collected.",
+                    "title": "Purpose"
+                },
+                "source": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Please indicate the source of the data extraction",
+                    "title": "Source"
+                },
+                "collectionSituation": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Please indicate the setting(s) where data was collected. Multiple settings may be provided",
+                    "title": "Collection Situation Setting"
+                },
+                "imageContrast": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Ternary"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": "Not stated",
+                    "description": "Indicate whether usage of imaging contrast is captured within the dataset.",
+                    "title": "Image contrast"
+                }
+            },
+            "title": "Origin",
+            "type": "object"
+        },
+        "PeriodicityV2": {
+            "enum": [
+                "Static",
+                "Irregular",
+                "Continuous",
+                "Biennial",
+                "Annual",
+                "Biannual",
+                "Quarterly",
+                "Bimonthly",
+                "Monthly",
+                "Biweekly",
+                "Weekly",
+                "Twice a week",
+                "Daily",
+                "Other",
+                null
+            ],
+            "title": "PeriodicityV2"
+        },
+        "Pipeline": {
+            "enum": [
+                "Available",
+                "Not available"
+            ],
+            "title": "Pipeline",
+            "type": "string"
+        },
+        "Platform": {
+            "enum": [
+                "Other",
+                "NMR Nightingale",
+                "Metabolon",
+                "Biocrates",
+                "Illumina",
+                "Oxford Nanopore",
+                "454",
+                "Hi-C",
+                "HiFi"
+            ],
+            "title": "Platform",
+            "type": "string"
+        },
+        "Provenance": {
+            "additionalProperties": false,
+            "properties": {
+                "origin": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Origin"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "temporal": {
+                    "$ref": "#/$defs/Temporal"
+                }
+            },
+            "required": [
+                "temporal"
+            ],
+            "title": "Provenance",
+            "type": "object"
+        },
+        "Required": {
+            "properties": {
+                "gatewayId": {
+                    "description": "Associated identifier (number) that is the BigInt key in our SQL database for the dataset version associated with this metadata",
+                    "maxLength": 50,
+                    "minLength": 1,
+                    "title": "Gateway Identifier",
+                    "type": "string"
+                },
+                "gatewayPid": {
+                    "description": "A unique persistent identifier for the metadata version. This is a 128-bit unique identifiers, as 32 hexadecimal digits separated by hyphens",
+                    "maxLength": 50,
+                    "minLength": 2,
+                    "title": "Gateway Persistent Identifier",
+                    "type": "string"
+                },
+                "issued": {
+                    "description": "Datetime stamp of when this metadata version was initially issued",
+                    "format": "date-time",
+                    "title": "Metadata Issued Datetime",
+                    "type": "string"
+                },
+                "modified": {
+                    "description": "Datetime stamp of when this metadata was last modified",
+                    "format": "date-time",
+                    "title": "Last Modified Datetime",
+                    "type": "string"
+                },
+                "revisions": {
+                    "description": "A list of persistent identifiers and version numbers for previous versions of metadata for this dataset",
+                    "items": {
+                        "$ref": "#/$defs/Revision"
+                    },
+                    "title": "Metadata Version Revisions",
+                    "type": "array"
+                },
+                "version": {
+                    "description": "Dataset metadata version",
+                    "examples": [
+                        "1.1.0"
+                    ],
+                    "pattern": "^\\d+\\.\\d+\\.\\d+$",
+                    "title": "Dataset Version",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "gatewayId",
+                "gatewayPid",
+                "issued",
+                "modified",
+                "revisions",
+                "version"
+            ],
+            "title": "Required",
+            "type": "object"
+        },
+        "Revision": {
+            "properties": {
+                "version": {
+                    "description": "Version number used for previous version of this dataset",
+                    "examples": [
+                        "6.0.0"
+                    ],
+                    "maxLength": 100,
+                    "minLength": 2,
+                    "title": "revision version",
+                    "type": "string"
+                },
+                "url": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Url"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Some url with a reference to the record of a previous version of this dataset",
+                    "examples": [
+                        "https://api.service.nhs.uk/health-research-data-catalogue/datasetrevisions/841f7da2-b018-41f6-b4ae-2e0aadab6561"
+                    ],
+                    "title": "revision url"
+                }
+            },
+            "required": [
+                "version",
+                "url"
+            ],
+            "title": "Revision",
+            "type": "object"
+        },
+        "SampleDonor": {
+            "properties": {
+                "id": {
+                    "anyOf": [
+                        {
+                            "maxLength": 50,
+                            "minLength": 2,
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "ID of the sample donor",
+                    "title": "Donor ID"
+                },
+                "sex": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Sex of the sample donor",
+                    "title": "Donor Sex"
+                },
+                "birthDate": {
+                    "anyOf": [
+                        {
+                            "format": "date",
+                            "type": "string"
+                        },
+                        {
+                            "format": "date-time",
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Date of birth of the sample donor",
+                    "title": "Donor birth date"
+                },
+                "dataCategories": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Data categories related to the sample donor",
+                    "title": "Donor Data Categories"
+                }
+            },
+            "title": "SampleDonor",
+            "type": "object"
+        },
+        "ShortTitle": {
+            "anyOf": [
+                {
+                    "maxLength": 100,
+                    "minLength": 2,
+                    "type": "string"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "title": "ShortTitle"
+        },
+        "StatisticalPopulationConstrainedV2": {
+            "enum": [
+                "Persons",
+                "Events",
+                "Findings",
+                "Number of scans per modality"
+            ],
+            "title": "StatisticalPopulationConstrainedV2",
+            "type": "string"
+        },
+        "Summary": {
+            "properties": {
+                "title": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/TwoHundredFiftyFiveCharacters"
+                        }
+                    ],
+                    "description": "Up to 150 characters.",
+                    "examples": [
+                        "Linked multi-omic dataset in oesophageal cancer (OCCAMS)",
+                        "Non-small cell lung cancer (NSCLC) real-world dataset"
+                    ],
+                    "title": "Title",
+                    "guidance": "- Use the **title** the dataset is best known by. Expand **acronyms**, adding the acronym in brackets.\\n- Use a **unique** title. adding a **prefix** with your organisation name or identifier where necessary"
+                },
+                "shortTitle": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/ShortTitle"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "A shorter descriptive title of the dataset",
+                    "examples": [
+                        "ONS 2011 Census Wales (CENW)"
+                    ],
+                    "title": "Short Title"
+                },
+                "doiName": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Doi"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "DOI associated to this dataset",
+                    "examples": [
+                        "10.1093/ije/dyx196"
+                    ],
+                    "title": "DOI Name"
+                },
+                "abstract": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/LongAbstractText"
+                        }
+                    ],
+                    "description": "Optimal length one paragraph. Limited to 255 characters. Avoid long sentences and abbreviations.",
+                    "examples": [
+                        "Anonymised real-world clinical data from patients with advanced or metastatic non-small cell lung cancer.  Data includes treatments, imaging, long-term follow up and outcomes. Database size = 774 in 2025 + 150 patients/year."
+                    ],
+                    "title": "Abstract",
+                    "guidance": "- A **clear and brief descriptive signpost** for researchers, summarising the dataset's scope and contents.\\n- The first line of the abstract is visible to readers when searching for datasets.\\n- **Abstracts should be different from the full description** for a dataset."
+                },
+                "keywords": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "If not included in abstract, title or filters, please provide one or more keywords or short phrases to improve search engine optimisation.",
+                    "examples": [
+                        "Hedgehog pathway",
+                        "p53 hotspot mutation",
+                        "Oxaliplatin",
+                        "Accident and Emergency Admissions"
+                    ],
+                    "title": "Keywords",
+                    "guidance": "- Keywords need not repeat information provided in the title, abstract or filters.\\n - If needed they should refer to specific additional details of the dataset.\\n - Include one per line.   "
+                },
+                "controlledKeywords": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Keywords that have been filtered and limited",
+                    "title": "Controlled Keywords"
+                },
+                "contactPoint": {
+                    "anyOf": [
+                        {
+                            "format": "email",
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Email address for coodinating data access requests.",
+                    "example": [
+                        "blah.blah@blah.com"
+                    ],
+                    "title": "Contact Point",
+                    "examples": [
+                        "researcher@university.ac.uk"
+                    ],
+                    "guidance": "This should be a **dedicated email address** associated with the data access request process. \\n**Note:** An employee's email address can only be provided on a temporary basis and if one is provided, **you must obtain explicit consent for this purpose**."
+                },
+                "datasetType": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "What type of dataset is this?",
+                    "title": "Dataset type"
+                },
+                "description": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/LongDescription"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Longer description of the dataset in detail",
+                    "examples": [
+                        "Publications that mention HDR-UK (or any variant thereof) in Acknowledgements or Author Affiliations\\n\\nThis will include:\\n- Papers\\n- COVID-19 Papers\\n- COVID-19 Preprint"
+                    ],
+                    "title": "Description"
+                },
+                "publisher": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Organisation"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Link to details about the publisher of this dataset",
+                    "title": "Publisher"
+                },
+                "populationSize": {
+                    "anyOf": [
+                        {
+                            "type": "integer"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": 0,
+                    "description": "Input the number of people captured within the dataset. Defaults to 0.",
+                    "title": "Population size",
+                    "guidance": "Defaults to 0 for none human populations."
+                },
+                "datasetSubType": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Placeholder for dataset sub-type",
+                    "title": "Dataset Sub-type"
+                },
+                "inPipeline": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Pipeline"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": "Not available",
+                    "description": "Indicate whether this dataset is currently available for Researchers to request access.",
+                    "title": "Dataset pipeline status"
+                },
+                "dataCustodian": {
+                    "description": "Organisation responsible for queries and data access requests."
+                }
+            },
+            "required": [
+                "title",
+                "abstract"
+            ],
+            "title": "Summary",
+            "type": "object"
+        },
+        "Temporal": {
+            "additionalProperties": false,
+            "properties": {
+                "startDate": {
+                    "anyOf": [
+                        {
+                            "format": "date",
+                            "type": "string"
+                        },
+                        {
+                            "format": "date-time",
+                            "type": "string"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The start of the time period that the dataset provides coverage for.",
+                    "title": "Start date",
+                    "examples": [
+                        "YYYY-MM-DD"
+                    ],
+                    "guidance": "- The start of the time period that the dataset provides coverage for.\\n- If there are multiple cohorts in the dataset with varying start dates, please provide the earliest date and use the description or the media attribute to provide more information."
+                },
+                "endDate": {
+                    "anyOf": [
+                        {
+                            "format": "date",
+                            "type": "string"
+                        },
+                        {
+                            "format": "date-time",
+                            "type": "string"
+                        },
+                        {
+                            "$ref": "#/$defs/EndDateEnum"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The end of the time period that the dataset provides coverage for.",
+                    "title": "End date",
+                    "examples": [
+                        "YYYY-MM-DD"
+                    ],
+                    "guidance": "- The end of the time period that the dataset provides coverage for.\\n- If the dataset is **“Continuous”** and has no known end date, **please leave blank**.\\n- If there are **multiple cohorts** in the dataset with varying end dates, please provide the **latest date**."
+                },
+                "timeLag": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/TimeLagV2"
+                        }
+                    ],
+                    "description": "Typical time-lag between events and data appearing in the dataset.",
+                    "title": "Time lag",
+                    "examples": [
+                        "Not applicable"
+                    ],
+                    "guidance": "Please indicate the typical time-lag between an event and the data for that event appearing in the dataset.\\n- **Less than 1 week**: Typical time lag of less than a week.\\n- **1-2 weeks**: Typical time-lag of one to two weeks.\\n- **2-4 weeks**: Typical time-lag of two to four weeks.\\n- **1-2 months**: Typical time-lag of one to two months.\\n- **2-6 months**: Typical time-lag of two to six months.\\n- **6 months plus**: Typical time-lag of more than six months.\\n- **Variable**: Variable time-lag.\\n- **Not applicable**: Not Applicable i.e. static dataset.\\n- **Other**: Other time-lag."
+                },
+                "accrualPeriodicity": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/PeriodicityV2"
+                        }
+                    ],
+                    "description": "Please indicate the frequency of distribution release. If a dataset is distributed regularly please choose a distribution release periodicity from the constrained list and indicate the next release date. When the release date becomes historical, a new release date will be calculated based on the publishing periodicity. If a dataset has been published and will remain static please indicate that it is static and indicated when it was released. If a dataset is released on an irregular basis or “on-demand” please indicate that it is Irregular and leave release date as null. If a dataset can be published in real-time or near-real-time please indicate that it is continuous and leave release date as null. Notes: see https://www.dublincore.org/specifications/dublin-core/collection-description/frequency/",
+                    "title": "Periodicity"
+                },
+                "distributionReleaseDate": {
+                    "anyOf": [
+                        {
+                            "format": "date",
+                            "type": "string"
+                        },
+                        {
+                            "format": "date-time",
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Latest release date",
+                    "title": "Distribution release date",
+                    "examples": [
+                        "YYYY-MM-DD"
+                    ],
+                    "guidance": "- Please indicate the frequency the dataset is published.\\n- If a dataset is published regularly please choose a publishing periodicity from the constrained list and indicate the next release date.\\n- When the release date becomes historical, a new release date will be calculated based on the publishing periodicity.\\n- If a dataset has been published and will remain static please indicate that it is static and indicate when it was released.\\n- If a dataset is released on an irregular basis or “on-demand” please indicate that it is Irregular and leave release date as null.\\n- If a dataset can be published in real-time or near-real-time please indicate that it is continuous and leave release date as null.\\n- Notes: see [https://www.dublincore.org/specifications/dublin-core/collection-description/frequency/](https://www.dublincore.org/specifications/dublin-core/collection-description/frequency/)"
+                }
+            },
+            "required": [
+                "timeLag",
+                "accrualPeriodicity"
+            ],
+            "title": "Temporal",
+            "type": "object"
+        },
+        "Ternary": {
+            "enum": [
+                "Yes",
+                "No",
+                "Not stated"
+            ],
+            "title": "Ternary",
+            "type": "string"
+        },
+        "TimeLagV2": {
+            "enum": [
+                "Less than 1 week",
+                "1-2 weeks",
+                "2-4 weeks",
+                "1-2 months",
+                "2-6 months",
+                "More than 6 months",
+                "Variable",
+                "Not applicable",
+                "Other"
+            ],
+            "title": "TimeLagV2",
+            "type": "string"
+        },
+        "TissueSampleMetadata": {
+            "properties": {
+                "id": {
+                    "anyOf": [
+                        {
+                            "maxLength": 50,
+                            "minLength": 2,
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "ID of the tissue sample metadata",
+                    "title": "Metadata ID"
+                },
+                "sampleDonor": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/SampleDonor"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Information about the sample donor",
+                    "title": "Sample Donor"
+                },
+                "sampleType": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Type of the tissue sample",
+                    "title": "Sample Type"
+                },
+                "storageTemperature": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Storage temperature of the tissue sample",
+                    "title": "Storage Temperature"
+                },
+                "creationDate": {
+                    "anyOf": [
+                        {
+                            "format": "date",
+                            "type": "string"
+                        },
+                        {
+                            "format": "date-time",
+                            "type": "string"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Date when the tissue sample metadata was created",
+                    "title": "Creation Date"
+                },
+                "anatomicalSiteOntologyCode": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Ontology code for the anatomical site, this code must match an ICD-0-3 format",
+                    "title": "Anatomical Site Ontology Code"
+                },
+                "anatomicalSiteOntologyDescription": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Ontology description for the anatomical site",
+                    "title": "Anatomical Site Ontology Description"
+                },
+                "anatomicalSiteFreeText": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Free text describing the anatomical site",
+                    "title": "Anatomical Site Free Text"
+                },
+                "sampleContentDiagnosis": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Diagnosis related to the sample content",
+                    "title": "Sample Content Diagnosis"
+                },
+                "useRestrictions": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Restrictions on the use of the tissue sample",
+                    "title": "Use Restrictions"
+                }
+            },
+            "title": "TissueSampleMetadata",
+            "type": "object"
+        },
+        "TissuesSampleCollection": {
+            "properties": {
+                "id": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "ID of the tissue sample collection",
+                    "title": "ID"
+                },
+                "dataCategories": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The type of data that is associated with the samples in the study. Can be several values MIABIS-2.0-13",
+                    "title": "Data Categories"
+                },
+                "materialType": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The biospecimen saved from a biological entity for propagation e.g. testing, diagnostics, treatment or research purposes. Can be several values MIABIS-2.0-14",
+                    "title": "Material Type"
+                },
+                "accessConditions": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Access conditions for the tissue sample collection",
+                    "title": "Access Conditions"
+                },
+                "collectionType": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "The type of the sample collection. Can be several values [MIABIS-2.0-16](https://github.com/BBMRI-ERIC/miabis/blob/master/Structured-data-and-lists.md#collection-type)",
+                    "title": "Collection Type"
+                },
+                "disease": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Disease associated with the tissue sample collection",
+                    "title": "Disease"
+                },
+                "storageTemperature": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Storage temperature of the tissue sample collection",
+                    "title": "Storage Temperature"
+                },
+                "sampleAgeRange": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Age range of the tissue sample collection",
+                    "title": "Sample Age Range"
+                },
+                "tissueSampleMetadata": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/TissueSampleMetadata"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Metadata related to the tissue sample",
+                    "title": "Tissue Sample Metadata"
+                }
+            },
+            "title": "TissuesSampleCollection",
+            "type": "object"
+        },
+        "TwoHundredFiftyFiveCharacters": {
+            "maxLength": 255,
+            "minLength": 2,
+            "title": "TwoHundredFiftyFiveCharacters",
+            "type": "string"
+        },
+        "Url": {
+            "anyOf": [
+                {
+                    "format": "uri",
+                    "minLength": 1,
+                    "type": "string"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "title": "Url"
+        },
+        "Usage": {
+            "additionalProperties": false,
+            "properties": {
+                "dataUseLimitation": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Please provide an indication of consent permissions for datasets and/or materials, and relates to the purposes for which datasets and/or material might be removed, stored or used. NOTE: we have extended the DUO to include a value for NO LINKAGE",
+                    "title": "Data Use Limitation"
+                },
+                "dataUseRequirement": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Please indicate fit here are any additional conditions set for use if any, multiple requirements may be provided. Please ensure that these restrictions are documented in access rights information.",
+                    "title": "Data Use Requirements"
+                },
+                "resourceCreator": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Organisation"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Please provide the text that you would like included as part of any citation that credits this dataset. This is typically just the name of the publisher.   No employee details should be provided.'",
+                    "title": "Citation Requirements'"
+                }
+            },
+            "title": "Usage",
+            "type": "object"
+        },
+        "DatasetFilters": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "pattern": "\\{\\s*\"id\":\\s*\"(\\d+_){0,5}\\d+\",\\s*\"label\":\\s*\".{0,150}\",\\s*\"category\":\\s*\".{0,150}\",\\s*\"primaryGroup\":\\s*\"(cancer-type|data-type|access-type)\",\\s*\"description\":\\s*\".{0,150}\"\\s*\\}"
+            },
+            "title": "Dataset Filters",
+            "description": "A list of categorization tags (ids) for the dataset."
+        },
+        "Documentation": {
+            "additionalProperties": false,
+            "properties": {
+                "description": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/Description"
+                        }
+                    ],
+                    "description": "Free-text description of the dataset.",
+                    "examples": [
+                        "OPTIMAM is a database of mammogram images and associated clinical data from multiple NHS Breast Cancer screening sites across the UK. The automated process of image collection, processing and storage enables easy expansion across new imaging sites and continual collection of new data."
+                    ],
+                    "guidance": "- An HTML account of the data that **provides context and scope** of the data, **limited to 10000 characters, and/or a resolvable URL** that describes the dataset.\\n- Additional information can be recorded and included using the Associated media field."
+                },
+                "associatedMedia": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "items": {
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/$defs/Url"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ]
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Url linking to associated media. Note: media asset can be hosted by the organisation or uploaded using the onboarding portal.",
+                    "examples": [
+                        "PDF document that describes study protocol - https://link.to/document.pdf"
+                    ],
+                    "guidance": "- Please provide any media associated with the Gateway Organisation **using a valid URL** for the content.\\n- This is an opportunity to **provide additional context** that could be useful for researchers wanting to understand more about the dataset and its relevance to their research question.\\n- Note: media assets should be hosted by the organisation.\n- **Example**: This could be a **link to a PDF Document** that describes methodology or further detail about the datasets, or a graph or chart that provides further context about the dataset.\\n- If you are providing multiple links for associated media, we recommend that you separate these with a comma.",
+                    "title": "Associated media"
+                },
+                "inPipeline": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Pipeline"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": "Not available",
+                    "description": "Indicate whether this dataset is currently available for Researchers to request access.",
+                    "guidance": "If a dataset is being prepared for sharing but not yet ready and available for researchers to apply for access, select 'Not available'. If Researchers can currently apply for access to the dataset, select 'Available'.",
+                    "title": "Dataset pipeline status"
+                }
+            },
+            "required": [
+                "description"
+            ],
+            "title": "Documentation",
+            "type": "object"
+        },
+        "Icons": {
+            "anyOf": [
+                {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "description": "A list of icon identifiers associated with the dataset, derived from dataset filters.",
+            "title": "Icons"
+        },
+        "Image": {
+            "additionalProperties": false,
+            "properties": {
+                "image": {
+                    "description": "An image file.",
+                    "title": "Image",
+                    "type": "string",
+                    "contentMediaType": "image/*",
+                    "guidance": "Upload an image file (PNG, JPG, SVG) of an Entity Relationship Diagram. The ERD should show how the different tables relate to one another for example via foreignID keys. Max file size: 5MB."
+                },
+                "description": {
+                    "$ref": "#/$defs/Description",
+                    "guidance": "Short textual description of the ERD"
+                }
+            },
+            "title": "Diagram",
+            "type": "object"
+        },
+        "OtherDataType": {
+            "additionalProperties": false,
+            "properties": {
+                "title": {
+                    "$ref": "#/$defs/OneHundredFiftyCharacters",
+                    "title": "Title",
+                    "guidance": "Short descriptive titles",
+                    "examples": [
+                        "Mammograms",
+                        "Patient recordings"
+                    ]
+                },
+                "description": {
+                    "$ref": "#/$defs/ShortDescription",
+                    "title": "Data description",
+                    "guidance": "A description of the data type.",
+                    "examples": [
+                        "2D images of both normal and malignant breasts",
+                        "audio-tapes of oncology consultations"
+                    ]
+                },
+                "format": {
+                    "items": {
+                        "$ref": "#/$defs/Format"
+                    },
+                    "title": "Format",
+                    "description": "Format drawn from https://www.iana.org/assignments/media-types/media-types.xhtml.",
+                    "guidance": "https://www.iana.org/assignments/media-types/media-types.xhtml lists the commonly used formats for different media (such as video/image/audio) etc. If your format is not included in the list set out there, please indicate other and specify in the description.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "title",
+                "description",
+                "format"
+            ],
+            "title": "Other Data Type",
+            "type": "object"
+        },
+        "Project": {
+            "properties": {
+                "projectName": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/OneHundredFiftyCharacters"
+                        }
+                    ],
+                    "title": "Project Title",
+                    "description": "The title may be different to the Dataset Title",
+                    "guidance": "The title should be that set out on the grant acceptance letter."
+                },
+                "projectStartDate": {
+                    "anyOf": [
+                        {
+                            "format": "date",
+                            "type": "string"
+                        },
+                        {
+                            "format": "date-time",
+                            "type": "string"
+                        }
+                    ],
+                    "description": "Starting date of project grant.",
+                    "guidance": "Date on which the dataset project starts. This is normally set out in the grant contract and will be different from the start of any data collection",
+                    "title": "Project Start Date",
+                    "examples": [
+                        "YYYY-MM-DD"
+                    ]
+                },
+                "projectEndDate": {
+                    "anyOf": [
+                        {
+                            "format": "date",
+                            "type": "string"
+                        },
+                        {
+                            "format": "date-time",
+                            "type": "string"
+                        }
+                    ],
+                    "description": "Current end date of project grant.",
+                    "guidance": "Date on which the dataset project is currently projected to finish. This is normally set out in the grant contract and will be different from the end of any data collection",
+                    "title": "Project End Date",
+                    "examples": [
+                        "YYYY-MM-DD"
+                    ]
+                }
+            }
+        },
+        "StructuralMetadata": {
+            "properties": {
+                "syntheticDataWebLink": {
+                    "description": "Artificial datasets that share the properties of the original data but contain no sensitive information can be very useful for researchers wishing to explore the properties of a dataset, and can be generated using entirely local solutions such as python's Synthetic Data Vault. Please provide the website address(es) with information on any related synthetic datasets."
+                }
+            }
+        }
+    },
+    "additionalProperties": false,
+    "properties": {
+        "required": {
+            "allOf": [
+                {
+                    "$ref": "#/$defs/Required"
+                }
+            ],
+            "description": "Required metadata needed for the GWDM"
+        },
+        "summary": {
+            "allOf": [
+                {
+                    "$ref": "#/$defs/Summary"
+                }
+            ],
+            "description": "Summary of metadata describing key pieces of information.",
+            "title": "Summary"
+        },
+        "coverage": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/Coverage"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "description": "This information includes attributes for geographical and temporal coverage, cohort details etc. to enable a deeper understanding of the dataset content so that researchers can make decisions about the relevance of the underlying data.",
+            "title": "Coverage"
+        },
+        "provenance": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/Provenance"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "description": "Optional information setting out how often the information is updated and the time period covered.",
+            "title": "Dateset Timelines"
+        },
+        "accessibility": {
+            "allOf": [
+                {
+                    "$ref": "#/$defs/Accessibility"
+                }
+            ],
+            "description": "Accessibility information allows researchers to understand access, usage, limitations, formats, standards and linkage or interoperability with toolsets.",
+            "title": "Accessibility"
+        },
+        "linkage": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/Linkage"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "description": "Metadata for various linkages with datasets and other gateway entities",
+            "title": "Tools and Publications"
+        },
+        "observations": {
+            "anyOf": [
+                {
+                    "items": {
+                        "$ref": "#/$defs/Observation"
+                    },
+                    "type": "array"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "description": "Multiple observations about the dataset may be provided and users are expected to provide at least one observation \n(1..*). We will be supporting the schema.org observation model (https://schema.org/Observation) with default values. Users will be encouraged to provide their own statistical populations as the project progresses. \nExample: \n      &lt;b&gt; Statistical Population 1 \n      &lt;/b&gt; type: StatisticalPopulation populationType: Persons numConstraints: 0 \n      &lt;b&gt; Statistical Population 2 &lt;/b&gt; type: StatisticalPopulation populationType: Events numConstraints: 0 &lt;b&gt; Statistical Population 3 &lt;/b&gt; type: StatisticalPopulation populationType: Findings numConstraints: 0 typeOf: Observation observedNode: &lt;b&gt; Statistical Population 1 &lt;/b&gt; measuredProperty: count measuredValue: 32937 observationDate: “2017”\"\n",
+            "title": "Observations"
+        },
+        "structuralMetadata": {
+            "anyOf": [
+                {
+                    "items": {
+                        "$ref": "#/$defs/DataTable"
+                    },
+                    "type": "array"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "description": "Descriptions of all data tables. Space for a new table entry is added at the end when you start typing",
+            "title": "Structural Metadata"
+        },
+        "tissuesSampleCollection": {
+            "anyOf": [
+                {
+                    "items": {
+                        "$ref": "#/$defs/TissuesSampleCollection"
+                    },
+                    "type": "array"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "description": "metedata for tissue samples",
+            "title": "Tissue Sample Collection"
+        },
+        "demographicFrequency": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/DemographicFrequency"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "description": "The statistical characteristics of a population or group within the dataset.",
+            "title": "Demographic frequency"
+        },
+        "omics": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/Omics"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "description": "Omics",
+            "title": "Omics"
+        },
+        "icons": {
+            "allOf": [
+                {
+                    "$ref": "#/$defs/Icons"
+                }
+            ],
+            "description": "Calculated categorization icons added during export.",
+            "title": "Icons"
+        },
+        "erd": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/Image"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "description": "Visual representation of data table relationships.",
+            "title": "Entity Relationship Diagram",
+            "guidance": "Please upload an image file (max 5MB) showing the relationship between the different tables"
+        },
+        "otherDataTypes": {
+            "anyOf": [
+                {
+                    "items": {
+                        "$ref": "#/$defs/OtherDataType"
+                    },
+                    "type": "array",
+                    "title": "Non-tabular data types"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "title": "Other data types"
+        },
+        "welcome": {
+            "title": "Guide to Uploading and Modifying Metadata",
+            "description": "IF this is a new dataset, you can either input the metadata manually or, if you have done this before, you can directly upload a json with some or all of the required information."
+        },
+        "version": {
+            "description": "Three numbers - Major.Minor.Patch e.g. 1.1.0",
+            "guidance": "Dataset metadata version should follow standard SEMVER naming conventions (https://semver.org). For example: 1.1.0 major.minor.patch.\\nMajor: Significant/breaking changes. \\n eg The dataset has now been populated \\n The access conditions have changed \\nThe purpose of the dataset has changed significantly \\n There is a change to the type of datasets collected\\nMinor: New features and bug fixes.\\n eg More samples have been added. \\nPatch: Minor fixes without new features. \\neg more information about the dataset has been added"
+        },
+        "project": {
+            "description": "Metadata describing the originating CRUK project. For new projects this information will be pre-filled from the grant contract.",
+            "title": "CRUK project information."
+        }
+    },
+    "required": [
+        "required",
+        "summary",
+        "accessibility"
+    ],
+    "title": "Gwdm20",
+    "type": "object",
+    "included": {
+        "demographicFrequency": [
+            "ethnicity"
+        ],
+        "provenance": [
+            "temporal"
+        ],
+        "coverage": [
+            "typicalAgeRangeMin",
+            "typicalAgeRangeMax",
+            "datasetCompleteness"
+        ],
+        "dataCustodian": [
+            "identifier",
+            "name",
+            "contactPoint",
+            "description"
+        ]
+    },
+    "visibleSections": [
+        "welcome",
+        "version",
+        "summary",
+        "documentation",
+        "datasetFilters",
+        "structuralMetadata",
+        "erd",
+        "otherDataTypes",
+        "coverage",
+        "provenance",
+        "accessibility",
+        "access",
+        "linkage",
+        "observations",
+        "demographicFrequency",
+        "omics"
+    ]
+}

@@ -2,7 +2,7 @@
     "included": {
         "demographicFrequency": ["ethnicity"],
         "provenance": ["temporal"],
-        "coverage": ["typicalAgeRangeMin", "typicalAgeRangeMax", "datasetCompleteness"],
+        "coverage": ["typicalAgeRange", "datasetCompleteness"],
         "dataCustodian": ["identifier", "name", "contactPoint", "description"]
     },
     "visibleSections": [
@@ -11,7 +11,6 @@
       "summary",
       "documentation",
       "datasetFilters",
-
       "structuralMetadata",
       "erd",
       "otherDataTypes",
@@ -19,19 +18,90 @@
       "provenance",
       "accessibility",
       "access",
-      "enrichmentAndLinkage",
+      "linkage",
       "observations",
       "demographicFrequency",
       "omics"
     ],
     "$defs": {
-      "DataColumn": {
+
+      "Access": {
         "properties": {
+          "accessRights": {
+            "description": "Please provide details for the data access rights.",
+            "examples": [
+              "In Progress"
+            ],
+            "guidance": "- The URL of a webpage where the data access request process and/or guidance is provided. If there is more than one access process i.e. industry vs academic please provide both separated by a comma.\\n- If such a resource or the underlying process doesn\u2019t exist, please provide \u201cIn Progress\u201d, until both the process and the documentation are ready."
+          },
+          "accessService": {
+            "examples": [
+              "https://re-docs.genomicsengland.co.uk/tutorials/",
+              "https://publichealthscotland.scot/services/data-research-and-innovation-services/electronic-data-research-and-innovation-service-edris/national-safe-haven-nsh/"
+            ],
+            "guidance": "Please provide a brief description of the data access services that are available including:\\n- environment that is currently available to researchers\\n- additional consultancy and services\\n- any indication of costs associated\\n\\n  If no environment is currently available, please indicate the current plans and timelines when and how data will be made available to researchers.\\n  **Note**: This value will be used as default access environment for all datasets submitted by the organisation. However, there will be the opportunity to overwrite this value for each dataset.",
+            "title": "Access service description"
+          },
+          "accessRequestCost": {
+            "description": "Please provide link(s) to a webpage or description detailing the service or cost model for processing data access requests.",
+            "guidance": "This information should cover the costs and/or services available to different audiences (i.e. academic, commercial, non-UK, etc.). This can be in the form of text or a URL.",
+            "title": "Access request cost"
+          },
+          "deliveryLeadTime": {
+            "guidance": "- **Less than 1 week**: Access request process typically processed in less than a week.\\n- **1-2 weeks**: Access request process typically processed in one to two weeks.\\n- **2-4 weeks**: Access request process typically processed in two to four weeks.\\n- **1-2 months**: Access request process typically processed in one to two months.\\n- **2-6 months**: Access request process typically processed in two to six months.\\n- **More than 6 months**: Access request process typically processed in more than six months.\\n- **Variable**: Access request lead time is variable.\\n- **Not applicable**: Access request process duration is not applicable.\\n- **Other**: If the typical timeframe does not fit into the broad ranges i.e. lightweight application vs linked data application, please choose \u201cOther\u201d and indicate the typical timeframe within the description for the dataset.",
+            "title": "Time to dataset access"
+          },
+          "jurisdiction": {
+            "guidance": "A full list of country codes can be found here (alpha-2 column): https://www.iso.org/obp/ui/#search/code/"
+          },
+          "dataController": {
+            "examples": [
+              "NHS England"
+            ],
+            "guidance": "- Data Controller means a person/entity who (either alone or jointly or in common with other persons/entities) determines the purposes for which and the way any Data Subject data, specifically personal data or are to be processed.\\n- Notes: For most organisations this will be the same as the Data Custodian of the dataset. If this is not the case, please indicate that there is a different controller.\\n- If there is a different controller please complete the Data Processor attribute to indicate if the Data Custodian is a Processor rather than the Data Controller.\\n- In some cases, there may be multiple Data Controllers i.e. GP data. If this is the case, please indicate the fact in a free-text field and describe the data sharing arrangement or a link to it, so that this can be understood by research users.\\n- Example: NHS England"
+          },
+          "dataProcessor": {
+            "examples": [
+              "Not Applicable",
+              "SAIL"
+            ],
+            "guidance": "A Data Processor, in relation to any Data Subject data, specifically personal data, means any person/entity (other than an employee of the data controller) who processes the data on behalf of the data controller.\\n- Notes: Required to complete if the Data Custodian is the Data Processor rather than the Data Controller.\\n- If the Publisher is also the Data Controller please provide \u201cNot Applicable\u201d.\\n- Examples: Not Applicable, SAIL"
+          },
+          "required": [
+            "accessRights"
+          ]
+        }
+      },
+      "Accessibility": {
+        "properties": {
+          "access": {
+            "description": "Accessibility information allows researchers to understand access, usage, limitations, formats, standards and linkage or interoperability with toolsets.",
+            "title": "Accessibility"
+          }
+        }
+      },
+      "Coverage": {
+        "properties": {
+          "spatial": {
+            "guidance": "- The geographical area covered by the dataset.\\n- Please provide a valid location.\\n- For locations in the UK, this location should conform to [ONS standards](https://geoportal.statistics.gov.uk/datasets/208d9884575647c29f0dd5a1184e711a/about).\\n- For locations in other countries we use [ISO 3166-1 & ISO 3166-2](https://github.com/HDRUK/reference-codes)."
+          },
+          "datasetCompleteness": {
+            "examples": [
+              "https://bhfdatasciencecentre.org/dashboard/"
+            ],
+            "guidance": "If your organisation has a publicly available site which contains information on the completeness of a dataset, add that URL here.\\n**Example**: https://bhfdatasciencecentre.org/dashboard/"
+          }
+        }
+      },
+      "DataColumn": {
+      "properties": {
           "name": {
             "description": "Name of a column in the table named above.",
             "examples": ["Treatment Code"]
           },
           "dataType": {
+            "description": "The data type of values in the column.",
+            "title": "Data type",
             "guidance": "Where necessary it is helpful to specify the language or disambiguate eg True vs true",
             "examples": ["string"]
           },
@@ -41,7 +111,7 @@
           }
         },
         "required": ["name"]
-      },
+    },
       "DataTable": {
         "properties": {
           "name": {
@@ -53,6 +123,23 @@
           }
         },
         "required": ["name"]
+      },
+      "DemographicFrequency": {
+        "properties": {
+          "ethnicity": {
+            "description": "Array of bins, based off the UK Office for National Statistics (ONS) census groupings, and their corresponding counts as represented within the dataset.",
+            "guidance": "Enter the count of population represented in the dataset within the ethnicity bins provided. Clearly indicate where ethnicity is not stated or not known. Ensure you apply low number suppression and rounding where appropriate."
+          }
+        }
+      },
+      "Disease": {
+        "properties": {
+          "diseaseCodeVocabulary": {
+            "examples": [
+              "ICD10"
+            ]
+          }
+        }
       },
       "Documentation": {
         "properties": {
@@ -236,36 +323,8 @@
           }
         },
       "Temporal": {
-          "additionalProperties": false,
           "properties": {
-            "publishingFrequency": {
-              "allOf": [
-                {
-                  "$ref": "#/$defs/PeriodicityV2"
-                }
-              ],
-              "description": "Frequency of distribution release",
-              "examples": [
-                "Continuous"
-              ],
-              "guidance": "Please indicate the frequency of publishing.\\n- If a dataset is published regularly please choose a publishing periodicity from the constrained list and indicate the next release date.\\n- When the release date becomes historical, a new release date will be calculated based on the publishing periodicity.\\n- If a dataset has been published and will remain static please indicate that it is static and indicate when it was released.\\n- If a dataset is released on an irregular basis or \u201con-demand\u201d please indicate that it is Irregular and leave release date as null.\\n- If a dataset can be published in real-time or near-real-time please indicate that it is continuous and leave release date as null.\\n- Notes: see https://www.dublincore.org/specifications/dublin-core/collection-description/frequency/.\\n\\n  Options:\\n- **Static**: Dataset published once.\\n- **Irregular**: Dataset published at uneven intervals.\\n- **Continuous**: Dataset published without interruption.\\n- **Biennial**: Dataset published every two years.\\n- **Annual**: Dataset published occurs once a year.\\n- **Biannual**: Dataset published twice a year.\\n- **Quarterly**: Dataset published every three months.\\n- **Bimonthly**: Dataset published every two months.\\n- **Monthly**: Dataset published once a month.\\n- **Biweekly**: Dataset published every two weeks.\\n- **Weekly**: Dataset published once a week.\\n- **Twice weekly**: Dataset published twice a week.\\n- **Daily**: Dataset published once a day.\\n- **Other**: Dataset published using other interval.",
-              "title": "Publishing frequency"
-            },
             "distributionReleaseDate": {
-              "anyOf": [
-                {
-                  "format": "date",
-                  "type": "string"
-                },
-                {
-                  "format": "date-time",
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "default": null,
               "description": "Latest release date",
               "examples": [
                 "YYYY-MM-DD"
@@ -335,6 +394,15 @@
         }
     },
     "properties": {
+        "icons": {
+            "allOf": [
+                {
+                    "$ref": "#/$defs/Icons"
+                }
+            ],
+            "description": "Calculated categorization icons added during export.",
+            "title": "Icons"
+        },
         "welcome": {
           "title": "Guide to Uploading and Modifying Metadata",
           "description": "IF this is a new dataset, you can either input the metadata manually or, if you have done this before, you can directly upload a json with some or all of the required information."
@@ -354,14 +422,52 @@
         "structuralMetadata": {
           "description": "Descriptions of all data tables. Space for a new table entry is added at the end when you start typing"
         },
+        "erd": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/Image"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "description": "Visual representation of data table relationships.",
+            "title": "Entity Relationship Diagram",
+            "guidance": "Please upload an image file (max 5MB) showing the relationship between the different tables"
+        },
+        "otherDataTypes": {
+            "anyOf": [
+                {
+                    "items": {
+                        "$ref": "#/$defs/OtherDataType"
+                    },
+                    "type": "array",
+                    "title": "Non-tabular data types"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "title": "Other data types"
+        },
         "summary": {
           "title": "Summary"
         },
         "accessibility": {
           "title": "Accessibility"
         },
-        "enrichmentAndLinkage": {
+        "demographicFrequency": {
+                "description": "The statistical characteristics of a population or group within the dataset."
+        },
+        "linkage": {
           "title": "Tools and Publications"
         }
-      }
+      },
+    "required": [
+            "required",
+            "summary",
+            "accessibility"
+      ]
 }
