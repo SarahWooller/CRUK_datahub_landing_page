@@ -1,0 +1,221 @@
+{
+      "$defs": {
+        "DatasetFilters": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "pattern": "\\{\\s*\"id\":\\s*\"(\\d+_){0,5}\\d+\",\\s*\"label\":\\s*\".{0,150}\",\\s*\"category\":\\s*\".{0,150}\",\\s*\"primaryGroup\":\\s*\"(cancer-type|data-type|access-type)\",\\s*\"description\":\\s*\".{0,150}\"\\s*\\}"
+            },
+            "title": "Dataset Filters",
+            "description": "A list of categorization tags (ids) for the dataset."
+        },
+        "DataTable": {
+          "properties": {
+              "size": {
+                    "anyOf": [
+                        {
+                            "type": "integer"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Number of Complete Entries.",
+                    "guidance": "Provides a measure of the completeness of the data set. A row which includes n/a against columns that are not relevant or not applicable should still be counted as complete.",
+                    "title": "Table size"
+                }
+            }
+        },
+        "Documentation": {
+            "additionalProperties": false,
+            "properties": {
+                "description": {
+                    "allOf": [
+                        {
+                            "$ref": "#/$defs/Description"
+                        }
+                    ],
+                    "description": "A free-text description of the dataset.\\nA URL can also be provided as the description of the dataset.\\nGateway Feature: Keywords and text may be extracted out of the description and indexed for search.",
+                    "examples": [
+                        "CPRD Aurum contains primary care data contributed by General Practitioner (GP) practices using EMIS Web\u00ae including patient registration information and all care events that GPs have chosen to record as part of their usual medical practice."
+                    ],
+                    "guidance": "- An HTML account of the data that **provides context and scope** of the data, **limited to 10000 characters, and/or a resolvable URL** that describes the dataset.\\n- Additional information can be recorded and included using the Associated media field."
+                },
+                "associatedMedia": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/CommaSeparatedValues"
+                        },
+                        {
+                            "items": {
+                                "anyOf": [
+                                    {
+                                        "$ref": "#/$defs/Url"
+                                    },
+                                    {
+                                        "type": "null"
+                                    }
+                                ]
+                            },
+                            "type": "array"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "description": "Please provide any media associated with the Gateway Organisation using a valid URL for the content. This is an opportunity to provide additional context that could be useful for researchers wanting to understand more about the dataset and its relevance to their research question. The following formats will be accepted .jpg, .png or .svg, .pdf, .xslx or .docx. Note: media asset can be hosted by the organisation or uploaded using the onboarding portal.",
+                    "examples": [
+                        "PDF document that describes study protocol - https://link.to/document.pdf"
+                    ],
+                    "guidance": "- Please provide any media associated with the Gateway Organisation **using a valid URL** for the content.\\n- This is an opportunity to **provide additional context** that could be useful for researchers wanting to understand more about the dataset and its relevance to their research question.\\n- Note: media assets should be hosted by the organisation.\n- **Example**: This could be a **link to a PDF Document** that describes methodology or further detail about the datasets, or a graph or chart that provides further context about the dataset.\\n- If you are providing multiple links for associated media, we recommend that you separate these with a comma.",
+                    "title": "Associated media"
+                },
+                "inPipeline": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/Pipeline"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": "Not available",
+                    "description": "Indicate whether this dataset is currently available for Researchers to request access.",
+                    "guidance": "If a dataset is being prepared for sharing but not yet ready and available for researchers to apply for access, select 'Not available'. If Researchers can currently apply for access to the dataset, select 'Available'.",
+                    "title": "Dataset pipeline status"
+                }
+            },
+            "required": [
+                "description"
+            ],
+            "title": "Documentation",
+            "type": "object"
+        },
+        "Icons": {
+            "anyOf": [
+                {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "description": "A list of icon identifiers associated with the dataset, derived from dataset filters.",
+            "title": "Icons"
+        },
+        "Image": {
+            "additionalProperties": false,
+            "properties": {
+                "image": {
+                    "description": "An image file.",
+                    "title": "Image",
+                    "type": "string",
+                    "contentMediaType": "image/*",
+                    "guidance": "Upload an image file (PNG, JPG, SVG) Max file size: 5MB."
+                },
+                "description": {
+                    "$ref": "#/$defs/Description"
+                }
+            },
+            "title": "Diagram",
+            "type": "object"
+        },
+        "OtherDataType": {
+            "additionalProperties": false,
+            "properties": {
+                "title": {
+                    "$ref": "#/$defs/OneHundredFiftyCharacters",
+                    "title": "Title",
+                    "guidance": "Short descriptive titles",
+                    "examples": [
+                        "Mammograms",
+                        "Patient recordings"
+                    ]
+                },
+                "description": {
+                    "$ref": "#/$defs/ShortDescription",
+                    "title": "Data description",
+                    "guidance": "A description of the data type.",
+                    "examples": [
+                        "2D images of both normal and malignant breasts",
+                        "audio-tapes of oncology consultations"
+                    ]
+                },
+                "format": {
+                    "items": {
+                        "$ref": "#/$defs/Format"
+                    },
+                    "title": "Format",
+                    "description": "Format drawn from https://www.iana.org/assignments/media-types/media-types.xhtml.",
+                    "guidance": "https://www.iana.org/assignments/media-types/media-types.xhtml lists the commonly used formats for different media (such as video/image/audio) etc. If your format is not included in the list set out there, please indicate other and specify in the description.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "title",
+                "description",
+                "format"
+            ],
+            "title": "Other Data Type",
+            "type": "object"
+        }
+      },
+        "properties": {
+        "icons": {
+            "allOf": [
+                {
+                    "$ref": "#/$defs/Icons"
+                }
+            ],
+            "description": "Calculated categorization icons added during export.",
+            "title": "Icons"
+        },
+        "erd": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/Image"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "description": "Visual representation of data table relationships.",
+            "title": "Entity Relationship Diagram",
+            "guidance": "Please upload an image file (max 5MB) showing the relationship between the different tables"
+        },
+        "otherDataTypes": {
+            "anyOf": [
+                {
+                    "items": {
+                        "$ref": "#/$defs/OtherDataType"
+                    },
+                    "type": "array",
+                    "title": "Non-tabular data types"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "title": "Other data types"
+        },
+        "summary": {
+          "title": "Summary"
+        },
+        "accessibility": {
+          "title": "Accessibility"
+        },
+        "demographicFrequency": {
+                "description": "The statistical characteristics of a population or group within the dataset."
+        },
+        "linkage": {
+          "title": "Tools and Publications"
+        }
+      }
+}

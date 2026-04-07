@@ -3272,16 +3272,7 @@
             "title": "Omics"
         }
     },
-    "required": [
-        "identifier",
-        "version",
-        "revisions",
-        "issued",
-        "modified",
-        "summary",
-        "accessibility",
-        "observations"
-    ],
+
     "title": "Hdruk401",
     "type": "object"
 }

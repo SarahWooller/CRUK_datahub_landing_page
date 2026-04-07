@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Panel, Group, Separator } from "react-resizable-panels";
 import FeedbackModal from './FeedbackModal.jsx';
 import questionData from '../feedback/upload_questions.json';
-import schema from '../utils/schema.json';
+import schema from '../utils/hdruk2.json';
+import changes from '../utils/new.json';
 import semanticSchema from '../utils/semanticSchema.json';
 import DataTagger, { FilterChipArea } from './DataTagger';
 import JsonUpload from './JsonUpload';
@@ -72,9 +73,11 @@ const deepMerge = (target, source) => {
 };
 // --- Safe Schema Loading and Merging ---
 const RAW_SCHEMA = schema.properties ? schema : (schema.fullContent || {});
+const CHANGE_SCHEMA = changes.properties ? changes : (changes.fullContent || changes);
 const OVERLAY_SCHEMA = semanticSchema.properties ? semanticSchema : (semanticSchema.fullContent || semanticSchema);
 // This creates a new object where semanticSchema properties overwrite rawSchema properties
-const DATA_SCHEMA = deepMerge(RAW_SCHEMA, OVERLAY_SCHEMA);
+const MID_SCHEMA = deepMerge(RAW_SCHEMA, CHANGE_SCHEMA);
+const DATA_SCHEMA = deepMerge(MID_SCHEMA, OVERLAY_SCHEMA);
 const VISIBLE_SECTIONS = DATA_SCHEMA.visibleSections
 // --- CUSTOM VALIDATION RULES ---
 const EXTRA_VALIDATIONS = {
