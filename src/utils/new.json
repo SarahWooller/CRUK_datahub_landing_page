@@ -27,72 +27,6 @@
                 }
             }
         },
-        "Documentation": {
-            "additionalProperties": false,
-            "properties": {
-                "description": {
-                    "allOf": [
-                        {
-                            "$ref": "#/$defs/Description"
-                        }
-                    ],
-                    "description": "A free-text description of the dataset.\\nA URL can also be provided as the description of the dataset.\\nGateway Feature: Keywords and text may be extracted out of the description and indexed for search.",
-                    "examples": [
-                        "CPRD Aurum contains primary care data contributed by General Practitioner (GP) practices using EMIS Web\u00ae including patient registration information and all care events that GPs have chosen to record as part of their usual medical practice."
-                    ],
-                    "guidance": "- An HTML account of the data that **provides context and scope** of the data, **limited to 10000 characters, and/or a resolvable URL** that describes the dataset.\\n- Additional information can be recorded and included using the Associated media field."
-                },
-                "associatedMedia": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/$defs/CommaSeparatedValues"
-                        },
-                        {
-                            "items": {
-                                "anyOf": [
-                                    {
-                                        "$ref": "#/$defs/Url"
-                                    },
-                                    {
-                                        "type": "null"
-                                    }
-                                ]
-                            },
-                            "type": "array"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ],
-                    "default": null,
-                    "description": "Please provide any media associated with the Gateway Organisation using a valid URL for the content. This is an opportunity to provide additional context that could be useful for researchers wanting to understand more about the dataset and its relevance to their research question. The following formats will be accepted .jpg, .png or .svg, .pdf, .xslx or .docx. Note: media asset can be hosted by the organisation or uploaded using the onboarding portal.",
-                    "examples": [
-                        "PDF document that describes study protocol - https://link.to/document.pdf"
-                    ],
-                    "guidance": "- Please provide any media associated with the Gateway Organisation **using a valid URL** for the content.\\n- This is an opportunity to **provide additional context** that could be useful for researchers wanting to understand more about the dataset and its relevance to their research question.\\n- Note: media assets should be hosted by the organisation.\n- **Example**: This could be a **link to a PDF Document** that describes methodology or further detail about the datasets, or a graph or chart that provides further context about the dataset.\\n- If you are providing multiple links for associated media, we recommend that you separate these with a comma.",
-                    "title": "Associated media"
-                },
-                "inPipeline": {
-                    "anyOf": [
-                        {
-                            "$ref": "#/$defs/Pipeline"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ],
-                    "default": "Not available",
-                    "description": "Indicate whether this dataset is currently available for Researchers to request access.",
-                    "guidance": "If a dataset is being prepared for sharing but not yet ready and available for researchers to apply for access, select 'Not available'. If Researchers can currently apply for access to the dataset, select 'Available'.",
-                    "title": "Dataset pipeline status"
-                }
-            },
-            "required": [
-                "description"
-            ],
-            "title": "Documentation",
-            "type": "object"
-        },
         "Icons": {
             "anyOf": [
                 {
@@ -163,10 +97,138 @@
             ],
             "title": "Other Data Type",
             "type": "object"
-        }
+        },
+        "ProjectGrant": {
+    "properties": {
+      "pid": {
+                              "anyOf": [
+                                    {
+                                          "$ref": "#/$defs/OneHundredFiftyCharacters"
+                                    },
+                                    {
+                                          "type": "null"
+                                    }
+                              ],
+                              "default": null,
+                              "title": "Persistent identifier of the study"
+                        },
+      "projectGrantName": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/OneHundredFiftyCharacters"
+          }
+        ],
+        "title": "Project Grant Title",
+        "description": "The Project Grant Title should be unique to the CRUK datahub. (Add your institute or name if necessary to disambiguate."
       },
-        "properties": {
-        "icons": {
+      "leadResearcher": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/OneHundredFiftyCharacters"
+          }
+        ],
+        "examples": [
+          "Dr Smith"
+        ],
+        "title": "Lead Researcher",
+        "description": ""
+      },
+      "leadResearchInstitute": {
+        "allOf": [
+          {
+            "$ref": "#/$defs/OneHundredFiftyCharacters"
+          }
+        ],
+        "examples": [
+          "Sussex University"
+        ],
+        "title": "Lead Research Institute",
+        "description": ""
+      },
+      "grantNumber": {
+        "anyOf": [
+          {
+            "type": "string"
+          }
+        ],
+        "description": "List of CRUK and any other grant numbers.",
+        "examples": [
+          "ABC123"
+        ],
+        "guidance": "Normally specified on the grant acceptance letter",
+        "title": "Grant number(s)"
+      },
+      "projectGrantStartDate": {
+        "anyOf": [
+          {
+            "format": "date",
+            "type": "string"
+          },
+          {
+            "format": "date-time",
+            "type": "string"
+          }
+        ],
+        "description": "Starting date of projectGrant grant.",
+        "guidance": "Date on which the dataset projectGrant starts. This is normally set out in the grant contract and will be different from the start of any data collection",
+        "title": "Project Start Date"
+      },
+      "projectGrantEndDate": {
+        "anyOf": [
+          {
+            "format": "date",
+            "type": "string"
+          },
+          {
+            "format": "date-time",
+            "type": "string"
+          },
+          {
+            "$ref": "#/$defs/EndDateEnum"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "description": "Current end date of project grant.",
+        "guidance": "Date on which the dataset project is currently projected to finish. This is normally set out in the grant contract and will be different from the end of any data collection",
+        "title": "Project End Date"
+      },
+      "projectGrantScope": {
+        "anyOf": [
+          {
+            "maxLength": 500,
+            "minLength": 5,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "description": "data and biospecimens expected to result from the grant.",
+        "guidance": "Short paragraph setting out the types of data / biospecimens likely to result from the grant and the cancers covered",
+        "examples": [
+          "Longitudinal genomic data including somatic mutations"
+        ],
+        "title": "Project Scope"
+      }
+    }
+  }
+      },
+      "properties": {
+          "datasetFilters": {
+                 "anyOf": [
+                {
+                    "$ref": "#/$defs/DatasetFilters"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "title": "Dataset Filters"
+          },
+          "icons": {
             "allOf": [
                 {
                     "$ref": "#/$defs/Icons"
@@ -175,7 +237,7 @@
             "description": "Calculated categorization icons added during export.",
             "title": "Icons"
         },
-        "erd": {
+          "erd": {
             "anyOf": [
                 {
                     "$ref": "#/$defs/Image"
@@ -189,7 +251,23 @@
             "title": "Entity Relationship Diagram",
             "guidance": "Please upload an image file (max 5MB) showing the relationship between the different tables"
         },
-        "otherDataTypes": {
+          "projectGrants": {
+          "anyOf": [
+                {
+                    "items": {
+                        "$ref": "#/$defs/ProjectGrant"
+                    },
+                    "type": "array",
+                    "title": "Associated Project Grants"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "title": "Associated Project Grants"
+        },
+          "otherDataTypes": {
             "anyOf": [
                 {
                     "items": {
