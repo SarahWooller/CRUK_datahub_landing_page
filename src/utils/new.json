@@ -204,18 +204,6 @@
             ],
             "default": null,
             "title": "Other data types"
-        },
-        "summary": {
-          "title": "Summary"
-        },
-        "accessibility": {
-          "title": "Accessibility"
-        },
-        "demographicFrequency": {
-                "description": "The statistical characteristics of a population or group within the dataset."
-        },
-        "linkage": {
-          "title": "Tools and Publications"
         }
       }
 }

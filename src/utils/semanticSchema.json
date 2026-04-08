@@ -394,15 +394,6 @@
         }
     },
     "properties": {
-        "icons": {
-            "allOf": [
-                {
-                    "$ref": "#/$defs/Icons"
-                }
-            ],
-            "description": "Calculated categorization icons added during export.",
-            "title": "Icons"
-        },
         "welcome": {
           "title": "Guide to Uploading and Modifying Metadata",
           "description": "IF this is a new dataset, you can either input the metadata manually or, if you have done this before, you can directly upload a json with some or all of the required information."
@@ -421,36 +412,6 @@
         },
         "structuralMetadata": {
           "description": "Descriptions of all data tables. Space for a new table entry is added at the end when you start typing"
-        },
-        "erd": {
-            "anyOf": [
-                {
-                    "$ref": "#/$defs/Image"
-                },
-                {
-                    "type": "null"
-                }
-            ],
-            "default": null,
-            "description": "Visual representation of data table relationships.",
-            "title": "Entity Relationship Diagram",
-            "guidance": "Please upload an image file (max 5MB) showing the relationship between the different tables"
-        },
-        "otherDataTypes": {
-            "anyOf": [
-                {
-                    "items": {
-                        "$ref": "#/$defs/OtherDataType"
-                    },
-                    "type": "array",
-                    "title": "Non-tabular data types"
-                },
-                {
-                    "type": "null"
-                }
-            ],
-            "default": null,
-            "title": "Other data types"
         },
         "summary": {
           "title": "Summary"
