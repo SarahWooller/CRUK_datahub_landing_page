@@ -530,16 +530,6 @@
                   "title": "DataColumn",
                   "type": "object"
             },
-            "DatasetFilters": {
-                  "type": "array",
-                  "items": {
-                        "type": "string",
-                        "pattern": "\\{\\s*\"id\":\\s*\"(\\d+_){0,5}\\d+\",\\s*\"label\":\\s*\".{0,150}\",\\s*\"category\":\\s*\".{0,150}\",\\s*\"primaryGroup\":\\s*\"(cancer-type|data-type|access-type)\",\\s*\"description\":\\s*\".{0,150}\"\\s*\\}"
-
-                  },
-                  "title": "Dataset Filters",
-                  "description": "A list of categorization tags (ids) for the dataset."
-            },
             "DataTable": {
                   "additionalProperties": false,
                   "properties": {
@@ -572,20 +562,6 @@
                               "default": null,
                               "description": "A description of a table in a dataset.",
                               "title": "Table description"
-                        },
-                        "size": {
-                              "anyOf": [
-                                    {
-                                          "type": "integer"
-                                    },
-                                    {
-                                          "type": "null"
-                                    }
-                              ],
-                              "default": null,
-                              "description": "Number of Complete Entries.",
-                              "guidance": "Provides a measure of the completeness of the data set. A row which includes n/a against columns that are not relevant or not applicable should still be counted as complete.",
-                              "title": "Table size"
                         },
                         "columns": {
                               "description": "A list of columns contained within a table in a dataset.",
@@ -1326,38 +1302,6 @@
                   "title": "HealthAndDiseaseSubTypes",
                   "type": "string"
             },
-            "Icons": {
-      "anyOf": [
-            {
-                  "items": {
-                        "type": "string"
-                  },
-                  "type": "array"
-            },
-            {
-                  "type": "null"
-            }
-      ],
-      "description": "A list of icon identifiers associated with the dataset, derived from dataset filters.",
-      "title": "Icons"
-},
-            "Image": {
-                  "additionalProperties": false,
-                  "properties": {
-                        "image": {
-                              "description": "An image file.",
-                              "title": "Image",
-                              "type": "string",
-                              "contentMediaType": "image/*",
-                              "guidance": "Upload an image file (PNG, JPG, SVG) Max file size: 5MB."
-                        },
-                        "description": {
-                               "$ref": "#/$defs/Description"
-                        }
-                  },
-                  "title": "Diagram",
-                  "type": "object"
-            },
             "ImagingAreaOfTheBody": {
                   "properties": {
                         "name": {
@@ -1704,18 +1648,6 @@
                   ],
                   "title": "LifestyleSubTypes",
                   "type": "string"
-            },
-            "LineSeparatedValues": {
-                  "anyOf": [
-                        {
-                              "pattern": "([^\\r\\n]+)",
-                              "type": "string"
-                        },
-                        {
-                              "type": "null"
-                        }
-                  ],
-                  "title": "LineSeparatedValues"
             },
             "LongDescription": {
                   "anyOf": [
@@ -2277,7 +2209,6 @@
                   "title": "Politics",
                   "type": "object"
             },
-
             "Provenance": {
                   "additionalProperties": false,
                   "properties": {
@@ -2604,22 +2535,6 @@
                               "guidance": "- The **title** should provide a short description of the dataset and be **unique** across the gateway.\\n- If your title is not unique, please **add a prefix with your organisation name or identifier** to differentiate it from other datasets within the Gateway.\\n- If an accronym is widely used the dataset name, please add it in brackets () at the end of the title.\\n- Good titles should summarise the content of the dataset and if relevant, **the region the dataset covers**.\\n- **Example**: North West London COVID-19 Patient Level Situation Report",
                               "title": "Title"
                         },
-                        "funders": {
-                              "allOf": [
-                                    {
-                                          "$ref": "#/$defs/LineSeparatedValues"
-                                    }
-                              ],
-                              "description": "List of Funders separated by a line break",
-                              "examples": [
-                                    "CRUK",
-                                    "University of Sussex"
-                              ],
-                              "guidance": "Put each funder on a new line",
-
-                              "title": "Funded by"
-                        },
-
                         "abstract": {
                               "allOf": [
                                     {
@@ -3004,15 +2919,6 @@
       },
       "additionalProperties": false,
       "properties": {
-            "icons": {
-                  "allOf": [
-                        {
-                              "$ref": "#/$defs/Icons"
-                        }
-                  ],
-                  "description": "Calculated categorization icons added during export.",
-                  "title": "Icons"
-            },
             "identifier": {
                   "anyOf": [
                         {
@@ -3072,14 +2978,6 @@
                   "title": "Last Modified Datetime",
                   "type": "string"
             },
-            "project": {
-                  "allOf": [
-                        {
-                              "$ref": "#/$defs/Project"
-                        }
-                  ]
-
-            },
             "summary": {
                   "allOf": [
                         {
@@ -3100,18 +2998,6 @@
                   "default": null,
                   "description": "Documentation can include a rich text description of the dataset or links to media such as documents, images, presentations, videos or links to data dictionaries, profiles or dashboards. Organisations are required to confirm that they have permission to distribute any additional media.",
                   "title": "Documentation"
-            },
-            "datasetFilters": {
-                  "anyOf": [
-                        {
-                              "$ref": "#/$defs/DatasetFilters"
-                        },
-                        {
-                              "type": "null"
-                        }
-                  ],
-                  "default": null,
-                  "description": "Categorization tags regarding cancer type, data type, and access."
             },
             "coverage": {
                   "anyOf": [
@@ -3181,21 +3067,6 @@
                   "description": "Descriptions of all tables and data elements that can be included in the dataset.",
                   "title": "Structural metadata"
             },
-            "erd": {
-                  "anyOf": [
-                        {
-                              "$ref": "#/$defs/Image"
-                        },
-                        {
-                              "type": "null"
-                        }
-                  ],
-                  "default": null,
-                  "description": "Visual representation of data table relationships.",
-                  "title": "Entity Relationship Diagram",
-                  "guidance": "Please upload an image file (max 5MB) showing the relationship between the different tables"
-
-            },
             "demographicFrequency": {
                   "anyOf": [
                         {
@@ -3233,6 +3104,6 @@
             "accessibility",
             "observations"
       ],
-      "title": "Hdruk401",
+      "title": "Hdruk400",
       "type": "object"
 }
