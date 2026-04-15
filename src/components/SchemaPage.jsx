@@ -2,8 +2,10 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Panel, Group, Separator } from "react-resizable-panels";
 import FeedbackModal from './FeedbackModal.jsx';
 import questionData from '../feedback/upload_questions.json';
-import schema from '../utils/schema.json';
+import hdrukSchema from '../utils/HDRUK4.0.0.json';
+import crukSchema from '../utils/CRUK1.0.0.json';
 import semanticSchema from '../utils/semanticSchema.json';
+import dataSchema from '../utils/merged.json';
 import DataTagger, { FilterChipArea } from './DataTagger';
 import JsonUpload from './JsonUpload';
 import UploadTopBar from './UploadTopBar';
@@ -71,10 +73,12 @@ const deepMerge = (target, source) => {
     return output;
 };
 // --- Safe Schema Loading and Merging ---
-const RAW_SCHEMA = schema.properties ? schema : (schema.fullContent || {});
+const hdruk_SCHEMA = hdrukSchema.properties ? hdrukSchema : (hdrukSchema.fullContent || {});
+const cruk_SCHEMA = crukSchema.properties ? crukSchema : (crukSchema.fullContent || crukSchema);
 const OVERLAY_SCHEMA = semanticSchema.properties ? semanticSchema : (semanticSchema.fullContent || semanticSchema);
 // This creates a new object where semanticSchema properties overwrite rawSchema properties
-const DATA_SCHEMA = deepMerge(RAW_SCHEMA, OVERLAY_SCHEMA);
+const MID_SCHEMA = deepMerge(hdruk_SCHEMA, cruk_SCHEMA);
+const DATA_SCHEMA = dataSchema;
 const VISIBLE_SECTIONS = DATA_SCHEMA.visibleSections
 // --- CUSTOM VALIDATION RULES ---
 const EXTRA_VALIDATIONS = {
@@ -164,6 +168,9 @@ const calculateSectionStatus = (sectionKey, formData) => {
 
     // Check Root Level Requirement
     const isRootRequired = DATA_SCHEMA.required?.includes(sectionKey);
+    if (isRootRequired) {
+        console.log(`Required section identified: ${sectionKey}`);
+    }
 
     if (isRootRequired && isEmpty(sectionData)) {
         return 'incomplete';
@@ -191,22 +198,64 @@ const calculateSectionStatus = (sectionKey, formData) => {
         return 'complete';
     }
 
-    // Object Types
-    // Object Types
-    const requiredProps = definition.required || [];
-    const allProps = definition.properties ? Object.keys(definition.properties) : [];
     const dataObj = sectionData || {};
 
-    for (const req of requiredProps) {
-        // Check for value in formData, then fallback to schema default
-        const value = dataObj[req];
-        const defaultValue = definition.properties[req]?.default;
-        const effectiveValue = (value !== undefined && value !== null) ? value : defaultValue;
+    // Helper to resolve definitions recursively (MUST be defined before use)
+    const getResolvedSchema = (schema) => {
+        if (!schema) return null;
+        if (schema.$ref) return resolveRef(schema.$ref);
+        if (schema.allOf) return resolveRef(schema.allOf.find(i => i.$ref)?.$ref);
+        return schema;
+    };
 
-        if (isEmpty(effectiveValue)) return 'incomplete';
+    // Helper to check nested requirements (MUST be defined before use)
+    const isObjectValid = (objData, objSchema, isTopLevel = false) => {
+        const resolvedSchema = getResolvedSchema(objSchema);
+        if (!resolvedSchema || !resolvedSchema.properties) return true;
+
+        let reqProps = resolvedSchema.required || [];
+
+        // Respect the 'included' UI filter at the top level
+        if (isTopLevel) {
+            const sectionIncluded = DATA_SCHEMA.included?.[sectionKey];
+            if (sectionIncluded && Array.isArray(sectionIncluded)) {
+                reqProps = reqProps.filter(req => sectionIncluded.includes(req));
+            }
+        }
+
+        for (const req of reqProps) {
+            const val = objData ? objData[req] : undefined;
+            const defVal = resolvedSchema.properties[req]?.default;
+            const effectiveVal = (val !== undefined && val !== null) ? val : defVal;
+
+            if (isEmpty(effectiveVal)) return false;
+
+            const nestedSchema = resolvedSchema.properties[req];
+            const resolvedNested = getResolvedSchema(nestedSchema);
+
+            if (resolvedNested && resolvedNested.type === 'object') {
+                if (!isObjectValid(effectiveVal || {}, resolvedNested, false)) return false;
+            }
+        }
+        return true;
+    };
+
+    // 1. Run the deep validation for 'incomplete' status
+    if (!isObjectValid(dataObj, definition, true)) {
+        return 'incomplete';
     }
 
-    const optionalProps = allProps.filter(p => !requiredProps.includes(p));
+    // 2. Check optional fields for partial status
+    let allProps = Object.keys(definition.properties || {});
+    let reqProps = definition.required || [];
+    const sectionIncluded = DATA_SCHEMA.included?.[sectionKey];
+
+    if (sectionIncluded && Array.isArray(sectionIncluded)) {
+        allProps = allProps.filter(p => sectionIncluded.includes(p));
+        reqProps = reqProps.filter(p => sectionIncluded.includes(p));
+    }
+
+    const optionalProps = allProps.filter(p => !reqProps.includes(p));
     if (optionalProps.length > 0) {
         const hasEmptyOptional = optionalProps.some(p => isEmpty(dataObj[p]));
         if (hasEmptyOptional) return 'partial';
@@ -214,7 +263,6 @@ const calculateSectionStatus = (sectionKey, formData) => {
 
     return 'complete';
 };
-
 // --- Component: Status Icon ---
 const StatusIcon = ({ status, isActive, isVisited }) => {
     if (isActive) {
@@ -843,7 +891,7 @@ const FieldRenderer = ({
                     onChange={handleChange}
                 >
                     <option value="">-- Select --</option>
-                    {enumValues.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                    {enumValues.filter(opt => opt !== null).map(opt => <option key={opt} value={opt}>{opt}</option>)}
                 </select>
             ) : inputType === 'textarea' ? (
                 <textarea

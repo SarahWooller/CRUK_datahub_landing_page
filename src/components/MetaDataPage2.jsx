@@ -1,8 +1,8 @@
-import React, { useState, useMemo, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom/client';
 
 // 1. IMPORT DATA FROM UTILS
-import studyData from '../utils/dummy_data/optimam_partial.json';
+
 import { filterData } from '../utils/longer_filter_data.js';
 
 // Provide opportunity for feedback
@@ -38,6 +38,27 @@ const ICON_MAPPING = {
   "Imaging Data": { src: imagingIcon, label: "Imaging Data" },   // Fallback
   "Biopsy Results and Lab Reports": { src: labResultsIcon, label: "Lab Results" }
 };
+
+const ETHNICITY_CATEGORIES = [
+   "White - British",
+   "White - Irish",
+   "White - Any other White background",
+   "Mixed - White and Black Caribbean",
+   "Mixed - White and Black African",
+   "Mixed - White and Asian",
+   "Mixed - Any other mixed background",
+   "Asian or Asian British - Indian",
+   "Asian or Asian British - Pakistani",
+   "Asian or Asian British - Bangladeshi",
+   "Asian or Asian British - Any other Asian background",
+   "Black or Black British - Caribbean",
+   "Black or Black British - African",
+   "Black or Black British - Any other Black background",
+   "Other Ethnic Groups - Chinese",
+   "Other Ethnic Groups - Any other ethnic group",
+   "Not stated",
+   "Not known"
+];
 
 // --- Utility Functions ---
 
@@ -114,43 +135,6 @@ const normalizeList = (input) => {
   return input.split(';,;').map(k => k.trim());
 };
 
-// Updated to extract icons from filters.Data Types
-const getActiveIcons = (filters) => {
-  const activeKeys = new Set();
-  const targetKeys = Object.keys(ICON_MAPPING);
-
-  // Safety check to ensure filters and Data Types exist
-  if (!filters || !filters["Data Types"]) return [];
-
-  const dataTypes = filters["Data Types"];
-
-  // Iterate over categories in Data Types (e.g., "Patient Study")
-  Object.values(dataTypes).forEach(list => {
-    if (Array.isArray(list)) {
-      list.forEach(item => {
-        // 1. Handle Strings (e.g., "Background", "Multi-omic Data")
-        if (typeof item === 'string') {
-          console.log(item);
-          if (targetKeys.includes(item)) {
-            activeKeys.add(item);
-          }
-        }
-        // 2. Handle Objects (e.g., {"Imaging Data": "Radiographic imaging"})
-        else if (typeof item === 'object' && item !== null) {
-          Object.keys(item).forEach(key => {
-            if (targetKeys.includes(key)) {
-              activeKeys.add(key);
-            }
-          });
-        }
-      });
-    }
-  });
-
-  return Array.from(activeKeys).map(key => ICON_MAPPING[key]);
-};
-
-
 
 // --- Sub-Components ---
 
@@ -171,37 +155,117 @@ const SectionHeading = ({ id, title, children }) => (
 );
 
 const AccessItem = ({ label, value, isLink }) => {
-    if (!value) return null;
+    const displayValue = value || "Information not provided";
     return (
         <div className="mb-3">
             <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">{label}</span>
-            {isLink ? (
-                <a href={value} target="_blank" rel="noreferrer" className="text-sm text-blue-600 underline break-words block">
-                    {value}
+            {isLink && value ? (
+                <a href={displayValue} target="_blank" rel="noreferrer" className="text-sm text-blue-600 underline break-words block">
+                    {displayValue}
                 </a>
             ) : (
-                <p className="text-sm text-gray-700 leading-snug break-words">{value}</p>
+                <p className="text-sm text-gray-700 leading-snug break-words">{displayValue}</p>
             )}
         </div>
     );
 };
 
-// --- Main Component ---
-
+// Add this wrapper component to handle fetching and loading states
 export const MetadataPage = () => {
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchDataset = async () => {
+      try {
+        setIsLoading(true);
+        const params = new URLSearchParams(window.location.search);
+        const datasetId = params.get('id') || '00';
+        const module = await import(`../utils/new_dummies/dataset_${datasetId}.json`);
+        setData(module.default || module);
+        setError(null);
+      } catch (err) {
+        console.error("Failed to load dataset:", err);
+        setError("Dataset not found or could not be loaded.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDataset();
+  }, []);
+
+  // Early returns are safe here because there are no hooks below them
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-50">
+        <p className="text-xl text-gray-600 font-semibold">Loading dataset...</p>
+      </div>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-gray-50">
+        <p className="text-xl text-red-600 font-semibold">{error}</p>
+      </div>
+    );
+  }
+
+  // Render the main content component, passing the guaranteed data
+  return <MetadataPageContent data={data} />;
+};
+
+// This is the old MetadataPage but now takes the prop data so the main one wraps it
+const MetadataPageContent = ({data}) => {
+
   const {
         allFeedback, isFeedbackOpen, setIsFeedbackOpen,
         fallbackData, setFallbackData, handleSaveDraft, handleFinalSubmit
     } = useFeedback(viewQuestions);
-  const data = studyData;
+
+  const [expandedOtherData, setExpandedOtherData] = useState({});
+  const toggleOtherData = (index) => {
+    setExpandedOtherData(prev => ({ ...prev, [index]: !prev[index] }));
+  };
   const [expandedTables, setExpandedTables] = useState({});
   const [showEmailMenu, setShowEmailMenu] = useState(false);
-
+  const [currentGrantIndex, setCurrentGrantIndex] = useState(0);
   // --- Resizing State ---
   const [sidebarWidth, setSidebarWidth] = useState(288);
   const isResizingRef = useRef(false);
 
+  const otherDataTypes = data.otherDataTypes || [];
+  const demographicFrequency = data.demographicFrequency || {};
+  const mappedEthnicities = useMemo(() => {
+    const ethnicityData = demographicFrequency.ethnicity;
+    if (!ethnicityData || !Array.isArray(ethnicityData) || ethnicityData.length === 0) {
+        return null;
+    }
+
+    // Create a lookup dictionary from the provided JSON data
+    const lookupMap = ethnicityData.reduce((acc, curr) => {
+        acc[curr.bin] = curr.count;
+        return acc;
+    }, {});
+
+    // Map against the strict list, defaulting to 0
+    const mapped = ETHNICITY_CATEGORIES.map(category => ({
+        label: category,
+        count: lookupMap[category] || 0
+    }));
+
+    const maxCount = Math.max(...mapped.map(e => e.count));
+
+    return { data: mapped, maxCount };
+  }, [demographicFrequency.ethnicity]);
+  const omics = data.omics || null;
+  const provenance = data.provenance || {};
+  const enrichmentAndLinkage = data.enrichmentAndLinkage || {};
+
   // --- Data Mapping & Processing (New Schema Handling) ---
+  const projectGrants = data.projectGrants || [];
 
   // 1. Description is now in documentation.description
   const descriptionText = data.documentation?.description || data.summary?.description || "";
@@ -215,16 +279,14 @@ export const MetadataPage = () => {
     // Handle new schema (.tables) vs old schema (direct array)
     const tables = data.structuralMetadata?.tables || data.structuralMetadata || [];
 
-    // In new schema, tables are already grouped objects, but let's normalize to ensure
-    // the UI receives the expected structure: { EntityName: { description, columns } }
     return tables.reduce((acc, item) => {
       const entity = item.name;
-      // In new schema, description is on the table object level
       const desc = item.description || "";
 
       // If we encounter the same table name twice (e.g. split across files), merge them
       if (!acc[entity]) {
-        acc[entity] = { description: desc, columns: [] };
+        // Add 'size' to the stored object
+        acc[entity] = { description: desc, columns: [], size: item.size };
       }
 
       if (item.columns) {
@@ -240,13 +302,13 @@ export const MetadataPage = () => {
     ? `${data.coverage.typicalAgeRangeMin} - ${data.coverage.typicalAgeRangeMax}`
     : data.coverage.typicalAgeRange; // Fallback to old string if present
 
-  const leadTime = data.accessibility.access.deliveryLeadTime;
-  const followUp = data.coverage.followUp;
+  const leadTime = data.accessibility?.access?.deliveryLeadTime;
+  const followUp = data.coverage?.followUp;
 
   // For 'Files' stat, we use the Format from accessibility
-  const fileTypes = data.accessibility.formatAndStandards?.format
+  const fileTypes = data.accessibility?.formatAndStandards?.format
     ? data.accessibility.formatAndStandards.format.map(f => f.split('/')[1] || f).join(', ')
-    : "Various";
+    : "Information not provided";
 // --- NEW: Filter Processing Logic ---
 
   // A. Create lookup map from the reference file (Memoized)
@@ -327,7 +389,7 @@ const { derivedFilters, activeIcons } = useMemo(() => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = "mammogram_metadata.json";
+    link.download = "metadata.json";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -349,17 +411,21 @@ const { derivedFilters, activeIcons } = useMemo(() => {
   };
 
   // Aliases for cleaner JSX below
-  const { summary, accessibility, observations } = data;
+  const summary = data.summary || {};
+  const accessibility = data.accessibility || {};
+  const observations = data.observations || [];
+
   const access = accessibility.access || {};
   const usage = accessibility.usage || {};
+
   // Handle new resourceCreator being an array
   const resourceCreators = Array.isArray(usage.resourceCreator)
     ? usage.resourceCreator.join(', ')
-    : (usage.resourceCreator?.name || usage.resourceCreator || "N/A");
+    : (usage.resourceCreator?.name || usage.resourceCreator || "Information not provided");
 
   // Handle data use arrays (new schema) vs string (old schema)
-  const dataUseLimit = Array.isArray(usage.dataUseLimitation) ? usage.dataUseLimitation.join(', ') : usage.dataUseLimitation;
-  const dataUseReq = Array.isArray(usage.dataUseRequirements) ? usage.dataUseRequirements.join(', ') : usage.dataUseRequirement;
+  const dataUseLimit = Array.isArray(usage.dataUseLimitation) ? usage.dataUseLimitation.join(', ') : (usage.dataUseLimitation || "Information not provided");
+  const dataUseReq = Array.isArray(usage.dataUseRequirements) ? usage.dataUseRequirements.join(', ') : (usage.dataUseRequirements || "Information not provided");
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 font-sans text-gray-800">
@@ -380,25 +446,36 @@ const { derivedFilters, activeIcons } = useMemo(() => {
                 onFinalSubmit={handleFinalSubmit}
                 questionData={viewQuestions}
             />
-      {/* --- Left Navigation Panel --- */}
-      <nav
+
+<nav
         style={{ '--sidebar-width': `${sidebarWidth}px` }}
         className="w-full md:w-[var(--sidebar-width)] bg-white shadow-md flex-shrink-0 p-6 md:h-screen md:sticky md:top-0 overflow-y-auto flex flex-col"
       >
         <h3 className="text-xl font-bold text-blue-900 mb-6 border-b pb-2">Overview</h3>
         <ul className="space-y-3 mb-8">
-          {['Project','Summary', 'Documentation','Structural Metadata',  'Entity Relationship Diagrams', 'Observations'].map((item) => (
-            <li key={item}>
+          {[
+            { id: 'project', label: 'Project', hasData: projectGrants && projectGrants.length > 0 },
+            { id: 'summary', label: 'Summary', hasData: !!summary.title },
+            { id: 'documentation', label: 'Documentation', hasData: !!descriptionText },
+            { id: 'structural-metadata', label: 'Structural Metadata', hasData: Object.keys(groupedMetadata).length > 0 },
+             { id: 'other-data-types', label: 'Other Data Types', hasData: otherDataTypes.length > 0 },
+            { id: 'entity-relationship-diagrams', label: 'Entity Relationship Diagrams', hasData: !!data.erd },
+            { id: 'observations', label: 'Observations', hasData: observations.length > 0 },
+            { id: 'demographic-frequency', label: 'Demographics', hasData: Object.keys(demographicFrequency).length > 0 },
+            { id: 'omics', label: 'Omics', hasData: !!omics },
+            { id: 'provenance', label: 'Provenance', hasData: Object.keys(provenance).length > 0 },
+            { id: 'enrichment-and-linkage', label: 'Enrichment & Linkage', hasData: Object.keys(enrichmentAndLinkage).length > 0 },
+          ].filter(item => item.hasData).map((item) => (
+            <li key={item.id}>
               <a
-                href={`#${item.toLowerCase().replace(/\s+/g, '-')}`}
+                href={`#${item.id}`}
                 className="block text-gray-600 hover:text-blue-600 hover:bg-blue-50 px-2 py-1 rounded transition-colors"
               >
-                {item}
+                {item.label}
               </a>
             </li>
           ))}
         </ul>
-
         {/* --- Data Access Box --- */}
         <div className="mt-auto bg-blue-50 rounded-lg border border-blue-100 p-4">
 
@@ -477,19 +554,6 @@ const { derivedFilters, activeIcons } = useMemo(() => {
                         <span className="font-semibold mr-2">Publisher:</span>
                         {summary.dataCustodian?.name || summary.publisher?.name || "Unknown"}
                     </div>
-
-                    {/* Funding (Might not exist in new schema, check safe access) */}
-                    {summary.funding && (
-                        <div className="flex items-center">
-                            <span className="font-semibold mr-2">Funded By:</span>
-                            <span>{summary.funding.name}</span>
-                            {summary.funding['grant number'] && (
-                                <span className="bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded ml-2">
-                                    {summary.funding['grant number']}
-                                </span>
-                            )}
-                        </div>
-                    )}
                 </div>
             </div>
 
@@ -558,46 +622,58 @@ const { derivedFilters, activeIcons } = useMemo(() => {
       )}
     </div>
 
-    {/* Project */}
-    <SectionHeading id="project" title="CRUK Project" />
-    <div className="prose max-w-none text-gray-700 mb-8 bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        <div>
-          <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Project Name</span>
-          <p className="text-lg font-semibold text-blue-900 m-0">{data.project.projectName}</p>
-        </div>
+{/* Project Grants */}
+        {projectGrants.length > 0 && (
+          <>
+            <SectionHeading id="project" title="CRUK Project">
+                {projectGrants.length > 1 && (
+                    <button
+                        onClick={() => setCurrentGrantIndex((prev) => (prev + 1) % projectGrants.length)}
+                        className="text-sm bg-blue-50 text-blue-700 hover:bg-blue-100 font-medium py-1 px-3 rounded border border-blue-200 transition-colors"
+                    >
+                        Show Next Project ({currentGrantIndex + 1} of {projectGrants.length})
+                    </button>
+                )}
+            </SectionHeading>
+            <div className="prose max-w-none text-gray-700 mb-8 bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        <div>
-          <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Lead Researcher</span>
-          <p className="text-base text-gray-800 m-0">
-            {data.project.leadResearcher} — <span className="italic">{data.project.leadResearchInstitute}</span>
-          </p>
-        </div>
+                <div>
+                  <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Project Name</span>
+                  <p className="text-lg font-semibold text-blue-900 m-0">{projectGrants[currentGrantIndex].projectGrantName}</p>
+                </div>
 
-        <div>
-          <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Timeline</span>
-          <p className="text-sm text-gray-700 m-0">
-            {data.project.projectStartDate} to {data.project.projectEndDate}
-          </p>
-        </div>
+                <div>
+                  <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Lead Researcher</span>
+                  <p className="text-base text-gray-800 m-0">
+                    {projectGrants[currentGrantIndex].leadResearcher} — <span className="italic">{projectGrants[currentGrantIndex].leadResearchInstitute}</span>
+                  </p>
+                </div>
 
-        <div>
-          <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Grant Number(s)</span>
-          <p className="text-sm font-mono text-gray-700 m-0">{data.project.grantNumbers}</p>
-        </div>
+                <div>
+                  <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Timeline</span>
+                  <p className="text-sm text-gray-700 m-0">
+                    {projectGrants[currentGrantIndex].projectGrantStartDate} to {projectGrants[currentGrantIndex].projectGrantEndDate || "Ongoing"}
+                  </p>
+                </div>
 
-        {/* This div now spans both columns on medium screens and larger */}
-        <div className="md:col-span-2 border-t border-gray-100 pt-4">
-          <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Project Scope</span>
-          <p className="text-sm text-gray-700 m-0 leading-relaxed">
-          </p>
-            {data.project.projectScope}
-        </div>
+                <div>
+                  <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Grant Number(s)</span>
+                  <p className="text-sm font-mono text-gray-700 m-0">{projectGrants[currentGrantIndex].grantNumber}</p>
+                </div>
 
-      </div>
-    </div>
+                <div className="md:col-span-2 border-t border-gray-100 pt-4">
+                  <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Project Scope</span>
+                  <p className="text-sm text-gray-700 m-0 leading-relaxed">
+                    {projectGrants[currentGrantIndex].projectGrantScope}
+                  </p>
+                </div>
 
+              </div>
+            </div>
+          </>
+        )}
 
 
         {/* Summary */}
@@ -674,7 +750,11 @@ const { derivedFilters, activeIcons } = useMemo(() => {
                                         <span className="font-bold text-blue-900 text-lg">{entityName}</span>
                                         {/* Handle description being short or long */}
                                         <span className="ml-4 text-gray-600 text-sm italic truncate max-w-md">{data.description}</span>
-                                        <span className="ml-auto text-xs text-gray-400 font-medium">{data.columns.length} columns</span>
+                                        <span className="ml-auto text-xs text-blue-900 font-medium">
+                                            {data.size !== undefined && data.size !== null
+                                                ? `${data.size.toLocaleString()} complete entries`
+                                                : `${data.columns.length} columns`}
+                                        </span>
                                     </div>
                                 </td>
                             </tr>
@@ -694,13 +774,65 @@ const { derivedFilters, activeIcons } = useMemo(() => {
             </div>
           )}
         </div>
-
+{/* Other Data Types */}
+        {otherDataTypes.length > 0 && (
+            <>
+                <SectionHeading id="other-data-types" title="Other Data Types" />
+                <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-10">
+                    <table className="w-full text-left border-collapse">
+                        <tbody className="text-sm">
+                            {otherDataTypes.map((item, idx) => {
+                                const isExpanded = expandedOtherData[idx];
+                                return (
+                                    <React.Fragment key={idx}>
+                                        <tr
+                                            className="bg-white border-b border-gray-100 cursor-pointer hover:bg-blue-50 transition-colors"
+                                            onClick={() => toggleOtherData(idx)}
+                                        >
+                                            <td className="p-3 w-10 text-center select-none">
+                                                <span className={`transform transition-transform inline-block text-blue-500 ${isExpanded ? 'rotate-90' : ''}`}>▶</span>
+                                            </td>
+                                            <td className="p-3 font-bold text-blue-900 w-1/2 select-none">
+                                                {item.title}
+                                            </td>
+                                            <td className="p-3 text-right">
+                                                {item.format && (
+                                                    <span className="text-xs bg-blue-50 text-blue-700 border border-blue-100 px-2 py-1 rounded font-mono">
+                                                        {item.format}
+                                                    </span>
+                                                )}
+                                            </td>
+                                        </tr>
+                                        {isExpanded && (
+                                            <tr className="bg-gray-50 border-b border-gray-200">
+                                                <td className="p-3 border-r border-gray-100"></td>
+                                                <td colSpan="2" className="p-4 text-gray-700 leading-relaxed">
+                                                    {item.description}
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </React.Fragment>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </>
+        )}
         {/* ERD */}
         <div className="flex items-center justify-between mt-10 mb-4 border-b pb-2">
             <h2 id="entity-relationship-diagrams" className="text-2xl font-bold text-gray-800">Entity Relationship Diagrams</h2>
         </div>
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-8 p-4 overflow-x-auto">
-           <img src={erdImage} alt="Entity Relationship Diagram" className="min-w-full md:w-full h-auto object-contain" />
+           <img
+               src={data.erd || erdImage}
+               alt="Entity Relationship Diagram"
+               className="min-w-full md:w-full h-auto object-contain"
+               onError={(e) => {
+                   e.target.onerror = null; // Prevent infinite looping if the local image also fails
+                   e.target.src = erdImage;
+               }}
+           />
         </div>
 
         {/* Observations */}
@@ -714,6 +846,144 @@ const { derivedFilters, activeIcons } = useMemo(() => {
                 </div>
             ))}
         </div>
+        {/* Demographics - Ethnicity Bar Chart */}
+        {mappedEthnicities && (
+            <>
+                <SectionHeading id="demographic-frequency" title="Ethnicity Distribution" />
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-10">
+                    <div className="space-y-3"> {/* Increased gap slightly to accommodate wrapped text */}
+                        {mappedEthnicities.data.map((item, idx) => {
+                            // Calculate width percentage relative to the highest count
+                            const barWidth = mappedEthnicities.maxCount > 0
+                                ? `${(item.count / mappedEthnicities.maxCount) * 100}%`
+                                : '0%';
+
+                            // Alternate colors: blue and pink
+                            const barColor = idx % 2 === 0 ? 'bg-blue-600' : 'bg-pink-400';
+
+                            return (
+                                <div key={idx} className="flex items-center text-sm group min-h-[1.5rem]">
+                                    {/* Increased width to 60% (w-3/5) and removed 'truncate' to allow wrapping */}
+                                    <div className="w-3/5 text-right pr-4 text-gray-700 leading-snug" title={item.label}>
+                                        {item.label}
+                                    </div>
+                                    {/* Decreased width to 40% (w-2/5) for the bar chart */}
+                                    <div className="w-2/5 flex items-center">
+                                        <div className="flex-1 h-5 flex items-center">
+                                            <div
+                                                className={`h-full ${barColor} rounded-r transition-all duration-500 opacity-90 group-hover:opacity-100`}
+                                                style={{ width: barWidth }}
+                                            ></div>
+                                        </div>
+                                        <div className="ml-3 font-semibold text-gray-600 w-12 text-left">
+                                            {item.count}
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            </>
+        )}
+        {/* Omics */}
+        {omics && (
+            <>
+                <SectionHeading id="omics" title="Omics Data" />
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-10 flex flex-col sm:flex-row gap-8">
+                    <div>
+                        <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Assay</span>
+                        <p className="text-base text-gray-800 m-0">{omics.assay || "Information not provided"}</p>
+                    </div>
+                    <div>
+                        <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Platform</span>
+                        <p className="text-base text-gray-800 m-0">{omics.platform || "Information not provided"}</p>
+                    </div>
+                </div>
+            </>
+        )}
+
+        {/* Provenance */}
+        {Object.keys(provenance).length > 0 && (
+            <>
+                <SectionHeading id="provenance" title="Provenance & Timelines" />
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-10">
+                    {provenance.temporal && (
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                            <AccessItem label="Publishing Frequency" value={provenance.temporal.publishingFrequency} />
+                            <AccessItem label="Start Date" value={provenance.temporal.startDate} />
+                            <AccessItem label="End Date" value={provenance.temporal.endDate} />
+                            <AccessItem label="Time Lag" value={provenance.temporal.timeLag} />
+                        </div>
+                    )}
+                </div>
+            </>
+        )}
+
+        {/* Enrichment & Linkage */}
+        {Object.keys(enrichmentAndLinkage).length > 0 && (
+            <>
+                <SectionHeading id="enrichment-and-linkage" title="Enrichment & Linkage" />
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {Object.entries(enrichmentAndLinkage).map(([key, value]) => {
+                        if (!value || (Array.isArray(value) && value.length === 0)) return null;
+
+                        // Formats camelCase keys into Title Case readable strings
+                        const formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+
+                        // Helper to determine if a string is a standard URL or a DOI
+                        const getHref = (str) => {
+                            if (typeof str !== 'string') return null;
+                            if (str.startsWith('http')) return str;
+                            if (str.startsWith('10.')) return `https://doi.org/${str}`;
+                            return null;
+                        };
+
+                        return (
+                            <div key={key}>
+                                <h4 className="font-bold text-gray-500 uppercase tracking-wide mb-2 text-sm">{formattedKey}</h4>
+                                <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700 break-words">
+                                    {Array.isArray(value) ? value.map((item, idx) => {
+                                        // 1. Handle Object types (derivedFrom, similarToDatasets)
+                                        if (typeof item === 'object' && item !== null) {
+                                            // Fallback to item.url if title and pid are missing
+                                            const displayText = `${item.title || ''} ${item.pid ? `[${item.pid}]` : ''}`.trim() || item.url;
+                                            const href = getHref(item.url);
+
+                                            return (
+                                                <li key={idx}>
+                                                    {href ? (
+                                                        <a href={href} target="_blank" rel="noreferrer" className="text-blue-600 hover:text-blue-800 transition-colors">
+                                                            {displayText}
+                                                        </a>
+                                                    ) : (
+                                                        <span>{displayText}</span>
+                                                    )}
+                                                </li>
+                                            );
+                                        }
+
+                                        // 2. Handle String types (e.g., plain URLs in tools, or DOIs)
+                                        const href = getHref(item);
+                                        return (
+                                            <li key={idx}>
+                                                {href ? (
+                                                    <a href={href} target="_blank" rel="noreferrer" className="text-blue-600 hover:text-blue-800 transition-colors break-all">
+                                                        {item}
+                                                    </a>
+                                                ) : (
+                                                    <span>{item}</span>
+                                                )}
+                                            </li>
+                                        );
+                                    }) : <li>{value}</li>}
+                                </ul>
+                            </div>
+                        )
+                    })}
+                </div>
+            </>
+        )}
 
       </main>
 
