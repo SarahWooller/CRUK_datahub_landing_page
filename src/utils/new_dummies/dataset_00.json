@@ -1,58 +1,58 @@
 {
    "version": "1.0.0",
    "summary": {
-      "title": "Pancreatic Cancer Radiomics and Biomarker Cohort",
-      "abstract": "Registry data tracking treatment response patterns in advanced pancreatic ductal adenocarcinoma. Includes frequency of imaging and circulating tumor DNA details.",
+      "title": "Cholangiocarcinoma Patient-Derived Xenograft and Organoid Cohort",
+      "abstract": "Registry data linking molecular profiling of advanced cholangiocarcinoma to drug screening results in patient-derived models.",
       "dataCustodian": {
-         "identifier": "https://ror.org/087654b32",
-         "name": "Oncology Research Trust",
-         "logo": "https://www.oncologytrust.org/brand/",
+         "identifier": "https://ror.org/099ccc888",
+         "name": "Biliary Tract Cancer Consortium",
+         "logo": "https://www.biliaryconsortium.org/assets/logo.png",
          "contactPoint": [
-            "data@oncologytrust.org"
+            "data@biliaryconsortium.org"
          ],
-         "description": "https://www.oncologytrust.org/about"
+         "description": "https://www.biliaryconsortium.org/about"
       },
-      "funders": "National Cancer Institute\nPancreatic Cancer Action Network",
-      "populationSize": 2105,
+      "funders": "AMMF - The Cholangiocarcinoma Charity\nMedical Research Council",
+      "populationSize": 520,
       "keywords": [
-         "Pancreatic",
-         "Cancer",
-         "Radiomics",
-         "Biomarkers",
-         "Response"
+         "Cholangiocarcinoma",
+         "Biliary",
+         "Organoids",
+         "PDX",
+         "Drug Screening"
       ],
-      "doiName": "10.1500/data.45",
-      "contactPoint": "access@oncologytrust.org",
+      "doiName": "10.1600/data.88",
+      "contactPoint": "access@biliaryconsortium.org",
       "datasetAliases": [
-         "Pancreatic Cancer Biomarker Registry"
+         "Biliary Tract Cancer Models"
       ]
    },
    "documentation": {
-      "description": "Registry data tracking treatment response patterns in advanced pancreatic ductal adenocarcinoma. Includes frequency of imaging and circulating tumor DNA details. This is a synthetic description generated for testing purposes.",
+      "description": "Registry data linking molecular profiling of advanced cholangiocarcinoma to drug screening results in patient-derived models. This is a synthetic description generated for testing purposes.",
       "inPipeline": "Available",
       "associatedMedia": [
-         "https://oncologytrust/docs/radiomics_protocol.pdf"
+         "https://biliaryconsortium.org/protocols/model_generation.pdf"
       ]
    },
    "coverage": {
       "typicalAgeRangeMin": 35,
-      "typicalAgeRangeMax": 90,
-      "datasetCompleteness": "https://oncologytrust.org/pancreatic/completeness"
+      "typicalAgeRangeMax": 85,
+      "datasetCompleteness": "https://biliaryconsortium.org/data/completeness"
    },
    "provenance": {
       "temporal": {
          "publishingFrequency": "Annual",
-         "startDate": "2018-03-01",
-         "timeLag": "More than 6 months",
-         "endDate": "2023-03-01",
-         "distributionReleaseDate": "2024-01-15"
+         "startDate": "2019-05-01",
+         "timeLag": "6 months",
+         "endDate": "2024-05-01",
+         "distributionReleaseDate": "2024-11-01"
       }
    },
    "observations": [
       {
-         "observedNode": "Patients",
-         "measuredValue": 4120,
-         "observationDate": "2023-12-01",
+         "observedNode": "Organoid Lines",
+         "measuredValue": 1040,
+         "observationDate": "2024-05-01",
          "measuredProperty": "Count"
       }
    ],
@@ -60,130 +60,150 @@
       "ethnicity": [
          {
             "bin": "White - British",
-            "count": 71
+            "count": 67
          },
          {
             "bin": "Asian or Asian British",
-            "count": 14
+            "count": 19
+         },
+         {
+            "bin": "White - Any other White background",
+            "count": 7
          },
          {
             "bin": "Black or Black British",
-            "count": 9
-         },
-         {
-            "bin": "Mixed",
             "count": 3
          },
          {
-            "bin": "Other",
+            "bin": "Mixed",
             "count": 1
          }
       ]
    },
    "projectGrants": [
       {
-         "pid": "ORT105",
-         "projectGrantName": "Pancreatic Cancer Radiomics Integration",
-         "leadResearcher": "Dr. Miller",
-         "leadResearchInstitute": "National Cancer Institute",
-         "grantNumber": "ORT105, ORT106",
-         "projectGrantStartDate": "2019-06-01",
-         "projectGrantEndDate": "2024-06-01",
-         "projectGrantScope": "CT imaging, genetic markers, and clinical background information"
+         "pid": "BTCC-105",
+         "projectGrantName": "Targeted Therapies in IDH1-Mutant Cholangiocarcinoma",
+         "leadResearcher": "Dr. Sarah Jenkins",
+         "leadResearchInstitute": "Institute of Liver Studies",
+         "grantNumber": "AMMF-202, MRC-441",
+         "projectGrantStartDate": "2020-01-01",
+         "projectGrantEndDate": "2025-12-31",
+         "projectGrantScope": "drug screening viability, whole exome sequencing, and patient survival logs"
+      },
+      {
+         "pid": "BTCC-107",
+         "projectGrantName": "Targeted Therapies in IDH1-Mutant Cholangiocarcinoma",
+         "leadResearcher": "Dr. Karen Jenkins",
+         "leadResearchInstitute": "Institute of Liver Studies",
+         "grantNumber": "AMMF-206, MRC-44100",
+         "projectGrantStartDate": "2020-01-01",
+         "projectGrantEndDate": "2025-12-31",
+         "projectGrantScope": "drug screening viability, whole exome sequencing, and patient survival logs"
       }
    ],
-   "erd": "https://github.com/OncologyResearch/panc_cohort/blob/main/assets/erd.png",
+   "erd": "https://github.com/BiliaryConsortium/btc_db/blob/main/schema.png",
    "structuralMetadata": {
       "tables": [
          {
-            "name": "Clinical_Features",
-            "description": "Age, sex, tumor stage, treatment modalities",
+            "name": "Drug_Response_Metrics",
+            "description": "In vitro drug sensitivity and resistance profiles",
             "columns": [
                {
-                  "name": "mutations",
+                  "name": "fgfr_inhibitor_ic50",
                   "dataType": "list",
-                  "description": "list of HGVS terms describing genetic mutations",
+                  "description": "list of IC50 values (nM) for FGFR inhibitors",
                   "sensitive": true,
                   "values": [
                      {
-                        "name": "[KRAS_G12D]",
-                        "description": "KRAS gene mutation",
-                        "frequency": 1200
+                        "name": "[Resistant]",
+                        "description": "IC50 exceeding therapeutic plasma concentrations",
+                        "frequency": 120
                      }
                   ]
                }
             ],
-            "size": 2500
+            "size": 520
          }
       ],
       "syntheticDataWebLink": [
-         "https://oncologytrust.org/pancreatic/synthetic_data"
+         "https://biliaryconsortium.org/datasets/synthetic_btc"
       ]
    },
    "otherDataTypes": [
       {
-         "title": "Abdominal CT Scans",
-         "description": "3D volumetric scans of the pancreas with tumors segmented",
+         "title": "H&E Stained Organoid Sections",
+         "description": "High-resolution microscopy of formalin-fixed organoids",
+         "format": "TIFF"
+      },
+      {
+         "title": "2-D microsopy slides of normal and diseased liver",
+         "description": "Complete set of slides showing extent of cancer",
          "format": "DICOM"
       }
    ],
    "enrichmentAndLinkage": {
       "derivedFrom": [
          {
-            "title": "National Registry for Gastrointestinal Malignancies",
-            "pid": "GI099",
-            "url": "https://healthdatagateway.org/en/dataset/402"
+            "title": "National Hepatobiliary Cancer Registry",
+            "pid": "NHCR-04",
+            "url": "https://healthdatagateway.org/en/dataset/741"
+         },
+         {
+            "title": "Regional Hepatobiliary Cancer Registry",
+            "pid": "RHCR-14",
+            "url": "https://healthdatagateway.org/en/dataset/741"
          }
       ],
       "publicationUsingDataset": [
-         "10.1016/j.ejca.2021.08.012"
+         "10.1016/j.jhep.2023.05.011"
       ],
       "publicationAboutDataset": [
-         "10.1016/j.ejca.2021.08.013"
+         "10.1016/j.jhep.2023.05.012"
       ],
       "tools": [
-         "https://github.com/topics/pancreatic-cancer-radiomics"
+         "https://github.com/topics/cholangiocarcinoma-models"
       ],
       "investigations": [
-         "ORT106"
+         "BTCC-105-SubA"
       ],
       "similarToDatasets": [
          {
-            "url": "10.1016/j.ejca.2019.05.004",
-            "title": "Gastrointestinal Cancer Backgrounds",
-            "pid": "ORTxyz"
+            "url": "10.1016/j.jhep.2022.02.015",
+            "title": "Advanced HCC Organoid Cohort",
+            "pid": "AHCC-ORG"
          }
       ]
    },
    "omics": {
-      "assay": "Targeted panel sequencing",
-      "platform": "Illumina HiSeq"
+      "assay": "Whole Exome Sequencing",
+      "platform": "Illumina NovaSeq 6000"
    },
    "icons": [
-      "Patient Study",
-      "Imaging"
+      "Preclinical Models",
+      "Genomics"
    ],
    "datasetFilters": [
       {
-         "id": "0_0_0_1_10",
-         "label": "C25 Pancreas",
+         "id": "0_0_0_1_7",
+         "label": "C22 Liver and intrahepatic bile ducts",
          "category": "C15-C26 Digestive organs",
          "primaryGroup": "cancer-type",
          "description": ""
       },
       {
-         "id": "0_0_1_5_3",
-         "label": "8140/3 Adenocarcinoma, NOS",
+         "id": "0_0_1_5_26",
+         "label": "8160/3 Cholangiocarcinoma",
          "category": "814-838 Adenomas and adenocarcinomas",
          "primaryGroup": "cancer-type",
          "description": ""
       },
       {
-         "id": "0_1_1",
-         "label": "research specific restrictions",
+         "id": "0_1_3",
+         "label": "ethics approval required",
          "category": "accessType",
          "primaryGroup": "access-type",
-         "description": "Limited to studies of a certain research type (DUO_0000012)"
+         "description": "DUO_0000021"
       },
       {
          "id": "0_2_4_2",
@@ -193,18 +213,62 @@
          "description": ""
       },
       {
-         "id": "0_2_2_0_6",
-         "label": "Saccharomyces cerevisiae",
-         "category": "Organism",
+         "id": "0_2_1",
+         "label": "In Vitro Study",
+         "category": "dataType",
          "primaryGroup": "data-type",
          "description": ""
       },
       {
-         "id": "0_2_2_0_2",
-         "label": "Fruit fly",
-         "category": "Organism",
+         "id": "0_2_3_4_0",
+         "label": "Phase 0",
+         "category": "Clinical Trial",
          "primaryGroup": "data-type",
          "description": ""
       }
-   ]
+   ],
+   "accessibility": {
+  "access": {
+    "accessRights": "Access is granted upon approval by the Oncology Data Access Committee. Please visit https://www.oncologytrust.org/access for the application portal.",
+    "accessServiceCategory": "TRE/SDE",
+    "accessService": "Data is accessed via the Oncology Trust Secure Data Environment (SDE). Researchers cannot download record-level data.",
+    "accessRequestCost": "Academic requests are free. Commercial requests are subject to a £2000 administrative fee.",
+    "deliveryLeadTime": "2-4 weeks",
+    "jurisdiction": [
+      "GB"
+    ],
+    "dataController": "Oncology Research Trust",
+    "dataProcessor": "Oncology Research Trust"
+  },
+  "usage": {
+    "dataUseLimitation": [
+      "Research use only",
+      "No linkage"
+    ],
+    "dataUseRequirements": [
+      "Ethics approval required",
+      "Publication required"
+    ],
+    "resourceCreator": [
+      "Oncology Research Trust Data Team"
+    ]
+  },
+  "formatAndStandards": {
+    "vocabularyEncodingScheme": [
+      "ICD10",
+      "SNOMED CT"
+    ],
+    "conformsTo": [
+      "OMOP"
+    ],
+    "language": [
+      "en"
+    ],
+    "format": [
+      "text/csv",
+      "application/pdf",
+      "image/dicom-rle"
+    ]
+  }
+}
 }
