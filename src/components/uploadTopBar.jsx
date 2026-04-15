@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 // Assuming the example file exists at this path
-import exampleData from '../utils/dummy_data/example_for_download.json';
+import exampleData from '../utils/new_dummies/dataset_01.json';
 
 // --- Icons ---
 const DownloadIcon = () => (
