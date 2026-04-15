@@ -8,23 +8,25 @@
     "visibleSections": [
       "welcome",
       "version",
+      "projectGrants",
       "summary",
       "documentation",
       "datasetFilters",
-
       "structuralMetadata",
-      "erd",
       "otherDataTypes",
+      "erd",
       "coverage",
       "provenance",
       "accessibility",
-      "access",
       "enrichmentAndLinkage",
       "observations",
       "demographicFrequency",
       "omics"
     ],
     "$defs": {
+      "Coverage": {
+        "required": []
+      },
       "DataColumn": {
         "properties": {
           "name": {
@@ -130,8 +132,13 @@
             "default": null,
             "description": "Please provide a URL that describes the organisation.  If a description is not provided this will default to the description of the team submitting the metadata.",
             "title": "Organisation Description"
-          }
+          },
+          "contactPoint":{
+            "description":"Organisation contact point(s) which will be used for receiving queries from CRUK" }
         }
+      },
+      "Provenance": {
+        "required": []
       },
       "Project": {
           "properties": {
@@ -330,6 +337,7 @@
               "title": "Time lag"
             }
           },
+          "required": [],
           "title": "Temporal",
           "type": "object"
         }
@@ -349,7 +357,8 @@
         },
         "provenance": {
           "description": "Optional information setting out how often the information is updated and the time period covered.",
-          "title": "Dateset Timelines"
+          "title": "Dateset Timelines",
+          "required": []
         },
         "structuralMetadata": {
           "description": "Descriptions of all data tables. Space for a new table entry is added at the end when you start typing"
