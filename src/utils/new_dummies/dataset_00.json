@@ -82,7 +82,7 @@
    },
    "projectGrants": [
       {
-         "pid": "BTCC-105",
+         "pid": "00_000",
          "projectGrantName": "Targeted Therapies in IDH1-Mutant Cholangiocarcinoma",
          "leadResearcher": "Dr. Sarah Jenkins",
          "leadResearchInstitute": "Institute of Liver Studies",
@@ -92,7 +92,7 @@
          "projectGrantScope": "drug screening viability, whole exome sequencing, and patient survival logs"
       },
       {
-         "pid": "BTCC-107",
+         "pid": "00_001",
          "projectGrantName": "Targeted Therapies in IDH1-Mutant Cholangiocarcinoma",
          "leadResearcher": "Dr. Karen Jenkins",
          "leadResearchInstitute": "Institute of Liver Studies",
@@ -228,47 +228,47 @@
       }
    ],
    "accessibility": {
-  "access": {
-    "accessRights": "Access is granted upon approval by the Oncology Data Access Committee. Please visit https://www.oncologytrust.org/access for the application portal.",
-    "accessServiceCategory": "TRE/SDE",
-    "accessService": "Data is accessed via the Oncology Trust Secure Data Environment (SDE). Researchers cannot download record-level data.",
-    "accessRequestCost": "Academic requests are free. Commercial requests are subject to a £2000 administrative fee.",
-    "deliveryLeadTime": "2-4 weeks",
-    "jurisdiction": [
-      "GB"
-    ],
-    "dataController": "Oncology Research Trust",
-    "dataProcessor": "Oncology Research Trust"
-  },
-  "usage": {
-    "dataUseLimitation": [
-      "Research use only",
-      "No linkage"
-    ],
-    "dataUseRequirements": [
-      "Ethics approval required",
-      "Publication required"
-    ],
-    "resourceCreator": [
-      "Oncology Research Trust Data Team"
-    ]
-  },
-  "formatAndStandards": {
-    "vocabularyEncodingScheme": [
-      "ICD10",
-      "SNOMED CT"
-    ],
-    "conformsTo": [
-      "OMOP"
-    ],
-    "language": [
-      "en"
-    ],
-    "format": [
-      "text/csv",
-      "application/pdf",
-      "image/dicom-rle"
-    ]
-  }
-}
+      "access": {
+         "accessRights": "Access is granted upon approval by the Oncology Data Access Committee. Please visit https://www.oncologytrust.org/access for the application portal.",
+         "accessServiceCategory": "TRE/SDE",
+         "accessService": "Data is accessed via the Oncology Trust Secure Data Environment (SDE). Researchers cannot download record-level data.",
+         "accessRequestCost": "Academic requests are free. Commercial requests are subject to a \u00a32000 administrative fee.",
+         "deliveryLeadTime": "2-4 weeks",
+         "jurisdiction": [
+            "GB"
+         ],
+         "dataController": "Oncology Research Trust",
+         "dataProcessor": "Oncology Research Trust"
+      },
+      "usage": {
+         "dataUseLimitation": [
+            "Research use only",
+            "No linkage"
+         ],
+         "dataUseRequirements": [
+            "Ethics approval required",
+            "Publication required"
+         ],
+         "resourceCreator": [
+            "Oncology Research Trust Data Team"
+         ]
+      },
+      "formatAndStandards": {
+         "vocabularyEncodingScheme": [
+            "ICD10",
+            "SNOMED CT"
+         ],
+         "conformsTo": [
+            "OMOP"
+         ],
+         "language": [
+            "en"
+         ],
+         "format": [
+            "text/csv",
+            "application/pdf",
+            "image/dicom-rle"
+         ]
+      }
+   }
 }

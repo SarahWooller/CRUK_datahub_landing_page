@@ -82,13 +82,23 @@
    },
    "projectGrants": [
       {
-         "pid": "GOG-801",
+         "pid": "19_000",
          "projectGrantName": "Molecular Typing in Endometrial Cancer",
          "leadResearcher": "Dr. E. Evans",
          "leadResearchInstitute": "Institute of Women's Cancer",
          "grantNumber": "MRC-888",
          "projectGrantStartDate": "2019-01-01",
          "projectGrantEndDate": "2024-12-31",
+         "projectGrantScope": "IHC profiles, sequencing, and recurrence data"
+      },
+      {
+         "pid": "19_001",
+         "projectGrantName": "Molecular Typing in Endometrial Cancer in Young People",
+         "leadResearcher": "Dr. E. Evans",
+         "leadResearchInstitute": "Institute of Women's Cancer",
+         "grantNumber": "MRC-889",
+         "projectGrantStartDate": "2020-01-01",
+         "projectGrantEndDate": "2026-12-31",
          "projectGrantScope": "IHC profiles, sequencing, and recurrence data"
       }
    ],
