@@ -3,6 +3,10 @@ import React, { useMemo } from 'react';
 import exampleData from '../utils/new_dummies/dataset_00.json';
 
 // --- Icons ---
+const TrashIcon = () => (
+    <svg className="w-4 h-4 mr-2 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+);
+
 const DownloadIcon = () => (
     <svg className="w-4 h-4 mr-2 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
 );
@@ -20,7 +24,7 @@ const ChartIcon = () => (
 );
 
 // --- Component ---
-const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType }) => {
+const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType, onDeleteSuccess }) => {
 
     // --- 1. Helper Logic ---
 
@@ -107,6 +111,10 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType }) => {
         return { req: reqPercent, opt: optPercent };
     }, [formData, schema]);
 
+    // Identify if an existing record is loaded (you already have this logic for the PUT request)
+    const isProject = pageType === 'project';
+    const existingId = isProject ? (formData.pid || formData.id) : (formData.datasetid || formData.id);
+    const isUpdate = !!existingId;
 
     // --- 2. Action Handlers ---
 
@@ -193,45 +201,91 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType }) => {
         };
     };
 
-    const handleSaveToDatabase = async () => {
+// Add this new deletion handler
+    const handleDeleteRecord = async () => {
+        const confirmDelete = window.confirm(
+            "Danger Zone: Are you sure you want to delete this record? This action cannot be undone."
+        );
+
+        if (!confirmDelete) return;
+
+        try {
+            const token = localStorage.getItem('token');
+            const baseEndpoint = isProject
+                ? 'http://127.0.0.1:8000/projects/'
+                : 'http://127.0.0.1:8000/datasets/';
+
+            const endpoint = `${baseEndpoint}${existingId}/`;
+
+            const response = await fetch(endpoint, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || 'Failed to delete record');
+            }
+
+            alert(`Successfully deleted ${isProject ? 'Project' : 'Dataset'}.`);
+
+            // Notify the parent component to clear the form or redirect
+            if (onDeleteSuccess) {
+                onDeleteSuccess();
+            }
+
+        } catch (error) {
+            console.error("Delete error:", error);
+            alert(`Error: ${error.message}`);
+        }
+    };
+
+const handleSaveToDatabase = async () => {
         try {
             const token = localStorage.getItem('token');
             const activeTeamId = localStorage.getItem('activeTeamId');
             const isProject = pageType === 'project';
-            const endpoint = isProject
+
+            // 1. Identify if an existing record is loaded by checking for ID fields
+            const existingId = isProject ? (formData.pid || formData.id) : (formData.datasetid || formData.id);
+            const isUpdate = !!existingId;
+
+            // 2. Construct the base endpoint
+            const baseEndpoint = isProject
                 ? 'http://127.0.0.1:8000/projects/'
                 : 'http://127.0.0.1:8000/datasets/';
+
+            // 3. Append the ID to the URL if updating an existing record
+            const endpoint = isUpdate ? `${baseEndpoint}${existingId}/` : baseEndpoint;
+
             const userName = localStorage.getItem('userName');
-// ADD THESE LOGS
-            console.group(`🚀 SENDING POST: ${isProject ? 'PROJECT' : 'DATASET'}`);
+
+            console.group(`🚀 SENDING ${isUpdate ? 'PUT' : 'POST'}: ${isProject ? 'PROJECT' : 'DATASET'}`);
             console.log("User Name:", userName);
             console.log("Active Team ID (Context):", activeTeamId);
             console.log("Token Present:", !!token);
+            console.log("Updating Existing Record:", isUpdate, "ID:", existingId || "None");
             console.groupEnd();
-
 
             let payload;
 
             if (isProject) {
-                // Flat structure for PHP-style ProjectGrant
                 payload = transformForPHP(formData);
             } else {
-                // Nested blob structure for Datasets
-            // 1. Prepare the data exactly as the backend expects
-            const processedData = associateIcons(formData, prefixIconMapping);
-
-            // 2. Wrap it in the 'metadata_blob' key defined in your Pydantic schema
-            payload = {
+                payload = {
                     metadata_blob: associateIcons(formData, prefixIconMapping),
                     team_id: parseInt(localStorage.getItem('activeTeamId')),
                     status: "DRAFT"
                 };
             }
-            console.log(payload)
-            // 3. Perform the POST request
-            // NOTE: In a real app, 'your_jwt_token' would come from a Context or LocalStorage
+
+            console.log(payload);
+
+            // 4. Use PUT for existing records and POST for new ones
             const response = await fetch(endpoint, {
-                method: 'POST',
+                method: isUpdate ? 'PUT' : 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
@@ -245,9 +299,9 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType }) => {
             }
 
             const result = await response.json();
-            // Use datasetid for datasets, id or pid for projects
             const displayId = isProject ? (result.pid || result.id) : result.datasetid;
-            alert(`Successfully saved ${isProject ? 'Project' : 'Dataset'}! ID: ${displayId}`);
+
+            alert(`Successfully ${isUpdate ? 'updated' : 'saved'} ${isProject ? 'Project' : 'Dataset'}. ID: ${displayId}`);
 
         } catch (error) {
             console.error("Save error:", error);
@@ -306,6 +360,16 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType }) => {
                     <ActiveIcon />
                     Make active
                 </button>
+                {/* Render the delete button only if we are editing an existing record */}
+                {isUpdate && (
+                    <button
+                        onClick={handleDeleteRecord}
+                        className="flex items-center text-red-300 hover:text-red-500 transition-colors focus:outline-none"
+                    >
+                        <TrashIcon />
+                        Delete
+                    </button>
+                )}
                 <button
                     onClick={handleSaveToDatabase}
                     className="flex items-center hover:text-green-400 transition-colors focus:outline-none"
@@ -324,6 +388,9 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType }) => {
             </div>
         </div>
     );
+
+
+
 };
 
 export default UploadTopBar;

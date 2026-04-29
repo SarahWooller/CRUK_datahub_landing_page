@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Panel, Group, Separator } from "react-resizable-panels";
+import CsvUploader from "./CsvUploader.jsx"
+import StructuralMetadataGrid from "./StructuralMetadataGrid.jsx";
 import FeedbackModal from './FeedbackModal.jsx';
 import questionData from '../feedback/upload_questions.json';
 import hdrukSchema from '../utils/HDRUK4.0.0.json';
 import crukSchema from '../utils/CRUK1.0.0.json';
 import semanticSchema from '../utils/semanticSchema.json';
-import dataSchema from '../utils/merged.json';
+
 import DataTagger, { FilterChipArea } from './DataTagger';
 import JsonUpload from './JsonUpload';
 import UploadTopBar from './UploadTopBar';
@@ -78,6 +80,7 @@ const OVERLAY_SCHEMA = semanticSchema.properties ? semanticSchema : (semanticSch
 // This creates a new object where semanticSchema properties overwrite rawSchema properties
 const MID_SCHEMA = deepMerge(hdruk_SCHEMA, cruk_SCHEMA);
 const DATA_SCHEMA = deepMerge(MID_SCHEMA, OVERLAY_SCHEMA);
+
 const VISIBLE_SECTIONS = DATA_SCHEMA.visibleSections
 // --- CUSTOM VALIDATION RULES ---
 const EXTRA_VALIDATIONS = {
@@ -968,6 +971,69 @@ const FieldRenderer = ({
         </div>
     );
 };
+
+// --- Component: Structural Metadata Wrapper ---
+const StructuralMetadataSection = ({ formData, onFormChange, DATA_SCHEMA, onUpdateGuidance }) => {
+    const [flatGridData, setFlatGridData] = useState([]);
+
+    // Extract guidance from the schema.
+    // Fallbacks to .properties included just in case standard JSON schema nesting applies.
+    const tableGuidance = {
+        title: "Table Guidelines",
+        guidance: DATA_SCHEMA?.$defs?.DataTable?.name?.guidance
+               || DATA_SCHEMA?.$defs?.DataTable?.properties?.name?.guidance
+               || "Provide the table details."
+    };
+
+    const columnGuidance = {
+        title: "Column Guidelines",
+        guidance: DATA_SCHEMA?.$defs?.DataTable?.columns?.guidance
+               || DATA_SCHEMA?.$defs?.DataTable?.properties?.columns?.guidance
+               || "Provide the column details."
+    };
+
+    // Set table guidance as the default when the section loads
+    useEffect(() => {
+        if (onUpdateGuidance) {
+            onUpdateGuidance(tableGuidance);
+        }
+    }, []);
+
+    const handleDataParsed = (parsedData) => {
+        setFlatGridData(parsedData);
+    };
+
+    const handleSaveToSchema = (nestedSchemaData) => {
+        onFormChange(['structuralMetadata'], nestedSchemaData);
+        alert("Metadata saved to schema successfully.");
+    };
+
+    // Determine which guidance to show based on the column key
+    const handleCellFocus = (columnKey) => {
+        if (!onUpdateGuidance) return;
+
+        if (columnKey.startsWith('table')) {
+            onUpdateGuidance(tableGuidance);
+        } else if (columnKey.startsWith('column') || columnKey.startsWith('value')) {
+            onUpdateGuidance(columnGuidance);
+        }
+    };
+
+    return (
+        <div className="w-full p-8 overflow-y-auto pb-20">
+            <h1 className="text-3xl font-extrabold mb-2 text-gray-800">Structural Metadata</h1>
+
+            <CsvUploader onDataParsed={handleDataParsed} />
+
+            <StructuralMetadataGrid
+                initialData={flatGridData}
+                onSaveToSchema={handleSaveToSchema}
+                onCellFocus={handleCellFocus}
+            />
+        </div>
+    );
+};
+
 // --- Component: Main Form Logic ---
 const SchemaForm = ({
     sectionKey,
@@ -1012,6 +1078,18 @@ const SchemaForm = ({
                     onChange={(newTags) => onFormChange(['datasetFilters'], newTags)}
                 />
             </div>
+        );
+    }
+
+// 2. Structural Metadata (NEW INTERCEPT)
+    if (sectionKey === 'structuralMetadata') {
+        return (
+            <StructuralMetadataSection
+                formData={formData}
+                onFormChange={onFormChange}
+                DATA_SCHEMA={DATA_SCHEMA}
+                onUpdateGuidance={setActiveGuidance}
+            />
         );
     }
 
@@ -1261,9 +1339,22 @@ const handleSelectDataset = (e) => {
     const selected = existingDatasets.find(d => d.id.toString() === selectedId);
 
     if (selected && selected.metadata_blob) {
-        // Replace setFormData with whatever state setter you use for the schema
-        setFormData(selected.metadata_blob);
+        // Merge the database ID into the metadata payload
+        const dataWithId = {
+            ...selected.metadata_blob,
+            datasetid: selected.id // UploadTopBar checks for formData.datasetid
+        };
+
+        // Set the state with the merged object
+        // (Use onFormChange([], dataWithId) if that is your primary state setter in SchemaPage)
+        setFormData(dataWithId);
     }
+};
+
+const handleRecordDeleted = () => {
+    // Reset the form data to an empty object, or use your router to redirect
+    onFormChange([], {});
+
 };
 
     const handleSaveDraftFeedback = (section, answers) => {
@@ -1648,6 +1739,8 @@ return (
                 formData={formData}
                 schema={DATA_SCHEMA}
                 prefixIconMapping={prefixIconMapping}
+                pageType="datasets"
+                onDeleteSuccess={handleRecordDeleted}
             />
             <button
             onClick={() => setIsFeedbackOpen(true)}

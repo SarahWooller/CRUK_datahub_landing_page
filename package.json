@@ -25,7 +25,9 @@
     "vite": "^7.2.2"
   },
   "dependencies": {
+    "papaparse": "^5.5.3",
     "re-resizable": "^6.11.2",
+    "react-data-grid": "^7.0.0-beta.59",
     "react-draggable": "^4.5.0",
     "react-hook-form": "^7.71.1",
     "react-markdown": "^10.1.0",

@@ -47,7 +47,7 @@
       "DataTable": {
         "properties": {
           "name": {
-            "guidance": "Please identify each of the tables in the dataset. When you fill in information for the first table, a new box will automatically be added to the end."
+            "guidance": "Please add the name, columns and specific values for each of the tables in the dataset. When you fill in information for the first table, new prompts will automatically appear. Scroll to the right to see all the columns! If you have done this before you may want to upload a csv. Note you can convert a single sheeted xls file to csv when saving."
           },
 
           "columns": {
