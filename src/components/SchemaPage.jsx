@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Panel, Group, Separator } from "react-resizable-panels";
 import FeedbackModal from './FeedbackModal.jsx';
 import questionData from '../feedback/upload_questions.json';
@@ -13,9 +13,8 @@ import { filterData } from '../utils/filter-setup';
 import prefixIconMapping from '../utils/prefix_icon_mapping.json';
 
 
-// --- CONFIGURATION: Priority Sections ---
-// Sections in this list will prioritize the property's own metadata (Title, Description, Guidance)
-// over the metadata found in the resolved definition ($ref/allOf).
+
+
 const METADATA_PRIORITY_SECTIONS = [
     "version"
 ];
@@ -78,7 +77,7 @@ const cruk_SCHEMA = crukSchema.properties ? crukSchema : (crukSchema.fullContent
 const OVERLAY_SCHEMA = semanticSchema.properties ? semanticSchema : (semanticSchema.fullContent || semanticSchema);
 // This creates a new object where semanticSchema properties overwrite rawSchema properties
 const MID_SCHEMA = deepMerge(hdruk_SCHEMA, cruk_SCHEMA);
-const DATA_SCHEMA = dataSchema;
+const DATA_SCHEMA = deepMerge(MID_SCHEMA, OVERLAY_SCHEMA);
 const VISIBLE_SECTIONS = DATA_SCHEMA.visibleSections
 // --- CUSTOM VALIDATION RULES ---
 const EXTRA_VALIDATIONS = {
@@ -408,7 +407,12 @@ const parseInline = (text) => {
     });
 };
 // --- Component: Welcome Section (RESTORED) ---
-const WelcomeSection = ({ onUpload }) => (
+const WelcomeSection = ({
+    existingDatasets,
+    loadingDatasets,
+    datasetError,
+    handleSelectDataset,
+    onUpload }) => (
     <div className="p-8 overflow-y-auto pb-20 w-full">
         <h1 className="text-3xl font-extrabold mb-4 text-gray-900">Guide to Uploading and Modifying Metadata</h1>
 
@@ -423,24 +427,32 @@ const WelcomeSection = ({ onUpload }) => (
         </div>
 
         <p className="text-sm text-gray-600 mb-3 leading-relaxed">
-            To modify an existing dataset, choose from your existing datasets below to retrieve the existing information for manual adjustment, to download the data, or to upload amendments.
+            To modify your existing dataset, choose from your existing datasets below to retrieve the existing information for manual adjustment, to download the data, or to upload amendments.
         </p>
 
         <div className="mb-6 max-w-lg">
-            <select
-                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 bg-white text-sm text-gray-700 cursor-pointer"
-                defaultValue=""
-                onChange={(e) => {
-                    if (e.target.value) {
-                        alert(`You selected: ${e.target.options[e.target.selectedIndex].text}\n(Logic to load this dataset would go here)`);
-                    }
-                }}
-            >
-                <option value="" disabled>-- Select an existing dataset --</option>
-                <option value="dataset1">Dataset for histopathology reports for prostatic carcinoma</option>
-                <option value="dataset2">The Cancer Imaging Archive</option>
-                <option value="dataset3">Longitudinal breast cancer data</option>
-            </select>
+            {loadingDatasets ? (
+                <p className="text-sm text-gray-500">Loading datasets...</p>
+            ) : datasetError ? (
+                <p className="text-sm text-red-500">{datasetError}</p>
+            ) : (
+                <select
+                    className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 bg-white text-sm text-gray-700 cursor-pointer"
+                    defaultValue=""
+                    onChange={handleSelectDataset}
+                >
+                    <option value="" disabled>-- Select an existing dataset --</option>
+                    {existingDatasets.map(dataset => {
+                        // Use the title from the metadata, or fallback to the system ID
+                        const title = dataset.metadata_blob?.summary?.title || dataset.datasetid;
+                        return (
+                            <option key={dataset.id} value={dataset.id}>
+                                {title}
+                            </option>
+                        );
+                    })}
+                </select>
+            )}
         </div>
 
         <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 mt-4">
@@ -578,6 +590,7 @@ const FieldRenderer = ({
 }) => {
     const [isMarkdownToggled, setIsMarkdownToggled] = useState(false);
     const [isExpanded, setIsExpanded] = useState(true);
+    const textareaRef = useRef(null);
 
     // Helper: Robustly resolve definitions (handles anyOf with Nulls)
     const getDefinitionAndEnum = (p) => {
@@ -630,7 +643,12 @@ const FieldRenderer = ({
     const rawValue = getValueByPath(formData, path);
     // Use rawValue if it exists, otherwise use the property default or an empty string
     const currentValue = (rawValue !== undefined && rawValue !== null) ? rawValue : (prop.default !== undefined ? prop.default : '');
-
+     useEffect(() => {
+        if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto';
+            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+        }
+    }, [currentValue, isMarkdownToggled]);
     // --- SPECIAL RENDER: Age Frequency Grid ---
     if (propKey === 'age' && path.includes('demographicFrequency')) {
         const ageEnumDef = DATA_SCHEMA.$defs?.AgeEnum;
@@ -810,7 +828,7 @@ const FieldRenderer = ({
 
     if (prop.contentMediaType && prop.contentMediaType.startsWith('image/')) {
         inputType = 'file';
-    } else if (showMarkdownToggle || (prop.title && (prop.title.includes("Description") || prop.title.includes("Guidance") || prop.title.includes("Abstract")))) {
+    } else if (showMarkdownToggle || (prop.title && (prop.title.includes("Description") || prop.title.includes("Scope") || prop.title.includes("Guidance") || prop.title.includes("Abstract")))) {
         inputType = 'textarea';
         rows = 4;
     } else if (fieldDef.type === 'integer' || fieldDef.type === 'number') {
@@ -895,7 +913,8 @@ const FieldRenderer = ({
                 </select>
             ) : inputType === 'textarea' ? (
                 <textarea
-                    className="w-full p-2 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500"
+                    ref={textareaRef}
+                    className="w-full p-2 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500 overflow-hidden resize-none"
                     placeholder={placeholder}
                     rows={rows}
                     onFocus={handleFocus}
@@ -950,13 +969,28 @@ const FieldRenderer = ({
     );
 };
 // --- Component: Main Form Logic ---
-const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance, onUpload }) => {
+const SchemaForm = ({
+    sectionKey,
+    formData,
+    onFormChange,
+    setActiveGuidance,
+    onUpload,
+    existingDatasets,
+    loadingDatasets,
+    datasetError,
+    handleSelectDataset
+}) => {
 
     // 0. Welcome Section
     if (sectionKey === 'welcome') {
         return (
             <div className="w-full flex h-full">
-                <WelcomeSection onUpload={onUpload} />
+                <WelcomeSection
+                existingDatasets={existingDatasets}
+                loadingDatasets={loadingDatasets}
+                datasetError={datasetError}
+                handleSelectDataset={handleSelectDataset}
+                onUpload={onUpload} />
             </div>
         );
     }
@@ -1155,6 +1189,11 @@ const GuidancePanel = ({ activeGuidance, children }) => (
 
 // --- Main Application ---
 const SchemaPage = () => {
+
+    const [showDatasetModal, setShowDatasetModal] = useState(false);
+    const [existingDatasets, setExistingDatasets] = useState([]);
+    const [loadingDatasets, setLoadingDatasets] = useState(false);
+    const [datasetError, setDatasetError] = useState('');
     // Safety Check on Initialization
     if (!DATA_SCHEMA || !DATA_SCHEMA.properties) {
         return (
@@ -1165,6 +1204,67 @@ const SchemaPage = () => {
     }
     const [allFeedback, setAllFeedback] = useState({}); // Stores { sectionKey: "comment string" }
     const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+
+    useEffect(() => {
+        const fetchDatasets = async () => {
+            const token = localStorage.getItem('token');
+            const currentUserId = parseInt(localStorage.getItem('userId'), 10);
+            const currentTeamId = parseInt(localStorage.getItem('activeTeamId'), 10);
+
+            console.group("🔍 Dataset Fetch Debug");
+            console.log("1. Token Present:", !!token);
+            console.log("2. Current User ID:", currentUserId);
+            console.log("3. Current Team ID:", currentTeamId);
+
+            if (!token || !currentUserId) {
+                console.warn("❌ Missing token or userId. Aborting fetch.");
+                console.groupEnd();
+                return;
+            }
+
+            setLoadingDatasets(true);
+            try {
+                // FETCH DATASETS
+                const response = await fetch('http://127.0.0.1:8000/datasets/', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log("4. Raw Data from Backend:", data);
+
+                // Filter by team ID
+                const userDatasets = data.filter(d => d.team_id === currentTeamId);
+                console.log("5. Filtered Data (d.team_id === currentTeamId):", userDatasets);
+
+                setExistingDatasets(userDatasets);
+            } catch (err) {
+                console.error("❌ Fetch failed:", err.message);
+                setDatasetError(err.message);
+            } finally {
+                setLoadingDatasets(false);
+                console.groupEnd();
+            }
+        };
+
+        fetchDatasets();
+    }, []);
+
+const handleSelectDataset = (e) => {
+    const selectedId = e.target.value;
+    if (!selectedId) return;
+
+    // Find the full dataset object based on the selected ID
+    const selected = existingDatasets.find(d => d.id.toString() === selectedId);
+
+    if (selected && selected.metadata_blob) {
+        // Replace setFormData with whatever state setter you use for the schema
+        setFormData(selected.metadata_blob);
+    }
+};
 
     const handleSaveDraftFeedback = (section, answers) => {
         setAllFeedback(prev => {
@@ -1580,6 +1680,10 @@ return (
                                 onFormChange={handleDataChange}
                                 setActiveGuidance={setActiveGuidance}
                                 onUpload={handleJsonUpload}
+                                existingDatasets={existingDatasets}
+                                loadingDatasets={loadingDatasets}
+                                datasetError={datasetError}
+                                handleSelectDataset={handleSelectDataset}
                             />
                         </div>
                     </Panel>

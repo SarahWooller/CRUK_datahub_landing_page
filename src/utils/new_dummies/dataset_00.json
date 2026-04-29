@@ -192,6 +192,14 @@
          "description": ""
       },
       {
+
+         "id": "0_0_4_18",
+         "label": "LIHC (Liver hepatocellular carcinoma)",
+         "category": "cancerTypes",
+         "primaryGroup": "cancer-type",
+         "description": ""
+      },
+      {
          "id": "0_0_1_5_26",
          "label": "8160/3 Cholangiocarcinoma",
          "category": "814-838 Adenomas and adenocarcinomas",

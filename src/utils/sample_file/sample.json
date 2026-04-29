@@ -1,0 +1,124 @@
+{
+  "identifier": "087654b3-2c0a-4b32-9c2e-1234567890ab",
+  "version": "1.0.0",
+  "revisions": [
+    {
+      "version": "1.0.0",
+      "url": "https://www.oncologytrust.org/datasets/087654b3-2c0a-4b32-9c2e-1234567890ab"
+    }
+  ],
+  "issued": "2018-03-01T00:00:00Z",
+  "modified": "2024-01-15T00:00:00Z",
+  "summary": {
+    "title": "Pancreatic Cancer Radiomics and Biomarker Cohort",
+    "leadResearcher": "Professor A. Olojede",
+    "leadResearchInstitute": "Sussex University",
+    "abstract": "Registry data tracking treatment response patterns in advanced pancreatic ductal adenocarcinoma. Includes frequency of imaging and circulating tumor DNA details.",
+    "dataCustodian": {
+      "identifier": "https://ror.org/087654b32",
+      "name": "Oncology Research Trust",
+      "logo": "https://www.oncologytrust.org/brand/",
+      "description": "https://www.oncologytrust.org/about",
+      "contactPoint": ["data@oncologytrust.org"]
+    },
+    "populationSize": 2105,
+    "keywords": ["Pancreatic", "Cancer", "Radiomics", "Biomarkers", "Response"],
+    "doiName": "10.1500/data.45",
+    "contactPoint": "access@oncologytrust.org"
+  },
+  "accessibility": {
+    "formatAndStandards": {
+      "language": ["en"],
+      "vocabularyEncodingScheme": ["OTHER"],
+      "format": ["CSV", "JSON"],
+      "conformsTo": ["OTHER"]
+    },
+    "usage": {
+      "dataUseLimitation": ["General research use"],
+      "resourceCreator": "Oncology Research Trust",
+      "dataUseRequirements": ["Return to database or resource"]
+    },
+    "access": {
+      "dataController": "Oncology Research Trust",
+      "jurisdiction": ["GB-ENG"],
+      "dataProcessor": "Oncology Research Trust",
+      "accessService": "https://www.oncologytrust.org/data-access",
+      "accessRights": "https://www.oncologytrust.org/terms",
+      "accessRequestCost": "Varies",
+      "deliveryLeadTime": "Other"
+    }
+  },
+  "observations": [
+    {
+      "observedNode": "Persons",
+      "measuredValue": 4120,
+      "observationDate": "2023-12-01",
+      "measuredProperty": "Count"
+    }
+  ],
+  "projectGrants": [
+    {
+      "pid": "ORT105",
+      "projectGrantName": "Pancreatic Cancer Radiomics Integration",
+      "leadResearcher": "Dr. Miller",
+      "leadResearchInstitute": "National Cancer Institute",
+      "grantNumber": "ORT105, ORT106",
+      "projectGrantStartDate": "2019-06-01",
+      "projectGrantEndDate": "2024-06-01",
+      "projectGrantScope": "CT imaging, genetic markers, and clinical background information"
+    }
+  ],
+  "erd": "https://github.com/OncologyResearch/panc_cohort/blob/main/assets/erd.png",
+  "otherDataTypes": [
+    {
+      "title": "Abdominal CT Scans",
+      "description": "3D volumetric scans of the pancreas with tumors segmented",
+      "format": "application/dicom"
+    }
+  ],
+  "icons": ["Patient Study", "Imaging"],
+  "datasetFilters": [
+    {
+      "id": "0_0_0_1_10",
+      "label": "C25 Pancreas",
+      "category": "C15-C26 Digestive organs",
+      "primaryGroup": "cancer-type",
+      "description": ""
+    },
+    {
+      "id": "0_0_1_5_3",
+      "label": "8140/3 Adenocarcinoma, NOS",
+      "category": "814-838 Adenomas and adenocarcinomas",
+      "primaryGroup": "cancer-type",
+      "description": ""
+    },
+    {
+      "id": "0_1_1",
+      "label": "research specific restrictions",
+      "category": "accessType",
+      "primaryGroup": "access-type",
+      "description": "Limited to studies of a certain research type (DUO_0000012)"
+    },
+    {
+      "id": "0_2_4_2",
+      "label": "Imaging Data",
+      "category": "Techniques",
+      "primaryGroup": "data-type",
+      "description": ""
+    },
+    {
+      "id": "0_2_2_0_6",
+      "label": "Saccharomyces cerevisiae",
+      "category": "Organism",
+      "primaryGroup": "data-type",
+      "description": ""
+    },
+    {
+      "id": "0_2_2_0_2",
+      "label": "Fruit fly",
+      "category": "Organism",
+      "primaryGroup": "data-type",
+      "description": ""
+    }
+  ]
+}
