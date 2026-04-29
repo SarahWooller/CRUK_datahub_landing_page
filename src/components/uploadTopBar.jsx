@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 // Assuming the example file exists at this path
-import exampleData from '../utils/new_dummies/dataset_01.json';
+import exampleData from '../utils/new_dummies/dataset_00.json';
 
 // --- Icons ---
 const DownloadIcon = () => (
@@ -20,7 +20,7 @@ const ChartIcon = () => (
 );
 
 // --- Component ---
-const UploadTopBar = ({ formData, schema, prefixIconMapping }) => {
+const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType }) => {
 
     // --- 1. Helper Logic ---
 
@@ -158,10 +158,12 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping }) => {
             const blob = new Blob([fileData], { type: "application/json" });
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
+            const isProject = pageType === 'project';
+            const defaultName = isProject ? "project_metadata.json" : "dataset_metadata.json";
 
-            const fileName = processedData.summary?.title
-                ? `${processedData.summary.title.replace(/\s+/g, '_')}_metadata.json`
-                : "dataset_metadata.json";
+            const fileName = formData.projectGrantName || formData.summary?.title
+                ? `${(formData.projectGrantName || formData.summary.title).replace(/\s+/g, '_')}_metadata.json`
+                : defaultName;
 
             link.download = fileName;
             link.href = url;
@@ -173,6 +175,86 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping }) => {
             console.error("Error exporting progress:", e);
         }
     };
+    const transformForPHP = (data) => {
+        return {
+            // team_id is required so the router can extract it
+            team_id: parseInt(localStorage.getItem('activeTeamId')),
+            pid: data.pid || "",
+            version: data.version || "1.0",
+            projectGrantName: data.projectGrantName || "",
+            leadResearcher: data.leadResearcher || "",
+            leadResearchInstitute: data.leadResearchInstitute || "",
+            grantNumbers: data.grantNumbers || "", // Use plural to match models.py
+            projectGrantStartDate: data.projectGrantStartDate || "",
+            projectGrantEndDate: data.projectGrantEndDate || "",
+            projectGrantScope: data.projectGrantScope || "",
+            // Required by ProjectBase schema
+            metadata_blob: {}
+        };
+    };
+
+    const handleSaveToDatabase = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const activeTeamId = localStorage.getItem('activeTeamId');
+            const isProject = pageType === 'project';
+            const endpoint = isProject
+                ? 'http://127.0.0.1:8000/projects/'
+                : 'http://127.0.0.1:8000/datasets/';
+            const userName = localStorage.getItem('userName');
+// ADD THESE LOGS
+            console.group(`🚀 SENDING POST: ${isProject ? 'PROJECT' : 'DATASET'}`);
+            console.log("User Name:", userName);
+            console.log("Active Team ID (Context):", activeTeamId);
+            console.log("Token Present:", !!token);
+            console.groupEnd();
+
+
+            let payload;
+
+            if (isProject) {
+                // Flat structure for PHP-style ProjectGrant
+                payload = transformForPHP(formData);
+            } else {
+                // Nested blob structure for Datasets
+            // 1. Prepare the data exactly as the backend expects
+            const processedData = associateIcons(formData, prefixIconMapping);
+
+            // 2. Wrap it in the 'metadata_blob' key defined in your Pydantic schema
+            payload = {
+                    metadata_blob: associateIcons(formData, prefixIconMapping),
+                    team_id: parseInt(localStorage.getItem('activeTeamId')),
+                    status: "DRAFT"
+                };
+            }
+            console.log(payload)
+            // 3. Perform the POST request
+            // NOTE: In a real app, 'your_jwt_token' would come from a Context or LocalStorage
+            const response = await fetch(endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.detail || 'Failed to save to database');
+            }
+
+            const result = await response.json();
+            // Use datasetid for datasets, id or pid for projects
+            const displayId = isProject ? (result.pid || result.id) : result.datasetid;
+            alert(`Successfully saved ${isProject ? 'Project' : 'Dataset'}! ID: ${displayId}`);
+
+        } catch (error) {
+            console.error("Save error:", error);
+            alert(`Error: ${error.message}`);
+        }
+    };
+
     const handleDownloadGuide = () => {
         // This assumes your file is named 'guidance.pdf' in the public folder
         const link = document.createElement("a");
@@ -224,7 +306,10 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping }) => {
                     <ActiveIcon />
                     Make active
                 </button>
-                <button className="flex items-center hover:opacity-80 transition-opacity cursor-not-allowed opacity-70">
+                <button
+                    onClick={handleSaveToDatabase}
+                    className="flex items-center hover:text-green-400 transition-colors focus:outline-none"
+                >
                     <SaveIcon />
                     Save as draft
                 </button>
