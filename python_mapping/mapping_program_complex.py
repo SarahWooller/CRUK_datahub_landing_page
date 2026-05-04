@@ -51,11 +51,10 @@ def topography_matches(term, allowed_topographies):
     if input_code is None:
         return False
 
-    for topo in allowed_topographies:
-        if extract_topography_code(topo) == input_code:
-            return True
-
-    return False
+    return any(
+        extract_topography_code(topo) == input_code
+        for topo in allowed_topographies
+    )
 
 
 def topography_in_group(term, topography_codes):
@@ -76,11 +75,12 @@ def topography_in_group(term, topography_codes):
         if range_match:
             start_num = int(range_match.group(1)[1:])
             end_num = int(range_match.group(2)[1:])
+
             if start_num <= input_num <= end_num:
                 return True
-        else:
-            if extract_topography_code(item) == input_code:
-                return True
+
+        elif extract_topography_code(item) == input_code:
+            return True
 
     return False
 
@@ -120,6 +120,42 @@ def rule_matches(term, histology_text, rule):
     return False
 
 
+def rule_is_potentially_relevant(term, histology_text, rule):
+    match_type = rule.get("match_type")
+
+    if match_type == "histology_exact":
+        return histology_matches(histology_text, rule.get("histology_codes", []))
+
+    if match_type == "topography_exact":
+        return topography_matches(term, rule.get("topography", []))
+
+    if match_type == "topography_group":
+        return topography_in_group(term, rule.get("topography_codes", []))
+
+    if match_type == "topography_and_histology":
+        return topography_matches(term, rule.get("topography", []))
+
+    if match_type == "topography_group_and_histology":
+        return topography_in_group(term, rule.get("topography_codes", []))
+
+    return False
+
+
+def resolve_rule_outputs(rule):
+    cruk_objects = resolve_labels_to_objects(
+        rule.get("cruk", []) or [],
+        label_key_dict,
+        filter_data,
+    )
+    tcga_objects = resolve_labels_to_objects(
+        rule.get("tcga", []) or [],
+        label_key_dict,
+        filter_data,
+    )
+
+    return cruk_objects, tcga_objects
+
+
 def get_complex_mapped_terms(input_term, histology_text=None):
     if histology_text is not None:
         histology_text = histology_text.strip()
@@ -130,59 +166,21 @@ def get_complex_mapped_terms(input_term, histology_text=None):
         for schema_term, mapping in section.items():
             for rule in mapping.get("rules", []):
                 if rule_matches(input_term, histology_text, rule):
-                    cruk_objects = resolve_labels_to_objects(
-                        rule.get("cruk", []) or [],
-                        label_key_dict,
-                        filter_data
-                    )
-                    tcga_objects = resolve_labels_to_objects(
-                        rule.get("tcga", []) or [],
-                        label_key_dict,
-                        filter_data
-                    )
+                    cruk_objects, tcga_objects = resolve_rule_outputs(rule)
                     return schema_term, rule.get("rule_name"), cruk_objects, tcga_objects
 
     for section_name in COMPLEX_SECTIONS:
         section = schema.get(section_name, {})
 
         for schema_term, mapping in section.items():
-            potentially_relevant = False
+            rules = mapping.get("rules", [])
 
-            for rule in mapping.get("rules", []):
-                match_type = rule.get("match_type")
-
-                if match_type == "histology_exact":
-                    if histology_matches(histology_text, rule.get("histology_codes", [])):
-                        potentially_relevant = True
-
-                elif match_type == "topography_exact":
-                    if topography_matches(input_term, rule.get("topography", [])):
-                        potentially_relevant = True
-
-                elif match_type == "topography_group":
-                    if topography_in_group(input_term, rule.get("topography_codes", [])):
-                        potentially_relevant = True
-
-                elif match_type == "topography_and_histology":
-                    if topography_matches(input_term, rule.get("topography", [])):
-                        potentially_relevant = True
-
-                elif match_type == "topography_group_and_histology":
-                    if topography_in_group(input_term, rule.get("topography_codes", [])):
-                        potentially_relevant = True
-
-            if potentially_relevant:
+            if any(
+                rule_is_potentially_relevant(input_term, histology_text, rule)
+                for rule in rules
+            ):
                 fallback = mapping.get("fallback", {})
-                cruk_objects = resolve_labels_to_objects(
-                    fallback.get("cruk", []) or [],
-                    label_key_dict,
-                    filter_data
-                )
-                tcga_objects = resolve_labels_to_objects(
-                    fallback.get("tcga", []) or [],
-                    label_key_dict,
-                    filter_data
-                )
+                cruk_objects, tcga_objects = resolve_rule_outputs(fallback)
                 return schema_term, "fallback", cruk_objects, tcga_objects
 
     return None, None, [], []
