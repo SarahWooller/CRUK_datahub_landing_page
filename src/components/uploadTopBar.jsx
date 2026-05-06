@@ -281,7 +281,12 @@ const handleSaveToDatabase = async () => {
                 };
             }
 
-            console.log(payload);
+            // ADD THIS LOG
+            console.group("🚀 FINAL DATABASE PAYLOAD");
+            console.log("Full Object:", payload);
+            console.log("Structural Metadata present?:", !!payload.metadata_blob?.structuralMetadata);
+            console.log("Table count:", payload.metadata_blob?.structuralMetadata?.tables?.length || 0);
+            console.groupEnd();
 
             // 4. Use PUT for existing records and POST for new ones
             const response = await fetch(endpoint, {

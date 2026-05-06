@@ -56,7 +56,13 @@ const StructuralMetadataGrid = ({ initialData, onSaveToSchema }) => {
 
   useEffect(() => {
     if (initialData && initialData.length > 0) {
+        // 1. Update the visual rows in the grid
       setRows(initialData);
+      // 2. TRIGGER SYNC: Transform the uploaded data and send it to the parent immediately
+    const formattedData = transformGridToSchema(initialData);
+
+    console.log("📂 CSV Upload detected - Syncing to Schema:", formattedData);
+    onSaveToSchema(formattedData);
     }
   }, [initialData]);
 
@@ -117,21 +123,30 @@ const StructuralMetadataGrid = ({ initialData, onSaveToSchema }) => {
     return displayRows;
   };
 
-  const handleRowsChange = (newDisplayRows) => {
-    const updatedRealRows = newDisplayRows
-      .filter(row => {
-        return columns.some(col => {
-           const val = row[col.key];
-           return val !== undefined && val !== null && String(val).trim() !== '';
-        });
-      })
-      .map(row => {
-        const { _isGhostRow, _ghostContext, ...cleanRow } = row;
-        return cleanRow;
-      });
+// StructuralMetadataGrid.jsx
 
+const handleRowsChange = (newDisplayRows) => {
+    // 1. Filter out ghost rows and clean the data
+    const updatedRealRows = newDisplayRows
+        .filter(row => {
+            return columns.some(col => {
+                const val = row[col.key];
+                return val !== undefined && val !== null && String(val).trim() !== '';
+            });
+        })
+        .map(row => {
+            const { _isGhostRow, _ghostContext, ...cleanRow } = row;
+            return cleanRow;
+        });
+
+    // 2. Update local state for the grid's immediate display
     setRows(updatedRealRows);
-  };
+
+    // 3. AUTOMATIC SYNC: Transform and send to parent formData immediately
+    const formattedData = transformGridToSchema(updatedRealRows);
+    console.log("🛠️ Grid -> Schema Transformation:", formattedData);
+    onSaveToSchema(formattedData);
+};
 
   const transformGridToSchema = (flatGridData) => {
     const tableMap = {};
@@ -194,11 +209,6 @@ const StructuralMetadataGrid = ({ initialData, onSaveToSchema }) => {
     });
 
     return { tables: Object.values(tableMap) };
-  };
-
-  const handleSave = () => {
-    const formattedData = transformGridToSchema(rows);
-    onSaveToSchema(formattedData);
   };
 
   return (
