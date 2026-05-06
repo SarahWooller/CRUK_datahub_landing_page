@@ -25,6 +25,9 @@ import labResultsIcon from '../assets/lab_results.webp';
 // 3. IMPORT ERD IMAGE
 import erdImage from '../assets/erd.png';
 
+// 4. IMPORT HELPER Functions
+import { MarkdownRenderer } from './MarkdownRenderer.jsx'
+
 // --- Configuration ---
 const ICON_MAPPING = {
   "Model Organisms": { src: animalIcon, label: "Model Organisms" },
@@ -178,23 +181,46 @@ export const MetadataPage = () => {
 
   useEffect(() => {
     const fetchDataset = async () => {
-      try {
-        setIsLoading(true);
-        const params = new URLSearchParams(window.location.search);
-        const datasetId = params.get('id') || '00';
-        const module = await import(`../utils/new_dummies/dataset_${datasetId}.json`);
-        setData(module.default || module);
-        setError(null);
-      } catch (err) {
-        console.error("Failed to load dataset:", err);
-        setError("Dataset not found or could not be loaded.");
-      } finally {
-        setIsLoading(false);
-      }
+        try {
+            setIsLoading(true);
+
+            // Get ID from URL[cite: 9]
+            const params = new URLSearchParams(window.location.search);
+            const datasetId = params.get('id');
+
+            if (!datasetId) {
+                throw new Error("No dataset ID provided in the URL.");
+            }
+
+            // Public fetch - no Authorization header included
+            const response = await fetch(`http://127.0.0.1:8000/datasets/${datasetId}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                if (response.status === 404) throw new Error("Dataset not found.");
+                throw new Error("The server could not retrieve the dataset.");
+            }
+
+            const dbResult = await response.json();
+
+            // Set state using the metadata_blob from the database result[cite: 9]
+            setData(dbResult.metadata_blob || dbResult);
+            setError(null);
+
+        } catch (err) {
+            console.error("Fetch error:", err);
+            setError(err.message);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     fetchDataset();
-  }, []);
+}, []);
 
   // Early returns are safe here because there are no hooks below them
   if (isLoading) {
@@ -224,7 +250,11 @@ const MetadataPageContent = ({data}) => {
         allFeedback, isFeedbackOpen, setIsFeedbackOpen,
         fallbackData, setFallbackData, handleSaveDraft, handleFinalSubmit
     } = useFeedback(viewQuestions);
-
+    const isNotEmpty = (obj) => {
+        if (!obj) return false;
+        // Check if at least one value in the object is not empty
+        return Object.values(obj).some(val => val !== null && val !== "" && val !== undefined);
+    };
   const [expandedOtherData, setExpandedOtherData] = useState({});
   const toggleOtherData = (index) => {
     setExpandedOtherData(prev => ({ ...prev, [index]: !prev[index] }));
@@ -235,8 +265,7 @@ const MetadataPageContent = ({data}) => {
   // --- Resizing State ---
   const [sidebarWidth, setSidebarWidth] = useState(288);
   const isResizingRef = useRef(false);
-
-  const otherDataTypes = data.otherDataTypes || [];
+  const otherDataTypes = (data.otherDataTypes || []).filter(isNotEmpty);
   const demographicFrequency = data.demographicFrequency || {};
   const mappedEthnicities = useMemo(() => {
     const ethnicityData = demographicFrequency.ethnicity;
@@ -265,14 +294,20 @@ const MetadataPageContent = ({data}) => {
   const enrichmentAndLinkage = data.enrichmentAndLinkage || {};
 
   // --- Data Mapping & Processing (New Schema Handling) ---
-  const projectGrants = data.projectGrants || [];
-
+  const projectGrants = (data.projectGrants || []).filter(isNotEmpty);
+  const observations = (data.observations || []).filter(isNotEmpty);
   // 1. Description is now in documentation.description
   const descriptionText = data.documentation?.description || data.summary?.description || "";
   const documentationPreview = useMemo(() => getFirstTwoSentences(descriptionText), [descriptionText]);
 
   // 2. Keywords is now an array in summary.keywords
-  const keywords = useMemo(() => normalizeList(data.summary.keywords), [data]);
+// MetaDataPage2_4.jsx
+
+    // Use .filter() to remove empty strings before they reach the UI
+    const keywords = useMemo(() => {
+        const rawKeywords = normalizeList(data.summary?.keywords);
+        return rawKeywords.filter(kw => kw && kw.trim() !== '');
+    }, [data]);
 
   // 4. Structural Metadata is now inside an object with a 'tables' key
   const groupedMetadata = useMemo(() => {
@@ -297,19 +332,21 @@ const MetadataPageContent = ({data}) => {
   }, [data]);
 
   // 6. Accessors for Stat Cards (New Schema Paths)
-  const population = data.summary.populationSize;
-  const ageRange = data.coverage.typicalAgeRangeMin && data.coverage.typicalAgeRangeMax
-    ? `${data.coverage.typicalAgeRangeMin} - ${data.coverage.typicalAgeRangeMax}`
-    : data.coverage.typicalAgeRange; // Fallback to old string if present
+// 6. Accessors for Stat Cards (Now with Optional Chaining)
+const population = data.summary?.populationSize;
 
-  const leadTime = data.accessibility?.access?.deliveryLeadTime;
-  const followUp = data.coverage?.followUp;
+// Safely check if coverage exists before looking for age range
+const ageRange = data.coverage?.typicalAgeRangeMin && data.coverage?.typicalAgeRangeMax
+  ? `${data.coverage.typicalAgeRangeMin} - ${data.coverage.typicalAgeRangeMax}`
+  : (data.coverage?.typicalAgeRange || null);
 
-  // For 'Files' stat, we use the Format from accessibility
-  const fileTypes = data.accessibility?.formatAndStandards?.format
-    ? data.accessibility.formatAndStandards.format.map(f => f.split('/')[1] || f).join(', ')
-    : "Information not provided";
-// --- NEW: Filter Processing Logic ---
+const leadTime = data.accessibility?.access?.deliveryLeadTime;
+const followUp = data.coverage?.followUp;
+
+// Safe check for format array
+const fileTypes = data.accessibility?.formatAndStandards?.format
+  ? data.accessibility.formatAndStandards.format.map(f => f.split('/')[1] || f).join(', ')
+  : "Information not provided";
 
   // A. Create lookup map from the reference file (Memoized)
   const filterLookupMap = useMemo(() => flattenFilterTree(filterData), []);
@@ -413,7 +450,7 @@ const { derivedFilters, activeIcons } = useMemo(() => {
   // Aliases for cleaner JSX below
   const summary = data.summary || {};
   const accessibility = data.accessibility || {};
-  const observations = data.observations || [];
+
 
   const access = accessibility.access || {};
   const usage = accessibility.usage || {};
@@ -588,7 +625,7 @@ const { derivedFilters, activeIcons } = useMemo(() => {
       {population && (
         <StatCard
           label="Population"
-          value={population.toLocaleString()}
+          value={population?.toLocaleString()}
           colorClass="bg-blue-50"
         />
       )}
@@ -704,14 +741,14 @@ const { derivedFilters, activeIcons } = useMemo(() => {
             <div>
               <h3 className="font-bold text-lg text-blue-900 mb-2">Detailed Description</h3>
               <p className="text-gray-700 italic">
-                {documentationPreview}
+                <MarkdownRenderer content={documentationPreview} />
                 <span className="text-blue-600 ml-2 font-semibold not-italic text-sm">(Click to expand)</span>
               </p>
             </div>
             <span className="transform group-open:rotate-180 transition-transform duration-200 text-blue-500">▼</span>
           </summary>
           <div className="p-6 text-gray-700 leading-relaxed border-t border-gray-200 whitespace-pre-wrap">
-            {descriptionText}
+            <MarkdownRenderer content={descriptionText} />
           </div>
         </details>
 
@@ -752,7 +789,7 @@ const { derivedFilters, activeIcons } = useMemo(() => {
                                         <span className="ml-4 text-gray-600 text-sm italic truncate max-w-md">{data.description}</span>
                                         <span className="ml-auto text-xs text-blue-900 font-medium">
                                             {data.size !== undefined && data.size !== null
-                                                ? `${data.size.toLocaleString()} complete entries`
+                                                ? `${data.size?.toLocaleString()} complete entries`
                                                 : `${data.columns.length} columns`}
                                         </span>
                                     </div>
@@ -819,28 +856,33 @@ const { derivedFilters, activeIcons } = useMemo(() => {
                 </div>
             </>
         )}
-        {/* ERD */}
-        <div className="flex items-center justify-between mt-10 mb-4 border-b pb-2">
-            <h2 id="entity-relationship-diagrams" className="text-2xl font-bold text-gray-800">Entity Relationship Diagrams</h2>
-        </div>
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-8 p-4 overflow-x-auto">
-           <img
-               src={data.erd || erdImage}
-               alt="Entity Relationship Diagram"
-               className="min-w-full md:w-full h-auto object-contain"
-               onError={(e) => {
-                   e.target.onerror = null; // Prevent infinite looping if the local image also fails
-                   e.target.src = erdImage;
-               }}
-           />
-        </div>
+                {/* 1. Only render if data.erd exists */}
+        {data.erd && (
+            <>
+                {/* Section Heading */}
+                <div className="flex items-center justify-between mt-10 mb-4 border-b pb-2">
+                    <h2 id="entity-relationship-diagrams" className="text-2xl font-bold text-gray-800">
+                        Entity Relationship Diagrams
+                    </h2>
+                </div>
+
+                {/* Image Container */}
+                <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-8 p-4 overflow-x-auto">
+                   <img
+                       src={data.erd}
+                       alt="Entity Relationship Diagram"
+                       className="min-w-full md:w-full h-auto object-contain"
+                   />
+                </div>
+            </>
+        )}
 
         {/* Observations */}
         <SectionHeading id="observations" title="Observations" />
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
             {observations.map((obs, idx) => (
                 <div key={idx} className="bg-white p-4 rounded-lg shadow-sm border-l-4 border-blue-400">
-                    <div className="text-2xl font-bold text-gray-800 mb-1">{obs.measuredValue.toLocaleString()}</div>
+                    <div className="text-2xl font-bold text-gray-800 mb-1">{obs.measuredValue?.toLocaleString()}</div>
                     <div className="text-sm font-semibold text-gray-600">{obs.observedNode}</div>
                     <div className="text-xs text-gray-400 mt-2">{obs.measuredProperty}</div>
                 </div>

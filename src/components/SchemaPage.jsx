@@ -8,6 +8,7 @@ import hdrukSchema from '../utils/HDRUK4.0.0.json';
 import crukSchema from '../utils/CRUK1.0.0.json';
 import semanticSchema from '../utils/semanticSchema.json';
 
+import { MarkdownRenderer } from './MarkdownRenderer';
 import DataTagger, { FilterChipArea } from './DataTagger';
 import JsonUpload from './JsonUpload';
 import UploadTopBar from './UploadTopBar';
@@ -24,6 +25,29 @@ const METADATA_PRIORITY_SECTIONS = [
 const welcomeGuidance = {
     title: "Quick Start Guide",
     guidance: `Welcome to the CRUK Datahub. [cite_start]This tool helps you prepare metadata for the Health Data Gateway. [cite: 2] \\n\\n **Steps to success:** \\n 1. Review the **Checklist** in this panel. [cite_start]\\n 2. Use **Manual Entry** or **JSON Upload** to start. [cite: 27, 28] [cite_start]\\n 3. Complete all sections until you see **Green Ticks**. [cite: 21] [cite_start]\\n 4. **Download** your final JSON for submission. [cite: 47]`
+};
+
+// SchemaPage.jsx - Utility to remove "readiness" slots
+const removeEmptyArrayEntries = (data) => {
+    if (Array.isArray(data)) {
+        return data
+            .map(removeEmptyArrayEntries) // Recursive clean
+            .filter(item => {
+                if (typeof item === 'string') return item.trim() !== '';
+                if (typeof item === 'object' && item !== null) {
+                    // Filter out objects where every value is empty/null
+                    return Object.values(item).some(val => val !== null && val !== "" && val !== undefined);
+                }
+                return true;
+            });
+    } else if (typeof data === 'object' && data !== null) {
+        const cleaned = {};
+        for (const [key, value] of Object.entries(data)) {
+            cleaned[key] = removeEmptyArrayEntries(value);
+        }
+        return cleaned;
+    }
+    return data;
 };
 
 const ensureMinimumEntries = (data, schemaDef) => {
@@ -323,92 +347,7 @@ const renderGuidance = (guidanceText) => {
     });
 };
 
-const MarkdownRenderer = ({ content }) => {
-    if (!content) return null;
 
-    // Handle both literal newlines and the escaped \\n found in JSON schemas
-    const lines = content.replace(/\\n/g, '\n').split('\n');
-
-    return (
-        <div className="markdown-output space-y-3 text-sm text-gray-700">
-            {lines.map((line, index) => {
-                const trimmed = line.trim();
-                if (!trimmed) return <div key={index} className="h-1" />;
-
-                // 1. Headers (### Title)
-                if (trimmed.startsWith('#')) {
-                    const level = (trimmed.match(/^#+/) || ['#'])[0].length;
-                    const text = trimmed.replace(/^#+\s*/, '');
-                    const sizeClass = level === 1 ? 'text-xl' : level === 2 ? 'text-lg' : 'text-md';
-                    return (
-                        <h4 key={index} className={`${sizeClass} font-bold text-gray-900 mt-4 mb-2 border-b pb-1 border-gray-100`}>
-                            {parseInline(text)}
-                        </h4>
-                    );
-                }
-
-                // 2. Numbered Lists (1. Item)
-                if (/^\d+\.\s/.test(trimmed)) {
-                    const text = trimmed.replace(/^\d+\.\s*/, '');
-                    const number = trimmed.match(/^\d+/)[0];
-                    return (
-                        <div key={index} className="flex items-start gap-3 ml-1">
-                            <span className="font-bold text-indigo-600 min-w-[1.25rem]">{number}.</span>
-                            <span className="leading-relaxed">{parseInline(text)}</span>
-                        </div>
-                    );
-                }
-
-                // 3. Bullet Points (* Item or - Item)
-                if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
-                    const text = trimmed.replace(/^[*|-]\s*/, '');
-                    return (
-                        <div key={index} className="flex items-start gap-3 ml-2">
-                            <span className="mt-2 w-1.5 h-1.5 rounded-full bg-indigo-400 flex-shrink-0" />
-                            <span className="leading-relaxed">{parseInline(text)}</span>
-                        </div>
-                    );
-                }
-
-                // 4. Standard Paragraph
-                return (
-                    <p key={index} className="leading-relaxed">
-                        {parseInline(line)}
-                    </p>
-                );
-            })}
-        </div>
-    );
-};
-
-// Helper function to handle inline formatting (Bold, Italic, Links)
-const parseInline = (text) => {
-    const parts = text.split(/(\*\*.*?\*\*|\*.*?\*|\[.*?\]\(.*?\))/g);
-    return parts.map((part, i) => {
-        if (!part) return null;
-
-        // Bold
-        if (part.startsWith('**') && part.endsWith('**')) {
-            return <strong key={i} className="font-bold text-gray-900">{part.slice(2, -2)}</strong>;
-        }
-        // Italic
-        if (part.startsWith('*') && part.endsWith('*')) {
-            return <em key={i} className="italic text-gray-800">{part.slice(1, -1)}</em>;
-        }
-        // Links
-        if (part.startsWith('[') && part.includes('](')) {
-            const match = part.match(/\[(.*?)\]\((.*?)\)/);
-            if (match) {
-                return (
-                    <a key={i} href={match[2]} target="_blank" rel="noopener noreferrer" className="text-indigo-600 font-medium hover:underline">
-                        {match[1]}
-                    </a>
-                );
-            }
-        }
-        return part;
-    });
-};
 // --- Component: Welcome Section (RESTORED) ---
 const WelcomeSection = ({
     existingDatasets,
@@ -1003,10 +942,11 @@ const StructuralMetadataSection = ({ formData, onFormChange, DATA_SCHEMA, onUpda
         setFlatGridData(parsedData);
     };
 
-    const handleSaveToSchema = (nestedSchemaData) => {
-        onFormChange(['structuralMetadata'], nestedSchemaData);
-        alert("Metadata saved to schema successfully.");
-    };
+const handleSaveToSchema = (nestedSchemaData) => {
+    console.log("📡 Section receiving data from Grid:", nestedSchemaData);
+    // Pushes changes into formData.structuralMetadata in the background
+    onFormChange(['structuralMetadata'], nestedSchemaData);
+};
 
     // Determine which guidance to show based on the column key
     const handleCellFocus = (columnKey) => {
@@ -1607,6 +1547,7 @@ const handleFinalSubmit = (currentSection, currentAnswers) => {
         const downloadJSON = () => {
                 // 1. Associate icons based on dataset filters
                 let processedData = associateIcons(formData, prefixIconMapping);
+                processedData = removeEmptyArrayEntries(processedData);
 
                 // 2. Apply Semantic Defaults
                 const applyDefaults = (data, sectionKey) => {
