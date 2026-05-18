@@ -6,26 +6,24 @@ export const ProjectsSection = () => {
     const [grants, setGrants] = useState([]);
     const [showScope, setShowScope] = useState(true);
 
-    // Automatically load data on component mount (Vite method)
     useEffect(() => {
-        let allGrants = [];
-
-        try {
-            const modules = import.meta.glob('../utils/new_dummies/*.json', { eager: true });
-
-            for (const path in modules) {
-                const data = modules[path];
-                const content = data.default || data;
-
-                if (content.projectGrants && Array.isArray(content.projectGrants)) {
-                    allGrants = [...allGrants, ...content.projectGrants];
-                }
+        const fetchProjects = async () => {
+            const token = localStorage.getItem('token');
+            try {
+                const response = await fetch('http://127.0.0.1:8000/projects/', {
+    method: 'GET',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+                });
+                if (!response.ok) throw new Error("Failed to fetch database records");
+                const data = await response.json();
+                setGrants(data);
+            } catch (error) {
+                console.error("Error loading from database:", error);
             }
-        } catch (error) {
-            console.error("Error loading dummies folder:", error);
-        }
-
-        setGrants(allGrants);
+        };
+        fetchProjects();
     }, []);
 
     const filteredAndSortedGrants = useMemo(() => {
@@ -230,8 +228,8 @@ export const ProjectsSection = () => {
                                 <th onClick={() => handleSort('projectGrantEndDate')}>
                                     End Date <span className="sort-indicator">{getSortIndicator('projectGrantEndDate')}</span>
                                 </th>
-                                <th onClick={() => handleSort('grantNumber')}>
-                                    Grant Number <span className="sort-indicator">{getSortIndicator('grantNumber')}</span>
+                                <th onClick={() => handleSort('grantNumbers')}>
+                                    Grant Number <span className="sort-indicator">{getSortIndicator('grantNumbers')}</span>
                                 </th>
                             </tr>
                         </thead>
@@ -254,7 +252,7 @@ export const ProjectsSection = () => {
                                         <td>{grant.leadResearchInstitute}</td>
                                         <td>{grant.projectGrantStartDate}</td>
                                         <td>{grant.projectGrantEndDate}</td>
-                                        <td>{grant.grantNumber}</td>
+                                        <td>{grant.grantNumbers}</td>
                                     </tr>
 
                                     {showScope && (

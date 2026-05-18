@@ -1,11 +1,14 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { Panel, Group, Separator } from "react-resizable-panels";
+import CsvUploader from "./CsvUploader.jsx"
+import StructuralMetadataGrid from "./StructuralMetadataGrid.jsx";
 import FeedbackModal from './FeedbackModal.jsx';
 import questionData from '../feedback/upload_questions.json';
 import hdrukSchema from '../utils/HDRUK4.0.0.json';
 import crukSchema from '../utils/CRUK1.0.0.json';
 import semanticSchema from '../utils/semanticSchema.json';
-import dataSchema from '../utils/merged.json';
+
+import { MarkdownRenderer } from './MarkdownRenderer';
 import DataTagger, { FilterChipArea } from './DataTagger';
 import JsonUpload from './JsonUpload';
 import UploadTopBar from './UploadTopBar';
@@ -13,9 +16,8 @@ import { filterData } from '../utils/filter-setup';
 import prefixIconMapping from '../utils/prefix_icon_mapping.json';
 
 
-// --- CONFIGURATION: Priority Sections ---
-// Sections in this list will prioritize the property's own metadata (Title, Description, Guidance)
-// over the metadata found in the resolved definition ($ref/allOf).
+
+
 const METADATA_PRIORITY_SECTIONS = [
     "version"
 ];
@@ -23,6 +25,29 @@ const METADATA_PRIORITY_SECTIONS = [
 const welcomeGuidance = {
     title: "Quick Start Guide",
     guidance: `Welcome to the CRUK Datahub. [cite_start]This tool helps you prepare metadata for the Health Data Gateway. [cite: 2] \\n\\n **Steps to success:** \\n 1. Review the **Checklist** in this panel. [cite_start]\\n 2. Use **Manual Entry** or **JSON Upload** to start. [cite: 27, 28] [cite_start]\\n 3. Complete all sections until you see **Green Ticks**. [cite: 21] [cite_start]\\n 4. **Download** your final JSON for submission. [cite: 47]`
+};
+
+// SchemaPage.jsx - Utility to remove "readiness" slots
+const removeEmptyArrayEntries = (data) => {
+    if (Array.isArray(data)) {
+        return data
+            .map(removeEmptyArrayEntries) // Recursive clean
+            .filter(item => {
+                if (typeof item === 'string') return item.trim() !== '';
+                if (typeof item === 'object' && item !== null) {
+                    // Filter out objects where every value is empty/null
+                    return Object.values(item).some(val => val !== null && val !== "" && val !== undefined);
+                }
+                return true;
+            });
+    } else if (typeof data === 'object' && data !== null) {
+        const cleaned = {};
+        for (const [key, value] of Object.entries(data)) {
+            cleaned[key] = removeEmptyArrayEntries(value);
+        }
+        return cleaned;
+    }
+    return data;
 };
 
 const ensureMinimumEntries = (data, schemaDef) => {
@@ -78,7 +103,8 @@ const cruk_SCHEMA = crukSchema.properties ? crukSchema : (crukSchema.fullContent
 const OVERLAY_SCHEMA = semanticSchema.properties ? semanticSchema : (semanticSchema.fullContent || semanticSchema);
 // This creates a new object where semanticSchema properties overwrite rawSchema properties
 const MID_SCHEMA = deepMerge(hdruk_SCHEMA, cruk_SCHEMA);
-const DATA_SCHEMA = deepMerge(MID_SCHEMA, semanticSchema);
+const DATA_SCHEMA = deepMerge(MID_SCHEMA, OVERLAY_SCHEMA);
+
 const VISIBLE_SECTIONS = DATA_SCHEMA.visibleSections
 // --- CUSTOM VALIDATION RULES ---
 const EXTRA_VALIDATIONS = {
@@ -321,94 +347,14 @@ const renderGuidance = (guidanceText) => {
     });
 };
 
-const MarkdownRenderer = ({ content }) => {
-    if (!content) return null;
 
-    // Handle both literal newlines and the escaped \\n found in JSON schemas
-    const lines = content.replace(/\\n/g, '\n').split('\n');
-
-    return (
-        <div className="markdown-output space-y-3 text-sm text-gray-700">
-            {lines.map((line, index) => {
-                const trimmed = line.trim();
-                if (!trimmed) return <div key={index} className="h-1" />;
-
-                // 1. Headers (### Title)
-                if (trimmed.startsWith('#')) {
-                    const level = (trimmed.match(/^#+/) || ['#'])[0].length;
-                    const text = trimmed.replace(/^#+\s*/, '');
-                    const sizeClass = level === 1 ? 'text-xl' : level === 2 ? 'text-lg' : 'text-md';
-                    return (
-                        <h4 key={index} className={`${sizeClass} font-bold text-gray-900 mt-4 mb-2 border-b pb-1 border-gray-100`}>
-                            {parseInline(text)}
-                        </h4>
-                    );
-                }
-
-                // 2. Numbered Lists (1. Item)
-                if (/^\d+\.\s/.test(trimmed)) {
-                    const text = trimmed.replace(/^\d+\.\s*/, '');
-                    const number = trimmed.match(/^\d+/)[0];
-                    return (
-                        <div key={index} className="flex items-start gap-3 ml-1">
-                            <span className="font-bold text-indigo-600 min-w-[1.25rem]">{number}.</span>
-                            <span className="leading-relaxed">{parseInline(text)}</span>
-                        </div>
-                    );
-                }
-
-                // 3. Bullet Points (* Item or - Item)
-                if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
-                    const text = trimmed.replace(/^[*|-]\s*/, '');
-                    return (
-                        <div key={index} className="flex items-start gap-3 ml-2">
-                            <span className="mt-2 w-1.5 h-1.5 rounded-full bg-indigo-400 flex-shrink-0" />
-                            <span className="leading-relaxed">{parseInline(text)}</span>
-                        </div>
-                    );
-                }
-
-                // 4. Standard Paragraph
-                return (
-                    <p key={index} className="leading-relaxed">
-                        {parseInline(line)}
-                    </p>
-                );
-            })}
-        </div>
-    );
-};
-
-// Helper function to handle inline formatting (Bold, Italic, Links)
-const parseInline = (text) => {
-    const parts = text.split(/(\*\*.*?\*\*|\*.*?\*|\[.*?\]\(.*?\))/g);
-    return parts.map((part, i) => {
-        if (!part) return null;
-
-        // Bold
-        if (part.startsWith('**') && part.endsWith('**')) {
-            return <strong key={i} className="font-bold text-gray-900">{part.slice(2, -2)}</strong>;
-        }
-        // Italic
-        if (part.startsWith('*') && part.endsWith('*')) {
-            return <em key={i} className="italic text-gray-800">{part.slice(1, -1)}</em>;
-        }
-        // Links
-        if (part.startsWith('[') && part.includes('](')) {
-            const match = part.match(/\[(.*?)\]\((.*?)\)/);
-            if (match) {
-                return (
-                    <a key={i} href={match[2]} target="_blank" rel="noopener noreferrer" className="text-indigo-600 font-medium hover:underline">
-                        {match[1]}
-                    </a>
-                );
-            }
-        }
-        return part;
-    });
-};
 // --- Component: Welcome Section (RESTORED) ---
-const WelcomeSection = ({ onUpload }) => (
+const WelcomeSection = ({
+    existingDatasets,
+    loadingDatasets,
+    datasetError,
+    handleSelectDataset,
+    onUpload }) => (
     <div className="p-8 overflow-y-auto pb-20 w-full">
         <h1 className="text-3xl font-extrabold mb-4 text-gray-900">Guide to Uploading and Modifying Metadata</h1>
 
@@ -423,24 +369,32 @@ const WelcomeSection = ({ onUpload }) => (
         </div>
 
         <p className="text-sm text-gray-600 mb-3 leading-relaxed">
-            To modify an existing dataset, choose from your existing datasets below to retrieve the existing information for manual adjustment, to download the data, or to upload amendments.
+            To modify your existing dataset, choose from your existing datasets below to retrieve the existing information for manual adjustment, to download the data, or to upload amendments.
         </p>
 
         <div className="mb-6 max-w-lg">
-            <select
-                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 bg-white text-sm text-gray-700 cursor-pointer"
-                defaultValue=""
-                onChange={(e) => {
-                    if (e.target.value) {
-                        alert(`You selected: ${e.target.options[e.target.selectedIndex].text}\n(Logic to load this dataset would go here)`);
-                    }
-                }}
-            >
-                <option value="" disabled>-- Select an existing dataset --</option>
-                <option value="dataset1">Dataset for histopathology reports for prostatic carcinoma</option>
-                <option value="dataset2">The Cancer Imaging Archive</option>
-                <option value="dataset3">Longitudinal breast cancer data</option>
-            </select>
+            {loadingDatasets ? (
+                <p className="text-sm text-gray-500">Loading datasets...</p>
+            ) : datasetError ? (
+                <p className="text-sm text-red-500">{datasetError}</p>
+            ) : (
+                <select
+                    className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 bg-white text-sm text-gray-700 cursor-pointer"
+                    defaultValue=""
+                    onChange={handleSelectDataset}
+                >
+                    <option value="" disabled>-- Select an existing dataset --</option>
+                    {existingDatasets.map(dataset => {
+                        // Use the title from the metadata, or fallback to the system ID
+                        const title = dataset.metadata_blob?.summary?.title || dataset.datasetid;
+                        return (
+                            <option key={dataset.id} value={dataset.id}>
+                                {title}
+                            </option>
+                        );
+                    })}
+                </select>
+            )}
         </div>
 
         <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 mt-4">
@@ -578,6 +532,7 @@ const FieldRenderer = ({
 }) => {
     const [isMarkdownToggled, setIsMarkdownToggled] = useState(false);
     const [isExpanded, setIsExpanded] = useState(true);
+    const textareaRef = useRef(null);
 
     // Helper: Robustly resolve definitions (handles anyOf with Nulls)
     const getDefinitionAndEnum = (p) => {
@@ -630,7 +585,12 @@ const FieldRenderer = ({
     const rawValue = getValueByPath(formData, path);
     // Use rawValue if it exists, otherwise use the property default or an empty string
     const currentValue = (rawValue !== undefined && rawValue !== null) ? rawValue : (prop.default !== undefined ? prop.default : '');
-
+     useEffect(() => {
+        if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto';
+            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+        }
+    }, [currentValue, isMarkdownToggled]);
     // --- SPECIAL RENDER: Age Frequency Grid ---
     if (propKey === 'age' && path.includes('demographicFrequency')) {
         const ageEnumDef = DATA_SCHEMA.$defs?.AgeEnum;
@@ -810,7 +770,7 @@ const FieldRenderer = ({
 
     if (prop.contentMediaType && prop.contentMediaType.startsWith('image/')) {
         inputType = 'file';
-    } else if (showMarkdownToggle || (prop.title && (prop.title.includes("Description") || prop.title.includes("Guidance") || prop.title.includes("Abstract")))) {
+    } else if (showMarkdownToggle || (prop.title && (prop.title.includes("Description") || prop.title.includes("Scope") || prop.title.includes("Guidance") || prop.title.includes("Abstract")))) {
         inputType = 'textarea';
         rows = 4;
     } else if (fieldDef.type === 'integer' || fieldDef.type === 'number') {
@@ -895,7 +855,8 @@ const FieldRenderer = ({
                 </select>
             ) : inputType === 'textarea' ? (
                 <textarea
-                    className="w-full p-2 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500"
+                    ref={textareaRef}
+                    className="w-full p-2 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500 overflow-hidden resize-none"
                     placeholder={placeholder}
                     rows={rows}
                     onFocus={handleFocus}
@@ -949,14 +910,93 @@ const FieldRenderer = ({
         </div>
     );
 };
+
+// --- Component: Structural Metadata Wrapper ---
+const StructuralMetadataSection = ({ formData, onFormChange, DATA_SCHEMA, onUpdateGuidance }) => {
+    const [flatGridData, setFlatGridData] = useState([]);
+
+    // Extract guidance from the schema.
+    // Fallbacks to .properties included just in case standard JSON schema nesting applies.
+    const tableGuidance = {
+        title: "Table Guidelines",
+        guidance: DATA_SCHEMA?.$defs?.DataTable?.name?.guidance
+               || DATA_SCHEMA?.$defs?.DataTable?.properties?.name?.guidance
+               || "Provide the table details."
+    };
+
+    const columnGuidance = {
+        title: "Column Guidelines",
+        guidance: DATA_SCHEMA?.$defs?.DataTable?.columns?.guidance
+               || DATA_SCHEMA?.$defs?.DataTable?.properties?.columns?.guidance
+               || "Provide the column details."
+    };
+
+    // Set table guidance as the default when the section loads
+    useEffect(() => {
+        if (onUpdateGuidance) {
+            onUpdateGuidance(tableGuidance);
+        }
+    }, []);
+
+    const handleDataParsed = (parsedData) => {
+        setFlatGridData(parsedData);
+    };
+
+const handleSaveToSchema = (nestedSchemaData) => {
+    console.log("📡 Section receiving data from Grid:", nestedSchemaData);
+    // Pushes changes into formData.structuralMetadata in the background
+    onFormChange(['structuralMetadata'], nestedSchemaData);
+};
+
+    // Determine which guidance to show based on the column key
+    const handleCellFocus = (columnKey) => {
+        if (!onUpdateGuidance) return;
+
+        if (columnKey.startsWith('table')) {
+            onUpdateGuidance(tableGuidance);
+        } else if (columnKey.startsWith('column') || columnKey.startsWith('value')) {
+            onUpdateGuidance(columnGuidance);
+        }
+    };
+
+    return (
+        <div className="w-full p-8 overflow-y-auto pb-20">
+            <h1 className="text-3xl font-extrabold mb-2 text-gray-800">Structural Metadata</h1>
+
+            <CsvUploader onDataParsed={handleDataParsed} />
+
+            <StructuralMetadataGrid
+                initialData={flatGridData}
+                onSaveToSchema={handleSaveToSchema}
+                onCellFocus={handleCellFocus}
+            />
+        </div>
+    );
+};
+
 // --- Component: Main Form Logic ---
-const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance, onUpload }) => {
+const SchemaForm = ({
+    sectionKey,
+    formData,
+    onFormChange,
+    setActiveGuidance,
+    onUpload,
+    existingDatasets,
+    loadingDatasets,
+    datasetError,
+    handleSelectDataset
+}) => {
 
     // 0. Welcome Section
     if (sectionKey === 'welcome') {
         return (
             <div className="w-full flex h-full">
-                <WelcomeSection onUpload={onUpload} />
+                <WelcomeSection
+                existingDatasets={existingDatasets}
+                loadingDatasets={loadingDatasets}
+                datasetError={datasetError}
+                handleSelectDataset={handleSelectDataset}
+                onUpload={onUpload} />
             </div>
         );
     }
@@ -978,6 +1018,18 @@ const SchemaForm = ({ sectionKey, formData, onFormChange, setActiveGuidance, onU
                     onChange={(newTags) => onFormChange(['datasetFilters'], newTags)}
                 />
             </div>
+        );
+    }
+
+// 2. Structural Metadata (NEW INTERCEPT)
+    if (sectionKey === 'structuralMetadata') {
+        return (
+            <StructuralMetadataSection
+                formData={formData}
+                onFormChange={onFormChange}
+                DATA_SCHEMA={DATA_SCHEMA}
+                onUpdateGuidance={setActiveGuidance}
+            />
         );
     }
 
@@ -1155,6 +1207,11 @@ const GuidancePanel = ({ activeGuidance, children }) => (
 
 // --- Main Application ---
 const SchemaPage = () => {
+
+    const [showDatasetModal, setShowDatasetModal] = useState(false);
+    const [existingDatasets, setExistingDatasets] = useState([]);
+    const [loadingDatasets, setLoadingDatasets] = useState(false);
+    const [datasetError, setDatasetError] = useState('');
     // Safety Check on Initialization
     if (!DATA_SCHEMA || !DATA_SCHEMA.properties) {
         return (
@@ -1165,6 +1222,80 @@ const SchemaPage = () => {
     }
     const [allFeedback, setAllFeedback] = useState({}); // Stores { sectionKey: "comment string" }
     const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+
+    useEffect(() => {
+        const fetchDatasets = async () => {
+            const token = localStorage.getItem('token');
+            const currentUserId = parseInt(localStorage.getItem('userId'), 10);
+            const currentTeamId = parseInt(localStorage.getItem('activeTeamId'), 10);
+
+            console.group("🔍 Dataset Fetch Debug");
+            console.log("1. Token Present:", !!token);
+            console.log("2. Current User ID:", currentUserId);
+            console.log("3. Current Team ID:", currentTeamId);
+
+            if (!token || !currentUserId) {
+                console.warn("❌ Missing token or userId. Aborting fetch.");
+                console.groupEnd();
+                return;
+            }
+
+            setLoadingDatasets(true);
+            try {
+                // FETCH DATASETS
+                const response = await fetch('http://127.0.0.1:8000/datasets/', {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log("4. Raw Data from Backend:", data);
+
+                // Filter by team ID
+                const userDatasets = data.filter(d => d.team_id === currentTeamId);
+                console.log("5. Filtered Data (d.team_id === currentTeamId):", userDatasets);
+
+                setExistingDatasets(userDatasets);
+            } catch (err) {
+                console.error("❌ Fetch failed:", err.message);
+                setDatasetError(err.message);
+            } finally {
+                setLoadingDatasets(false);
+                console.groupEnd();
+            }
+        };
+
+        fetchDatasets();
+    }, []);
+
+const handleSelectDataset = (e) => {
+    const selectedId = e.target.value;
+    if (!selectedId) return;
+
+    // Find the full dataset object based on the selected ID
+    const selected = existingDatasets.find(d => d.id.toString() === selectedId);
+
+    if (selected && selected.metadata_blob) {
+        // Merge the database ID into the metadata payload
+        const dataWithId = {
+            ...selected.metadata_blob,
+            datasetid: selected.id // UploadTopBar checks for formData.datasetid
+        };
+
+        // Set the state with the merged object
+        // (Use onFormChange([], dataWithId) if that is your primary state setter in SchemaPage)
+        setFormData(dataWithId);
+    }
+};
+
+const handleRecordDeleted = () => {
+    // Reset the form data to an empty object, or use your router to redirect
+    onFormChange([], {});
+
+};
 
     const handleSaveDraftFeedback = (section, answers) => {
         setAllFeedback(prev => {
@@ -1251,11 +1382,11 @@ const handleFinalSubmit = (currentSection, currentAnswers) => {
     const [visitedSections, setVisitedSections] = useState(new Set([initialSection]));
     const currentGuidance = useMemo(() => {
     // 1. Handle the dedicated welcome page guidance
-    if (activeSection === 'welcome') {
-        return {
-            guidance: welcomeGuidanceContent
-        };
-    }
+        if (activeSection === 'welcome') {
+            return {
+                guidance: welcomeGuidanceContent
+            };
+        }
 
     // 2. If a specific field input has focused, display field-specific guidance
     if (activeGuidance) {
@@ -1272,7 +1403,7 @@ const handleFinalSubmit = (currentSection, currentAnswers) => {
     }
 
     return null;
-}, [activeSection, activeGuidance, welcomeGuidanceContent]);
+    }, [activeSection, activeGuidance, welcomeGuidanceContent]);
     const handleNavChange = (key) => {
         setVisitedSections(prev => new Set(prev).add(key));
         setActiveSection(key);
@@ -1432,6 +1563,7 @@ const handleFinalSubmit = (currentSection, currentAnswers) => {
         const downloadJSON = () => {
                 // 1. Associate icons based on dataset filters
                 let processedData = associateIcons(formData, prefixIconMapping);
+                processedData = removeEmptyArrayEntries(processedData);
 
                 // 2. Apply Semantic Defaults
                 const applyDefaults = (data, sectionKey) => {
@@ -1564,6 +1696,8 @@ return (
                 formData={formData}
                 schema={DATA_SCHEMA}
                 prefixIconMapping={prefixIconMapping}
+                pageType="datasets"
+                onDeleteSuccess={handleRecordDeleted}
             />
             <button
             onClick={() => setIsFeedbackOpen(true)}
@@ -1596,6 +1730,10 @@ return (
                                 onFormChange={handleDataChange}
                                 setActiveGuidance={setActiveGuidance}
                                 onUpload={handleJsonUpload}
+                                existingDatasets={existingDatasets}
+                                loadingDatasets={loadingDatasets}
+                                datasetError={datasetError}
+                                handleSelectDataset={handleSelectDataset}
                             />
                         </div>
                     </Panel>
@@ -1603,36 +1741,37 @@ return (
                     <Separator className="w-1 bg-gray-200 hover:bg-indigo-400 transition-colors cursor-col-resize" />
 
                     {/* RIGHT PANEL: Guidance or Tags */}
-                    <Panel defaultSize={25} minSize={20}>
-                        <GuidancePanel activeGuidance={currentGuidance}>
+<Panel defaultSize={25} minSize={20}>
+    <GuidancePanel activeGuidance={currentGuidance}>
 
-                            {/* Append Active Tags directly inside GuidancePanel when viewing filters */}
-                            {activeSection === 'datasetFilters' && (
-                                <div className="mt-4 border-t pt-4 border-gray-200">
-                                    <h2 className="text-sm font-bold mb-3 text-gray-700">Active Tags</h2>
-                                    <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 min-h-[150px]">
-                                        <FilterChipArea
-                                            selectedFilters={formData['datasetFilters'] || []}
-                                            handleFilterChange={handleTagRemove}
-                                        />
-                                    </div>
-                                </div>
-                            )}
+        {/* Append Active Tags directly inside GuidancePanel when viewing filters */}
+        {activeSection === 'datasetFilters' && (
+            <div className="mt-4 border-t pt-4 border-gray-200">
+                <h2 className="text-sm font-bold mb-3 text-gray-700">Active Tags</h2>
+                <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 min-h-[150px]">
+                    <FilterChipArea
+                        selectedFilters={formData['datasetFilters'] || []}
+                        handleFilterChange={handleTagRemove}
+                    />
+                </div>
+            </div>
+        )}
 
-                            {/* Retain existing layout functionality for Entity Relationship Diagrams */}
-                            {activeSection === 'erd' && (
-                                <div className="p-4 bg-gray-100 border border-gray-200 rounded-lg mt-4">
-                                    <p className="text-xs font-bold text-gray-700 mb-2">Visual Schema Linkage</p>
-                                    <img
-                                        src='../assets/erd.png'
-                                        alt="Entity Relationship Diagram"
-                                        className="max-w-full h-auto border border-gray-300 shadow-sm"
-                                    />
-                                </div>
-                            )}
+        {/* Retain existing layout functionality for Entity Relationship Diagrams */}
+        {activeSection === 'erd' && (
+            <div className="p-4 bg-gray-100 border border-gray-200 rounded-lg mt-4">
+                <p className="text-xs font-bold text-gray-700 mb-2">Visual Schema Linkage</p>
+                <img
+                    src='../assets/erd.png'
+                    alt="Entity Relationship Diagram"
+                    className="max-w-full h-auto border border-gray-300 shadow-sm"
+                />
+            </div>
+        )}
 
-                        </GuidancePanel>
-                    </Panel>
+    </GuidancePanel>
+</Panel>
+
 
                 </Group>
             </div>
