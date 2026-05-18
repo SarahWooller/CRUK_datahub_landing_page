@@ -78,7 +78,7 @@ const cruk_SCHEMA = crukSchema.properties ? crukSchema : (crukSchema.fullContent
 const OVERLAY_SCHEMA = semanticSchema.properties ? semanticSchema : (semanticSchema.fullContent || semanticSchema);
 // This creates a new object where semanticSchema properties overwrite rawSchema properties
 const MID_SCHEMA = deepMerge(hdruk_SCHEMA, cruk_SCHEMA);
-const DATA_SCHEMA = dataSchema;
+const DATA_SCHEMA = deepMerge(MID_SCHEMA, semanticSchema);
 const VISIBLE_SECTIONS = DATA_SCHEMA.visibleSections
 // --- CUSTOM VALIDATION RULES ---
 const EXTRA_VALIDATIONS = {
@@ -1250,13 +1250,29 @@ const handleFinalSubmit = (currentSection, currentAnswers) => {
     // Track visited sections (Start with the initial one)
     const [visitedSections, setVisitedSections] = useState(new Set([initialSection]));
     const currentGuidance = useMemo(() => {
-        if (activeSection === 'welcome') {
-            return {
-                guidance: welcomeGuidanceContent
-            };
-        }
+    // 1. Handle the dedicated welcome page guidance
+    if (activeSection === 'welcome') {
+        return {
+            guidance: welcomeGuidanceContent
+        };
+    }
+
+    // 2. If a specific field input has focused, display field-specific guidance
+    if (activeGuidance) {
         return activeGuidance;
-    }, [activeSection, activeGuidance, welcomeGuidanceContent]);
+    }
+
+    // 3. Fallback: Extract section-level guidance if no field is focused
+    const sectionSchema = DATA_SCHEMA.properties?.[activeSection];
+    if (sectionSchema && sectionSchema.guidance) {
+        return {
+            title: sectionSchema.title || activeSection,
+            guidance: sectionSchema.guidance
+        };
+    }
+
+    return null;
+}, [activeSection, activeGuidance, welcomeGuidanceContent]);
     const handleNavChange = (key) => {
         setVisitedSections(prev => new Set(prev).add(key));
         setActiveSection(key);
@@ -1588,30 +1604,34 @@ return (
 
                     {/* RIGHT PANEL: Guidance or Tags */}
                     <Panel defaultSize={25} minSize={20}>
-                        {activeSection === 'datasetFilters' ? (
-                            <div className="p-6 bg-gray-50 h-full overflow-y-auto">
-                                <h2 className="text-lg font-bold mb-4 text-gray-700">Active Tags</h2>
-                                <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100 min-h-[200px]">
-                                    <FilterChipArea
-                                        selectedFilters={formData['datasetFilters'] || []}
-                                        handleFilterChange={handleTagRemove}
-                                    />
-                                </div>
-                            </div>
-                        ) : (
-                            <GuidancePanel activeGuidance={currentGuidance}>
-                                {activeSection === 'erd' && (
-                                    <div className="p-4 bg-gray-100 border border-gray-200 rounded-lg mt-4">
-                                        <p className="text-xs font-bold text-gray-700 mb-2">Visual Schema Linkage</p>
-                                        <img
-                                            src='../assets/erd.png'
-                                            alt="Entity Relationship Diagram"
-                                            className="max-w-full h-auto border border-gray-300 shadow-sm"
+                        <GuidancePanel activeGuidance={currentGuidance}>
+
+                            {/* Append Active Tags directly inside GuidancePanel when viewing filters */}
+                            {activeSection === 'datasetFilters' && (
+                                <div className="mt-4 border-t pt-4 border-gray-200">
+                                    <h2 className="text-sm font-bold mb-3 text-gray-700">Active Tags</h2>
+                                    <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 min-h-[150px]">
+                                        <FilterChipArea
+                                            selectedFilters={formData['datasetFilters'] || []}
+                                            handleFilterChange={handleTagRemove}
                                         />
                                     </div>
-                                )}
-                            </GuidancePanel>
-                        )}
+                                </div>
+                            )}
+
+                            {/* Retain existing layout functionality for Entity Relationship Diagrams */}
+                            {activeSection === 'erd' && (
+                                <div className="p-4 bg-gray-100 border border-gray-200 rounded-lg mt-4">
+                                    <p className="text-xs font-bold text-gray-700 mb-2">Visual Schema Linkage</p>
+                                    <img
+                                        src='../assets/erd.png'
+                                        alt="Entity Relationship Diagram"
+                                        className="max-w-full h-auto border border-gray-300 shadow-sm"
+                                    />
+                                </div>
+                            )}
+
+                        </GuidancePanel>
                     </Panel>
 
                 </Group>
