@@ -47,7 +47,7 @@
       "DataTable": {
         "properties": {
           "name": {
-            "guidance": "Please add the name, columns and specific values for each of the tables in the dataset. When you fill in information for the first table, new prompts will automatically appear. Scroll to the right to see all the columns! If you have done this before you may want to upload a csv. Note you can convert a single sheeted xls file to csv when saving."
+            "guidance": "Please identify each of the tables in the dataset. When you fill in information for the first table, a new box will automatically be added to the end."
           },
 
           "columns": {
@@ -62,9 +62,7 @@
             "description": "Free-text description of the dataset.",
             "examples": [
               "OPTIMAM is a database of mammogram images and associated clinical data from multiple NHS Breast Cancer screening sites across the UK. The automated process of image collection, processing and storage enables easy expansion across new imaging sites and continual collection of new data."
-            ],
-            "guidance": "- The extended description fo the data should provide context and scope of the data. \\n- It may include methodological details. \\n- It should be written in plain text or mark-down and may include resolvable URLs that describe the dataset. \\n - **Limited to 10,000 characters**. \\n- Additional information can be recorded and included using the Associated media Field",
-            "title": "Extended Description"
+            ]
           },
           "associatedMedia": {
             "description": "Url linking to associated media. Note: media asset can be hosted by the organisation or uploaded using the onboarding portal."
@@ -192,13 +190,6 @@
             }
           }
     },
-      "ProjectGrant": {
-        "properties": {
-          "projectGrantScope": {
-            "title": "Scope of Project"
-          }
-        }
-      },
       "StructuralMetadata": {
           "properties": {
             "syntheticDataWebLink": {
@@ -360,6 +351,9 @@
           "description": "Three numbers - Major.Minor.Patch e.g. 1.1.0",
           "guidance": "Dataset metadata version should follow standard SEMVER naming conventions (https://semver.org). For example: 1.1.0 major.minor.patch.\\nMajor: Significant/breaking changes. \\n eg The dataset has now been populated \\n The access conditions have changed \\nThe purpose of the dataset has changed significantly \\n There is a change to the type of datasets collected\\nMinor: New features and bug fixes.\\n eg More samples have been added. \\nPatch: Minor fixes without new features. \\neg more information about the dataset has been added"
         },
+        "projectGrants": {
+          "guidance": "Please upload information about any CRUK grants that are associated with the dataset here. This helps to publicise your work at an early stage before any of the datasets have been collected and may help you identify potential collaborators. \\n So that you can add information about more than one grant, when you start writing in any of the boxes another set of empty boxes will appear at the end."
+        },
         "project": {
           "description": "Metadata describing the originating CRUK project. For new projects this information will be pre-filled from the grant contract.",
           "title": "CRUK project information."
@@ -367,19 +361,45 @@
         "provenance": {
           "description": "Optional information setting out how often the information is updated and the time period covered.",
           "title": "Dateset Timelines",
+          "guidance": "Information on the time period covered by the dataset, including first and last entries, frequency and lag of publication.",
           "required": []
         },
         "structuralMetadata": {
-          "description": "Descriptions of all data tables. Space for a new table entry is added at the end when you start typing"
+          "description": "Descriptions of all data tables. Space for a new table entry is added at the end when you start typing",
+          "guidance": "Identify and describe each table in your dataset, and each column therein. Please provide meaningful descriptions. Including the size of the tables is a very useful indicator of the completeness of the data"
         },
         "summary": {
-          "title": "Summary"
+          "title": "Summary",
+          "guidance": "Please include information on:  \\n- Title\\n- Short Abstract\\n- The Dataset Custodian\\n- Contact Points\\n- Dataset population size\\n- Keywords\\n- The Digital Object Identifier (DOI) for the dataset\\n- Aliases for the Dataset and/or BioSamples "
+        },
+        "documentation": {
+          "guidance": "Use this section to upload documentation setting out the background to your dataset including details of the methodologies. This can also include associated media."
+        },
+        "datasetFilters": {
+          "guidance": "Datasets in the CRUK datahub are filtered according to three criteria: type of cancer, type of data and access conditions.\\n Use ICD-O terminology to categorise each of the cancers covered, and keywords to include further important details. This is automatically translated to CRUK and TCGA equivalents."
         },
         "accessibility": {
-          "title": "Accessibility"
+          "title": "Accessibility",
+          "guidance": "Upload information on how researchers can gain access to the data and access restrictions."
         },
         "enrichmentAndLinkage": {
-          "title": "Tools and Publications"
+          "title": "Tools and Publications",
+          "guidance": "Upload information on other projects, tools, publications and other datasets that are linked to this one."
+        },
+        "otherDataTypes": {
+          "guidance": "Datasets often now include audio-visual data such as recordings and images. Please list, describe and identify the format."
+        },
+        "coverage": {
+          "guidance": "Include the minimum and maximum age of participants, as well as a URL where a researcher can learn more about the completeness of the dataset."
+        },
+        "observations": {
+          "guidance": "Please provide interesting observations about your dataset. These might for example include the number of datapoints in a particular table of note. "
+        },
+        "demographicFrequency": {
+          "guidance": "CRUK is committed to improving the racial diversity of datasets. "
+        },
+        "omics": {
+          "guidance": "Information about the assays and platforms used to generate omics information."
         }
       }
 }
