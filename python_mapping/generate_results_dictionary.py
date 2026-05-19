@@ -1,7 +1,6 @@
 import argparse
 import json
 import logging
-import re
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -27,15 +26,19 @@ def load_label_key_dict(path: Path) -> Dict[str, str]:
 
 def extract_topographies(label_key_dict: Dict[str, str]) -> List[str]:
     return sorted(
-        label for label in label_key_dict
-        if re.match(r"^C\d{2}(?:\.\d)?\s", label)
+        label
+        for label, key in label_key_dict.items()
+        if key.startswith("0_0_0")
+        and label != "icdOTopography"
     )
 
 
 def extract_histologies(label_key_dict: Dict[str, str]) -> List[str]:
     return sorted(
-        label for label in label_key_dict
-        if re.match(r"^\d{4}/\d\s", label)
+        label
+        for label, key in label_key_dict.items()
+        if key.startswith("0_0_1")
+        and label != "icdOHistology"
     )
 
 
