@@ -50,6 +50,26 @@
       "default_CRUK": ["Gallbladder cancer"]
     },
 
+    "C26 Other and ill-defined digestive organs": {
+      "default_tcga": [],
+      "default_CRUK": ["Unknown primary cancer", "Cancer of unknown primary (CUP)"]
+    },
+
+    "C26.0 Intestinal tract, nos": {
+      "default_tcga": [],
+      "default_CRUK": ["Unknown primary cancer", "Cancer of unknown primary (CUP)"]
+    },
+
+    "C26.8 Overlapping lesion of digestive system": {
+      "default_tcga": [],
+      "default_CRUK": ["Small bowel cancer", "Bowel cancer", "Colorectal cancer"]
+    },
+
+    "C26.9 Gastrointestinal tract, nos": {
+      "default_tcga": [],
+      "default_CRUK": ["Unknown primary cancer", "Cancer of unknown primary (CUP)"]
+    },
+
     "C32 Larynx": {
       "default_tcga": ["HNSC (Head and Neck Squamous Cell Carcinoma)"],
       "default_CRUK": ["Laryngeal cancer"]
@@ -68,6 +88,26 @@
     "C37 Thymus": {
       "default_tcga": ["THYM (Thymoma)"],
       "default_CRUK": ["Thymus gland tumours"]
+    },
+
+    "C39 Other and ill-defined sites within respiratory system and intrathoracic organs": {
+      "default_tcga": [],
+      "default_CRUK": ["Unknown primary cancer", "Cancer of unknown primary (CUP)"]
+    },
+
+    "C39.0 Upper respiratory tract, nos": {
+      "default_tcga": [],
+      "default_CRUK": ["Unknown primary cancer", "Cancer of unknown primary (CUP)"]
+    },
+
+    "C39.8 Overlapping lesion of respiratory system and intrathoracic organs": {
+      "default_tcga": [],
+      "default_CRUK": ["Lung cancer", "Thymus gland tumours"]
+    },
+
+    "C39.9 Ill-defined sites within respiratory system": {
+      "default_tcga": [],
+      "default_CRUK": ["Unknown primary cancer", "Cancer of unknown primary (CUP)"]
     },
 
     "C50 Breast": {
@@ -113,6 +153,96 @@
     "C73 Thyroid gland": {
       "default_tcga": ["THCA (Thyroid carcinoma)"],
       "default_CRUK": ["Thyroid cancer"]
+    },
+
+    "C76 Other and ill-defined sites": {
+      "default_tcga": [],
+      "default_CRUK": ["Unknown primary cancer", "Cancer of unknown primary (CUP)"]
+    },
+
+    "C76.0 Head, face or neck, nos": {
+      "default_tcga": [],
+      "default_CRUK": ["Unknown primary cancer", "Cancer of unknown primary (CUP)"]
+    },
+
+    "C76.1 Thorax, nos": {
+      "default_tcga": [],
+      "default_CRUK": ["Unknown primary cancer", "Cancer of unknown primary (CUP)"]
+    },
+
+    "C76.2 Abdomen, nos": {
+      "default_tcga": [],
+      "default_CRUK": ["Unknown primary cancer", "Cancer of unknown primary (CUP)"]
+    },
+
+    "C76.3 Pelvis, nos": {
+      "default_tcga": [],
+      "default_CRUK": ["Unknown primary cancer", "Cancer of unknown primary (CUP)"]
+    },
+
+    "C76.4 Upper limb, nos": {
+      "default_tcga": [],
+      "default_CRUK": ["Unknown primary cancer", "Cancer of unknown primary (CUP)"]
+    },
+
+    "C76.5 Lower limb, nos": {
+      "default_tcga": [],
+      "default_CRUK": ["Unknown primary cancer", "Cancer of unknown primary (CUP)"]
+    },
+
+    "C76.7 Other ill-defined sites": {
+      "default_tcga": [],
+      "default_CRUK": ["Unknown primary cancer", "Cancer of unknown primary (CUP)"]
+    },
+
+    "C76.8 Overlapping lesion of ill-defined sites": {
+      "default_tcga": [],
+      "default_CRUK": ["Unknown primary cancer", "Cancer of unknown primary (CUP)"]
+    },
+
+    "C77 Lymph nodes": {
+      "default_tcga": [],
+      "default_CRUK": ["Secondary cancer"]
+    },
+
+    "C77.0 Lymph nodes of head, face and neck": {
+      "default_tcga": [],
+      "default_CRUK": ["Secondary cancer"]
+    },
+
+    "C77.1 Intrathoracic lymph nodes": {
+      "default_tcga": [],
+      "default_CRUK": ["Secondary cancer"]
+    },
+
+    "C77.2 Intra-abdominal lymph nodes": {
+      "default_tcga": [],
+      "default_CRUK": ["Secondary cancer"]
+    },
+
+    "C77.3 Lymph nodes of axilla or arm": {
+      "default_tcga": [],
+      "default_CRUK": ["Secondary cancer"]
+    },
+
+    "C77.4 Lymph nodes of inguinal region or leg": {
+      "default_tcga": [],
+      "default_CRUK": ["Secondary cancer"]
+    },
+
+    "C77.5 Pelvic lymph nodes": {
+      "default_tcga": [],
+      "default_CRUK": ["Secondary cancer"]
+    },
+
+    "C77.8 Lymph nodes of multiple regions": {
+      "default_tcga": [],
+      "default_CRUK": ["Secondary cancer"]
+    },
+
+    "C77.9 Lymph node, nos": {
+      "default_tcga": [],
+      "default_CRUK": ["Secondary cancer"]
     }
   }
 }
