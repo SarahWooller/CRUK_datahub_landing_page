@@ -43,7 +43,8 @@
         "MOUTH_OROPHARYNGEAL",
         "NASAL_PARANASAL_SINUS",
         "UPPER_URINARY_TRACT_UROTHELIAL",
-        "MEDIASTINAL_GERM_CELL"
+        "MEDIASTINAL_GERM_CELL",
+        "BILE_DUCT"
         ],
         "multi_site_or_overlap": [
         "PCPG",
@@ -901,7 +902,32 @@
             ],
             "tcga": []
         }
+        },
+        "BILE_DUCT": {
+        "description": "Bile duct cancer is mapped by biliary tract topography. This captures extrahepatic and unspecified biliary tract sites that should not fall through to the Rare cancer fallback.",
+        "rules": [
+    {
+        "rule_name": "bile_duct_topography",
+        "match_type": "topography_exact",
+        "topography": [
+        "C24 Other and unspecified parts of biliary tract",
+        "C24.0 Extrahepatic bile duct",
+        "C24.8 Overlapping lesion of biliary tract",
+        "C24.9 Biliary tract, nos"
+        ],
+        "cruk": [
+            "Bile duct cancer"
+        ],
+        "tcga": []
         }
+    ],
+    "fallback": {
+        "cruk": [
+        "Bile duct cancer"
+        ],
+        "tcga": []
+    }
+}
     },
 
     "multi_site_or_overlap_mappings": {

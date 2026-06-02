@@ -1,186 +1,194 @@
-    {
+{
     "topography_mappings": {
         "C64 Kidney": {
-        "default_tcga": [
-            "KIRC (Kidney renal clear cell carcinoma)",
-            "KIRP (Kidney renal papillary cell carcinoma)",
-            "KICH (Kidney Chromophobe)"
-        ],
-        "default_CRUK": [
-            "Kidney cancer"
-        ],
-        "overrides": [
-            {
-            "histology": [
-                "8312/3 Renal cell carcinoma, NOS"
+            "default_tcga": [
+                "KIRC (Kidney renal clear cell carcinoma)",
+                "KIRP (Kidney renal papillary cell carcinoma)",
+                "KICH (Kidney Chromophobe)"
             ],
-            "tcga": "KIRC (Kidney renal clear cell carcinoma)"
-            },
-            {
-            "histology": [
-                "8260/3 Papillary adenocarcinoma, NOS"
+            "default_CRUK": [
+                "Kidney cancer"
             ],
-            "tcga": "KIRP (Kidney renal papillary cell carcinoma)"
-            },
-            {
-            "histology": [
-                "8317/3 Renal cell carcinoma, chromophobe type"
-            ],
-            "tcga": "KICH (Kidney Chromophobe)"
-            }
-        ]
+            "overrides": [
+                {
+                    "histology": [
+                        "8312/3 Renal cell carcinoma, NOS"
+                    ],
+                    "tcga": "KIRC (Kidney renal clear cell carcinoma)"
+                },
+                {
+                    "histology": [
+                        "8260/3 Papillary adenocarcinoma, NOS"
+                    ],
+                    "tcga": "KIRP (Kidney renal papillary cell carcinoma)"
+                },
+                {
+                    "histology": [
+                        "8317/3 Renal cell carcinoma, chromophobe type"
+                    ],
+                    "tcga": "KICH (Kidney Chromophobe)"
+                }
+            ]
         },
 
         "C34 Bronchus and lung": {
-        "default_tcga": [
-            "LUAD (Lung adenocarcinoma)",
-            "LUSC (Lung squamous cell carcinoma)"
-        ],
-        "default_CRUK": [
-            "Lung cancer"
-        ],
-        "overrides": [
-            {
-            "histology": [
-                "8140/3 Adenocarcinoma, NOS"
+            "default_tcga": [
+                "LUAD (Lung adenocarcinoma)",
+                "LUSC (Lung squamous cell carcinoma)"
             ],
-            "tcga": "LUAD (Lung adenocarcinoma)"
-            },
-            {
-            "histology": [
-                "8070/3 Squamous cell carcinoma, NOS"
+            "default_CRUK": [
+                "Lung cancer"
             ],
-            "tcga": "LUSC (Lung squamous cell carcinoma)"
-            }
-        ]
+            "overrides": [
+                {
+                    "histology": [
+                        "8140/3 Adenocarcinoma, NOS"
+                    ],
+                    "tcga": "LUAD (Lung adenocarcinoma)"
+                },
+                {
+                    "histology": [
+                        "8070/3 Squamous cell carcinoma, NOS"
+                    ],
+                    "tcga": "LUSC (Lung squamous cell carcinoma)"
+                }
+            ]
+        },
+
+        "C70 Meninges": {
+            "default_tcga": null,
+            "default_CRUK": [
+                "Brain tumours"
+            ],
+            "overrides": []
         },
 
         "C71 Brain": {
-        "default_tcga": null,
-        "default_CRUK": [
-            "Brain tumours"
-        ],
-        "overrides": [
-            {
-            "histology": [
-                "9440/3 Glioblastoma, NOS",
-                "9442/3 Gliosarcoma"
+            "default_tcga": null,
+            "default_CRUK": [
+                "Brain tumours"
             ],
-            "tcga": "GBM (Glioblastoma multiforme)"
-            },
-            {
-            "histology": [
-                "9380/3 Glioma, malignant",
-                "9401/3 Astrocytoma, anaplastic"
-            ],
-            "tcga": "LGG (Brain Lower Grade Glioma)"
-            }
-        ]
+            "overrides": [
+                {
+                    "histology": [
+                        "9440/3 Glioblastoma, NOS",
+                        "9442/3 Gliosarcoma"
+                    ],
+                    "tcga": "GBM (Glioblastoma multiforme)"
+                },
+                {
+                    "histology": [
+                        "9380/3 Glioma, malignant",
+                        "9401/3 Astrocytoma, anaplastic"
+                    ],
+                    "tcga": "LGG (Brain Lower Grade Glioma)"
+                }
+            ]
         },
 
         "C22 Liver and intrahepatic bile ducts": {
-        "default_tcga": null,
-        "default_CRUK": [
-            "Liver cancer"
-        ],
-        "overrides": [
-            {
-            "histology": [
-                "8170/3 Hepatocellular carcinoma, NOS"
+            "default_tcga": null,
+            "default_CRUK": [
+                "Liver cancer"
             ],
-            "tcga": "LIHC (Liver hepatocellular carcinoma)"
-            },
-            {
-            "histology": [
-                "8160/3 Cholangiocarcinoma"
-            ],
-            "tcga": "CHOL (Cholangiocarcinoma)"
-            }
-        ]
+            "overrides": [
+                {
+                    "histology": [
+                        "8170/3 Hepatocellular carcinoma, NOS"
+                    ],
+                    "tcga": "LIHC (Liver hepatocellular carcinoma)"
+                },
+                {
+                    "histology": [
+                        "8160/3 Cholangiocarcinoma"
+                    ],
+                    "tcga": "CHOL (Cholangiocarcinoma)"
+                }
+            ]
         },
 
         "C25 Pancreas": {
-        "default_tcga": null,
-        "default_CRUK": [
-            "Pancreatic cancer"
-        ],
-        "overrides": [
-            {
-            "histology": [
-                "8140/3 Adenocarcinoma, NOS",
-                "8500/3 Infiltrating duct carcinoma, NOS"
+            "default_tcga": null,
+            "default_CRUK": [
+                "Pancreatic cancer"
             ],
-            "tcga": "PAAD (Pancreatic adenocarcinoma)"
-            }
-        ]
+            "overrides": [
+                {
+                    "histology": [
+                        "8140/3 Adenocarcinoma, NOS",
+                        "8500/3 Infiltrating duct carcinoma, NOS"
+                    ],
+                    "tcga": "PAAD (Pancreatic adenocarcinoma)"
+                }
+            ]
         },
 
         "C54 Corpus uteri": {
-        "default_tcga": null,
-        "default_CRUK": [
-            "Womb cancer",
-            "Uterine cancer"
-        ],
-        "overrides": [
-            {
-            "histology": [
-                "8380/3 Endometrioid adenocarcinoma, NOS",
-                "8140/3 Adenocarcinoma, NOS"
+            "default_tcga": null,
+            "default_CRUK": [
+                "Womb cancer",
+                "Uterine cancer"
             ],
-            "tcga": "UCEC (Uterine Corpus Endometrial Carcinoma)"
-            },
-            {
-            "histology": [
-                "8980/3 Carcinosarcoma, NOS"
-            ],
-            "tcga": "UCS (Uterine Carcinosarcoma)"
-            }
-        ]
+            "overrides": [
+                {
+                    "histology": [
+                        "8380/3 Endometrioid adenocarcinoma, NOS",
+                        "8140/3 Adenocarcinoma, NOS"
+                    ],
+                    "tcga": "UCEC (Uterine Corpus Endometrial Carcinoma)"
+                },
+                {
+                    "histology": [
+                        "8980/3 Carcinosarcoma, NOS"
+                    ],
+                    "tcga": "UCS (Uterine Carcinosarcoma)"
+                }
+            ]
         },
 
         "C55 Uterus, NOS": {
-        "default_tcga": null,
-        "default_CRUK": [
-            "Womb cancer",
-            "Uterine cancer"
-        ],
-        "overrides": [
-            {
-            "histology": [
-                "8380/3 Endometrioid adenocarcinoma, NOS",
-                "8140/3 Adenocarcinoma, NOS"
+            "default_tcga": null,
+            "default_CRUK": [
+                "Womb cancer",
+                "Uterine cancer"
             ],
-            "tcga": "UCEC (Uterine Corpus Endometrial Carcinoma)"
-            },
-            {
-            "histology": [
-                "8980/3 Carcinosarcoma, NOS"
-            ],
-            "tcga": "UCS (Uterine Carcinosarcoma)"
-            }
-        ]
+            "overrides": [
+                {
+                    "histology": [
+                        "8380/3 Endometrioid adenocarcinoma, NOS",
+                        "8140/3 Adenocarcinoma, NOS"
+                    ],
+                    "tcga": "UCEC (Uterine Corpus Endometrial Carcinoma)"
+                },
+                {
+                    "histology": [
+                        "8980/3 Carcinosarcoma, NOS"
+                    ],
+                    "tcga": "UCS (Uterine Carcinosarcoma)"
+                }
+            ]
         },
 
         "C74 Adrenal gland": {
-        "default_tcga": null,
-        "default_CRUK": [
-            "Adrenal gland tumours"
-        ],
-        "overrides": [
-            {
-            "histology": [
-                "8370/3 Adrenal cortical carcinoma"
+            "default_tcga": null,
+            "default_CRUK": [
+                "Adrenal gland tumours"
             ],
-            "tcga": "ACC (Adrenocortical carcinoma)"
-            },
-            {
-            "histology": [
-                "8700/3 Pheochromocytoma, NOS",
-                "8680/3 Paraganglioma, NOS"
-            ],
-            "tcga": "PCPG (Pheochromocytoma and Paraganglioma)"
-            }
-        ]
+            "overrides": [
+                {
+                    "histology": [
+                        "8370/3 Adrenal cortical carcinoma"
+                    ],
+                    "tcga": "ACC (Adrenocortical carcinoma)"
+                },
+                {
+                    "histology": [
+                        "8700/3 Pheochromocytoma, NOS",
+                        "8680/3 Paraganglioma, NOS"
+                    ],
+                    "tcga": "PCPG (Pheochromocytoma and Paraganglioma)"
+                }
+            ]
         }
     }
-    }
+}

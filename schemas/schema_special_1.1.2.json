@@ -8,18 +8,25 @@
             "rule_name": "bowel_cancer",
             "match_type": "cruk_label",
             "cruk_label": "Bowel cancer",
-            "return_CRUK": ["Bowel cancer"]
+            "return_CRUK": [
+                "Bowel cancer"
+            ]
         },
         {
             "rule_name": "small_bowel_cancer",
             "match_type": "cruk_label",
             "cruk_label": "Small bowel cancer",
-            "return_CRUK": ["Small bowel cancer", "Bowel cancer"]
+            "return_CRUK": [
+                "Small bowel cancer",
+                "Bowel cancer"
+            ]
         },
         {
             "rule_name": "small_bowel_nets",
             "match_type": "topography_exact_and_histology_exact",
-            "topography_exact": ["C17 Small intestine"],
+            "topography_exact": [
+                "C17 Small intestine"
+            ],
             "histology_exact": [
                 "8154/3 Mixed neuroendocrine non-neuroendocrine neoplasm (MiNEN)",
                 "8240/3 Neuroendocrine tumor, NOS",
@@ -34,6 +41,26 @@
                 "Small bowel neuroendocrine tumours (NETs)",
                 "Small bowel cancer",
                 "Bowel cancer"
+            ]
+        },
+        {
+            "rule_name": "small_intestine_general",
+            "match_type": "topography_exact",
+            "topography_exact": [
+                "C17 Small intestine"
+            ],
+            "return_CRUK": [
+                "Colorectal cancer"
+            ]
+        },
+        {
+            "rule_name": "rectosigmoid_general",
+            "match_type": "topography_exact",
+            "topography_exact": [
+                "C19 Rectosigmoid junction"
+            ],
+            "return_CRUK": [
+                "Colorectal cancer"
             ]
         },
         {
@@ -63,13 +90,44 @@
             "rule_name": "blood_cancers",
             "match_type": "cruk_label",
             "cruk_label": "Blood cancers",
-            "return_CRUK": ["Blood cancers"]
+            "return_CRUK": [
+                "Blood cancers"
+            ]
+        },
+        {
+            "rule_name": "blood_cancers_by_topography",
+            "match_type": "topography_exact",
+            "topography_exact": [
+                "C42 Hematopoietic and reticuloendothelial systems"
+            ],
+            "return_CRUK": [
+                "Blood cancers"
+            ],
+            "return_TCGA": [
+                "MISC (Miscellaneous)"
+            ]
+        },
+        {
+            "rule_name": "soft_tissue_sarcoma_by_topography",
+            "match_type": "topography_exact",
+            "topography_exact": [
+                "C49 Connective, subcutaneous and other soft tissues"
+            ],
+            "return_CRUK": [
+                "Soft tissue sarcoma"
+            ],
+            "return_TCGA": [
+                "SARC (Sarcoma)"
+            ]
         },
         {
             "rule_name": "lymphoma",
             "match_type": "cruk_label",
             "cruk_label": "Lymphoma",
-            "return_CRUK": ["Lymphoma", "Blood cancers"]
+            "return_CRUK": [
+                "Lymphoma",
+                "Blood cancers"
+            ]
         },
         {
             "rule_name": "hodgkin_lymphoma",
@@ -110,7 +168,9 @@
         {
             "rule_name": "stomach_nets",
             "match_type": "topography_exact_and_histology_exact",
-            "topography_exact": ["C16 Stomach"],
+            "topography_exact": [
+                "C16 Stomach"
+            ],
             "histology_exact": [
                 "8154/3 Mixed neuroendocrine non-neuroendocrine neoplasm (MiNEN)",
                 "8240/3 Neuroendocrine tumor, NOS",
@@ -119,12 +179,16 @@
                 "8246/3 Neuroendocrine carcinoma, NOS",
                 "8249/3 Neuroendocrine tumor, grade 2"
             ],
-            "return_CRUK": ["Stomach neuroendocrine tumours (NETs)"]
+            "return_CRUK": [
+                "Stomach neuroendocrine tumours (NETs)"
+            ]
         },
         {
             "rule_name": "pancreatic_nets",
             "match_type": "topography_exact_and_histology_exact",
-            "topography_exact": ["C25 Pancreas"],
+            "topography_exact": [
+                "C25 Pancreas"
+            ],
             "histology_exact": [
                 "8150/3 Pancreatic neuroendocrine tumor, nonfunctioning",
                 "8151/3 Insulinoma, NOS",
@@ -135,12 +199,16 @@
                 "8240/3 Neuroendocrine tumor, NOS",
                 "8246/3 Neuroendocrine carcinoma, NOS"
             ],
-            "return_CRUK": ["Neuroendocrine tumours of the pancreas"]
+            "return_CRUK": [
+                "Neuroendocrine tumours of the pancreas"
+            ]
         },
         {
             "rule_name": "lung_nets",
             "match_type": "topography_exact_and_histology_exact",
-            "topography_exact": ["C34 Bronchus and lung"],
+            "topography_exact": [
+                "C34 Bronchus and lung"
+            ],
             "histology_exact": [
                 "8013/3 Large cell neuroendocrine carcinoma",
                 "8041/3 Small cell carcinoma, NOS",
@@ -148,13 +216,17 @@
                 "8246/3 Neuroendocrine carcinoma, NOS",
                 "8249/3 Neuroendocrine tumor, grade 2"
             ],
-            "return_CRUK": ["Lung neuroendocrine tumours (NETs)"]
+            "return_CRUK": [
+                "Lung neuroendocrine tumours (NETs)"
+            ]
         },
         {
             "rule_name": "womens_cancers_gynaecological",
             "match_type": "cruk_label",
             "cruk_label": "Women's cancers (gynaecological cancer)",
-            "return_CRUK": ["Women's cancers (gynaecological cancer)"]
+            "return_CRUK": [
+                "Women's cancers (gynaecological cancer)"
+            ]
         },
         {
             "rule_name": "womens_cancers_gynaecological_by_topography",
@@ -170,7 +242,9 @@
                 "C57 Other and unspecified female genital organs",
                 "C58 Placenta"
             ],
-            "return_CRUK": ["Women's cancers (gynaecological cancer)"]
+            "return_CRUK": [
+                "Women's cancers (gynaecological cancer)"
+            ]
         },
         {
             "rule_name": "womens_cancers_gynaecological_by_topography_and_histology",
@@ -237,7 +311,9 @@
                 "9104/1 Placental site trophoblastic tumor",
                 "9105/3 Trophoblastic tumor, epithelioid"
             ],
-            "return_CRUK": ["Women's cancers (gynaecological cancer)"]
+            "return_CRUK": [
+                "Women's cancers (gynaecological cancer)"
+            ]
         },
         {
             "rule_name": "vaginal_cancer",
@@ -251,7 +327,9 @@
         {
             "rule_name": "vaginal_cancer_by_topography_and_histology",
             "match_type": "topography_exact_and_histology_exact",
-            "topography_exact": ["C52 Vagina"],
+            "topography_exact": [
+                "C52 Vagina"
+            ],
             "histology_exact": [
                 "8051/3 Verrucous carcinoma, NOS",
                 "8070/3 Squamous cell carcinoma, NOS",
@@ -278,7 +356,9 @@
         {
             "rule_name": "vulval_cancer_by_topography_and_histology",
             "match_type": "topography_exact_and_histology_exact",
-            "topography_exact": ["C51 Vulva"],
+            "topography_exact": [
+                "C51 Vulva"
+            ],
             "histology_exact": [
                 "8051/3 Verrucous carcinoma, NOS",
                 "8070/3 Squamous cell carcinoma, NOS",
@@ -331,7 +411,9 @@
         {
             "rule_name": "invasive_mole_and_choriocarcinomas_by_topography_and_histology",
             "match_type": "topography_exact_and_histology_exact",
-            "topography_exact": ["C58 Placenta"],
+            "topography_exact": [
+                "C58 Placenta"
+            ],
             "histology_exact": [
                 "9100/3 Choriocarcinoma, NOS",
                 "9104/2 Invasive hydatidiform mole"
@@ -353,7 +435,9 @@
         {
             "rule_name": "persistent_trophoblastic_disease_and_choriocarcinoma_by_topography_and_histology",
             "match_type": "topography_exact_and_histology_exact",
-            "topography_exact": ["C58 Placenta"],
+            "topography_exact": [
+                "C58 Placenta"
+            ],
             "histology_exact": [
                 "9100/3 Choriocarcinoma, NOS",
                 "9104/2 Invasive hydatidiform mole"
@@ -375,7 +459,9 @@
         {
             "rule_name": "placental_site_trophoblastic_tumour_and_epithelioid_trophoblastic_tumour_by_topography_and_histology",
             "match_type": "topography_exact_and_histology_exact",
-            "topography_exact": ["C58 Placenta"],
+            "topography_exact": [
+                "C58 Placenta"
+            ],
             "histology_exact": [
                 "9104/1 Placental site trophoblastic tumor",
                 "9105/3 Trophoblastic tumor, epithelioid"
@@ -402,76 +488,129 @@
                 "9085/3 Mixed germ cell tumor",
                 "9100/3 Choriocarcinoma, NOS"
             ],
-            "return_CRUK": ["Germ cell tumours"]
+            "return_CRUK": [
+                "Germ cell tumours"
+            ]
         },
         {
             "rule_name": "childrens_cancers",
             "match_type": "cruk_label",
             "cruk_label": "Children's cancers",
-            "return_CRUK": ["Children's cancers"]
+            "return_CRUK": [
+                "Children's cancers"
+            ]
         },
         {
             "rule_name": "cancer_of_unknown_primary_cup",
             "match_type": "cruk_label",
             "cruk_label": "Cancer of unknown primary (CUP)",
-            "return_CRUK": ["Cancer of unknown primary (CUP)"],
-            "return_TCGA": ["MISC (Miscellaneous)"]
+            "return_CRUK": [
+                "Cancer of unknown primary (CUP)"
+            ],
+            "return_TCGA": [
+                "MISC (Miscellaneous)"
+            ]
+        },
+        {
+            "rule_name": "unknown_primary_by_topography",
+            "match_type": "topography_exact",
+            "topography_exact": [
+                "C80 Unknown primary site"
+            ],
+            "return_CRUK": [
+                "Cancer of unknown primary (CUP)"
+            ],
+            "return_TCGA": [
+                "MISC (Miscellaneous)"
+            ]
         },
         {
             "rule_name": "cancer_spread_to_bone",
             "match_type": "cruk_label",
             "cruk_label": "Cancer spread to bone",
-            "return_CRUK": ["Cancer spread to bone"],
-            "return_TCGA": ["MISC (Miscellaneous)"]
+            "return_CRUK": [
+                "Cancer spread to bone"
+            ],
+            "return_TCGA": [
+                "MISC (Miscellaneous)"
+            ]
         },
         {
             "rule_name": "cancer_spread_to_brain",
             "match_type": "cruk_label",
             "cruk_label": "Cancer spread to brain",
-            "return_CRUK": ["Cancer spread to brain"],
-            "return_TCGA": ["MISC (Miscellaneous)"]
+            "return_CRUK": [
+                "Cancer spread to brain"
+            ],
+            "return_TCGA": [
+                "MISC (Miscellaneous)"
+            ]
         },
         {
             "rule_name": "cancer_spread_to_liver",
             "match_type": "cruk_label",
             "cruk_label": "Cancer spread to liver",
-            "return_CRUK": ["Cancer spread to liver"],
-            "return_TCGA": ["MISC (Miscellaneous)"]
+            "return_CRUK": [
+                "Cancer spread to liver"
+            ],
+            "return_TCGA": [
+                "MISC (Miscellaneous)"
+            ]
         },
         {
             "rule_name": "cancer_spread_to_lung",
             "match_type": "cruk_label",
             "cruk_label": "Cancer spread to lung",
-            "return_CRUK": ["Cancer spread to lung"],
-            "return_TCGA": ["MISC (Miscellaneous)"]
+            "return_CRUK": [
+                "Cancer spread to lung"
+            ],
+            "return_TCGA": [
+                "MISC (Miscellaneous)"
+            ]
         },
         {
             "rule_name": "unknown_primary_cancer",
             "match_type": "cruk_label",
             "cruk_label": "Unknown primary cancer",
-            "return_CRUK": ["Unknown primary cancer"],
-            "return_TCGA": ["MISC (Miscellaneous)"]
+            "return_CRUK": [
+                "Unknown primary cancer"
+            ],
+            "return_TCGA": [
+                "MISC (Miscellaneous)"
+            ]
         },
         {
             "rule_name": "other_conditions",
             "match_type": "cruk_label",
             "cruk_label": "Other conditions",
-            "return_CRUK": ["Other conditions"],
-            "return_TCGA": ["MISC (Miscellaneous)"]
+            "return_CRUK": [
+                "Other conditions"
+            ],
+            "return_TCGA": [
+                "MISC (Miscellaneous)"
+            ]
         },
         {
             "rule_name": "secondary_cancer",
             "match_type": "cruk_label",
             "cruk_label": "Secondary cancer",
-            "return_CRUK": ["Secondary cancer"],
-            "return_TCGA": ["MISC (Miscellaneous)"]
+            "return_CRUK": [
+                "Secondary cancer"
+            ],
+            "return_TCGA": [
+                "MISC (Miscellaneous)"
+            ]
         },
         {
             "rule_name": "mens_cancer",
             "match_type": "cruk_label",
             "cruk_label": "Men's cancer",
-            "return_CRUK": ["Men's cancer"],
-            "return_TCGA": ["MISC (Miscellaneous)"]
+            "return_CRUK": [
+                "Men's cancer"
+            ],
+            "return_TCGA": [
+                "MISC (Miscellaneous)"
+            ]
         },
         {
             "rule_name": "mens_cancer_by_topography",
@@ -483,15 +622,24 @@
                 "C62 Testis",
                 "C63 Other and unspecified male genital organs"
             ],
-            "return_CRUK": ["Men's cancer"],
-            "return_TCGA": ["MISC (Miscellaneous)"]
+            "return_CRUK": [
+                "Men's cancer"
+            ],
+            "return_TCGA": [
+                "MISC (Miscellaneous)"
+            ]
         },
         {
             "rule_name": "breast_cancer_in_men",
             "match_type": "cruk_label",
             "cruk_label": "Breast cancer in men",
-            "return_CRUK": ["Breast cancer in men", "Men's cancer"],
-            "return_TCGA": ["MISC (Miscellaneous)"]
+            "return_CRUK": [
+                "Breast cancer in men",
+                "Men's cancer"
+            ],
+            "return_TCGA": [
+                "MISC (Miscellaneous)"
+            ]
         },
         {
             "rule_name": "non_hodgkin_lymphoma_in_children",
@@ -503,7 +651,9 @@
                 "Lymphoma",
                 "Blood cancers"
             ],
-            "return_TCGA": ["MISC (Miscellaneous)"]
+            "return_TCGA": [
+                "MISC (Miscellaneous)"
+            ]
         },
         {
             "rule_name": "brain_tumours_in_children",
@@ -513,7 +663,9 @@
                 "Brain tumours in children",
                 "Children's cancers"
             ],
-            "return_TCGA": ["MISC (Miscellaneous)"]
+            "return_TCGA": [
+                "MISC (Miscellaneous)"
+            ]
         },
         {
             "rule_name": "acute_lymphoblastic_leukaemia_all_in_children",
@@ -524,7 +676,9 @@
                 "Children's cancers",
                 "Blood cancers"
             ],
-            "return_TCGA": ["MISC (Miscellaneous)"]
+            "return_TCGA": [
+                "MISC (Miscellaneous)"
+            ]
         }
     ]
 }

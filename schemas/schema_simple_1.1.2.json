@@ -55,6 +55,16 @@
       "default_CRUK": ["Laryngeal cancer"]
     },
 
+    "C33 Trachea": {
+      "default_tcga": [],
+      "default_CRUK": ["Lung cancer"]
+    },
+
+    "C33.9 Trachea": {
+      "default_tcga": [],
+      "default_CRUK": ["Lung cancer"]
+    },
+
     "C37 Thymus": {
       "default_tcga": ["THYM (Thymoma)"],
       "default_CRUK": ["Thymus gland tumours"]
