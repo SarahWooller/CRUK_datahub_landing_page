@@ -28,6 +28,37 @@ def normalise_label(value):
     return value.strip()
 
 
+def get_icdo_prefix(label):
+    label = normalise_label(label)
+
+    if not label:
+        return None
+
+    first_part = label.split()[0]
+
+    if first_part.startswith("C"):
+        return first_part.split(".")[0]
+
+    return None
+
+
+def topography_matches(input_topography, schema_topographies):
+    input_topography = normalise_label(input_topography)
+
+    if input_topography in schema_topographies:
+        return True
+
+    input_prefix = get_icdo_prefix(input_topography)
+
+    if input_prefix:
+        for schema_topography in schema_topographies:
+            schema_prefix = get_icdo_prefix(schema_topography)
+            if schema_prefix == input_prefix:
+                return True
+
+    return False
+
+
 def extract_input_labels(dataset_filters):
     cruk_label = None
     topography_label = None
@@ -63,11 +94,14 @@ def rule_matches(rule, cruk_label, topography_label, histology_label):
         return histology_label in rule.get("histology_exact", [])
 
     if match_type == "topography_exact":
-        return topography_label in rule.get("topography_exact", [])
+        return topography_matches(
+            topography_label,
+            rule.get("topography_exact", [])
+        )
 
     if match_type == "topography_exact_and_histology_exact":
         return (
-            topography_label in rule.get("topography_exact", [])
+            topography_matches(topography_label, rule.get("topography_exact", []))
             and histology_label in rule.get("histology_exact", [])
         )
 

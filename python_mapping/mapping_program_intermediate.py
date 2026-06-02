@@ -25,13 +25,53 @@ with open(FILTER_DATA_PATH, encoding="utf-8") as file:
 topography_mappings = schema["topography_mappings"]
 
 
-def get_intermediate_mapped_terms(input_term, histology_text=None):
-    term_key = None
+def get_icdo_prefix(label):
+    """
+    Extract the broad ICD-O topography code from a label.
 
-    if input_term["label"] in topography_mappings:
-        term_key = input_term["label"]
-    elif input_term["category"] in topography_mappings:
-        term_key = input_term["category"]
+    Examples:
+    - 'C22.0 Liver' -> 'C22'
+    - 'C21 Anus and anal canal' -> 'C21'
+    - 'C18.0 Cecum' -> 'C18'
+    """
+    if not label:
+        return None
+
+    first_part = label.split()[0]
+
+    if first_part.startswith("C"):
+        return first_part.split(".")[0]
+
+    return None
+
+
+def find_topography_mapping_key(input_term):
+    label = input_term.get("label", "")
+    category = input_term.get("category", "")
+
+    # 1. Try exact label match first
+    if label in topography_mappings:
+        return label
+
+    # 2. Try exact category match
+    if category in topography_mappings:
+        return category
+
+    # 3. Try matching by broad ICD-O prefix
+    # Example: C22.0 Liver -> C22 Liver and intrahepatic bile ducts
+    input_prefix = get_icdo_prefix(label)
+
+    if input_prefix:
+        for schema_key in topography_mappings:
+            schema_prefix = get_icdo_prefix(schema_key)
+            if schema_prefix == input_prefix:
+                return schema_key
+
+    return None
+
+
+def get_intermediate_mapped_terms(input_term, histology_text=None):
+    term_key = find_topography_mapping_key(input_term)
 
     if term_key is None:
         return None, [], []
