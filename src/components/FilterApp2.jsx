@@ -217,6 +217,7 @@ const FilterChipArea = ({
     setLogicMessage,
     isMessageManuallyEdited,
     setIsMessageManuallyEdited,
+    snomedOverrides, // Accept the new prop
 }) => {
 
     const chips = useMemo(() => {
@@ -231,13 +232,15 @@ const FilterChipArea = ({
 
             return {
                 fullId,
-                label: details.label,
-                category: details.category,
+                // Check override state first, fallback to standard label
+                label: snomedOverrides[fullId] || details.label,
+                // Set category to null if it is a SNOMED override so it doesn't print
+                category: snomedOverrides[fullId] ? null : details.category,
                 chipClass,
             };
         }).filter(Boolean);
         return chipArray;
-    }, [selectedFilters]);
+    }, [selectedFilters, snomedOverrides]);
 
     if (chips.length === 0) {
         return null;
@@ -348,6 +351,7 @@ const HelpOverlay = ({ isOpen, onClose }) => {
 export const FilterApp = () => {
     const [activePanel, setActivePanel] = useState(null);
     const [selectedFilters, setSelectedFilters] = useState(new Set());
+    const [snomedOverrides, setSnomedOverrides] = useState({}); // New state
     const [logicMessage, setLogicMessage] = useState("");
     const [isMessageManuallyEdited, setIsMessageManuallyEdited] = useState(false);
     const [showHelp, setShowHelp] = useState(false);
@@ -471,21 +475,29 @@ export const FilterApp = () => {
         };
     }, [selectedFilters]);
 
-    const handleFilterChange = useCallback((id) => {
+  const handleFilterChange = useCallback((id) => {
         setSelectedFilters(prevFilters => {
             const newFilters = new Set(prevFilters);
             if (newFilters.has(id)) {
                 newFilters.delete(id);
+                // Clear the override so it reverts to default if selected manually later
+                setSnomedOverrides(prev => {
+                    if (prev[id]) {
+                        const next = { ...prev };
+                        delete next[id];
+                        return next;
+                    }
+                    return prev;
+                });
             } else {
                 newFilters.add(id);
             }
-            // If the message was manually edited, adding a new filter should reset the state
             if (isMessageManuallyEdited) {
                 setIsMessageManuallyEdited(false);
             }
             return newFilters;
         });
-    }, [isMessageManuallyEdited]); // Added isMessageManuallyEdited to dependency array
+    }, [isMessageManuallyEdited]);
 
     const clearAllFilters = useCallback(() => {
         setSelectedFilters(new Set());
@@ -520,7 +532,7 @@ export const FilterApp = () => {
     }, [counts.total, logicMessage]); // Dependencies remain the same
 
 
-    const renderPanel = () => {
+const renderPanel = () => {
         const props = {
             handleFilterChange,
             selectedFilters,
@@ -528,7 +540,9 @@ export const FilterApp = () => {
             setSearchTerm,
             filteredIds,
             isSearching,
-            pruneHierarchy // Pass utility down
+            pruneHierarchy,
+            setSnomedOverrides, // Add this line
+            setSelectedFilters  // Add this line
         };
         switch (activePanel) {
             case 'cancer':
@@ -547,7 +561,6 @@ export const FilterApp = () => {
                 return null;
         }
     };
-
     const getNavButtonClasses = (panelKey) => {
         const isActive = activePanel === panelKey;
         const baseClasses = "flex flex-col items-center justify-center p-3 sm:p-4 bg-white rounded-lg shadow-md border-2 transition duration-200 cursor-pointer text-center relative flex-1 mx-1 sm:mx-2 my-1 sm:my-0";
@@ -629,6 +642,7 @@ return (
                             setLogicMessage={setLogicMessage}
                             isMessageManuallyEdited={isMessageManuallyEdited}
                             setIsMessageManuallyEdited={setIsMessageManuallyEdited}
+                            snomedOverrides={snomedOverrides} // Add this line here
                         />
 
                         {/* Filter Panel Content / Default Content */}
@@ -680,7 +694,15 @@ const SearchInput = ({ searchTerm, setSearchTerm, isSearching, placeholder }) =>
     );
 };
 
-const CancerTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setSearchTerm, filteredIds, isSearching, pruneHierarchy }) => {
+const CancerTypePanel = ({ handleFilterChange,
+    selectedFilters,
+    searchTerm,
+    setSearchTerm,
+    filteredIds,
+    isSearching,
+    pruneHierarchy,
+    setSnomedOverrides,
+    setSelectedFilters}) => {
     // State to track which classification the user has selected
     const [selectedClassification, setSelectedClassification] = useState(null); // null, 'cruk', 'tcga', 'snomed', 'icdo'
 
@@ -791,13 +813,62 @@ const CancerTypePanel = ({ handleFilterChange, selectedFilters, searchTerm, setS
             case 'snomed':
                 return (
                     <>
-                        <h3 className="text-xl font-bold text-gray-800 mb-3">SNOMED-CT Terms</h3>
-                        {searchInput}
-                        <div id="snomed-terms-list" className={baseListClass}>
-                            <NestedFilterList
-                                items={filteredSnomedItems}
-                                {...listProps}
-                            />
+                        <h3 className="text-xl font-bold text-gray-800 mb-3">SNOMED-CT Lookup</h3>
+                        <div className="mb-4">
+                            <p className="text-sm text-gray-600 mb-2">Enter the SNOMED code and press Return:</p>
+                            <div className="relative">
+                                <input
+                                    type="text"
+                                    placeholder="e.g. 288536007"
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-[var(--cruk-pink)] focus:border-[var(--cruk-pink)] text-sm"
+                                    onKeyDown={async (e) => {
+                                        if (e.key === 'Enter') {
+                                            e.preventDefault();
+                                            const snomedId = e.target.value.trim();
+                                            if (!snomedId) return;
+
+                                            try {
+                                                // Adjust port 8000 if your FastAPI runs elsewhere
+                                                const response = await fetch(`http://localhost:8000/snomed-filters/${snomedId}`);
+
+                                                if (!response.ok) {
+                                                    alert("SNOMED code not found in database.");
+                                                    return;
+                                                }
+
+                                                const record = await response.json();
+
+                                                // Look up the corresponding ICD-O details from your local map
+                                                // using the filter_code returned by the database
+                                                const icdoDetails = filterDetailsMap.get(record.filter_code);
+                                                const icdoLabel = icdoDetails ? icdoDetails.label : "Unknown Label";
+
+                                                // Determine Topography vs Histology
+                                                const icdoType = record.topography === 'top' ? 'icdOTopography' : 'icdOHistology';
+
+                                                // Construct the custom display string
+                                                const customLabel = `SNOMED ${record.id} - corresponding to ${icdoType}: ${icdoLabel}`;
+
+                                                // 1. Set the cosmetic override for this specific filter code
+                                                setSnomedOverrides(prev => ({ ...prev, [record.filter_code]: customLabel }));
+
+                                                // 2. Add the actual underlying filter code to the selected filters set
+                                                setSelectedFilters(prev => {
+                                                    const newFilters = new Set(prev);
+                                                    newFilters.add(record.filter_code);
+                                                    return newFilters;
+                                                });
+
+                                                // Clear the input field for the next search
+                                                e.target.value = '';
+
+                                            } catch (error) {
+                                                console.error("Error fetching SNOMED code:", error);
+                                            }
+                                        }
+                                    }}
+                                />
+                            </div>
                         </div>
                     </>
                 );
