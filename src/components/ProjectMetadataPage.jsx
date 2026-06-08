@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 export const ProjectMetadataPage = () => {
-    const [dataset, setDataset] = useState(null);
     const [project, setProject] = useState(null);
     const [datasetId, setDatasetId] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -12,33 +11,34 @@ export const ProjectMetadataPage = () => {
             try {
                 setIsLoading(true);
                 const params = new URLSearchParams(window.location.search);
-                const fullId = params.get('id');
+                const projectPid = encodeURIComponent(params.get('pid'));
+                console.log(projectPid)
+                const dsId = params.get('datasetId'); // Optional: for the return link
 
-                if (!fullId || !fullId.includes('_')) {
-                    throw new Error("Invalid project ID format. Expected format: xx_yyy");
+                if (!projectPid) {
+                    throw new Error("Project ID is missing from the URL.");
                 }
 
-                // Extract the dataset ID (xx) and the project index (yyy)
-                const [dsId, grantIdxStr] = fullId.split('_');
-                const grantIdx = parseInt(grantIdxStr, 10);
-
-                setDatasetId(dsId);
-
-                // Dynamically import the corresponding dataset
-                const module = await import(`../utils/new_dummies/dataset_${dsId}.json`);
-                const data = module.default || module;
-
-                // Check if the projectGrants array exists and has an item at the requested index
-                if (!data.projectGrants || !data.projectGrants[grantIdx]) {
-                    throw new Error("Project grant not found in this dataset.");
+                if (dsId) {
+                    setDatasetId(dsId);
                 }
 
-                setDataset(data);
-                setProject(data.projectGrants[grantIdx]);
+                const response = await fetch(`http://127.0.0.1:8000/projects/${projectPid}`);
+
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        throw new Error("Project not found.");
+                    }
+                    throw new Error("Failed to fetch project from the server.");
+                }
+
+                const data = await response.json();
+                console.log(data)
+                setProject(data);
                 setError(null);
             } catch (err) {
                 console.error("Failed to load project:", err);
-                setError("Project not found or could not be loaded.");
+                setError(err.message || "Project not found or could not be loaded.");
             } finally {
                 setIsLoading(false);
             }
@@ -59,16 +59,17 @@ export const ProjectMetadataPage = () => {
         return (
             <div className="flex flex-col justify-center items-center min-h-screen bg-gray-50">
                 <p className="text-xl text-red-600 font-semibold mb-4">{error}</p>
-                {datasetId && (
-                    <a href={`meta.html?id=${datasetId}`} className="text-blue-600 hover:text-blue-800 font-medium underline transition-colors">
-                        ← Return to Dataset {datasetId}
+                {(datasetId || project?.dataset_id) && (
+                    <a href={`meta.html?id=${datasetId || project.dataset_id}`} className="text-blue-600 hover:text-blue-800 font-medium underline transition-colors">
+                        ← Return to Dataset {datasetId || project.dataset_id}
                     </a>
                 )}
             </div>
         );
     }
 
-    const enrichmentAndLinkage = dataset.enrichmentAndLinkage || {};
+    // Assuming enrichmentAndLinkage might be returned by your backend in the future
+    const enrichmentAndLinkage = project.enrichmentAndLinkage || {};
 
     return (
         <div className="min-h-screen bg-gray-50 font-sans text-gray-800 p-8">
@@ -76,28 +77,26 @@ export const ProjectMetadataPage = () => {
 
                 {/* Navigation / Header */}
                 <div className="mb-8">
-
                     <h1 className="text-4xl font-extrabold text-blue-900 mb-3">
                         {project.projectGrantName}
                     </h1>
                     <div className="text-sm text-gray-500 font-mono">
-                        Project ID: {project.pid}
+                        Project ID: {project.pid || project.id}
                     </div>
                 </div>
 
                 {/* Project Details Card */}
                 <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 mb-10">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
                         <div>
                             <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">
                                 Lead Researcher
                             </span>
                             <p className="text-lg font-semibold text-gray-800 m-0">
-                                {project.leadResearcher}
+                                {project.leadResearcher || "N/A"}
                             </p>
                             <p className="text-sm text-gray-600 mt-1 italic">
-                                {project.leadResearchInstitute}
+                                {project.leadResearchInstitute || "N/A"}
                             </p>
                         </div>
 
@@ -106,7 +105,7 @@ export const ProjectMetadataPage = () => {
                                 Timeline
                             </span>
                             <p className="text-base text-gray-800 m-0">
-                                {project.projectGrantStartDate} to {project.projectGrantEndDate || "Ongoing"}
+                                {project.projectGrantStartDate || "Unknown"} to {project.projectGrantEndDate || "Ongoing"}
                             </p>
                         </div>
 
@@ -115,7 +114,7 @@ export const ProjectMetadataPage = () => {
                                 Grant Number(s)
                             </span>
                             <p className="text-base font-mono text-gray-700 m-0">
-                                {project.grantNumber}
+                                {project.grantNumber || "N/A"}
                             </p>
                         </div>
 
@@ -124,14 +123,13 @@ export const ProjectMetadataPage = () => {
                                 Project Scope
                             </span>
                             <p className="text-base text-gray-700 m-0 leading-relaxed">
-                                {project.projectGrantScope}
+                                {project.projectGrantScope || "No scope provided."}
                             </p>
                         </div>
-
                     </div>
                 </div>
 
-                {/* Enrichment & Linkage Section (Inherited from Dataset) */}
+                {/* Enrichment & Linkage Section */}
                 {Object.keys(enrichmentAndLinkage).length > 0 && (
                     <div className="mb-10">
                         <div className="flex justify-between items-end mb-4 pb-2 border-b border-gray-200">
@@ -139,12 +137,15 @@ export const ProjectMetadataPage = () => {
                                 Enrichment & Linkage
                             </h2>
                         </div>
-                        <a
-                        href={`meta.html?id=${datasetId}`}
-                        className="inline-block mb-4 text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
-                    >
-                        Linked Dataset
-                    </a>
+
+                        {(datasetId || project.dataset_id) && (
+                            <a
+                                href={`meta.html?id=${datasetId || project.dataset_id}`}
+                                className="inline-block mb-4 text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
+                            >
+                                Linked Dataset
+                            </a>
+                        )}
 
                         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-6">
                             {Object.entries(enrichmentAndLinkage).map(([key, value]) => {
