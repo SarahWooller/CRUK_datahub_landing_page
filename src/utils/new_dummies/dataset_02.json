@@ -34,9 +34,10 @@
          "https://thoraciconcology.org/files/ctdna_protocol.pdf"
       ]
    },
+   "keywords":[""],
    "coverage": {
-      "typicalAgeRangeMin": 45,
-      "typicalAgeRangeMax": 88,
+      "typicalAgeRangeMin": 10,
+      "typicalAgeRangeMax": 15,
       "datasetCompleteness": "https://thoraciconcology.org/registry/data-dictionary"
    },
    "provenance": {

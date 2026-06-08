@@ -14,7 +14,7 @@ import JsonUpload from './JsonUpload';
 import UploadTopBar from './UploadTopBar';
 import { filterData } from '../utils/filter-setup';
 import prefixIconMapping from '../utils/prefix_icon_mapping.json';
-
+import { getExtra } from '../utils/getExtra.js';
 
 
 
@@ -1560,83 +1560,120 @@ const handleFinalSubmit = (currentSection, currentAnswers) => {
             icons: Array.from(uniqueIcons)
         };
     };
-        const downloadJSON = () => {
-                // 1. Associate icons based on dataset filters
-                let processedData = associateIcons(formData, prefixIconMapping);
-                processedData = removeEmptyArrayEntries(processedData);
 
-                // 2. Apply Semantic Defaults
-                const applyDefaults = (data, sectionKey) => {
-                    if (!data) return data;
+        const downloadJSON = async () => {
+    // 1. Associate icons based on dataset filters
+    let processedData = associateIcons(formData, prefixIconMapping);
+    processedData = removeEmptyArrayEntries(processedData);
 
-                    // Resolve the definition specifically from $defs where Summary is stored
-                    const sectionSchema = DATA_SCHEMA.properties[sectionKey];
-                    let definition = sectionSchema;
+const filters = processedData.datasetFilters || [];
+    const tops = filters.filter(f => f.id?.startsWith("0_0_0")).map(f => f.label);
+    const hist = filters.filter(f => f.id?.startsWith("0_0_1")).map(f => f.label);
 
-                    if (sectionSchema?.$ref) {
-                        definition = resolveRef(sectionSchema.$ref);
-                    } else if (sectionSchema?.allOf) {
-                        const refItem = sectionSchema.allOf.find(i => i.$ref);
-                        if (refItem) definition = resolveRef(refItem.$ref);
-                    }
+    console.log("DEBUG 1 - Tops extracted:", tops);
+    console.log("DEBUG 2 - Hist extracted:", hist);
 
-                    const sectionProps = definition?.properties;
-                    if (!sectionProps) return data;
+    if (tops.length > 0 && hist.length > 0) {
+        try {
+            console.log("DEBUG 3 - Entering API block. Both tops and hist exist.");
+            const token = localStorage.getItem('token');
 
-                    const updated = { ...data };
-                    Object.keys(sectionProps).forEach(key => {
-                        // If field is empty, apply default (e.g., populationSize: 0)
-                        if (isEmpty(updated[key]) && sectionProps[key].default !== undefined) {
-                            updated[key] = sectionProps[key].default;
-                        }
-                    });
-                    return updated;
-                };
+            const response = await fetch('http://127.0.0.1:8000/datasets/extra-terms', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ topographies: tops, histologies: hist })
+            });
 
-        // Apply defaults to the summary section
-        if (processedData.summary) {
-            processedData.summary = applyDefaults(processedData.summary, 'summary');
-        }
+            console.log("DEBUG 4 - API Response Status:", response.status);
 
-        // 3. Version & Revision Logic
-        const currentVersion = processedData.version;
-        const revisions = processedData.revisions || [];
+            if (response.ok) {
+                const lookupMap = await response.json();
+                console.log("DEBUG 5 - lookupMap from database:", lookupMap);
 
-        if (currentVersion) {
-            const versionExists = revisions.some(rev => rev.version === currentVersion);
+                const convertedTerms = getExtra(processedData, lookupMap);
+                console.log("DEBUG 6 - convertedTerms calculated:", convertedTerms);
 
-            if (!versionExists) {
-                const newRevision = {
-                    version: currentVersion,
-                    url: null
-                };
-
-                processedData = {
-                    ...processedData,
-                    revisions: [...revisions, newRevision]
-                };
+                processedData.datasetFilters = [...processedData.datasetFilters, ...convertedTerms];
+                console.log("DEBUG 7 - Final merged filters:", processedData.datasetFilters);
+            } else {
+                console.warn("DEBUG ERROR - API returned status:", response.status);
             }
+        } catch (err) {
+            console.error("DEBUG ERROR - Network failure:", err);
+        }
+    } else {
+        console.log("DEBUG - Bypassing lookup. Missing either topography or histology tags.");
+    }
+
+    // 3. Apply Semantic Defaults
+    const applyDefaults = (data, sectionKey) => {
+        if (!data) return data;
+        const sectionSchema = DATA_SCHEMA.properties[sectionKey];
+        let definition = sectionSchema;
+
+        if (sectionSchema?.$ref) {
+            definition = resolveRef(sectionSchema.$ref);
+        } else if (sectionSchema?.allOf) {
+            const refItem = sectionSchema.allOf.find(i => i.$ref);
+            if (refItem) definition = resolveRef(refItem.$ref);
         }
 
-        // 4. Update Timestamps
-        processedData.modified = new Date().toISOString();
+        const sectionProps = definition?.properties;
+        if (!sectionProps) return data;
 
-        // 5. Generate and trigger download
-        const fileData = JSON.stringify(processedData, null, 2);
-        const blob = new Blob([fileData], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-
-        const fileName = processedData.summary?.title
-            ? `${processedData.summary.title.replace(/\s+/g, '_')}_metadata.json`
-            : "dataset_metadata.json";
-
-        link.download = fileName;
-        link.href = url;
-        link.click();
-
-        URL.revokeObjectURL(url);
+        const updated = { ...data };
+        Object.keys(sectionProps).forEach(key => {
+            if (isEmpty(updated[key]) && sectionProps[key].default !== undefined) {
+                updated[key] = sectionProps[key].default;
+            }
+        });
+        return updated;
     };
+
+    if (processedData.summary) {
+        processedData.summary = applyDefaults(processedData.summary, 'summary');
+    }
+
+    // 4. Version & Revision Logic
+    const currentVersion = processedData.version;
+    const revisions = processedData.revisions || [];
+
+    if (currentVersion) {
+        const versionExists = revisions.some(rev => rev.version === currentVersion);
+        if (!versionExists) {
+            const newRevision = {
+                version: currentVersion,
+                url: null
+            };
+            processedData = {
+                ...processedData,
+                revisions: [...revisions, newRevision]
+            };
+        }
+    }
+
+    // 5. Update Timestamps
+    processedData.modified = new Date().toISOString();
+
+    // 6. Generate and trigger download
+    const fileData = JSON.stringify(processedData, null, 2);
+    const blob = new Blob([fileData], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    const fileName = processedData.summary?.title
+        ? `${processedData.summary.title.replace(/\s+/g, '_')}_metadata.json`
+        : "dataset_metadata.json";
+
+    link.download = fileName;
+    link.href = url;
+    link.click();
+
+    URL.revokeObjectURL(url);
+};
 
 return (
         <div className="flex flex-col min-h-screen font-sans bg-white">
