@@ -186,11 +186,11 @@ export const MetadataPage = () => {
 
             // Get ID from URL[cite: 9]
             const params = new URLSearchParams(window.location.search);
-            const datasetId = params.get('id');
+            const datasetId = params.get('id') || '1';
 
-            if (!datasetId) {
-                throw new Error("No dataset ID provided in the URL.");
-            }
+            //if (!datasetId) {
+            //    throw new Error("No dataset ID provided in the URL.");
+            //}
 
             // Public fetch - no Authorization header included
             const response = await fetch(`http://127.0.0.1:8000/datasets/${datasetId}`, {
@@ -650,13 +650,7 @@ const { derivedFilters, activeIcons } = useMemo(() => {
           colorClass="bg-yellow-50"
         />
       )}
-      {fileTypes && fileTypes !== "Various" && (
-        <StatCard
-          label="Formats"
-          value={fileTypes}
-          colorClass="bg-red-50"
-        />
-      )}
+
     </div>
 
 
