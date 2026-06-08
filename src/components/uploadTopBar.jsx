@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 // Assuming the example file exists at this path
 import exampleData from '../utils/new_dummies/dataset_00.json';
+import { getExtra } from '../utils/getExtra.js';
 
 // --- Icons ---
 const TrashIcon = () => (
@@ -248,47 +249,62 @@ const handleSaveToDatabase = async () => {
             const activeTeamId = localStorage.getItem('activeTeamId');
             const isProject = pageType === 'project';
 
-            // 1. Identify if an existing record is loaded by checking for ID fields
             const existingId = isProject ? (formData.pid || formData.id) : (formData.datasetid || formData.id);
             const isUpdate = !!existingId;
 
-            // 2. Construct the base endpoint
             const baseEndpoint = isProject
                 ? 'http://127.0.0.1:8000/projects/'
                 : 'http://127.0.0.1:8000/datasets/';
 
-            // 3. Append the ID to the URL if updating an existing record
             const endpoint = isUpdate ? `${baseEndpoint}${existingId}/` : baseEndpoint;
 
-            const userName = localStorage.getItem('userName');
+            // --- NEW EXTRA TERMS LOOKUP ---
+            let processedData = associateIcons(formData, prefixIconMapping);
+            const filters = processedData.datasetFilters || [];
 
-            console.group(`🚀 SENDING ${isUpdate ? 'PUT' : 'POST'}: ${isProject ? 'PROJECT' : 'DATASET'}`);
-            console.log("User Name:", userName);
-            console.log("Active Team ID (Context):", activeTeamId);
-            console.log("Token Present:", !!token);
-            console.log("Updating Existing Record:", isUpdate, "ID:", existingId || "None");
-            console.groupEnd();
+            const tops = filters.filter(f => f.id?.startsWith("0_0_0")).map(f => f.label);
+            const hist = filters.filter(f => f.id?.startsWith("0_0_1")).map(f => f.label);
+
+            if (tops.length > 0 && hist.length > 0) {
+                try {
+                    const lookupResponse = await fetch('http://127.0.0.1:8000/datasets/extra-terms', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ topographies: tops, histologies: hist })
+                    });
+
+                    if (lookupResponse.ok) {
+                        const lookupMap = await lookupResponse.json();
+                        const convertedTerms = getExtra(processedData, lookupMap);
+
+                        const existingIds = new Set(
+                            processedData.datasetFilters.map(f => typeof f === 'object' ? f.id : f)
+                        );
+                        const uniqueNewTerms = convertedTerms.filter(term => !existingIds.has(term.id));
+
+                        processedData.datasetFilters = [...processedData.datasetFilters, ...uniqueNewTerms];
+                    }
+                } catch (err) {
+                    console.error("Network failure during term resolution:", err);
+                }
+            }
+            // --- END EXTRA TERMS LOOKUP ---
 
             let payload;
 
             if (isProject) {
-                payload = transformForPHP(formData);
+                payload = transformForPHP(processedData);
             } else {
                 payload = {
-                    metadata_blob: associateIcons(formData, prefixIconMapping),
+                    metadata_blob: processedData, // Use the enriched data here
                     team_id: parseInt(localStorage.getItem('activeTeamId')),
                     status: "DRAFT"
                 };
             }
 
-            // ADD THIS LOG
-            console.group("🚀 FINAL DATABASE PAYLOAD");
-            console.log("Full Object:", payload);
-            console.log("Structural Metadata present?:", !!payload.metadata_blob?.structuralMetadata);
-            console.log("Table count:", payload.metadata_blob?.structuralMetadata?.tables?.length || 0);
-            console.groupEnd();
-
-            // 4. Use PUT for existing records and POST for new ones
             const response = await fetch(endpoint, {
                 method: isUpdate ? 'PUT' : 'POST',
                 headers: {
