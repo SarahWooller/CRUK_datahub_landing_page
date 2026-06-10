@@ -3,4 +3,4 @@ builder = "NIXPACKS"
 buildCommand = "npm install && npm run build"
 
 [deploy]
-startCommand = "ls -la docs && npx serve docs -l tcp://0.0.0.0:${PORT:-8080}"
+startCommand = "npm run start:prod"

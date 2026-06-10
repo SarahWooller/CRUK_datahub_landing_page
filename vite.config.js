@@ -12,7 +12,7 @@ export default defineConfig({
   base: "/",
 
   build: {
-    outDir: "docs",
+    outDir: "dist",
     assetsDir: "assets",
     emptyOutDir: true, // Added for clean builds (recommended)
     rollupOptions: {
