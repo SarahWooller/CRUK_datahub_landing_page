@@ -1,5 +1,5 @@
 [build]
-builder = "NIXPACKS"
+builder = "dockerfile"
 
 [deploy]
-startCommand = "npx serve -s dist"
+startCommand = "npm start"
