@@ -16,7 +16,7 @@ import { filterData } from '../utils/filter-setup.js';
 import prefixIconMapping from '../utils/prefix_icon_mapping.json';
 import { getExtra } from '../utils/getExtra.js';
 
-
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
 const METADATA_PRIORITY_SECTIONS = [
     "version"
@@ -1243,7 +1243,7 @@ const SchemaPage = () => {
             setLoadingDatasets(true);
             try {
                 // FETCH DATASETS
-                const response = await fetch('http://127.0.0.1:8000/datasets/', {
+                const response = await fetch(`${API_BASE_URL}/datasets/`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
 
@@ -1578,7 +1578,7 @@ const filters = processedData.datasetFilters || [];
             console.log("DEBUG 3 - Entering API block. Both tops and hist exist.");
             const token = localStorage.getItem('token');
 
-            const response = await fetch('http://127.0.0.1:8000/datasets/extra-terms', {
+            const response = await fetch(`${API_BASE_URL}datasets/extra-terms`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

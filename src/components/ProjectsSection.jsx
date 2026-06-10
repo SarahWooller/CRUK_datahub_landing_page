@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 export const ProjectsSection = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [sortConfig, setSortConfig] = useState({ column: 'projectGrantStartDate', direction: 'desc' });
@@ -10,7 +10,7 @@ export const ProjectsSection = () => {
         const fetchProjects = async () => {
             const token = localStorage.getItem('token');
             try {
-                const response = await fetch('http://127.0.0.1:8000/projects/', {
+                const response = await fetch(`${API_BASE_URL}/projects/`, {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json'

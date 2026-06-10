@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 // Assuming the example file exists at this path
 import exampleData from '../utils/new_dummies/dataset_00.json';
 import { getExtra } from '../utils/getExtra.js';
-
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 // --- Icons ---
 const TrashIcon = () => (
     <svg className="w-4 h-4 mr-2 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
@@ -213,8 +213,8 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType, onDeleteS
         try {
             const token = localStorage.getItem('token');
             const baseEndpoint = isProject
-                ? 'http://127.0.0.1:8000/projects/'
-                : 'http://127.0.0.1:8000/datasets/';
+                ? `${API_BASE_URL}/projects/`
+                : `${API_BASE_URL}/datasets/`;
 
             const endpoint = `${baseEndpoint}${existingId}/`;
 
@@ -253,8 +253,8 @@ const handleSaveToDatabase = async () => {
             const isUpdate = !!existingId;
 
             const baseEndpoint = isProject
-                ? 'http://127.0.0.1:8000/projects/'
-                : 'http://127.0.0.1:8000/datasets/';
+                ? `${API_BASE_URL}/projects/`
+                : `${API_BASE_URL}/datasets/`;
 
             const endpoint = isUpdate ? `${baseEndpoint}${existingId}/` : baseEndpoint;
 
@@ -267,7 +267,7 @@ const handleSaveToDatabase = async () => {
 
             if (tops.length > 0 && hist.length > 0) {
                 try {
-                    const lookupResponse = await fetch('http://127.0.0.1:8000/datasets/extra-terms', {
+                    const lookupResponse = await fetch(`${API_BASE_URL}/datasets/extra-terms`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

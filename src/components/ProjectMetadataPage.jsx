@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 export const ProjectMetadataPage = () => {
     const [project, setProject] = useState(null);
     const [datasetId, setDatasetId] = useState(null);
@@ -23,7 +23,7 @@ export const ProjectMetadataPage = () => {
                     setDatasetId(dsId);
                 }
 
-                const response = await fetch(`http://127.0.0.1:8000/projects/${projectPid}`);
+                const response = await fetch(`${API_BASE_URL}/projects/${projectPid}`);
 
                 if (!response.ok) {
                     if (response.status === 404) {

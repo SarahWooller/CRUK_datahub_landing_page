@@ -41,7 +41,7 @@ const ICON_MAPPING = {
   "Imaging Data": { src: imagingIcon, label: "Imaging Data" },   // Fallback
   "Biopsy Results and Lab Reports": { src: labResultsIcon, label: "Lab Results" }
 };
-
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 const ETHNICITY_CATEGORIES = [
    "White - British",
    "White - Irish",
@@ -193,7 +193,7 @@ export const MetadataPage = () => {
             //}
 
             // Public fetch - no Authorization header included
-            const response = await fetch(`http://127.0.0.1:8000/datasets/${datasetId}`, {
+            const response = await fetch(`${API_BASE_URL}/datasets/${datasetId}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
