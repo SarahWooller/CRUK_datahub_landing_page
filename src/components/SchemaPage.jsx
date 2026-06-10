@@ -8,11 +8,11 @@ import hdrukSchema from '../utils/HDRUK4.0.0.json';
 import crukSchema from '../utils/CRUK1.0.0.json';
 import semanticSchema from '../utils/semanticSchema.json';
 
-import { MarkdownRenderer } from './MarkdownRenderer';
-import DataTagger, { FilterChipArea } from './DataTagger';
-import JsonUpload from './JsonUpload';
-import UploadTopBar from './UploadTopBar';
-import { filterData } from '../utils/filter-setup';
+import { MarkdownRenderer } from './MarkdownRenderer.jsx';
+import DataTagger, { FilterChipArea } from './DataTagger.jsx';
+import JsonUpload from './JsonUpload.jsx';
+import UploadTopBar from './UploadTopBar.jsx';
+import { filterData } from '../utils/filter-setup.js';
 import prefixIconMapping from '../utils/prefix_icon_mapping.json';
 import { getExtra } from '../utils/getExtra.js';
 
