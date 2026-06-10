@@ -1,6 +1,6 @@
-import { filterDetailsMap, filterData } from '../utils/filter-setup';
+import { filterDetailsMap, filterData } from '../utils/filter-setup.js';
 import { filterType, includeParents, plusParents, getMessage, calculateLogicMessage
-} from '../utils/logic-utils';
+} from '../utils/logic-utils.js';
 import { executeFilterLogic } from '../utils/filterLogic.js';
 import React from 'react'; // React is now imported from node_modules
 import "../styles/style.css"

@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect, useCallback } from 'react';
-import { filterDetailsMap, filterData } from '../utils/filter-setup';
+import { filterDetailsMap, filterData } from '../utils/filter-setup.js';
 import "../styles/style.css"
 
 // --- Helper Components ---
