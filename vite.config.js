@@ -8,7 +8,8 @@ export default defineConfig({
     // FIX: Changed "{jsx.js}" to "{jsx,js}" for correct syntax
     include: "**/*.{jsx,js}",
   })],
-  base: "./",
+  // FIX: Changed base from "./" to "/" to resolve MIME type errors on nested routes
+  base: "/",
 
   build: {
     outDir: "docs",

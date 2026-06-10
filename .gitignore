@@ -1,1 +1,5 @@
+.venvgit rm Dockerfile
+git rm railway.toml
+git commit -m "Remove Dockerfile and railway.toml to unlock UI settings"
+git push origin main
 /node_modules/
