@@ -6,7 +6,7 @@ import { executeFilterLogic } from '../utils/filterLogic.js';
 import React from 'react'; // React is now imported from node_modules
 import "../styles/style.css"
 
-
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 // --- UTILITY FUNCTIONS FOR LOGIC MESSAGE CALCULATION ---
 
 
@@ -829,7 +829,7 @@ const CancerTypePanel = ({ handleFilterChange,
 
                                             try {
                                                 // Adjust port 8000 if your FastAPI runs elsewhere
-                                                const response = await fetch(`http://localhost:8000/snomed-filters/${snomedId}`);
+                                                const response = await fetch(`${API_BASE_URL}/snomed-filters/${snomedId}`);
 
                                                 if (!response.ok) {
                                                     alert("SNOMED code not found in database.");

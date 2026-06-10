@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 export const SignIn = ({ onLoginSuccess }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -15,7 +15,7 @@ export const SignIn = ({ onLoginSuccess }) => {
     formData.append('password', password);
 
     try {
-        const response = await fetch('http://127.0.0.1:8000/token', {
+        const response = await fetch(`${API_BASE_URL}/token`, {
             method: 'POST',
             body: formData,
         });
