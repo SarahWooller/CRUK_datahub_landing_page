@@ -33,6 +33,7 @@ export const SignIn = ({ onLoginSuccess }) => {
 
         localStorage.setItem('token', data.access_token);
         localStorage.setItem('userName', data.user.name);
+        localStorage.setItem('userId', data.user.id);
 
         console.log("DEBUG: Success! Calling onLoginSuccess with:", data.user);
         if (onLoginSuccess) onLoginSuccess(data.user);

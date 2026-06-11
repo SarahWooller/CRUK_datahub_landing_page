@@ -21,6 +21,7 @@ const SignInModal = ({ isOpen, onClose, onLoginSuccess }) => {
 
             console.log("DEBUG: Raw Login Data:", data);
             const userId = data.user?.id?.toString() || "";
+            console.log("userId", userId)
             if (!response.ok) throw new Error(data.detail || 'Login failed');
 
                 // 1. Store the numeric ID required for project/dataset ownership
@@ -29,6 +30,7 @@ const SignInModal = ({ isOpen, onClose, onLoginSuccess }) => {
                 localStorage.setItem('userName', data.user.name);
                 if (data.user.teams && data.user.teams.length > 0) {
                         localStorage.setItem('teamId', data.user.teams[0].id);
+                        localStorage.setItem('activeTeamId', data.user.teams[0].id);
                     } else {
                         // Fallback if the user doesn't belong to any teams yet
                         localStorage.removeItem('teamId');
