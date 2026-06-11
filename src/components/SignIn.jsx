@@ -34,6 +34,13 @@ export const SignIn = ({ onLoginSuccess }) => {
         localStorage.setItem('token', data.access_token);
         localStorage.setItem('userName', data.user.name);
         localStorage.setItem('userId', data.user.id);
+        if (data.user.teams && data.user.teams.length > 0) {
+                        localStorage.setItem('teamId', data.user.teams[0].id);
+                        localStorage.setItem('activeTeamId', data.user.teams[0].id);
+                    } else {
+                        // Fallback if the user doesn't belong to any teams yet
+                        localStorage.removeItem('teamId');
+                    }
 
         console.log("DEBUG: Success! Calling onLoginSuccess with:", data.user);
         if (onLoginSuccess) onLoginSuccess(data.user);
