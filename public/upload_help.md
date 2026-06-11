@@ -1,15 +1,11 @@
-## Instructions for the 2026 Data-Driven Cancer Research Conference
+## Instructions for The UK Oncology Forum 2026 
 ### Upload page
 
-Is it obvious what this page is for?
+What guidance or thought do you give to metadata when defining the data you will collect?
 
-How would you find out what information you need to bring together before you start your upload?
+What type of training or guidance do you need to get the uploads for metadata right?
 
-Try out some of the different upload sections. Is the guidance clear and the process obvious?
-
-Is it obvious which sections are required and which are optional?
-
-Do you know how to provide information in a way which will help ensure your dataset is reused?
+What format metadata do you end up with? What type of tools do you need to help you with uploads?
 
 
 

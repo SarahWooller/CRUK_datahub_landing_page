@@ -1,13 +1,9 @@
-## Instructions for the 2026 Data-Driven Cancer Research Conference
-### Upload page
-
-Is it obvious what this page is for?
-
-How would you save the information in json format?
-
-Does this provide all the information you need?
-
-Is it organised in a useful way?
+## Instructions for The UK Oncology Forum 2026
+### Metadata
 
 
+Is this sufficient metadata? (When all filled in)
 
+Do you want a json download or CSV?
+
+Are the requirements for biospecimens or clinical trials different?
