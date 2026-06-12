@@ -218,7 +218,7 @@
               "description": "Organisation responsible for queries and data access requests."
             },
             "keywords": {
-              "description": "If not included in abstract, title or filters, please provide one or more keywords or short phrases to improve search engine optimisation.",
+              "description": "Include as a minimum any medications tested in clinical trial, any specific gene mutations researched, the status of cancer if appropriate, and male/female for single sex study.  Keywords or short phrases improve search engine optimisation.",
               "examples": [
                 "Hedgehog pathway",
                 "p53 hotspot mutation",

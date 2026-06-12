@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client';
 import { ProjectMetadataPage} from './components/ProjectMetadataPage.jsx'; // 👈 Note the named import for Filters
 import { Header } from './components/Header.jsx'
 import { InstructionsWidget } from './components/InstructionsWidget.jsx';
-
+import FloatingQRCode from './components/FloatingQRCode.jsx';
 
 function renderReactComponent(targetId, Component) {
   // 1. Get the target DOM element

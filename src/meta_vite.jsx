@@ -1,6 +1,7 @@
 
 import React from 'react'; // React is now imported from node_modules
 import ReactDOM from 'react-dom/client';
+import FloatingQRCode from './components/FloatingQRCode.jsx';
 import { MetadataPage} from './components/MetaDataPage2.jsx'; // 👈 Note the named import for Filters
 import { Header } from './components/Header.jsx'
 import { InstructionsWidget } from './components/InstructionsWidget.jsx';
@@ -28,6 +29,7 @@ function renderReactComponent(targetId, Component) {
 
 renderReactComponent('header', <Header/>)
 renderReactComponent('meta', <MetadataPage/>)
+renderReactComponent('qr', <FloatingQRCode/>)
 renderReactComponent(
   'instructions_widget',
   <InstructionsWidget fileUrl="/meta_help.md" />
