@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Rnd } from 'react-rnd';
+import feedbackQrCode from './feedback.png';
 
 const FloatingQRCode = () => {
   const [mounted, setMounted] = useState(false);
@@ -50,7 +51,7 @@ const FloatingQRCode = () => {
             xmlns="http://www.w3.org/2000/svg"
           >
             <image
-              href="/feedback.png"
+              href={feedbackQrCode}
               x="0"
               y="0"
               width="100"
