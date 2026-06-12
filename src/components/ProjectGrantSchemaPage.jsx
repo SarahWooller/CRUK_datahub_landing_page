@@ -407,12 +407,7 @@ const SchemaPage = () => {
 
             <UploadTopBar formData={formData} schema={DATA_SCHEMA} prefixIconMapping={prefixIconMapping} />
 
-            <button
-                onClick={() => setIsFeedbackOpen(true)}
-                className="fixed bottom-6 right-6 bg-orange-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 z-40 font-bold"
-            >
-                Feedback
-            </button>
+
 
             <div className="flex-grow overflow-hidden h-[calc(100vh-40px)]">
                 <Group orientation="horizontal">
