@@ -1,1 +1,4 @@
-Sort out the initial guidance for each section.
+Pick up the datasection from the database
+
+check what is happening to the filter build.
+

@@ -26,6 +26,7 @@ renderReactComponent('header', <Header/>);
 renderReactComponent('introduction', <Introduction/>);
 renderReactComponent('filter_navbar', <FilterApp/>); // This will now contain both sections
 // Render removed: renderReactComponent('studies', <StudiesSection/>);
+
 renderReactComponent('qr', <FloatingQRCode/>);
 /*renderReactComponent('feedback_widget', <FeedbackWidget/>);
 renderReactComponent(
