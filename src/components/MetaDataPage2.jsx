@@ -186,7 +186,7 @@ export const MetadataPage = () => {
 
             // Get ID from URL[cite: 9]
             const params = new URLSearchParams(window.location.search);
-            const datasetId = params.get('id') || '1';
+            const datasetId = params.get('id') || '7';
 
             //if (!datasetId) {
             //    throw new Error("No dataset ID provided in the URL.");
