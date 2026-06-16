@@ -13,6 +13,7 @@ import DataTagger, { FilterChipArea } from './DataTagger.jsx';
 import JsonUpload from './JsonUpload.jsx';
 import UploadTopBar from './UploadTopBar.jsx';
 import { filterData } from '../utils/filter-setup.js';
+import { flattenSchemaToGrid } from '../utils/flattenSchemaToGrid.js';
 import prefixIconMapping from '../utils/prefix_icon_mapping.json';
 import { getExtra } from '../utils/getExtra.js';
 
@@ -27,7 +28,7 @@ const welcomeGuidance = {
     guidance: `Welcome to the CRUK Datahub. [cite_start]This tool helps you prepare metadata for the Health Data Gateway. [cite: 2] \\n\\n **Steps to success:** \\n 1. Review the **Checklist** in this panel. [cite_start]\\n 2. Use **Manual Entry** or **JSON Upload** to start. [cite: 27, 28] [cite_start]\\n 3. Complete all sections until you see **Green Ticks**. [cite: 21] [cite_start]\\n 4. **Download** your final JSON for submission. [cite: 47]`
 };
 
-// SchemaPage.jsx - Utility to remove "readiness" slots
+// Utility to remove "readiness" slots
 const removeEmptyArrayEntries = (data) => {
     if (Array.isArray(data)) {
         return data
@@ -912,11 +913,14 @@ const FieldRenderer = ({
 };
 
 // --- Component: Structural Metadata Wrapper ---
+// --- Component: Structural Metadata Wrapper ---
 const StructuralMetadataSection = ({ formData, onFormChange, DATA_SCHEMA, onUpdateGuidance }) => {
     const [flatGridData, setFlatGridData] = useState([]);
 
+    // We use a ref to prevent infinite loops when the grid updates the parent form data
+    const isInternalUpdate = useRef(false);
+
     // Extract guidance from the schema.
-    // Fallbacks to .properties included just in case standard JSON schema nesting applies.
     const tableGuidance = {
         title: "Table Guidelines",
         guidance: DATA_SCHEMA?.$defs?.DataTable?.name?.guidance
@@ -931,6 +935,24 @@ const StructuralMetadataSection = ({ formData, onFormChange, DATA_SCHEMA, onUpda
                || "Provide the column details."
     };
 
+    // --- NEW: Sync external formData into the flat grid ---
+    useEffect(() => {
+        // If the grid itself triggered the data change, do not rebuild the grid array.
+        // This prevents cursor jumping and infinite re-renders.
+        if (isInternalUpdate.current) {
+            isInternalUpdate.current = false;
+            return;
+        }
+
+        const tables = formData?.structuralMetadata?.tables;
+        if (tables && Array.isArray(tables) && tables.length > 0) {
+            console.log("🔄 External data detected, flattening schema for grid...");
+            setFlatGridData(flattenSchemaToGrid(tables));
+        } else {
+            setFlatGridData([]); // Reset if the section is truly empty
+        }
+    }, [formData?.structuralMetadata]);
+
     // Set table guidance as the default when the section loads
     useEffect(() => {
         if (onUpdateGuidance) {
@@ -942,11 +964,13 @@ const StructuralMetadataSection = ({ formData, onFormChange, DATA_SCHEMA, onUpda
         setFlatGridData(parsedData);
     };
 
-const handleSaveToSchema = (nestedSchemaData) => {
-    console.log("📡 Section receiving data from Grid:", nestedSchemaData);
-    // Pushes changes into formData.structuralMetadata in the background
-    onFormChange(['structuralMetadata'], nestedSchemaData);
-};
+    const handleSaveToSchema = (nestedSchemaData) => {
+        console.log("📡 Section receiving data from Grid:", nestedSchemaData);
+        // Flag this change as internal so the useEffect above skips the sync
+        isInternalUpdate.current = true;
+        // Pushes changes into formData.structuralMetadata in the background
+        onFormChange(['structuralMetadata'], nestedSchemaData);
+    };
 
     // Determine which guidance to show based on the column key
     const handleCellFocus = (columnKey) => {

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { DataGrid } from 'react-data-grid';
 import 'react-data-grid/lib/styles.css';
 
-// 1. Dedicated Editor for React Data Grid
 const TextEditor = ({ row, column, onRowChange, onClose }) => {
   return (
     <input
@@ -16,7 +15,6 @@ const TextEditor = ({ row, column, onRowChange, onClose }) => {
   );
 };
 
-// 2. Formatter for Ghost Text
 const GhostFormatter = ({ row, column }) => {
   const val = row[column.key];
 
@@ -34,8 +32,6 @@ const GhostFormatter = ({ row, column }) => {
   return null;
 };
 
-// 3. Column Definitions
-// 3. Column Definitions
 const columns = [
   { key: 'tableName', name: 'Table Name', renderEditCell: TextEditor, resizable: true, width: 200, renderCell: GhostFormatter, headerCellClass: 'bg-blue-100 text-blue-900 font-bold border-r border-blue-200' },
   { key: 'tableDescription', name: 'Table Description', renderEditCell: TextEditor, resizable: true, width: 300, renderCell: GhostFormatter, headerCellClass: 'bg-blue-50 text-blue-900 border-r border-blue-200' },
@@ -56,17 +52,31 @@ const StructuralMetadataGrid = ({ initialData, onSaveToSchema }) => {
 
   useEffect(() => {
     if (initialData && initialData.length > 0) {
-        // 1. Update the visual rows in the grid
-      setRows(initialData);
-      // 2. TRIGGER SYNC: Transform the uploaded data and send it to the parent immediately
-    const formattedData = transformGridToSchema(initialData);
+      // Normalise incoming CSV keys to match the grid's camelCase structure
+      const normalizedData = initialData.map((row, index) => ({
+        id: index, // Ensure a unique identifier exists
+        tableName: row.tableName || row["Table Name"] || "",
+        tableDescription: row.tableDescription || row["Table Description"] || "",
+        tableSize: row.tableSize || row["Table Size"] || "",
+        columnName: row.columnName || row["Column Name"] || "",
+        columnDataType: row.columnDataType || row["Data Type"] || "",
+        columnDescription: row.columnDescription || row["Col Description"] || "",
+        columnSensitive: row.columnSensitive || row["Sensitive"] || row["sensitive"] || "",
+        valueName: row.valueName || row["Value Name"] || "",
+        valueDescription: row.valueDescription || row["Value Description"] || "",
+        valueFrequency: row.valueFrequency || row["Frequency"] || ""
+      }));
 
-    console.log("📂 CSV Upload detected - Syncing to Schema:", formattedData);
-    onSaveToSchema(formattedData);
+      console.log("Normalized CSV Data:", normalizedData);
+
+      setRows(normalizedData);
+
+      const formattedData = transformGridToSchema(normalizedData);
+      console.log("Syncing transposed metadata to schema:", formattedData);
+      onSaveToSchema(formattedData);
     }
   }, [initialData]);
 
-  // Evaluates rows and injects the context and the bottom ghost row
   const deriveDisplayRows = (actualRows) => {
     const displayRows = actualRows.map(row => ({ ...row, _ghostContext: {} }));
 
@@ -74,7 +84,6 @@ const StructuralMetadataGrid = ({ initialData, onSaveToSchema }) => {
     let activeColumn = null;
 
     displayRows.forEach(row => {
-      // Track our position in the hierarchy
       if (row.tableName && String(row.tableName).trim() !== "") {
         activeTable = String(row.tableName).trim();
         activeColumn = null;
@@ -83,7 +92,6 @@ const StructuralMetadataGrid = ({ initialData, onSaveToSchema }) => {
         activeColumn = String(row.columnName).trim();
       }
 
-      // Inject prompts
       if (row.tableName && String(row.tableName).trim() !== "") {
         if (!row.tableDescription) row._ghostContext.tableDescription = "[Add description]";
         if (!row.tableSize) row._ghostContext.tableSize = "[Add size]";
@@ -102,10 +110,10 @@ const StructuralMetadataGrid = ({ initialData, onSaveToSchema }) => {
     });
 
     if (displayRows.length === 0) {
-      return [{ _isGhostRow: true, _ghostContext: { tableName: "[Enter new table name]" } }];
+      return [{ id: 'ghost-initial', _isGhostRow: true, _ghostContext: { tableName: "[Enter new table name]" } }];
     }
 
-    const bottomGhost = { _isGhostRow: true, _ghostContext: {} };
+    const bottomGhost = { id: `ghost-${displayRows.length}`, _isGhostRow: true, _ghostContext: {} };
 
     if (activeTable) {
        bottomGhost._ghostContext.tableName = `[Add another table]`;
@@ -123,10 +131,7 @@ const StructuralMetadataGrid = ({ initialData, onSaveToSchema }) => {
     return displayRows;
   };
 
-// StructuralMetadataGrid.jsx
-
-const handleRowsChange = (newDisplayRows) => {
-    // 1. Filter out ghost rows and clean the data
+  const handleRowsChange = (newDisplayRows) => {
     const updatedRealRows = newDisplayRows
         .filter(row => {
             return columns.some(col => {
@@ -139,14 +144,11 @@ const handleRowsChange = (newDisplayRows) => {
             return cleanRow;
         });
 
-    // 2. Update local state for the grid's immediate display
     setRows(updatedRealRows);
 
-    // 3. AUTOMATIC SYNC: Transform and send to parent formData immediately
     const formattedData = transformGridToSchema(updatedRealRows);
-    console.log("🛠️ Grid -> Schema Transformation:", formattedData);
     onSaveToSchema(formattedData);
-};
+  };
 
   const transformGridToSchema = (flatGridData) => {
     const tableMap = {};
@@ -172,7 +174,9 @@ const handleRowsChange = (newDisplayRows) => {
           columns: []
         };
       } else {
-        if (row.tableDescription) tableMap[currentTableName].description += " " + row.tableDescription;
+        if (row.tableDescription && !tableMap[currentTableName].description.includes(row.tableDescription)) {
+            tableMap[currentTableName].description += " " + row.tableDescription;
+        }
         if (row.tableSize) tableMap[currentTableName].size = parseInt(row.tableSize, 10);
       }
 
@@ -192,7 +196,9 @@ const handleRowsChange = (newDisplayRows) => {
           currentTable.columns.push(currentColumn);
         } else if (currentColumn) {
           if (row.columnDataType) currentColumn.dataType = row.columnDataType;
-          if (row.columnDescription) currentColumn.description = row.columnDescription;
+          if (row.columnDescription && !currentColumn.description.includes(row.columnDescription)) {
+              currentColumn.description += " " + row.columnDescription;
+          }
           if (row.columnSensitive !== undefined && String(row.columnSensitive).trim() !== "") {
             currentColumn.sensitive = String(row.columnSensitive).toLowerCase() === "true";
           }
@@ -218,7 +224,6 @@ const handleRowsChange = (newDisplayRows) => {
           <h3 className="text-lg font-bold text-gray-800">Review Structural Metadata</h3>
           <p className="text-sm text-gray-500">Edit cells directly. Type in the ghost rows to add new entries.</p>
         </div>
-
       </div>
 
       <div style={{ height: 600, width: '100%' }}>
