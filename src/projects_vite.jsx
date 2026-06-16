@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { Introduction } from './components/ProjectIntroduction.jsx';
 import { ProjectsSection } from './components/ProjectsSection.jsx';
 import { Header } from './components/Header.jsx';
+import FloatingQRCode from './components/FloatingQRCode.jsx';
 
 
 function renderReactComponent(targetId, Component) {
@@ -22,3 +23,4 @@ function renderReactComponent(targetId, Component) {
 renderReactComponent('header', <Header/>);
 renderReactComponent('introduction', <Introduction/>);
 renderReactComponent('projectsSection', <ProjectsSection/>);
+renderReactComponent('qr', <FloatingQRCode/>);
