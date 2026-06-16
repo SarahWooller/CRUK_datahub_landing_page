@@ -240,7 +240,7 @@ export const ProjectsSection = () => {
                                     <tr className="study-title-row">
                                         <td colSpan="5" style={{ paddingTop: '24px', paddingBottom: '8px' }}>
                                             <span className="study-title-text">
-                                                <a href={`project_meta.html?pid=${encodeURIComponent(grant.pid)}`} className="study-title-link">
+                                                <a href={`/project_meta.html?pid=${encodeURIComponent(grant.pid)}`} className="study-title-link">
                                                     {grant.projectGrantName}
                                                 </a>
                                             </span>
