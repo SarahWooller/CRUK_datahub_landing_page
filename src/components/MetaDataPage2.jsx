@@ -860,13 +860,29 @@ const { derivedFilters, activeIcons } = useMemo(() => {
                     </h2>
                 </div>
 
-                {/* Image Container */}
+                {/* Image Container with URL validation */}
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-8 p-4 overflow-x-auto">
-                   <img
-                       src={data.erd}
-                       alt="Entity Relationship Diagram"
-                       className="min-w-full md:w-full h-auto object-contain"
-                   />
+
+                    {/* Display the source URL securely */}
+                    <div className="mb-4">
+                        <span className="font-semibold text-gray-700">Source URL: </span>
+                        <a href={data.erd} target="_blank" rel="noreferrer" className="text-blue-600 underline break-all">
+                            {data.erd}
+                        </a>
+                    </div>
+
+                    {/* Check if the URL string matches a standard image extension */}
+                    {typeof data.erd === 'string' && /\.(jpeg|jpg|gif|png|svg|webp)(\?.*)?$/i.test(data.erd) ? (
+                       <img
+                           src={data.erd}
+                           alt="Entity Relationship Diagram"
+                           className="min-w-full md:w-full h-auto object-contain"
+                       />
+                    ) : (
+                        <div className="p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 rounded">
+                            Warning: The provided URL does not appear to be a standard image format and may not display correctly.
+                        </div>
+                    )}
                 </div>
             </>
         )}
