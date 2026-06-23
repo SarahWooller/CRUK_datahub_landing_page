@@ -1054,6 +1054,33 @@ const SchemaForm = ({
     const definition = resolveDefinition(sectionSchema);
     const isContainer = definition && (definition.type === 'object' || definition.properties);
 
+    // Extract keys and apply custom sorting logic
+    let propertyKeys = [];
+    if (isContainer) {
+        propertyKeys = Object.keys(definition.properties);
+
+        if (sectionKey === 'summary') {
+            const summaryOrder = DATA_SCHEMA.summaryOrder || definition.summaryOrder || [
+                "title", "leadResearcher", "leadResearchInstitute", "contactPoint", "doiName", "abstract",
+                "dataCustodian", "populationSize", "keywords", "datasetAliases"
+            ];
+
+            propertyKeys.sort((a, b) => {
+                const indexA = summaryOrder.indexOf(a);
+                const indexB = summaryOrder.indexOf(b);
+
+                // Both items are in the array, sort by their index position
+                if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+                // Only a is in the array, it goes first
+                if (indexA !== -1) return -1;
+                // Only b is in the array, it goes first
+                if (indexB !== -1) return 1;
+
+                return 0;
+            });
+        }
+    }
+
     return (
         <div className="w-full p-8 overflow-y-auto pb-20">
             <h1 className="text-3xl font-extrabold mb-2 text-gray-800">
@@ -1064,18 +1091,15 @@ const SchemaForm = ({
             {isContainer ? (
                 <div className="space-y-6">
 
-                   {Object.keys(definition.properties)
+                   {propertyKeys
                     .filter((propKey) => {
                         // 1. Check top-level inclusion (e.g., summary)
                         const sectionIncluded = DATA_SCHEMA.included?.[sectionKey];
                         if (sectionIncluded && !sectionIncluded.includes(propKey)) return false;
 
                         // 2. Check if this specific field has its own inclusion list (e.g., datasetCustodian)
-                        // This is what was missing!
                         const fieldIncluded = DATA_SCHEMA.included?.[propKey];
                         if (fieldIncluded && Array.isArray(fieldIncluded)) {
-                            // If the field is an object (like datasetCustodian), we keep it
-                            // but the FieldRenderer below will filter its children.
                             return true;
                         }
 

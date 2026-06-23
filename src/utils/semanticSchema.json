@@ -23,6 +23,8 @@
       "demographicFrequency",
       "omics"
     ],
+    "summaryOrder": ["title", "leadResearcher", "leadResearchInstitute", "contactPoint", "doiName", "abstract",
+      "dataCustodian", "populationSize", "keywords", "datasetAliases"],
     "$defs": {
       "Coverage": {
         "required": []
