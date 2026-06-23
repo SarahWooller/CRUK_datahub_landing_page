@@ -186,12 +186,7 @@ export const MetadataPage = () => {
 
             // Get ID from URL[cite: 9]
             const params = new URLSearchParams(window.location.search);
-            const datasetId = params.get('id') || '1';
-
-            //if (!datasetId) {
-            //    throw new Error("No dataset ID provided in the URL.");
-            //}
-
+            const datasetId = params.get('id') || '3';
             // Public fetch - no Authorization header included
             const response = await fetch(`${API_BASE_URL}/datasets/${datasetId}`, {
                 method: 'GET',

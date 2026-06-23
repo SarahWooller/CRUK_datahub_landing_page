@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Introduction } from './components/ProjectIntroduction.jsx';
-import { ProjectsSection } from './components/ProjectsSection.jsx';
+import { PublicationDashboard } from './components/PublicationDashboard.jsx';
 import { Header } from './components/Header.jsx';
 
 function renderReactComponent(targetId, Component) {
@@ -20,4 +20,4 @@ function renderReactComponent(targetId, Component) {
 
 renderReactComponent('header', <Header/>);
 renderReactComponent('introduction', <Introduction/>);
-renderReactComponent('projectsSection', <ProjectsSection/>);
+renderReactComponent('publications', <PublicationDashboard/>);
