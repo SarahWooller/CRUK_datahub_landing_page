@@ -27,7 +27,6 @@ function renderReactComponent(targetId, Component) {
 
 renderReactComponent('header', <Header/>)
 renderReactComponent('upload', <SchemaPage/>)
-renderReactComponent(upload, SchemaPage);
 renderReactComponent('qr', <FloatingQRCode/>);
 /*renderReactComponent(
   'instructions_widget',

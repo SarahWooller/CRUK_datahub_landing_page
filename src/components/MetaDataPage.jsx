@@ -1,15 +1,8 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import ReactDOM from 'react-dom/client';
-
+import { Panel, Group, Separator } from "react-resizable-panels";
 // 1. IMPORT DATA FROM UTILS
-
 import { filterData } from '../utils/longer_filter_data.js';
-
-// Provide opportunity for feedback
-import FeedbackModal from './FeedbackModal.jsx';
-import FeedbackFallback from './FeedbackFallback.jsx';
-import { useFeedback } from '../hooks/useFeedback';
-import viewQuestions from '../feedback/meta_data_questions.json';
 
 // 2. IMPORT ICONS
 import animalIcon from '../assets/animal.webp';
@@ -123,8 +116,6 @@ const getFilterConfig = (id) => {
     return { group: "Other Filters", category: "Miscellaneous", showPath: true, slice: 0 };
 };
 
-
-
 const getFirstTwoSentences = (text) => {
   if (!text) return "";
   const match = text.match(/^.*?[.!?](?:\s|$)(?:.*?[.!?](?:\s|$))?/);
@@ -184,7 +175,6 @@ export const MetadataPage = () => {
         try {
             setIsLoading(true);
 
-            // Get ID from URL[cite: 9]
             const params = new URLSearchParams(window.location.search);
             const datasetId = params.get('id') || '3';
             // Public fetch - no Authorization header included
@@ -202,7 +192,7 @@ export const MetadataPage = () => {
 
             const dbResult = await response.json();
 
-            // Set state using the metadata_blob from the database result[cite: 9]
+            // Set state using the metadata_blob from the database result
             setData(dbResult.metadata_blob || dbResult);
             setError(null);
 
@@ -241,25 +231,19 @@ export const MetadataPage = () => {
 // This is the old MetadataPage but now takes the prop data so the main one wraps it
 const MetadataPageContent = ({data}) => {
 
-  const {
-        allFeedback, isFeedbackOpen, setIsFeedbackOpen,
-        fallbackData, setFallbackData, handleSaveDraft, handleFinalSubmit
-    } = useFeedback(viewQuestions);
-    const isNotEmpty = (obj) => {
-        if (!obj) return false;
-        // Check if at least one value in the object is not empty
-        return Object.values(obj).some(val => val !== null && val !== "" && val !== undefined);
-    };
+  const isNotEmpty = (obj) => {
+      if (!obj) return false;
+      // Check if at least one value in the object is not empty
+      return Object.values(obj).some(val => val !== null && val !== "" && val !== undefined);
+  };
   const [expandedOtherData, setExpandedOtherData] = useState({});
   const toggleOtherData = (index) => {
     setExpandedOtherData(prev => ({ ...prev, [index]: !prev[index] }));
   };
   const [expandedTables, setExpandedTables] = useState({});
-  const [showEmailMenu, setShowEmailMenu] = useState(false);
+  const [emailCopied, setEmailCopied] = useState(false);
   const [currentGrantIndex, setCurrentGrantIndex] = useState(0);
-  // --- Resizing State ---
-  const [sidebarWidth, setSidebarWidth] = useState(288);
-  const isResizingRef = useRef(false);
+
   const otherDataTypes = (data.otherDataTypes || []).filter(isNotEmpty);
   const demographicFrequency = data.demographicFrequency || {};
   const mappedEthnicities = useMemo(() => {
@@ -296,8 +280,6 @@ const MetadataPageContent = ({data}) => {
   const documentationPreview = useMemo(() => getFirstTwoSentences(descriptionText), [descriptionText]);
 
   // 2. Keywords is now an array in summary.keywords
-// MetaDataPage2_4.jsx
-
     // Use .filter() to remove empty strings before they reach the UI
     const keywords = useMemo(() => {
         const rawKeywords = normalizeList(data.summary?.keywords);
@@ -326,8 +308,7 @@ const MetadataPageContent = ({data}) => {
     }, {});
   }, [data]);
 
-  // 6. Accessors for Stat Cards (New Schema Paths)
-// 6. Accessors for Stat Cards (Now with Optional Chaining)
+  // 6. Accessors for Stat Cards (Now with Optional Chaining)
 const population = data.summary?.populationSize;
 
 // Safely check if coverage exists before looking for age range
@@ -390,29 +371,7 @@ const { derivedFilters, activeIcons } = useMemo(() => {
         return { derivedFilters: filters, activeIcons: mappedIcons };
     }, [data]);
 
-  // --- Resizing Handlers ---
-  const startResizing = useCallback(() => {
-    isResizingRef.current = true;
-    document.addEventListener("mousemove", resize);
-    document.addEventListener("mouseup", stopResizing);
-    document.body.style.cursor = 'col-resize';
-    document.body.style.userSelect = 'none';
-  }, []);
 
-  const stopResizing = useCallback(() => {
-    isResizingRef.current = false;
-    document.removeEventListener("mousemove", resize);
-    document.removeEventListener("mouseup", stopResizing);
-    document.body.style.cursor = 'default';
-    document.body.style.userSelect = 'auto';
-  }, []);
-
-  const resize = useCallback((mouseEvent) => {
-    if (isResizingRef.current) {
-        const newWidth = Math.max(200, Math.min(mouseEvent.clientX, 600));
-        setSidebarWidth(newWidth);
-    }
-  }, []);
 
   // --- Other Handlers ---
   const downloadJson = () => {
@@ -437,10 +396,16 @@ const { derivedFilters, activeIcons } = useMemo(() => {
     setExpandedTables(newState);
   };
 
-  const handleEmailAction = (action) => {
-    console.log(`User selected: ${action}`);
-    setShowEmailMenu(false);
-  };
+  const handleCopyEmail = () => {
+    const contact = data.summary?.contactPoint;
+    const email = Array.isArray(contact) ? contact[0] : contact;
+
+    if (email) {
+        navigator.clipboard.writeText(email);
+        setEmailCopied(true);
+        setTimeout(() => setEmailCopied(false), 2000);
+    }
+};
 
   // Aliases for cleaner JSX below
   const summary = data.summary || {};
@@ -460,29 +425,12 @@ const { derivedFilters, activeIcons } = useMemo(() => {
   const dataUseReq = Array.isArray(usage.dataUseRequirements) ? usage.dataUseRequirements.join(', ') : (usage.dataUseRequirements || "Information not provided");
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50 font-sans text-gray-800">
-        <FeedbackFallback
-                data={fallbackData}
-                onDismiss={() => setFallbackData(null)}
-                onCopy={(text) => {
-                    navigator.clipboard.writeText(text);
-                    setFallbackData(null);
-                }}
-            />
-        <FeedbackModal
-                isOpen={isFeedbackOpen}
-                onClose={() => setIsFeedbackOpen(false)}
-                activeSection="metadata_view" // Custom ID for this page
-                allFeedback={allFeedback}
-                onSaveDraft={handleSaveDraft}
-                onFinalSubmit={handleFinalSubmit}
-                questionData={viewQuestions}
-            />
+    <div className="flex-grow overflow-hidden h-[calc(100vh-40px)]">
+     <Group orientation="horizontal">
 
-<nav
-        style={{ '--sidebar-width': `${sidebarWidth}px` }}
-        className="w-full md:w-[var(--sidebar-width)] bg-white shadow-md flex-shrink-0 p-6 md:h-screen md:sticky md:top-0 overflow-y-auto flex flex-col"
-      >
+      {/* --- LEFT PANEL: Navigation --- */}
+      <Panel defaultSize={20} minSize={15}>
+        <nav className="w-full h-full bg-white shadow-md p-6 overflow-y-auto flex flex-col">
         <h3 className="text-xl font-bold text-blue-900 mb-6 border-b pb-2">Overview</h3>
         <ul className="space-y-3 mb-8">
           {[
@@ -509,73 +457,46 @@ const { derivedFilters, activeIcons } = useMemo(() => {
           ))}
         </ul>
         {/* --- Data Access Box --- */}
-        <div className="mt-auto bg-blue-50 rounded-lg border border-blue-100 p-4">
+        <div className="mt-8 bg-blue-50 rounded-lg border border-blue-100 p-4">
 
             {/* Header with Email Icon */}
             <div className="flex justify-between items-center mb-4 border-b border-blue-200 pb-2 relative">
                 <h4 className="font-bold text-blue-900">Data Access</h4>
 
-                {/* Email Dropdown Container */}
-                <div className="relative">
+                {/* Email Copy Container */}
+                <div className="relative flex items-center">
+                    {emailCopied && <span className="text-xs text-green-600 font-bold mr-2">Copied</span>}
                     <button
-                        onClick={() => setShowEmailMenu(!showEmailMenu)}
+                        onClick={handleCopyEmail}
                         className="text-blue-600 hover:text-blue-800 transition-colors p-1 rounded hover:bg-blue-100"
-                        title="Contact Options"
+                        title="Copy Contact Email"
                     >
                         <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
                         </svg>
                     </button>
-
-                    {showEmailMenu && (
-                        <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-md shadow-xl border border-gray-200 z-50 overflow-hidden text-left">
-                            <div className="py-1">
-                                <button
-                                    onClick={() => handleEmailAction('General Enquiry')}
-                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700"
-                                >
-                                    Make a general enquiry
-                                </button>
-                                <button
-                                    onClick={() => handleEmailAction('Feasibility Enquiry')}
-                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700"
-                                >
-                                    Make a feasibility enquiry
-                                </button>
-                                <button
-                                    onClick={() => handleEmailAction('Data Access Request')}
-                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 font-semibold"
-                                >
-                                    Start a data access request
-                                </button>
-                            </div>
-                        </div>
-                    )}
                 </div>
             </div>
 
-            <AccessItem label="Data Controller" value={access.dataController} />
-            <AccessItem label="Data Processor" value={access.dataProcessor} />
-            <AccessItem label="Access Rights" value={access.accessRights} isLink={true} />
-            <AccessItem label="Delivery Lead Time" value={leadTime} />
-            <AccessItem label="Data Use Requirement" value={dataUseReq} />
-            <AccessItem label="Data Use Limitation" value={dataUseLimit} />
+            {/* Simplified Data Fields */}
             <AccessItem
-                label="Request Cost"
-                value={access.accessRequestCost || "Information not available"}
+                label="Data Custodian"
+                value={summary.dataCustodian?.name || summary.publisher?.name || "Information not provided"}
             />
+            <AccessItem
+                label="Access Rights"
+                value={access.accessRights}
+
+            />
+
         </div>
       </nav>
-
-      {/* --- Resizer Handle --- */}
-      <div
-        className="hidden md:block w-1 cursor-col-resize bg-gray-200 hover:bg-blue-400 hover:w-1.5 transition-all z-20 flex-shrink-0 active:bg-blue-600"
-        onMouseDown={startResizing}
-      ></div>
-
+      </Panel>
+      <Separator className="w-1 bg-gray-200 hover:bg-blue-400 transition-colors cursor-col-resize active:bg-blue-600" />
       {/* --- Main Content --- */}
-      <main className="flex-1 p-8 max-w-5xl mx-auto relative min-w-0">
 
+      <Panel defaultSize={55} minSize={30}>
+        <main className="w-full h-full p-8 overflow-y-auto relative">
         {/* Header Area */}
         <div className="flex justify-between items-start mb-8">
             <div>
@@ -583,8 +504,8 @@ const { derivedFilters, activeIcons } = useMemo(() => {
                 <div className="flex flex-col sm:flex-row sm:items-center text-sm text-gray-600 gap-2 sm:gap-6">
                     {/* Data Custodian / Publisher */}
                     <div className="flex items-center">
-                        <span className="font-semibold mr-2">Publisher:</span>
-                        {summary.dataCustodian?.name || summary.publisher?.name || "Unknown"}
+                        <span className="font-semibold mr-2">Data Custodian:</span>
+                        {summary.dataCustodian?.name || "Unknown"}
                     </div>
                 </div>
             </div>
@@ -1017,10 +938,14 @@ const { derivedFilters, activeIcons } = useMemo(() => {
         )}
 
       </main>
+      </Panel>
+        <Separator className="w-1 bg-gray-200 hover:bg-blue-400 transition-colors cursor-col-resize active:bg-blue-600" />
 
+      {/* --- RIGHT PANEL: Filters & Tags --- */}
+      <Panel defaultSize={20} minSize={15} >
       {/* --- Right Panel --- */}
-      <aside className="w-full md:w-80 bg-white shadow-lg p-6 border-l border-gray-100 md:h-screen md:sticky md:top-0 overflow-y-auto">
-        <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase tracking-wide">Filters & Tags</h3>
+      <aside className="w-full h-full bg-white shadow-lg p-6 border-l border-gray-100 overflow-y-auto">
+      <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase tracking-wide">Filters & Tags</h3>
 
         {/* Keywords */}
         <div className="mb-6">
@@ -1077,13 +1002,8 @@ const { derivedFilters, activeIcons } = useMemo(() => {
              )}
         </div>
       </aside>
-    {/* 3. The Feedback Button */}
-            <button
-                onClick={() => setIsFeedbackOpen(true)}
-                className="fixed bottom-6 right-6 bg-orange-600 text-white p-4 rounded-full shadow-lg hover:bg-orange-700 z-40 font-bold"
-            >
-                Feedback
-            </button>
+      </Panel>
+      </Group>
     </div>
   );
 };

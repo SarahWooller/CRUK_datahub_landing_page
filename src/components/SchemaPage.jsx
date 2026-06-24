@@ -1106,19 +1106,39 @@ const SchemaForm = ({
                         return true;
                     })
                     .map((propKey) => {
-                        return (
-                            <FieldRenderer
-                                key={propKey}
-                                propKey={propKey}
-                                prop={definition.properties[propKey]}
-                                path={[sectionKey, propKey]}
-                                formData={formData}
-                                onChange={onFormChange}
-                                isRequired={definition.required?.includes(propKey)}
-                                setActiveGuidance={setActiveGuidance}
-                            />
-                        );
-                    })}
+        return (
+            <React.Fragment key={propKey}>
+                <FieldRenderer
+                    propKey={propKey}
+                    prop={definition.properties[propKey]}
+                    path={[sectionKey, propKey]}
+                    formData={formData}
+                    onChange={onFormChange}
+                    isRequired={definition.required?.includes(propKey)}
+                    setActiveGuidance={setActiveGuidance}
+                />
+
+                {/* INJECT ACCESS RIGHTS AFTER ABSTRACT */}
+                {sectionKey === 'summary' && propKey === 'abstract' && (
+                    <FieldRenderer
+                        key="injected-accessRights"
+                        propKey="accessRights"
+                        // Safely extract the definition from the HDRUK schema definitions
+                        prop={DATA_SCHEMA.$defs?.Access?.properties?.accessRights || {
+                            title: "Access Information",
+                            description: "Please explain how to gain access to the dataset and restrictions."
+                        }}
+                        // This path ensures the data saves to the exact location the backend needs
+                        path={['accessibility', 'access', 'accessRights']}
+                        formData={formData}
+                        onChange={onFormChange}
+                        isRequired={true}
+                        setActiveGuidance={setActiveGuidance}
+                    />
+                )}
+            </React.Fragment>
+        );
+    })}
                 </div>
             ) : (
                 <div className="space-y-6">

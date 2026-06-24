@@ -36,6 +36,7 @@ export default defineConfig({
         sign_in: resolve(__dirname, 'src/sign_in.html'),
         upload: resolve(__dirname, 'src/upload.html'),
         upload_project: resolve(__dirname, 'src/upload_project.html'),
+        upload_publications: resolve(__dirname, 'src/upload_publications.html'),
         dashboard: resolve(__dirname, 'src/dashboard.html'),
       },
     },

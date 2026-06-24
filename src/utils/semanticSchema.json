@@ -3,7 +3,11 @@
         "demographicFrequency": ["ethnicity"],
         "provenance": ["temporal"],
         "coverage": ["typicalAgeRangeMin", "typicalAgeRangeMax", "datasetCompleteness"],
-        "dataCustodian": ["identifier", "name", "contactPoint", "description"]
+        "dataCustodian": ["identifier", "name", "contactPoint", "description"],
+        "access": ["accessRights"],
+        "usage": [],
+        "formatAndStandards": []
+
     },
     "visibleSections": [
       "welcome",
@@ -17,15 +21,32 @@
       "erd",
       "coverage",
       "provenance",
-      "accessibility",
       "enrichmentAndLinkage",
       "observations",
       "demographicFrequency",
       "omics"
     ],
-    "summaryOrder": ["title", "leadResearcher", "leadResearchInstitute", "contactPoint", "doiName", "abstract",
+    "summaryOrder": ["title", "leadResearcher", "leadResearchInstitute", "contactPoint", "doiName", "abstract", "accessRights",
       "dataCustodian", "populationSize", "keywords", "datasetAliases"],
     "$defs": {
+      "Access": {
+        "additionalProperties": false,
+        "properties": {
+          "accessRights": {
+            "allOf": [
+              {
+                "$ref": "#/$defs/LongDescription"
+              }
+            ],
+            "description": "Set out how to access the dataset.",
+            "examples": [
+              "In Progress"
+            ],
+            "guidance": "- If there is a webpage for the the data access request process and/or guidance add that here. \\n- Alternatively provide information about the process, restrictions, costs and time delays.\\n- If such a resource or the underlying process doesn\u2019t exist, please provide \u201cIn Progress\u201d, until both the process and the documentation are ready.",
+            "title": "How to Access the Database"
+          }
+        }
+      },
       "Coverage": {
         "required": []
       },
@@ -230,7 +251,7 @@
               "guidance": "- Keywords need not repeat information provided in the title, abstract or filters.\\n - If needed they should refer to specific additional details of the dataset.\\n - Include one per line.   "
             },
             "contactPoint": {
-              "description": "Email address for coodinating data access requests.",
+              "description": "Email address for coordinating data access requests.",
               "examples": [
                 "researcher@university.ac.uk"
               ],
