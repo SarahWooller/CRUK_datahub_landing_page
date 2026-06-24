@@ -1,4 +1,4 @@
-import { StudiesSection } from './StudiesSection2.jsx';
+import { DatasetsSection } from './DatasetsSection.jsx';
 import { filterDetailsMap, filterData } from '../utils/filter-setup.js';
 import { filterType, includeParents, plusParents, getMessage, calculateLogicMessage
 } from '../utils/logic-utils.js';
@@ -656,9 +656,9 @@ return (
                         </div>
                     </div>
                     {/* --- End Filter Content Panel --- */}
-                    {/* Render StudiesSection inside the unified container */}
+                    {/* Render DatasetsSection inside the unified container */}
                     <div className="border-t border-gray-300 bg-white">
-                        <StudiesSection />
+                        <DatasetsSection />
                     </div>
                 </div>
             </div>
