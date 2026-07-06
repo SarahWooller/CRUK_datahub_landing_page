@@ -38,6 +38,7 @@ export default defineConfig({
         upload_project: resolve(__dirname, 'src/upload_project.html'),
         upload_publications: resolve(__dirname, 'src/upload_publications.html'),
         dashboard: resolve(__dirname, 'src/dashboard.html'),
+        test: resolve(__dirname, 'src/test.html'),
       },
     },
   },
