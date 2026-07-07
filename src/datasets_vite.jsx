@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Introduction } from './components/Introduction2.jsx';
-import { FilterApp } from './components/FilterApp2.jsx';
+import { FilterApp } from './components/FilterApp.jsx';
 import { Header } from './components/Header.jsx';
 // Import removed: import { StudiesSection } from './components/AltStudiesSection.jsx';
 import { FeedbackWidget } from './components/FeedbackWidget.jsx';

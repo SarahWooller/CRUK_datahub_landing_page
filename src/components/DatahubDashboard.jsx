@@ -117,9 +117,9 @@ export const DatahubDashboard = () => {
 
       {/* Navigation Grid */}
       <div style={gridStyle}>
-        <a href="./studies2.html" style={buttonStyle}>Browse or Search Datasets</a>
+        <a href="./datasets.html" style={buttonStyle}>Browse or Search Datasets</a>
         <a href="./projects.html" style={buttonStyle}>Browse or Search Projects</a>
-        <a href="/page-3" style={buttonStyle}>Browse or Search Associated Publications</a>
+        <a href="./publications.html" style={buttonStyle}>Browse or Search Associated Publications</a>
         <a href="/page-4" style={buttonStyle}>Browse or Search Associated Tools</a>
       </div>
 

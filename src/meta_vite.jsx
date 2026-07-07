@@ -2,7 +2,7 @@
 import React from 'react'; // React is now imported from node_modules
 import ReactDOM from 'react-dom/client';
 import FloatingQRCode from './components/FloatingQRCode.jsx';
-import { MetadataPage} from './components/MetaDataPage2.jsx'; // 👈 Note the named import for Filters
+import { MetadataPage} from './components/MetaDataPage.jsx'; // 👈 Note the named import for Filters
 import { Header } from './components/Header.jsx'
 
 
@@ -29,4 +29,5 @@ function renderReactComponent(targetId, Component) {
 renderReactComponent('header', <Header/>)
 renderReactComponent('meta', <MetadataPage/>)
 renderReactComponent('qr', <FloatingQRCode/>)
+
 

@@ -67,6 +67,11 @@ export const Header = () => {
                                     upload or change dataset
                                 </a>
                             </li>
+                            <li>
+                                <a href="./upload_publications.html">
+                                    upload and link publications
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>

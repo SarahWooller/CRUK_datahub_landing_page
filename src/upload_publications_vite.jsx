@@ -1,10 +1,8 @@
-// main.jsx
-import React from 'react'; // React is now imported from node_modules
+import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Introduction } from './components/Introduction.jsx'
-import { VertFilterApp } from './components/JustVertFilterApp.jsx'; // 👈 Note the named import for Filters
+import PublicationUpload from './components/PublicationUpload.jsx';
+import FloatingQRCode from './components/FloatingQRCode.jsx';
 import { Header } from './components/Header.jsx'
-import { StudiesSection } from './components/StudiesSection.jsx'
 
 
 function renderReactComponent(targetId, Component) {
@@ -27,10 +25,7 @@ function renderReactComponent(targetId, Component) {
   }
 }
 
-renderReactComponent('header', <Header/>)
-renderReactComponent('introduction', <Introduction/>)
-renderReactComponent('vert_navbar', <VertFilterApp/>)
-renderReactComponent('studies', <StudiesSection/>)
-
-
+renderReactComponent('header', <Header/>);
+renderReactComponent('upload_publications', <PublicationUpload/>);
+renderReactComponent('qr', <FloatingQRCode/>);
 
