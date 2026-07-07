@@ -27,7 +27,6 @@ export default defineConfig({
         project_meta: resolve(__dirname, 'src/project_meta.html'),
         protect_data: resolve(__dirname, 'src/protect_data.html'),
         publications: resolve(__dirname, 'src/publications.html'),
-        alt_studies: resolve(__dirname, 'src/alt_studies.html'),
         projects: resolve(__dirname, 'src/projects.html'),
         datasets: resolve(__dirname, 'src/datasets.html'),
         sign_in: resolve(__dirname, 'src/sign_in.html'),
