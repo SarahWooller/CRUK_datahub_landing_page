@@ -1,0 +1,13 @@
+{
+  "datasetFilters": [
+    {
+      "id": "0_1_0",
+      "label": "no restriction",
+      "category": "accessType",
+      "primaryGroup": "access-type",
+      "description": ""
+    }
+  ],
+  "icons": [],
+  "modified": "2026-06-24T07:55:26.717Z"
+}
