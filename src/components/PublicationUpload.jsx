@@ -3,6 +3,33 @@ import TargetSelector from './TargetSelector';
 
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
+const findMatchedKeys = (item, terms) => {
+    const matches = new Set();
+    const activeTerms = terms.filter(t => t && t.trim().length > 0).map(t => t.toLowerCase());
+
+    if (activeTerms.length === 0) return [];
+
+    const searchWithinObject = (obj, topLevelKey) => {
+        if (typeof obj === 'string') {
+            const lowerObj = obj.toLowerCase();
+            activeTerms.forEach(term => {
+                if (lowerObj.includes(term)) {
+                    matches.add(topLevelKey);
+                }
+            });
+        } else if (Array.isArray(obj)) {
+            obj.forEach(val => searchWithinObject(val, topLevelKey));
+        } else if (obj && typeof obj === 'object') {
+            Object.entries(obj).forEach(([key, val]) => {
+                searchWithinObject(val, topLevelKey || key);
+            });
+        }
+    };
+
+    searchWithinObject(item, null);
+    return Array.from(matches);
+};
+
 const PublicationUpload = () => {
     const teamId = parseInt(localStorage.getItem('activeTeamId'), 10) || parseInt(localStorage.getItem('teamId'), 10);
     const token = localStorage.getItem('token');
@@ -25,6 +52,7 @@ const PublicationUpload = () => {
     const [isSearching, setIsSearching] = useState(false);
     const [searchError, setSearchError] = useState(null);
     const [hasSearched, setHasSearched] = useState(false);
+    const [elapsedTime, setElapsedTime] = useState(0);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -55,7 +83,13 @@ const PublicationUpload = () => {
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter' && currentDoi.trim().length > 0) {
-            setDois([...dois, { value: currentDoi.trim(), status: 'pending' }]);
+            const newDoisList = currentDoi
+                .split(',')
+                .map(d => d.trim())
+                .filter(d => d.length > 0)
+                .map(d => ({ value: d, status: 'pending' }));
+
+            setDois([...dois, ...newDoisList]);
             setCurrentDoi('');
         }
     };
@@ -77,6 +111,11 @@ const PublicationUpload = () => {
         setSearchError(null);
         setSearchResults([]);
         setHasSearched(false);
+        setElapsedTime(0);
+
+        const timer = setInterval(() => {
+            setElapsedTime(prev => prev + 1);
+        }, 1000);
 
         try {
             const url = `https://api.crossref.org/works?query=${encodeURIComponent(searchTitle)}`;
@@ -89,16 +128,28 @@ const PublicationUpload = () => {
             const data = await response.json();
             const items = data.message.items;
 
+            const termsToMatch = [
+                searchTitle.toLowerCase(),
+                ...searchKeyword.split(',').map(k => k.trim().toLowerCase()).filter(k => k)
+            ];
+
             const filteredItems = items
                 .filter(item => {
-                    if (!searchKeyword.trim()) return true;
-                    const itemJsonString = JSON.stringify(item).toLowerCase();
-                    return itemJsonString.includes(searchKeyword.toLowerCase());
+                    let searchableText = "";
+                    if (item.title) searchableText += item.title.join(" ") + " ";
+                    if (item.abstract) searchableText += item.abstract + " ";
+                    if (item.author) {
+                        searchableText += item.author.map(a => `${a.given || ''} ${a.family || ''}`).join(" ") + " ";
+                    }
+                    searchableText = searchableText.toLowerCase();
+
+                    return termsToMatch.every(term => searchableText.includes(term));
                 })
                 .map(item => ({
                     doi: item.DOI,
                     title: item.title && item.title.length > 0 ? item.title[0] : 'No Title Provided',
-                    abstract: item.abstract || 'No abstract provided for this publication.'
+                    abstract: item.abstract || 'No abstract provided for this publication.',
+                    matchedFields: findMatchedKeys(item, [searchTitle])
                 }));
 
             setSearchResults(filteredItems);
@@ -106,6 +157,7 @@ const PublicationUpload = () => {
         } catch (err) {
             setSearchError(err.message);
         } finally {
+            clearInterval(timer);
             setIsSearching(false);
         }
     };
@@ -115,7 +167,17 @@ const PublicationUpload = () => {
         if (index >= 0) {
             removeDoi(index);
         } else {
-            setDois([...dois, { value: doi, status: 'pending' }]);
+            const newDois = [...dois, { value: doi, status: 'pending' }];
+            newDois.sort((a, b) => {
+                const idxA = searchResults.findIndex(r => r.doi === a.value);
+                const idxB = searchResults.findIndex(r => r.doi === b.value);
+
+                if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+                if (idxA !== -1) return -1;
+                if (idxB !== -1) return 1;
+                return 0;
+            });
+            setDois(newDois);
         }
     };
 
@@ -141,7 +203,6 @@ const PublicationUpload = () => {
             if (doiObj.status === 'success') continue;
 
             try {
-                // 1. Create publication
                 const pubRes = await fetch(`${API_BASE_URL}/publications/from-doi`, {
                     method: 'POST',
                     headers: {
@@ -156,7 +217,6 @@ const PublicationUpload = () => {
                 const pubData = await pubRes.json();
                 const pubId = pubData.id;
 
-                // 2. Link publication
                 const linkPath = selectedTarget.type === 'dataset'
                     ? `/publications/${pubId}/datasets/${selectedTarget.id}`
                     : `/publications/${pubId}/projects/${selectedTarget.id}`;
@@ -210,30 +270,50 @@ const PublicationUpload = () => {
         setSearchKeyword('');
         setSearchResults([]);
         setHasSearched(false);
+        setElapsedTime(0);
     };
 
     return (
         <div className="max-w-4xl mx-auto p-6 bg-white rounded-xl shadow-lg border border-gray-100 mt-8">
             <h2 className="text-2xl font-extrabold text-gray-900 mb-6 border-b pb-4">Upload Publications</h2>
 
-            <TargetSelector
-                datasets={datasets}
-                projects={projects}
-                selectedTarget={selectedTarget}
-                onSelectionChange={setSelectedTarget}
-                disabled={isSubmitting}
-            />
+            {!selectedTarget ? (
+                <TargetSelector
+                    datasets={datasets}
+                    projects={projects}
+                    selectedTarget={selectedTarget}
+                    onSelectionChange={setSelectedTarget}
+                    disabled={isSubmitting}
+                />
+            ) : (
+                <div className="bg-gray-50 p-4 rounded-md border border-gray-200 flex justify-between items-center mb-6">
+                    <div>
+                        <span className="text-sm text-gray-500 block">Selected Target</span>
+                        <span className="font-bold text-gray-800 text-lg">
+                            {selectedTarget.type === 'dataset' ? 'Dataset: ' : 'Project: '}
+                            {selectedTarget.name || selectedTarget.title}
+                        </span>
+                    </div>
+                    <button
+                        onClick={() => setSelectedTarget(null)}
+                        disabled={isSubmitting}
+                        className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                    >
+                        Change Target
+                    </button>
+                </div>
+            )}
 
             <div className="grid grid-cols-1 gap-8 mt-6">
 
                 <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-                    <h3 className="text-xl font-bold text-gray-800 mb-6">2. Find or Enter DOIs</h3>
+                    <h3 className="text-xl font-bold text-gray-800 mb-6">Type comma-separated DOIs then press ENTER</h3>
 
                     <div className="mb-8">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Add DOI Manually</label>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Hint - if you have a publications page, use an AI to convert it to just the comma-separated dois and add them here</label>
                         <input
                             type="text"
-                            placeholder="Type a DOI and press Enter..."
+                            placeholder="eg 10.1002/hep.31391, 10.1002/hep.31327, 10.1016/j.cgh.2020.04.084"
                             value={currentDoi}
                             onChange={(e) => setCurrentDoi(e.target.value)}
                             onKeyDown={handleKeyDown}
@@ -245,37 +325,37 @@ const PublicationUpload = () => {
                     <div className="border-t border-gray-300 my-6"></div>
 
                     <div>
-                        <h4 className="text-lg font-semibold text-gray-800 mb-4">Or Search Crossref</h4>
+                        <h4 className="text-lg font-semibold text-gray-800 mb-4">Or Search Crossref to find and enter your DOIs</h4>
                         <form onSubmit={handleSearch} className="space-y-4 mb-6">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Dataset Title</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Key part of Dataset Title e.g OCCAMS</label>
                                 <input
                                     type="text"
                                     value={searchTitle}
                                     onChange={(e) => setSearchTitle(e.target.value)}
-                                    disabled={isSubmitting}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                    disabled={isSubmitting || selectedTarget === null}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                                     required
                                 />
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Keyword (Optional)</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Keywords/Phrases (Optional, comma-separated)</label>
                                 <input
                                     type="text"
                                     value={searchKeyword}
                                     onChange={(e) => setSearchKeyword(e.target.value)}
-                                    disabled={isSubmitting}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                    disabled={isSubmitting || selectedTarget === null}
+                                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
                                 />
                             </div>
 
                             <button
                                 type="submit"
-                                disabled={isSearching || isSubmitting}
-                                className="px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 disabled:bg-blue-300"
+                                disabled={isSearching || isSubmitting || selectedTarget === null}
+                                className="px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed"
                             >
-                                {isSearching ? 'Searching...' : 'Search Publications'}
+                                {isSearching ? `Interrogating crossref... (${elapsedTime}s)` : 'Search Publications'}
                             </button>
                         </form>
 
@@ -306,15 +386,30 @@ const PublicationUpload = () => {
                                             {pub.title}
                                         </p>
                                         <div
-                                            className="text-sm text-gray-600"
+                                            className="text-sm text-gray-600 mb-2"
                                             dangerouslySetInnerHTML={{ __html: pub.abstract }}
                                         />
+                                        {pub.matchedFields && pub.matchedFields.length > 0 && (
+                                            <div className="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-gray-100">
+                                                <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                                                    Dataset Title Matched In:
+                                                </span>
+                                                {pub.matchedFields.map(field => (
+                                                    <span
+                                                        key={field}
+                                                        className="px-2 py-1 text-xs font-medium text-indigo-700 bg-indigo-50 border border-indigo-100 rounded-md"
+                                                    >
+                                                        {field}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             ))}
 
                             {searchResults.length === 0 && !isSearching && !searchError && hasSearched && (
-                                <p className="text-gray-500 italic">No publications found. Try adjusting your search criteria.</p>
+                                <p className="text-gray-500 italic">No publications found matching title and all keywords within the title, author, or abstract fields.</p>
                             )}
                         </div>
                     </div>

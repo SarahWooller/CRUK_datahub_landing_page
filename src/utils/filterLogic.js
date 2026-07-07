@@ -197,7 +197,7 @@ const parsePrefixExpression = (expression) => {
  * @param {string} expressionText - The logic message from the textarea (e.g., "(A OR B) AND C").
  */
 export const executeFilterLogic = (expressionText) => {
-    const log = ["--- Starting Logic Evaluation (from JustVertFilterApp) ---"];
+    const log = ["--- Starting Logic Evaluation  ---"];
 
     if (!expressionText) {
         log.push("❌ No filter logic expression provided.");

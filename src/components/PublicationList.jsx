@@ -6,9 +6,7 @@ const PublicationCard = ({ publication }) => {
   // Format authors to show "First Author et al." if there are multiple
   const formatAuthors = (authorsList) => {
     if (!authorsList || authorsList.length === 0) return "Unknown Author";
-    const firstAuthor = authorsList[0].family
-      ? `${authorsList[0].given} ${authorsList[0].family}`
-      : authorsList[0].name || "Unknown Author";
+    const firstAuthor = authorsList[0] || "Unknown Author";
 
     return authorsList.length > 1 ? `${firstAuthor} et al.` : firstAuthor;
   };

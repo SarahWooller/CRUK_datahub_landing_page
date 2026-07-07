@@ -1,13 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Introduction } from './components/Introduction.jsx';
-import { FilterApp } from './components/HorFilterApp.jsx';
+import { Introduction } from './components/Introduction2.jsx';
+import { FilterApp } from './components/FilterApp.jsx';
 import { Header } from './components/Header.jsx';
-import { StudiesSection } from './components/AltStudiesSection.jsx';
-// Import the new widget
+// Import removed: import { StudiesSection } from './components/AltStudiesSection.jsx';
 import { FeedbackWidget } from './components/FeedbackWidget.jsx';
 import { InstructionsWidget } from './components/InstructionsWidget.jsx';
-
+import FloatingQRCode from './components/FloatingQRCode.jsx';
 
 function renderReactComponent(targetId, Component) {
   const targetElement = document.getElementById(targetId);
@@ -25,10 +24,11 @@ function renderReactComponent(targetId, Component) {
 
 renderReactComponent('header', <Header/>);
 renderReactComponent('introduction', <Introduction/>);
-renderReactComponent('filter_navbar', <FilterApp/>);
-renderReactComponent('studies', <StudiesSection/>);
-renderReactComponent('feedback_widget', <FeedbackWidget/>);
+renderReactComponent('filter_navbar', <FilterApp/>); // This will now contain both sections
+// Render removed: renderReactComponent('studies', <StudiesSection/>);
+renderReactComponent('qr', <FloatingQRCode/>);
+/*renderReactComponent('feedback_widget', <FeedbackWidget/>);
 renderReactComponent(
   'instructions_widget',
   <InstructionsWidget fileUrl="/studies_help.md" />
-);
+);*/
