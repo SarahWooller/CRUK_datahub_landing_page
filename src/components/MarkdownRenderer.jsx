@@ -52,8 +52,23 @@ export const parseInline = (text) => {
  */
 export const MarkdownRenderer = ({ content }) => {
     if (!content) return null;
+    
+    let processableContent = content;
 
-    const rawLines = content.replace(/\\n/g, '\n').split('\n');
+    // Handle arrays of strings
+    if (Array.isArray(content)) {
+        processableContent = content.join('\n\n');
+    }
+
+    // If content is still not a string (e.g. it's a React element or object), render it directly or stringify
+    if (typeof processableContent !== 'string') {
+        if (React.isValidElement(processableContent)) {
+            return processableContent;
+        }
+        return <pre className="text-xs text-red-500">Invalid markdown content</pre>;
+    }
+
+    const rawLines = processableContent.replace(/\\n/g, '\n').split('\n');
     const blocks = [];
     let currentTable = null;
 

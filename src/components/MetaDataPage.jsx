@@ -3,17 +3,20 @@ import ReactDOM from 'react-dom/client';
 import { Panel, Group, Separator } from "react-resizable-panels";
 // 1. IMPORT DATA FROM UTILS
 import { filterData } from '../utils/longer_filter_data.js';
+import {
+    ICON_MAPPING,
+    ETHNICITY_CATEGORIES,
+    flattenFilterTree,
+    getFilterConfig,
+    getFirstTwoSentences,
+    normalizeList
+} from '../utils/metadataUtils';
 
-// 2. IMPORT ICONS
-import animalIcon from '../assets/animal.webp';
-import backgroundIcon from '../assets/background.webp';
-import biobankIcon from '../assets/biobank.webp';
-import invitroIcon from '../assets/invitro.webp';
-import longitudinalIcon from '../assets/longitudinal.webp';
-import treatmentsIcon from '../assets/treatments.webp';
-import omicsIcon from '../assets/omics.webp';
-import imagingIcon from '../assets/medical_imaging.webp';
-import labResultsIcon from '../assets/lab_results.webp';
+import {
+    StatCard,
+    SectionHeading,
+    AccessItem
+} from '../components/PreviewSharedUI';
 
 // 3. IMPORT ERD IMAGE
 import erdImage from '../assets/erd.png';
@@ -21,149 +24,7 @@ import erdImage from '../assets/erd.png';
 // 4. IMPORT HELPER Functions
 import { MarkdownRenderer } from './MarkdownRenderer.jsx'
 
-// --- Configuration ---
-const ICON_MAPPING = {
-  "Model Organisms": { src: animalIcon, label: "Model Organisms" },
-  "Background": { src: backgroundIcon, label: "Background" },
-  "Biobank Samples": { src: biobankIcon, label: "Biobank Samples" },
-  "In Vitro Studies": { src: invitroIcon, label: "In Vitro Studies" },
-  "Longitudinal Follow up": { src: longitudinalIcon, label: "Longitudinal" },
-  "Treatments": { src: treatmentsIcon, label: "Treatments" },
-  "Multi-omic Data": { src: omicsIcon, label: "Multi-omic Data" },
-  "Imaging types": { src: imagingIcon, label: "Imaging Data" }, // Updated key to match new JSON
-  "Imaging Data": { src: imagingIcon, label: "Imaging Data" },   // Fallback
-  "Biopsy Results and Lab Reports": { src: labResultsIcon, label: "Lab Results" }
-};
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
-const ETHNICITY_CATEGORIES = [
-   "White - British",
-   "White - Irish",
-   "White - Any other White background",
-   "Mixed - White and Black Caribbean",
-   "Mixed - White and Black African",
-   "Mixed - White and Asian",
-   "Mixed - Any other mixed background",
-   "Asian or Asian British - Indian",
-   "Asian or Asian British - Pakistani",
-   "Asian or Asian British - Bangladeshi",
-   "Asian or Asian British - Any other Asian background",
-   "Black or Black British - Caribbean",
-   "Black or Black British - African",
-   "Black or Black British - Any other Black background",
-   "Other Ethnic Groups - Chinese",
-   "Other Ethnic Groups - Any other ethnic group",
-   "Not stated",
-   "Not known"
-];
-
-// --- Utility Functions ---
-
-/**
- * Flattens the nested filter tree into a Map for O(1) lookup.
- */
-const flattenFilterTree = (nodes, parentPath = []) => {
-    let map = {};
-    if (!nodes || typeof nodes !== 'object') return map;
-
-    Object.values(nodes).forEach(node => {
-        const currentPath = [...parentPath, node.label];
-        const fullPathString = currentPath.join(" > ");
-
-        map[node.id] = {
-            label: node.label,
-            fullPath: fullPathString,
-            rawPath: currentPath
-        };
-
-        if (node.children) {
-            Object.assign(map, flattenFilterTree(node.children, currentPath));
-        }
-    });
-    return map;
-};
-
-/**
- * Categorizes an ID based on specific prefixes.
- */
-/**
- * Maps an ID to a Group, a specific Category Label, and path visibility settings.
- */
-const getFilterConfig = (id) => {
-    // --- CANCER FILTERS ---
-    // CRUK Terms (0_0_2): Bold label only, no path
-    if (id.startsWith("0_0_2")) return { group: "Cancer Filters", category: "CRUK Cancer Terms", showPath: false };
-
-    // TCGA Terms (0_0_4): Bold label only, no path
-    if (id.startsWith("0_0_4")) return { group: "Cancer Filters", category: "TCGA Terms", showPath: false };
-
-    // ICD-O Topography (0_0_0): Show path (sliced)
-    if (id.startsWith("0_0_0")) return { group: "Cancer Filters", category: "ICD-O Topography", showPath: true, slice: 2 };
-
-    // ICD-O Histology (0_0_1): Show path (sliced)
-    if (id.startsWith("0_0_1")) return { group: "Cancer Filters", category: "ICD-O Histology", showPath: true, slice: 2 };
-
-    // General Cancer fallback
-    if (id.startsWith("0_0")) return { group: "Cancer Filters", category: "Other Cancer Types", showPath: true, slice: 1 };
-
-    // --- DATA FILTERS ---
-    // Data Types (0_2): Show path (sliced)
-    if (id.startsWith("0_2")) return { group: "Data Filters", category: "Data Types", showPath: true, slice: 1 };
-
-    // --- ACCESS FILTERS ---
-    // Access Types (0_1): Bold label only, no path
-    if (id.startsWith("0_1")) return { group: "Access Filters", category: "Access Types", showPath: false };
-
-    return { group: "Other Filters", category: "Miscellaneous", showPath: true, slice: 0 };
-};
-
-const getFirstTwoSentences = (text) => {
-  if (!text) return "";
-  const match = text.match(/^.*?[.!?](?:\s|$)(?:.*?[.!?](?:\s|$))?/);
-  return match ? match[0] : text;
-};
-
-// Updated to handle both Array (New Schema) and String (Old Schema)
-const normalizeList = (input) => {
-  if (!input) return [];
-  if (Array.isArray(input)) return input;
-  return input.split(';,;').map(k => k.trim());
-};
-
-
-// --- Sub-Components ---
-
-const StatCard = ({ label, value, colorClass }) => (
-  <div className={`p-4 rounded-lg shadow-sm border border-gray-100 flex flex-col items-center justify-center text-center ${colorClass}`}>
-    <span className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">{label}</span>
-    <span className="text-lg font-semibold text-gray-800 break-words w-full">{value}</span>
-  </div>
-);
-
-const SectionHeading = ({ id, title, children }) => (
-  <div className="flex justify-between items-end mt-10 mb-4 pb-2 border-b border-gray-200">
-      <h2 id={id} className="text-2xl font-bold text-gray-800">
-        {title}
-      </h2>
-      {children}
-  </div>
-);
-
-const AccessItem = ({ label, value, isLink }) => {
-    const displayValue = value || "Information not provided";
-    return (
-        <div className="mb-3">
-            <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">{label}</span>
-            {isLink && value ? (
-                <a href={displayValue} target="_blank" rel="noreferrer" className="text-sm text-blue-600 underline break-words block">
-                    {displayValue}
-                </a>
-            ) : (
-                <p className="text-sm text-gray-700 leading-snug break-words">{displayValue}</p>
-            )}
-        </div>
-    );
-};
-
 // Add this wrapper component to handle fetching and loading states
 export const MetadataPage = () => {
   const [data, setData] = useState(null);

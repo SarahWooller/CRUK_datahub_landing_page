@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { Panel, Group, Separator } from "react-resizable-panels";
 import CsvUploader from "./CsvUploader.jsx"
 import StructuralMetadataGrid from "./StructuralMetadataGrid.jsx";
+import AssistantPane from './AssistantPane.jsx';
 import FeedbackModal from './FeedbackModal.jsx';
 import questionData from '../feedback/upload_questions.json';
 import hdrukSchema from '../utils/HDRUK4.0.0.json';
@@ -1841,10 +1842,16 @@ return (
                     <Separator className="w-1 bg-gray-200 hover:bg-indigo-400 transition-colors cursor-col-resize" />
 
                     {/* RIGHT PANEL: Guidance or Tags */}
+{/* RIGHT PANEL: Guidance, AI, or Preview */}
 <Panel defaultSize={25} minSize={20}>
-    <GuidancePanel activeGuidance={currentGuidance}>
+    <AssistantPane
+        activeGuidance={currentGuidance}
+        formData={formData}
+        activeSection={activeSection}
+        onFormChange={handleDataChange}
+        >
 
-        {/* Append Active Tags directly inside GuidancePanel when viewing filters */}
+        {/* Append Active Tags directly inside AssistantPane when viewing filters */}
         {activeSection === 'datasetFilters' && (
             <div className="mt-4 border-t pt-4 border-gray-200">
                 <h2 className="text-sm font-bold mb-3 text-gray-700">Active Tags</h2>
@@ -1869,7 +1876,7 @@ return (
             </div>
         )}
 
-    </GuidancePanel>
+    </AssistantPane>
 </Panel>
 
 
