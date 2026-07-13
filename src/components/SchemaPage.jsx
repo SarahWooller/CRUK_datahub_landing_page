@@ -362,7 +362,8 @@ const WelcomeSection = ({
 
         {/* Change <p> to <div> here to allow the JsonUpload div descendant */}
         <div className="text-sm text-gray-600 mb-1 leading-relaxed">
-            If this is a new dataset, you can either input the metadata manually or, if you have done this before, you can directly upload a json with some or all of the required information.
+            If this is a new dataset, you can either input the metadata manually following the guidance in the right hand panel, switch tab to use the AI uploader, or if you have done this before, you can directly upload a json with some or all of the required information.
+
             <JsonUpload
                 schema={DATA_SCHEMA}
                 onUpload={onUpload}
