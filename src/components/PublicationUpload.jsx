@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import TargetSelector from './TargetSelector';
 
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
+const MICROSERVICE_URL = import.meta.env.VITE_MICROSERVICE_URL || "http://localhost:8001";
 
 const findMatchedKeys = (item, terms) => {
     const matches = new Set();
@@ -203,18 +204,31 @@ const PublicationUpload = () => {
             if (doiObj.status === 'success') continue;
 
             try {
-                const pubRes = await fetch(`${API_BASE_URL}/publications/from-doi`, {
+                // 1. Fetch structured JSON from Microservice
+                const pubRes = await fetch(`${MICROSERVICE_URL}/api/publications/from-doi`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ doi: doiObj.value, team_id: teamId })
+                });
+
+                if (!pubRes.ok) throw new Error('Invalid DOI or Microservice Error');
+                const pubPayload = await pubRes.json();
+
+                // 2. Save structured JSON to Main Backend
+                const saveRes = await fetch(`${API_BASE_URL}/publications/`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${token}`
                     },
-                    body: JSON.stringify({ doi: doiObj.value, team_id: teamId })
+                    body: JSON.stringify(pubPayload)
                 });
+                
+                if (!saveRes.ok) throw new Error('Failed to save publication to backend');
 
-                if (pubRes.ok === false) throw new Error('Invalid DOI');
-
-                const pubData = await pubRes.json();
+                const pubData = await saveRes.json();
                 const pubId = pubData.id;
 
                 const linkPath = selectedTarget.type === 'dataset'

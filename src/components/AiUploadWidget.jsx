@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 
-
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
+const MICROSERVICE_URL = import.meta.env.VITE_MICROSERVICE_URL || "http://localhost:8001";
 
 const AiUploadWidget = ({ formData, onFormChange }) => {
     const [dragActive, setDragActive] = useState(false);
@@ -46,7 +47,7 @@ const AiUploadWidget = ({ formData, onFormChange }) => {
                 payload.append('current_form_data', JSON.stringify(formData));
             }
 
-            const response = await fetch('http://localhost:8000/api/extract-metadata', {
+            const response = await fetch(`${MICROSERVICE_URL}/api/extract-metadata`, {
                 method: 'POST',
                 body: payload
             });
