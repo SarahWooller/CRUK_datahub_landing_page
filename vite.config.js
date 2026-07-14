@@ -35,6 +35,7 @@ export default defineConfig({
         upload_publications: resolve(__dirname, 'src/upload_publications.html'),
         dashboard: resolve(__dirname, 'src/dashboard.html'),
         test: resolve(__dirname, 'src/test.html'),
+        team_request: resolve(__dirname, 'src/team_request.html'),
       },
     },
   },

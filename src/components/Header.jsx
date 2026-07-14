@@ -5,13 +5,31 @@ import "../styles/style.css"
 export const Header = () => {
     const [userName, setUserName] = useState(null);
     const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
+    const [userTeams, setUserTeams] = useState([]);
+    const [activeTeamId, setActiveTeamId] = useState(null);
+    const [isDataDropdownOpen, setIsDataDropdownOpen] = useState(false);
 
     useEffect(() => {
         const storedName = localStorage.getItem('userName');
         if (storedName) {
             setUserName(storedName);
         }
+        const storedTeams = localStorage.getItem('userTeams');
+        if (storedTeams) {
+            setUserTeams(JSON.parse(storedTeams));
+        }
+        const storedActiveTeam = localStorage.getItem('activeTeamId');
+        if (storedActiveTeam) {
+            setActiveTeamId(storedActiveTeam);
+        }
     }, []);
+
+    const handleTeamChange = (e) => {
+        const newTeamId = e.target.value;
+        setActiveTeamId(newTeamId);
+        localStorage.setItem('activeTeamId', newTeamId);
+        window.location.reload(); // Refresh to update context
+    };
 
     const handleLogout = () => {
         localStorage.removeItem('token');
@@ -19,12 +37,23 @@ export const Header = () => {
         localStorage.removeItem('userId');
         localStorage.removeItem('teamId');
         localStorage.removeItem('activeTeamId');
+        localStorage.removeItem('userTeams');
         setUserName(null);
         window.location.reload();
     };
 
     const handleLoginSuccess = (user) => {
         setUserName(user.name);
+        
+        const storedTeams = localStorage.getItem('userTeams');
+        if (storedTeams) {
+            setUserTeams(JSON.parse(storedTeams));
+        }
+        const storedActiveTeam = localStorage.getItem('activeTeamId');
+        if (storedActiveTeam) {
+            setActiveTeamId(storedActiveTeam);
+        }
+        
         setIsSignInModalOpen(false);
     };
 
@@ -56,18 +85,29 @@ export const Header = () => {
                     <h1 className="strap-line">CRUK Data Hub</h1>
                 </a>
 
-                <div className="header-buttons">
-                    {userName ? (
-                        <div className="flex items-center space-x-4">
-                            <span className="text-sm font-medium text-gray-700">Welcome, <strong>{userName}</strong></span>
-                            <button className="btn" style={{backgroundColor: '#6b7280'}} onClick={handleLogout}>Sign out</button>
-                        </div>
-                    ) : (
-                        <button className="btn" onClick={() => setIsSignInModalOpen(true)}>Sign in</button>
-                    )}
+                <div className="header-buttons flex items-center space-x-4">
                     <a href="https://fdm2p6.csb.app/">
                         <button className="btn">Help</button>
                     </a>
+                    {!userName ? (
+                        <button className="btn" onClick={() => setIsSignInModalOpen(true)}>Sign In / Register</button>
+                    ) : (
+                        <>
+                            <button className="btn" style={{backgroundColor: '#6b7280'}} onClick={handleLogout}>Sign out</button>
+                            <span className="text-sm font-medium text-gray-700 whitespace-nowrap">Welcome, <strong>{userName}</strong></span>
+                            {userTeams.length > 0 && (
+                                <select 
+                                    value={activeTeamId || ''} 
+                                    onChange={handleTeamChange}
+                                    className="p-1 border border-gray-300 rounded text-sm bg-white text-black cursor-pointer shadow-sm focus:outline-none focus:border-[var(--cruk-darkblue)]"
+                                >
+                                    {userTeams.map(team => (
+                                        <option key={team.id} value={team.id}>{team.name}</option>
+                                    ))}
+                                </select>
+                            )}
+                        </>
+                    )}
                 </div>
             </div>
 
@@ -87,30 +127,33 @@ export const Header = () => {
                     </li>
                     <li><a href="./protect_data.html">How we protect your data</a></li>
 
-                    {/* Data Custodian Area - Hover Only Dropdown */}
-                    <li className="nav-dropdown-container">
-                        <a href="#" className="nav-link-main">
-                            Data Custodian Area
-                        </a>
-
-                        <ul className="nav-dropdown-menu">
-                            <li>
-                                <a href="./upload_project.html">
-                                    upload or change project
-                                </a>
-                            </li>
-                            <li>
-                                <a href="./upload.html">
-                                    upload or change dataset
-                                </a>
-                            </li>
-                            <li>
-                                <a href="./upload_publications.html">
-                                    upload and link publications
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                    {userName && (
+                        <li className="relative">
+                            <a 
+                                href="#" 
+                                className="nav-link-main font-bold text-yellow-300 flex items-center"
+                                onClick={(e) => { e.preventDefault(); setIsDataDropdownOpen(!isDataDropdownOpen); }}
+                            >
+                                Manage my data <span className="ml-1 text-xs">▼</span>
+                            </a>
+                            {isDataDropdownOpen && (
+                                <ul className="absolute left-0 mt-2 w-64 bg-white shadow-xl border border-gray-200 rounded-md py-2 z-50" style={{ display: 'block' }}>
+                                    {activeTeamId && (
+                                        <>
+                                            <li><a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Manage team membership</a></li>
+                                            <li><a href="./upload.html" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload or change a dataset</a></li>
+                                            <li><a href="./upload_project.html" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload or change a project</a></li>
+                                            <li><a href="./upload_publications.html" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload and link a publication</a></li>
+                                            <li><a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload and link a tool</a></li>
+                                        </>
+                                    )}
+                                    <li className={activeTeamId ? "border-t border-gray-200 mt-2" : ""}>
+                                        <a href="./team_request.html" className="block px-4 py-2 text-sm font-medium hover:bg-blue-50" style={{color: '#2563eb'}}>Register a new team space</a>
+                                    </li>
+                                </ul>
+                            )}
+                        </li>
+                    )}
                 </ul>
             </nav>
         </header>
