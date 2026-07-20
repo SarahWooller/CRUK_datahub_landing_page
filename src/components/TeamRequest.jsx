@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
+const MIDDLELAYER_URL = import.meta.env.VITE_MIDDLELAYER_URL || "http://localhost:8002";
 
 const TeamRequest = () => {
     const [status, setStatus] = useState('idle');
@@ -19,7 +19,7 @@ const TeamRequest = () => {
         const formData = new FormData(formRef.current);
 
         try {
-            const response = await fetch(`${API_BASE_URL}/team_requests/`, {
+            const response = await fetch(`${MIDDLELAYER_URL}/team_requests/`, {
                 method: 'POST',
                 body: formData,
             });
@@ -73,6 +73,8 @@ const TeamRequest = () => {
                     <label>Leave this empty if you are human</label>
                     <input type="text" name="website_url" tabIndex="-1" autoComplete="off" />
                 </div>
+                
+                <input type="hidden" name="user_name" value={userName || ""} />
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Email <span className="text-red-500">*</span></label>
@@ -91,17 +93,17 @@ const TeamRequest = () => {
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Team Introduction <span className="text-red-500">*</span></label>
-                    <textarea name="team_introduction" required rows="4" className="w-full p-2 border border-gray-300 rounded focus:border-[var(--cruk-darkblue)] focus:ring-1 focus:ring-[var(--cruk-darkblue)]"></textarea>
+                    <textarea name="team_introduction" rows="4" className="w-full p-2 border border-gray-300 rounded focus:border-[var(--cruk-darkblue)] focus:ring-1 focus:ring-[var(--cruk-darkblue)]"></textarea>
                 </div>
 
                 <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Reason for Request <span className="text-red-500">*</span></label>
-                    <textarea name="reason" required rows="3" className="w-full p-2 border border-gray-300 rounded focus:border-[var(--cruk-darkblue)] focus:ring-1 focus:ring-[var(--cruk-darkblue)]"></textarea>
+                    <textarea name="reason" required rows="4" className="w-full p-2 border border-gray-300 rounded focus:border-[var(--cruk-darkblue)] focus:ring-1 focus:ring-[var(--cruk-darkblue)]"></textarea>
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Team URL <span className="text-red-500">*</span></label>
-                    <input type="url" name="team_url" required className="w-full p-2 border border-gray-300 rounded focus:border-[var(--cruk-darkblue)] focus:ring-1 focus:ring-[var(--cruk-darkblue)]" />
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Team URL <span className="text-gray-400 font-normal">(Optional)</span></label>
+                    <input type="url" name="team_url" className="w-full p-2 border border-gray-300 rounded focus:border-[var(--cruk-darkblue)] focus:ring-1 focus:ring-[var(--cruk-darkblue)]" />
                 </div>
 
                 <div>
@@ -110,9 +112,9 @@ const TeamRequest = () => {
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Team Logo <span className="text-red-500">*</span></label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Team Logo <span className="text-gray-400 font-normal">(Optional)</span></label>
                     <p className="text-xs text-gray-500 mb-2">Please upload a valid PNG file.</p>
-                    <input type="file" name="team_logo" accept="image/png" required className="w-full text-gray-700 border border-gray-300 rounded p-1" />
+                    <input type="file" name="team_logo" accept="image/png" className="w-full text-gray-700 border border-gray-300 rounded p-1" />
                 </div>
 
                 <div className="pt-4 border-t border-gray-200 mt-6">

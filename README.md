@@ -79,4 +79,11 @@ alt_studies.html
     - import erdImage from '../assets/erd.png';
 
 
+### Automatic Dataset Filter Injection
 
+When uploading or editing a dataset schema (e.g., in `SchemaPage.jsx`), the system automatically maps and injects relevant CRUK and TCGA terms into the `datasetFilters` array before the data is saved.
+
+**How it works:**
+1. **Extraction**: Just before saving, the frontend extracts any user-selected Topography tags (IDs starting with `"0_0_0"`) and Histology tags (IDs starting with `"0_0_1"`).
+2. **Interrogation**: If both are present, it sends a `POST` request to the backend endpoint (`/datasets/extra-terms`) containing the selected tags.
+3. **Appending**: The backend processes this and returns a `lookupMap` of corresponding CRUK and TCGA dataset filters. The frontend then dynamically merges these new extra terms into the final dataset payload.

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 export const DatahubDashboard = () => {
+  const [isBannerVisible, setIsBannerVisible] = useState(true);
+
   const containerStyle = {
     backgroundColor: '#f0f7ff',
     maxWidth: '90%',
@@ -105,6 +107,46 @@ export const DatahubDashboard = () => {
 
   return (
     <div style={containerStyle}>
+      {/* Promotional Banner */}
+      {isBannerVisible && (
+        <div style={{
+          backgroundColor: '#003580',
+          color: '#ffffff',
+          padding: '16px 24px',
+          borderRadius: '8px',
+          marginBottom: '24px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+        }}>
+          <div>
+            <h3 style={{ margin: '0 0 8px 0', fontSize: '1.25rem', color: '#e40085' }}>Funded by CRUK? Showcase your data.</h3>
+            <p style={{ margin: 0, fontSize: '1rem', lineHeight: '1.5' }}>
+              Join the researchers making their metadata discoverable in three easy steps: <br />
+              1) <a href="#" style={{ color: '#ffcc00', textDecoration: 'underline', fontWeight: 'bold' }}>Register your email</a>. 
+              2) Register your team
+              3) Upload your metadata using quick AI tools.
+            </p>
+          </div>
+          <button 
+            onClick={() => setIsBannerVisible(false)}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: '#ffffff',
+              fontSize: '1.5rem',
+              cursor: 'pointer',
+              marginLeft: '16px',
+              opacity: 0.8
+            }}
+            aria-label="Dismiss banner"
+          >
+            &times;
+          </button>
+        </div>
+      )}
+
       {/* Hero Section with Inset Strapline */}
       <div style={heroSectionStyle}>
         <div style={insetBoxStyle}>
