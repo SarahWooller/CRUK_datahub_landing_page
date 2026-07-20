@@ -1,24 +1,50 @@
 <!DOCTYPE html>
-<html>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap">
-    <link rel="stylesheet" href="./styles/style.css">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="5;url=https://crukdatahublandingpage-production.up.railway.app/src/dashboard">
+    <link rel="canonical" href="https://crukdatahublandingpage-production.up.railway.app/src/dashboard">
+    <title>Redirecting</title>
     <style>
-        /* This keeps the larger font request in mind */
-        body { font-family: 'Inter', sans-serif; background-color: #f8f8f8; font-size: 16px; }
-        .text-cruk-red { color: #E4002B; }
-        .bg-cruk-red { background-color: #E4002B; }
-        .h-40::-webkit-scrollbar { width: 8px; }
-        .h-40::-webkit-scrollbar-thumb { background-color: #d1d5db; border-radius: 4px; }
-        .text-\[\#E4002B\]:focus { --tw-ring-color: #E4002B; border-color: #E4002B; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 28px;
+            text-align: center;
+            margin-top: 15%;
+            background-color: #fdfbf7;
+            color: #222;
+            padding: 0 20px;
+        }
+        a {
+            color: #0066cc;
+            text-decoration: none;
+            word-wrap: break-word;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
     </style>
-
+    <script>
+        setTimeout(function() {
+            window.location.href = "https://crukdatahublandingpage-production.up.railway.app/src/dashboard";
+        }, 5000);
+    </script>
+</head>
 <body>
-
-  <div id="header"></div>
-  <div id="datahubDashboard"></div>
-
-  <script type="module" src="./dash_vite.jsx"></script>
-
+    <div class="container">
+        <p>The design portal for the CRUK metadata hub has moved to</p>
+        <p><a href="https://crukdatahub-staging.up.railway.app/src/dashboard">https://crukdatahub-staging.up.railway.app/src/dashboard</a></p>
+        <p>Click above if you are not redirected in 5 seconds.</p>
+    </div>
 </body>
 </html>
