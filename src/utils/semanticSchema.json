@@ -3,11 +3,7 @@
         "demographicFrequency": ["ethnicity"],
         "provenance": ["temporal"],
         "coverage": ["typicalAgeRangeMin", "typicalAgeRangeMax", "datasetCompleteness"],
-        "dataCustodian": ["identifier", "name", "contactPoint", "description"],
-        "access": ["accessRights"],
-        "usage": [],
-        "formatAndStandards": []
-
+        "dataCustodian": ["identifier", "name", "contactPoint", "description"]
     },
     "visibleSections": [
       "welcome",
@@ -15,16 +11,17 @@
       "projectGrants",
       "summary",
       "documentation",
-      "datasetFilters",
       "structuralMetadata",
       "otherDataTypes",
       "erd",
-      "coverage",
-      "provenance",
-      "enrichmentAndLinkage",
       "observations",
       "demographicFrequency",
-      "omics"
+      "omics",
+      "provenance",
+      "accessibility",
+      "coverage",
+      "enrichmentAndLinkage",
+      "datasetFilters"
     ],
     "summaryOrder": ["title", "leadResearcher", "leadResearchInstitute", "contactPoint", "doiName", "abstract", "accessRights",
       "dataCustodian", "populationSize", "keywords", "datasetAliases"],
@@ -92,6 +89,7 @@
           }
           }
           },
+      "EnrichmentAndLinkage": {},
       "FormatAndStandards": {
         "properties": {
           "format": {
@@ -374,8 +372,10 @@
           "description": "Three numbers - Major.Minor.Patch e.g. 1.1.0",
           "guidance": "Dataset metadata version should follow standard SEMVER naming conventions (https://semver.org). For example: 1.1.0 major.minor.patch.\\nMajor: Significant/breaking changes. \\n eg The dataset has now been populated \\n The access conditions have changed \\nThe purpose of the dataset has changed significantly \\n There is a change to the type of datasets collected\\nMinor: New features and bug fixes.\\n eg More samples have been added. \\nPatch: Minor fixes without new features. \\neg more information about the dataset has been added"
         },
+
         "projectGrants": {
-          "guidance": "Please upload information about any CRUK grants that are associated with the dataset here. This helps to publicise your work at an early stage before any of the datasets have been collected and may help you identify potential collaborators. \\n So that you can add information about more than one grant, when you start writing in any of the boxes another set of empty boxes will appear at the end."
+          "title": "Project",
+          "guidance": "Please upload information about any CRUK grants that are associated with the dataset here. This helps to publicise your work at an early stage before any of the datasets have been collected and may help you identify potential collaborators. \n So that you can add information about more than one grant, when you start writing in any of the boxes another set of empty boxes will appear at the end."
         },
         "project": {
           "description": "Metadata describing the originating CRUK project. For new projects this information will be pre-filled from the grant contract.",
@@ -383,7 +383,7 @@
         },
         "provenance": {
           "description": "Optional information setting out how often the information is updated and the time period covered.",
-          "title": "Dateset Timelines",
+          "title": "Provenance",
           "guidance": "Information on the time period covered by the dataset, including first and last entries, frequency and lag of publication.",
           "required": []
         },
@@ -402,12 +402,14 @@
           "guidance": "Datasets in the CRUK datahub are filtered according to three criteria: type of cancer, type of data and access conditions.\\n Use ICD-O terminology to categorise each of the cancers covered, and keywords to include further important details. This is automatically translated to CRUK and TCGA equivalents."
         },
         "accessibility": {
-          "title": "Accessibility",
+          "title": "Data Access, Usage & Formatting",
           "guidance": "Upload information on how researchers can gain access to the data and access restrictions."
         },
         "enrichmentAndLinkage": {
-          "title": "Tools and Publications",
-          "guidance": "Upload information on other projects, tools, publications and other datasets that are linked to this one."
+          "title": "Related References",
+          "description": "Include information here if the dataset is related to or derived from other datasets, or you wish to link publications and tools.",
+          "guidance": "If this dataset is derived from, or related to, other datasets please include that information here. You can also link to other tools and publications here."
+
         },
         "otherDataTypes": {
           "guidance": "Datasets often now include audio-visual data such as recordings and images. Please list, describe and identify the format."
@@ -419,9 +421,11 @@
           "guidance": "Please provide interesting observations about your dataset. These might for example include the number of datapoints in a particular table of note. "
         },
         "demographicFrequency": {
+          "title": "Demographics",
           "guidance": "CRUK is committed to improving the racial diversity of datasets. "
         },
         "omics": {
+          "title": "Omics",
           "guidance": "Information about the assays and platforms used to generate omics information."
         }
       }

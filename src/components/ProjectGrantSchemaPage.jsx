@@ -201,10 +201,22 @@ const FieldRenderer = ({ propKey, prop, path, formData, onChange, isRequired, se
 
     if (isArray) {
         const items = Array.isArray(currentValue) && currentValue.length > 0 ? currentValue : [''];
+        
         const handleInputChange = (index, newVal) => {
             const newArr = [...items];
             newArr[index] = newVal;
-            if (index === items.length - 1 && newVal !== '') newArr.push('');
+            onChange(path, newArr);
+        };
+
+        const handleRemoveItem = (index) => {
+            const newArr = [...items];
+            newArr.splice(index, 1);
+            onChange(path, newArr);
+        };
+
+        const handleAddItem = () => {
+            const newArr = [...items];
+            newArr.push('');
             onChange(path, newArr);
         };
 
@@ -213,16 +225,33 @@ const FieldRenderer = ({ propKey, prop, path, formData, onChange, isRequired, se
                 <label className="block text-sm font-bold text-gray-700 mb-1">{prop.title || propKey}</label>
                 <div className="space-y-3">
                     {items.map((item, index) => (
-                        <input
-                            key={index}
-                            type="text"
-                            className="w-full p-2 border border-gray-300 rounded focus:ring-indigo-500"
-                            placeholder={prop.examples ? prop.examples.join(', ') : "Enter value..."}
-                            value={item || ''}
-                            onFocus={handleFocus}
-                            onChange={(e) => handleInputChange(index, e.target.value)}
-                        />
+                        <div key={index} className="relative group flex items-center">
+                            <input
+                                type="text"
+                                className="w-full p-2 border border-gray-300 rounded focus:ring-indigo-500 pr-10"
+                                placeholder={prop.examples ? prop.examples.join(', ') : "Enter value..."}
+                                value={item || ''}
+                                onFocus={handleFocus}
+                                onChange={(e) => handleInputChange(index, e.target.value)}
+                            />
+                            <button 
+                                type="button" 
+                                onClick={() => handleRemoveItem(index)}
+                                className="absolute right-2 p-1 text-gray-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-colors"
+                                title="Remove item"
+                            >
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                            </button>
+                        </div>
                     ))}
+                    <button
+                        type="button"
+                        onClick={handleAddItem}
+                        className="flex items-center text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition-colors"
+                    >
+                        <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
+                        Add another
+                    </button>
                 </div>
             </div>
         );

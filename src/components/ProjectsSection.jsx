@@ -18,12 +18,25 @@ export const ProjectsSection = () => {
                 });
                 if (!response.ok) throw new Error("Failed to fetch database records");
                 const data = await response.json();
-                setGrants(data);
+                const mappedGrants = data.map(grant => ({
+                    ...grant,
+                    projectGrantName: grant.project_grant_name,
+                    leadResearcher: grant.lead_researcher,
+                    leadResearchInstitute: grant.lead_research_institute,
+                    projectGrantStartDate: grant.project_grant_start_date,
+                    projectGrantEndDate: grant.project_grant_end_date,
+                    grantNumbers: grant.grant_numbers,
+                    projectGrantScope: grant.project_grant_scope
+                }));
+                setGrants(mappedGrants);
             } catch (error) {
                 console.error("Error loading from database:", error);
             }
         };
         fetchProjects();
+
+        window.addEventListener('authChange', fetchProjects);
+        return () => window.removeEventListener('authChange', fetchProjects);
     }, []);
 
     const filteredAndSortedGrants = useMemo(() => {

@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import SignInModal from './SignInModal.jsx';
+import { ChangePasswordModal } from './ChangePasswordModal.jsx';
 import "../styles/style.css"
 
 export const Header = () => {
     const [userName, setUserName] = useState(null);
     const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
+    const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = useState(false);
     const [userTeams, setUserTeams] = useState([]);
     const [activeTeamId, setActiveTeamId] = useState(null);
     const [isDataDropdownOpen, setIsDataDropdownOpen] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
         const storedName = localStorage.getItem('userName');
@@ -21,6 +24,10 @@ export const Header = () => {
         const storedActiveTeam = localStorage.getItem('activeTeamId');
         if (storedActiveTeam) {
             setActiveTeamId(storedActiveTeam);
+        }
+        const storedIsAdmin = localStorage.getItem('isAdmin');
+        if (storedIsAdmin === 'true') {
+            setIsAdmin(true);
         }
     }, []);
 
@@ -38,7 +45,9 @@ export const Header = () => {
         localStorage.removeItem('teamId');
         localStorage.removeItem('activeTeamId');
         localStorage.removeItem('userTeams');
+        localStorage.removeItem('isAdmin');
         setUserName(null);
+        setIsAdmin(false);
         window.location.reload();
     };
 
@@ -54,7 +63,12 @@ export const Header = () => {
             setActiveTeamId(storedActiveTeam);
         }
         
+        if (user.is_admin) {
+            setIsAdmin(true);
+        }
+        
         setIsSignInModalOpen(false);
+        window.dispatchEvent(new Event('authChange'));
     };
 
     const logoStyle = {
@@ -117,6 +131,11 @@ export const Header = () => {
                 onLoginSuccess={handleLoginSuccess} 
             />
 
+            <ChangePasswordModal 
+                isOpen={isChangePasswordModalOpen} 
+                onClose={() => setIsChangePasswordModalOpen(false)} 
+            />
+
             <nav className="thin-navbar">
                 <ul>
                     <li><a href="./about.html">About</a></li>
@@ -126,6 +145,14 @@ export const Header = () => {
                         </a>
                     </li>
                     <li><a href="./protect_data.html">How we protect your data</a></li>
+
+                    {isAdmin && (
+                        <li>
+                            <a href="./manage_hub.html" className="nav-link-main font-bold text-red-300">
+                                Manage the hub
+                            </a>
+                        </li>
+                    )}
 
                     {userName && (
                         <li className="relative">
@@ -149,6 +176,15 @@ export const Header = () => {
                                     )}
                                     <li className={activeTeamId ? "border-t border-gray-200 mt-2" : ""}>
                                         <a href="./team_request.html" className="block px-4 py-2 text-sm font-medium hover:bg-blue-50" style={{color: '#2563eb'}}>Register a new team space</a>
+                                    </li>
+                                    <li className="border-t border-gray-200 mt-2 pt-2">
+                                        <button 
+                                            onClick={(e) => { e.preventDefault(); setIsChangePasswordModalOpen(true); setIsDataDropdownOpen(false); }} 
+                                            className="block w-full text-left px-4 py-2 text-sm font-medium hover:bg-blue-50" 
+                                            style={{color: '#374151'}}
+                                        >
+                                            Change my password
+                                        </button>
                                     </li>
                                 </ul>
                             )}

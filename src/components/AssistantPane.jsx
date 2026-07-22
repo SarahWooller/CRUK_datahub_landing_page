@@ -5,7 +5,7 @@ import PreviewTags from './PreviewTags.jsx';
 import PreviewMainContent from './PreviewMainContent.jsx';
 import AiUploadWidget from './AiUploadWidget.jsx';
 
-const AssistantPane = ({ activeGuidance, formData, activeSection, onFormChange, children }) => {
+const AssistantPane = ({ activeGuidance, formData, activeSection, setActiveSection, onFormChange, children }) => {
     const [activeTab, setActiveTab] = useState('guidance'); // 'guidance', 'ai', 'preview'
     const [viewMode, setViewMode] = useState('visual'); // 'visual', 'json'
 
@@ -115,7 +115,7 @@ const AssistantPane = ({ activeGuidance, formData, activeSection, onFormChange, 
                                             </svg>
                                             <span className="text-[10px] font-bold uppercase tracking-widest">Left Navigation Panel</span>
                                         </div>
-                                        <PreviewAccessCard data={formData} />
+                                        <PreviewAccessCard data={formData} onSectionClick={setActiveSection} />
                                     </div>
 
                                     {/* Central Panel Indicator */}
@@ -128,7 +128,7 @@ const AssistantPane = ({ activeGuidance, formData, activeSection, onFormChange, 
                                             </svg>
                                             <span className="text-[10px] font-bold uppercase tracking-widest">Central Main Content</span>
                                         </div>
-                                        <PreviewMainContent data={formData} />
+                                        <PreviewMainContent data={formData} onSectionClick={setActiveSection} />
                                     </div>
 
                                     {/* Right Panel Indicator */}
@@ -140,7 +140,7 @@ const AssistantPane = ({ activeGuidance, formData, activeSection, onFormChange, 
                                             </svg>
                                             <span className="text-[10px] font-bold uppercase tracking-widest">Right Filters Panel</span>
                                         </div>
-                                        <PreviewTags data={formData} />
+                                        <PreviewTags data={formData} onSectionClick={setActiveSection} />
                                     </div>
 
                                 </div>

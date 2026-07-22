@@ -305,7 +305,7 @@ const { derivedFilters, activeIcons } = useMemo(() => {
             { id: 'demographic-frequency', label: 'Demographics', hasData: Object.keys(demographicFrequency).length > 0 },
             { id: 'omics', label: 'Omics', hasData: !!omics },
             { id: 'provenance', label: 'Provenance', hasData: Object.keys(provenance).length > 0 },
-            { id: 'enrichment-and-linkage', label: 'Enrichment & Linkage', hasData: Object.keys(enrichmentAndLinkage).length > 0 },
+            { id: 'access-usage', label: 'Usage & Formatting', hasData: Object.keys(usage).length > 0 || Object.keys(accessibility.formatAndStandards || {}).length > 0 },
           ].filter(item => item.hasData).map((item) => (
             <li key={item.id}>
               <a
@@ -318,67 +318,372 @@ const { derivedFilters, activeIcons } = useMemo(() => {
           ))}
         </ul>
         {/* --- Data Access Box --- */}
-        <div className="mt-8 bg-blue-50 rounded-lg border border-blue-100 p-4">
+        {(summary.dataCustodian?.name || summary.publisher?.name || access.accessRights || summary.contactPoint || data.accessibility?.access || data.documentation?.inPipeline) && (
+            <div className="mt-8 bg-blue-50 rounded-lg border border-blue-100 p-4">
 
-            {/* Header with Email Icon */}
-            <div className="flex justify-between items-center mb-4 border-b border-blue-200 pb-2 relative">
-                <h4 className="font-bold text-blue-900">Data Access</h4>
+                <div className="mb-4 border-b border-blue-200 pb-3 relative flex flex-col gap-2">
+                    <h4 className="font-bold text-blue-900">Data Access</h4>
 
-                {/* Email Copy Container */}
-                <div className="relative flex items-center">
-                    {emailCopied && <span className="text-xs text-green-600 font-bold mr-2">Copied</span>}
-                    <button
-                        onClick={handleCopyEmail}
-                        className="text-blue-600 hover:text-blue-800 transition-colors p-1 rounded hover:bg-blue-100"
-                        title="Copy Contact Email"
-                    >
-                        <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-                        </svg>
-                    </button>
+                    {/* Email Copy Container */}
+                    {summary.contactPoint && (
+                        <div className="flex items-center text-sm text-gray-700 bg-white border border-blue-200 px-3 py-1.5 rounded w-fit">
+                            <span className="truncate mr-2 font-medium">{Array.isArray(summary.contactPoint) ? summary.contactPoint[0] : summary.contactPoint}</span>
+                            <button
+                                onClick={handleCopyEmail}
+                                className="text-blue-600 hover:text-blue-800 transition-colors p-1 rounded hover:bg-blue-100 flex-shrink-0"
+                                title="Copy Contact Email"
+                            >
+                                {emailCopied ? (
+                                    <span className="text-xs text-green-600 font-bold">Copied</span>
+                                ) : (
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                    </svg>
+                                )}
+                            </button>
+                        </div>
+                    )}
                 </div>
+
+                {/* Pipeline Status */}
+                {data.documentation?.inPipeline && (
+                    <div className="mb-4 flex items-center">
+                        <span className="text-xs font-bold text-gray-500 uppercase tracking-wide mr-2">Pipeline Status:</span>
+                        <span className={`px-2 py-1 rounded text-xs font-bold ${data.documentation.inPipeline === 'Available' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+                            {data.documentation.inPipeline}
+                        </span>
+                    </div>
+                )}
+
+                {/* Simplified Data Fields */}
+                <AccessItem
+                    label="Data Custodian"
+                    value={summary.dataCustodian?.name || summary.publisher?.name}
+                />
+                <AccessItem
+                    label="Access Rights"
+                    value={access.accessRights}
+                />
+                <AccessItem label="Data Controller" value={data.accessibility?.access?.dataController} />
+                <AccessItem label="Data Processor" value={data.accessibility?.access?.dataProcessor} />
+                <AccessItem label="Access Service" value={data.accessibility?.access?.accessService} />
+                <AccessItem label="Access Service Category" value={data.accessibility?.access?.accessServiceCategory} />
+                <AccessItem label="Access Request Cost" value={data.accessibility?.access?.accessRequestCost} />
+                <AccessItem label="Jurisdiction" value={Array.isArray(data.accessibility?.access?.jurisdiction) ? data.accessibility.access.jurisdiction.join(', ') : data.accessibility?.access?.jurisdiction} />
             </div>
-
-            {/* Simplified Data Fields */}
-            <AccessItem
-                label="Data Custodian"
-                value={summary.dataCustodian?.name || summary.publisher?.name || "Information not provided"}
-            />
-            <AccessItem
-                label="Access Rights"
-                value={access.accessRights}
-
-            />
-
-        </div>
+        )}
       </nav>
       </Panel>
       <Separator className="w-1 bg-gray-200 hover:bg-blue-400 transition-colors cursor-col-resize active:bg-blue-600" />
       {/* --- Main Content --- */}
 
       <Panel defaultSize={55} minSize={30}>
-        <main className="w-full h-full p-8 overflow-y-auto relative">
+        <main className="w-full h-full p-8 overflow-y-auto relative bg-white">
+            <DatasetDetailsContent data={data} isPreview={false} onSectionClick={onSectionClick} />
+        </main>
+      </Panel>
+        <Separator className="w-1 bg-gray-200 hover:bg-blue-400 transition-colors cursor-col-resize active:bg-blue-600" />
+
+      {/* --- RIGHT PANEL: Filters & Tags --- */}
+      <Panel defaultSize={20} minSize={15} >
+      {/* --- Right Panel --- */}
+      <aside className="w-full h-full bg-white shadow-lg p-6 border-l border-gray-100 overflow-y-auto">
+
+        {/* Enrichment & Linkage (Related References) */}
+        {Object.keys(enrichmentAndLinkage).length > 0 && (
+            <div className="mb-8">
+                <h3 className="text-lg font-bold text-gray-800 mb-3 uppercase tracking-wide">Related References</h3>
+                {Object.entries(enrichmentAndLinkage).map(([key, value]) => {
+                    if (!value || (Array.isArray(value) && value.length === 0)) return null;
+                    const formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
+                    const getHref = (str) => {
+                        if (typeof str !== 'string') return null;
+                        if (str.startsWith('http')) return str;
+                        if (str.startsWith('10.')) return `https://doi.org/${str}`;
+                        return null;
+                    };
+                    return (
+                        <div key={key} className="mb-3">
+                            <h4 className="font-bold text-gray-500 uppercase tracking-wide mb-1 text-xs">{formattedKey}</h4>
+                            <ul className="list-disc pl-4 space-y-1 text-sm text-gray-700 break-words">
+                                {Array.isArray(value) ? value.map((item, idx) => {
+                                    if (typeof item === 'object' && item !== null) {
+                                        const displayText = `${item.title || ''} ${item.pid ? `[${item.pid}]` : ''}`.trim() || item.url;
+                                        const href = getHref(item.url);
+                                        return (
+                                            <li key={idx}>
+                                                {href ? (
+                                                    <a href={href} target="_blank" rel="noreferrer" className="text-blue-600 hover:text-blue-800 transition-colors">
+                                                        {displayText}
+                                                    </a>
+                                                ) : (
+                                                    <span>{displayText}</span>
+                                                )}
+                                            </li>
+                                        );
+                                    }
+                                    const href = getHref(item);
+                                    return (
+                                        <li key={idx}>
+                                            {href ? (
+                                                <a href={href} target="_blank" rel="noreferrer" className="text-blue-600 hover:text-blue-800 transition-colors break-all">
+                                                    {item}
+                                                </a>
+                                            ) : (
+                                                <span>{item}</span>
+                                            )}
+                                        </li>
+                                    );
+                                }) : <li>{value}</li>}
+                            </ul>
+                        </div>
+                    )
+                })}
+            </div>
+        )}
+
+        {/* Associated Media */}
+        {data.documentation?.associatedMedia && (
+            <div className="mb-8">
+                <h3 className="text-lg font-bold text-gray-800 mb-3 uppercase tracking-wide">Associated Media</h3>
+                <ul className="list-disc pl-4 space-y-1">
+                    {Array.isArray(data.documentation.associatedMedia) ? (
+                        data.documentation.associatedMedia.map((media, i) => (
+                            <li key={i}>
+                                <a href={media} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline break-all text-sm">{media}</a>
+                            </li>
+                        ))
+                    ) : (
+                        <li>
+                            <a href={data.documentation.associatedMedia} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline break-all text-sm">{data.documentation.associatedMedia}</a>
+                        </li>
+                    )}
+                </ul>
+            </div>
+        )}
+
+        <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase tracking-wide border-t border-gray-100 pt-6">Filters & Tags</h3>
+
+        {/* Keywords */}
+        <details className="mb-4 group">
+            <summary className="cursor-pointer font-bold text-blue-900 border-b border-gray-100 pb-1 flex justify-between items-center list-none outline-none">
+                Keywords
+                <span className="transform group-open:rotate-180 transition-transform duration-200 text-xs text-blue-500">▼</span>
+            </summary>
+            <ul className="space-y-1 mt-3 pl-1">
+                {keywords.map((kw, i) => (
+                    <li key={i} className="text-sm text-gray-600 flex items-center">
+                        <span className="w-1.5 h-1.5 bg-blue-400 rounded-full mr-2"></span>
+                        {kw}
+                    </li>
+                ))}
+            </ul>
+        </details>
+
+        {/* Filters */}
+        <div className="space-y-4">
+             {/* Resource Creator */}
+             {resourceCreators && resourceCreators !== "Information not provided" && (
+                 <div className="mb-4">
+                     <h4 className="font-bold text-blue-900 mb-1 border-b border-gray-200 pb-1 text-base">Resource Creator</h4>
+                     <p className="text-sm text-gray-600">{resourceCreators}</p>
+                 </div>
+             )}
+
+             {/* Dynamic Nested Filters - Expandable */}
+             {Object.entries(derivedFilters).map(([groupName, categories]) => (
+                 <details key={groupName} className="group mb-2">
+                     {/* Main Group Header */}
+                     <summary className="cursor-pointer font-bold text-blue-900 border-b border-gray-200 pb-1 mb-2 text-base flex justify-between items-center list-none outline-none">
+                         {groupName}
+                         <span className="transform group-open:rotate-180 transition-transform duration-200 text-xs text-blue-500">▼</span>
+                     </summary>
+
+                     {/* Loop through Sub-Categories */}
+                     <div className="mt-3 pl-1">
+                         {Object.entries(categories).map(([categoryName, items]) => (
+                            <div key={categoryName} className="mb-4">
+                                <h5 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{categoryName}</h5>
+                                <ul className="pl-2 border-l-2 border-gray-100 ml-1">
+                                    {items.map((filter, idx) => (
+                                        <li key={idx} className="mb-2 text-sm group/filter">
+                                            <span className="text-gray-800 font-medium block">{filter.label}</span>
+                                            {filter.description && (
+                                                <span className="text-xs text-gray-500 block break-words mt-0.5 italic">
+                                                    {filter.description}
+                                                </span>
+                                            )}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                         ))}
+                     </div>
+                 </details>
+             ))}
+
+             {Object.keys(derivedFilters).length === 0 && (
+                <p className="text-sm text-gray-400 italic">No dataset filters applied.</p>
+             )}
+        </div>
+      </aside>
+      </Panel>
+      </Group>
+    </div>
+  );
+};
+
+export const DatasetDetailsContent = ({ data, isPreview = false, onSectionClick }) => {
+  const isNotEmpty = (obj) => {
+      if (!obj) return false;
+      if (Array.isArray(obj)) return obj.length > 0;
+      return Object.values(obj).some(val => {
+          if (val === null || val === undefined || val === "") return false;
+          if (Array.isArray(val) && val.length === 0) return false;
+          return true;
+      });
+  };
+  const [expandedOtherData, setExpandedOtherData] = useState({});
+  const toggleOtherData = (index) => {
+    setExpandedOtherData(prev => ({ ...prev, [index]: !prev[index] }));
+  };
+  const [expandedTables, setExpandedTables] = useState({});
+  const [currentGrantIndex, setCurrentGrantIndex] = useState(0);
+
+  const otherDataTypes = (data.otherDataTypes || []).filter(isNotEmpty);
+  const demographicFrequency = data.demographicFrequency || {};
+  const mappedEthnicities = useMemo(() => {
+    const ethnicityData = demographicFrequency.ethnicity;
+    if (!ethnicityData || !Array.isArray(ethnicityData) || ethnicityData.length === 0) {
+        return null;
+    }
+    const lookupMap = ethnicityData.reduce((acc, curr) => {
+        acc[curr.bin] = curr.count;
+        return acc;
+    }, {});
+    const mapped = ETHNICITY_CATEGORIES.map(category => ({
+        label: category,
+        count: lookupMap[category] || 0
+    }));
+    const maxCount = Math.max(...mapped.map(e => e.count));
+    return { data: mapped, maxCount };
+  }, [demographicFrequency.ethnicity]);
+  const omics = data.omics || null;
+  const provenance = data.provenance || {};
+  const enrichmentAndLinkage = data.enrichmentAndLinkage || {};
+
+  const projectGrants = (data.projectGrants || []).filter(isNotEmpty);
+  const observations = (data.observations || []).filter(isNotEmpty);
+  const descriptionText = data.documentation?.description || data.summary?.description || "";
+  const documentationPreview = useMemo(() => getFirstTwoSentences(descriptionText), [descriptionText]);
+
+  const groupedMetadata = useMemo(() => {
+    const tables = data.structuralMetadata?.tables || data.structuralMetadata || [];
+    return tables.reduce((acc, item) => {
+      const entity = item.name;
+      const desc = item.description || "";
+      if (!acc[entity]) {
+        acc[entity] = { description: desc, columns: [], size: item.size };
+      }
+      if (item.columns) {
+        acc[entity].columns.push(...item.columns);
+      }
+      return acc;
+    }, {});
+  }, [data]);
+
+  const coverage = data.coverage || {};
+  const population = data.summary?.populationSize;
+  const ageRange = coverage.typicalAgeRangeMin && coverage.typicalAgeRangeMax
+    ? `${coverage.typicalAgeRangeMin} - ${coverage.typicalAgeRangeMax}`
+    : (coverage.typicalAgeRange || null);
+  const leadTime = data.accessibility?.access?.deliveryLeadTime;
+  const followUp = coverage.followUp;
+  const pathway = coverage.pathway;
+  const spatial = coverage.spatial;
+  const datasetCompleteness = coverage.datasetCompleteness;
+  const documentation = data.documentation || {};
+
+  const { activeIcons } = useMemo(() => {
+    const icons = new Set();
+    const targetIconKeys = Object.keys(ICON_MAPPING);
+    const filterObjects = data.datasetFilters || [];
+    filterObjects.forEach(filter => {
+        if (targetIconKeys.includes(filter.label)) {
+            icons.add(filter.label);
+        } else if (targetIconKeys.includes(filter.category)) {
+            icons.add(filter.category);
+        }
+    });
+    const mappedIcons = Array.from(icons).map(key => ICON_MAPPING[key]);
+    return { activeIcons: mappedIcons };
+  }, [data]);
+
+  const downloadJson = () => {
+    const jsonString = JSON.stringify(data, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = "metadata.json";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const toggleTable = (entityName) => {
+    setExpandedTables(prev => ({ ...prev, [entityName]: !prev[entityName] }));
+  };
+
+  const toggleAllTables = (shouldExpand) => {
+    const newState = {};
+    Object.keys(groupedMetadata).forEach(key => { newState[key] = shouldExpand; });
+    setExpandedTables(newState);
+  };
+
+  const summary = data.summary || {};
+
+  return (
+    <>
         {/* Header Area */}
         <div className="flex justify-between items-start mb-8">
             <div>
-                <h1 className="text-4xl font-extrabold text-blue-900 mb-3">{summary.title}</h1>
-                <div className="flex flex-col sm:flex-row sm:items-center text-sm text-gray-600 gap-2 sm:gap-6">
-                    {/* Data Custodian / Publisher */}
-                    <div className="flex items-center">
-                        <span className="font-semibold mr-2">Data Custodian:</span>
-                        {summary.dataCustodian?.name || "Unknown"}
+                <h1 className={`${isPreview ? 'text-2xl' : 'text-4xl'} font-extrabold text-blue-900 mb-1`}>
+                    {summary.title || "Untitled Dataset"}
+                </h1>
+                {summary.datasetAliases && (
+                    <p className="text-sm text-gray-500 italic mb-3">
+                        Also known as: {Array.isArray(summary.datasetAliases) ? summary.datasetAliases.join(', ') : summary.datasetAliases}
+                    </p>
+                )}
+                {summary.doiName && (
+                    <div className="flex flex-col sm:flex-row sm:items-center text-sm text-gray-600 gap-2 sm:gap-6 mb-2">
+                        <div className="flex items-center">
+                            <span className="font-semibold mr-2">DOI:</span>
+                            <a href={`https://doi.org/${summary.doiName}`} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline break-all">{summary.doiName}</a>
+                        </div>
                     </div>
-                </div>
+                )}
+                {(summary.leadResearcher || summary.leadResearchInstitute) && (
+                    <div className="text-sm text-gray-600">
+                        <span className="font-semibold mr-2">Lead Researcher:</span>
+                        {summary.leadResearcher || "Unknown"}
+                        {summary.leadResearchInstitute && <span className="italic"> — {summary.leadResearchInstitute}</span>}
+                    </div>
+                )}
+
             </div>
 
-            {/* Download Button */}
-            <button
-                onClick={downloadJson}
-                className="flex-shrink-0 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded shadow transition flex items-center gap-2"
-            >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                Download JSON
-            </button>
+            {/* Download Button (Only outside preview) */}
+            {!isPreview && (
+                <button
+                    onClick={downloadJson}
+                    className="flex-shrink-0 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded shadow transition flex items-center gap-2"
+                >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    Download JSON
+                </button>
+            )}
         </div>
 
         {/* --- ICON GALLERY --- */}
@@ -398,12 +703,13 @@ const { derivedFilters, activeIcons } = useMemo(() => {
         </div>
 
     {/* --- Stat Cards (Conditional Rendering) --- */}
-    <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-10">
-      {population && (
+    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-10">
+      {population !== undefined && population !== null && (
         <StatCard
           label="Population"
           value={population?.toLocaleString()}
           colorClass="bg-blue-50"
+          onClick={onSectionClick ? () => onSectionClick('summary') : undefined}
         />
       )}
       {ageRange && (
@@ -411,6 +717,7 @@ const { derivedFilters, activeIcons } = useMemo(() => {
           label="Age Range"
           value={ageRange}
           colorClass="bg-green-50"
+          onClick={onSectionClick ? () => onSectionClick('coverage') : undefined}
         />
       )}
       {leadTime && (
@@ -418,6 +725,7 @@ const { derivedFilters, activeIcons } = useMemo(() => {
           label="Access"
           value={leadTime}
           colorClass="bg-purple-50"
+          onClick={onSectionClick ? () => onSectionClick('accessibility') : undefined}
         />
       )}
       {followUp && (
@@ -425,16 +733,43 @@ const { derivedFilters, activeIcons } = useMemo(() => {
           label="Follow Up"
           value={followUp}
           colorClass="bg-yellow-50"
+          onClick={onSectionClick ? () => onSectionClick('coverage') : undefined}
         />
       )}
-
+      {pathway && (
+        <StatCard
+          label="Pathway"
+          value={pathway}
+          colorClass="bg-red-50"
+          onClick={onSectionClick ? () => onSectionClick('coverage') : undefined}
+        />
+      )}
+      {spatial && (
+        <StatCard
+          label="Spatial Coverage"
+          value={Array.isArray(spatial) ? spatial.join(', ') : spatial}
+          colorClass="bg-indigo-50"
+          onClick={onSectionClick ? () => onSectionClick('coverage') : undefined}
+        />
+      )}
     </div>
 
+    {datasetCompleteness && (
+        <div className="mb-10 bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+            <h3 
+              className={`text-lg font-bold mb-2 ${onSectionClick ? 'text-blue-600 hover:text-blue-800 cursor-pointer hover:underline transition-colors' : 'text-gray-800'}`}
+              onClick={onSectionClick ? () => onSectionClick('coverage') : undefined}
+            >
+              Dataset Completeness
+            </h3>
+            <p className="text-gray-700 text-sm leading-relaxed">{datasetCompleteness}</p>
+        </div>
+    )}
 
 {/* Project Grants */}
-        {projectGrants.length > 0 && (
+        {(isPreview || projectGrants.length > 0) && (
           <>
-            <SectionHeading id="project" title="CRUK Project">
+            <SectionHeading id="project" title="CRUK Project" onClick={onSectionClick ? () => onSectionClick('projectGrants') : undefined}>
                 {projectGrants.length > 1 && (
                     <button
                         onClick={() => setCurrentGrantIndex((prev) => (prev + 1) % projectGrants.length)}
@@ -445,190 +780,221 @@ const { derivedFilters, activeIcons } = useMemo(() => {
                 )}
             </SectionHeading>
             <div className="prose max-w-none text-gray-700 mb-8 bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-                <div>
-                  <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Project Name</span>
-                  <p className="text-lg font-semibold text-blue-900 m-0">{projectGrants[currentGrantIndex].projectGrantName}</p>
-                </div>
-
-                <div>
-                  <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Lead Researcher</span>
-                  <p className="text-base text-gray-800 m-0">
-                    {projectGrants[currentGrantIndex].leadResearcher} — <span className="italic">{projectGrants[currentGrantIndex].leadResearchInstitute}</span>
-                  </p>
-                </div>
-
-                <div>
-                  <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Timeline</span>
-                  <p className="text-sm text-gray-700 m-0">
-                    {projectGrants[currentGrantIndex].projectGrantStartDate} to {projectGrants[currentGrantIndex].projectGrantEndDate || "Ongoing"}
-                  </p>
-                </div>
-
-                <div>
-                  <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Grant Number(s)</span>
-                  <p className="text-sm font-mono text-gray-700 m-0">{projectGrants[currentGrantIndex].grantNumber}</p>
-                </div>
-
-                <div className="md:col-span-2 border-t border-gray-100 pt-4">
-                  <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Project Scope</span>
-                  <p className="text-sm text-gray-700 m-0 leading-relaxed">
-                    {projectGrants[currentGrantIndex].projectGrantScope}
-                  </p>
-                </div>
-
-              </div>
+              {projectGrants.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Project Name</span>
+                      <p className="text-lg font-semibold text-blue-900 m-0">{projectGrants[currentGrantIndex].projectGrantName}</p>
+                    </div>
+                    <div>
+                      <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Lead Researcher</span>
+                      <p className="text-base text-gray-800 m-0">
+                        {projectGrants[currentGrantIndex].leadResearcher} — <span className="italic">{projectGrants[currentGrantIndex].leadResearchInstitute}</span>
+                      </p>
+                    </div>
+                    <div>
+                      <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Timeline</span>
+                      <p className="text-sm text-gray-700 m-0">
+                        {projectGrants[currentGrantIndex].projectGrantStartDate} to {projectGrants[currentGrantIndex].projectGrantEndDate || "Ongoing"}
+                      </p>
+                    </div>
+                    <div>
+                      <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Grant Number(s)</span>
+                      <p className="text-sm font-mono text-gray-700 m-0">{projectGrants[currentGrantIndex].grantNumber}</p>
+                    </div>
+                    <div className="md:col-span-2 border-t border-gray-100 pt-4">
+                      <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Project Scope</span>
+                      <p className="text-sm text-gray-700 m-0 leading-relaxed">
+                        {projectGrants[currentGrantIndex].projectGrantScope}
+                      </p>
+                    </div>
+                  </div>
+              ) : (
+                  <p className="text-gray-400 italic m-0">Information not provided</p>
+              )}
             </div>
           </>
         )}
 
-
         {/* Summary */}
-        <SectionHeading id="summary" title="Summary" />
-        <div className="prose max-w-none text-gray-700 mb-8 bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-          <p>{summary.abstract}</p>
-          {data.enrichmentAndLinkage?.syntheticDataWebLink && (
-            <div className="mt-4">
-              <span className="font-semibold">Associated Website: </span>
-              {/* Handle Array or Single String for web link */}
-              {Array.isArray(data.enrichmentAndLinkage.syntheticDataWebLink) ? (
-                 data.enrichmentAndLinkage.syntheticDataWebLink.map((link, i) => (
-                    <a key={i} href={link} className="text-blue-600 underline block">{link}</a>
-                 ))
-              ) : (
-                 <a href={data.enrichmentAndLinkage.syntheticDataWebLink} className="text-blue-600 underline">
-                    {data.enrichmentAndLinkage.syntheticDataWebLink}
-                 </a>
-              )}
-            </div>
-          )}
-        </div>
+        {(isPreview || summary.abstract || data.enrichmentAndLinkage?.syntheticDataWebLink) && (
+            <>
+                <SectionHeading id="summary" title="Summary" onClick={onSectionClick ? () => onSectionClick('summary') : undefined} />
+                <div className="prose max-w-none text-gray-700 mb-8 bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                {summary.abstract ? (
+                    <p>{summary.abstract}</p>
+                ) : (
+                    <p className="text-gray-400 italic">Information not provided</p>
+                )}
+                {data.enrichmentAndLinkage?.syntheticDataWebLink && (
+                    <div className="mt-4">
+                    <span className="font-semibold">Associated Website: </span>
+                    {/* Handle Array or Single String for web link */}
+                    {Array.isArray(data.enrichmentAndLinkage.syntheticDataWebLink) ? (
+                        data.enrichmentAndLinkage.syntheticDataWebLink.map((link, i) => (
+                            <a key={i} href={link} className="text-blue-600 underline block">{link}</a>
+                        ))
+                    ) : (
+                        <a href={data.enrichmentAndLinkage.syntheticDataWebLink} className="text-blue-600 underline">
+                            {data.enrichmentAndLinkage.syntheticDataWebLink}
+                        </a>
+                    )}
+                    </div>
+                )}
+                </div>
+            </>
+        )}
 
         {/* Documentation */}
-        <SectionHeading id="documentation" title="Documentation" />
-        <details className="group bg-white rounded-lg shadow-sm border border-gray-200 mb-8 overflow-hidden">
-          <summary className="cursor-pointer p-6 bg-blue-50 hover:bg-blue-100 transition flex justify-between items-center list-none">
-            <div>
-              <h3 className="font-bold text-lg text-blue-900 mb-2">Detailed Description</h3>
-              <p className="text-gray-700 italic">
-                <MarkdownRenderer content={documentationPreview} />
-                <span className="text-blue-600 ml-2 font-semibold not-italic text-sm">(Click to expand)</span>
-              </p>
-            </div>
-            <span className="transform group-open:rotate-180 transition-transform duration-200 text-blue-500">▼</span>
-          </summary>
-          <div className="p-6 text-gray-700 leading-relaxed border-t border-gray-200 whitespace-pre-wrap">
-            <MarkdownRenderer content={descriptionText} />
-          </div>
-        </details>
+        {(isPreview || descriptionText) && (
+            <>
+                <SectionHeading id="documentation" title="Documentation" onClick={onSectionClick ? () => onSectionClick('documentation') : undefined} />
+
+
+
+                {descriptionText ? (
+                    <details className="group bg-white rounded-lg shadow-sm border border-gray-200 mb-6 overflow-hidden">
+                    <summary className="cursor-pointer p-6 bg-blue-50 hover:bg-blue-100 transition flex justify-between items-center list-none">
+                        <div>
+                        <h3 className="font-bold text-lg text-blue-900 mb-2">Detailed Description</h3>
+                        <p className="text-gray-700 italic">
+                            <MarkdownRenderer content={documentationPreview} />
+                            <span className="text-blue-600 ml-2 font-semibold not-italic text-sm">(Click to expand)</span>
+                        </p>
+                        </div>
+                        <span className="transform group-open:rotate-180 transition-transform duration-200 text-blue-500">▼</span>
+                    </summary>
+                    <div className="p-6 text-gray-700 leading-relaxed border-t border-gray-200 whitespace-pre-wrap">
+                        <MarkdownRenderer content={descriptionText} />
+                    </div>
+                    </details>
+                ) : isPreview ? (
+                    <div className="mb-6 bg-white p-6 rounded-lg shadow-sm border border-gray-200 text-sm">
+                        <p className="text-gray-400 italic m-0">Detailed description not provided</p>
+                    </div>
+                ) : null}
+
+
+            </>
+        )}
+
+
 
         {/* Structural Metadata */}
-        <SectionHeading id="structural-metadata" title="Structural Metadata">
-             <div className="space-x-2">
-                <button onClick={() => toggleAllTables(true)} className="text-xs text-blue-600 hover:text-blue-800 font-medium underline">Expand All</button>
-                <span className="text-gray-300">|</span>
-                <button onClick={() => toggleAllTables(false)} className="text-xs text-blue-600 hover:text-blue-800 font-medium underline">Collapse All</button>
-             </div>
-        </SectionHeading>
-
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-8">
-          {Object.keys(groupedMetadata).length === 0 ? (
-             <p className="p-4 text-gray-500">No structural metadata available.</p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead className="bg-gray-100 text-gray-600 text-sm uppercase">
-                  <tr>
-                    <th className="p-3 border-b">Entity / Description</th>
-                    <th className="p-3 border-b">Column Name</th>
-                    <th className="p-3 border-b">Type</th>
-                    <th className="p-3 border-b">Description</th>
-                  </tr>
-                </thead>
-                <tbody className="text-sm">
-                  {Object.entries(groupedMetadata).map(([entityName, data]) => {
-                    const isExpanded = expandedTables[entityName];
-                    return (
-                        <React.Fragment key={entityName}>
-                            <tr className="bg-blue-50 border-b border-blue-100 cursor-pointer hover:bg-blue-100 transition-colors" onClick={() => toggleTable(entityName)}>
-                                <td colSpan="4" className="p-3">
-                                    <div className="flex items-center">
-                                        <span className={`transform transition-transform mr-2 text-blue-500 ${isExpanded ? 'rotate-90' : ''}`}>▶</span>
-                                        <span className="font-bold text-blue-900 text-lg">{entityName}</span>
-                                        {/* Handle description being short or long */}
-                                        <span className="ml-4 text-gray-600 text-sm italic truncate max-w-md">{data.description}</span>
-                                        <span className="ml-auto text-xs text-blue-900 font-medium">
-                                            {data.size !== undefined && data.size !== null
-                                                ? `${data.size?.toLocaleString()} complete entries`
-                                                : `${data.columns.length} columns`}
-                                        </span>
-                                    </div>
-                                </td>
-                            </tr>
-                            {isExpanded && data.columns.map((col, idx) => (
-                                <tr key={`${entityName}-${col.name}-${idx}`} className="hover:bg-gray-50 border-b last:border-0 bg-white">
-                                    <td className="p-3 w-1/5 border-r border-gray-50"></td>
-                                    <td className="p-3 font-mono text-gray-700 w-1/4 font-semibold">{col.name}</td>
-                                    <td className="p-3 text-gray-500 w-1/6">{col.dataType}</td>
-                                    <td className="p-3 text-gray-600">{col.description}</td>
-                                </tr>
-                            ))}
-                        </React.Fragment>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
-{/* Other Data Types */}
-        {otherDataTypes.length > 0 && (
+        {(isPreview || Object.keys(groupedMetadata).length > 0) && (
             <>
-                <SectionHeading id="other-data-types" title="Other Data Types" />
-                <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-10">
+                <SectionHeading id="structural-metadata" title="Structural Metadata" onClick={onSectionClick ? () => onSectionClick('structuralMetadata') : undefined}>
+                    <div className="space-x-2">
+                        <button onClick={() => toggleAllTables(true)} className="text-xs text-blue-600 hover:text-blue-800 font-medium underline">Expand All</button>
+                        <span className="text-gray-300">|</span>
+                        <button onClick={() => toggleAllTables(false)} className="text-xs text-blue-600 hover:text-blue-800 font-medium underline">Collapse All</button>
+                    </div>
+                </SectionHeading>
+
+                <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-8">
+                {Object.keys(groupedMetadata).length === 0 ? (
+                    isPreview ? <p className="p-4 text-gray-500">Information not provided</p> : null
+                ) : (
+                    <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
+                        <thead className="bg-gray-100 text-gray-600 text-sm uppercase">
+                        <tr>
+                            <th className="p-3 border-b">Entity / Description</th>
+                            <th className="p-3 border-b">Column Name</th>
+                            <th className="p-3 border-b">Type</th>
+                            <th className="p-3 border-b">Description</th>
+                        </tr>
+                        </thead>
                         <tbody className="text-sm">
-                            {otherDataTypes.map((item, idx) => {
-                                const isExpanded = expandedOtherData[idx];
-                                return (
-                                    <React.Fragment key={idx}>
-                                        <tr
-                                            className="bg-white border-b border-gray-100 cursor-pointer hover:bg-blue-50 transition-colors"
-                                            onClick={() => toggleOtherData(idx)}
-                                        >
-                                            <td className="p-3 w-10 text-center select-none">
-                                                <span className={`transform transition-transform inline-block text-blue-500 ${isExpanded ? 'rotate-90' : ''}`}>▶</span>
-                                            </td>
-                                            <td className="p-3 font-bold text-blue-900 w-1/2 select-none">
-                                                {item.title}
-                                            </td>
-                                            <td className="p-3 text-right">
-                                                {item.format && (
-                                                    <span className="text-xs bg-blue-50 text-blue-700 border border-blue-100 px-2 py-1 rounded font-mono">
-                                                        {item.format}
-                                                    </span>
-                                                )}
-                                            </td>
+                        {Object.entries(groupedMetadata).map(([entityName, data]) => {
+                            const isExpanded = expandedTables[entityName];
+                            return (
+                                <React.Fragment key={entityName}>
+                                    <tr className="bg-blue-50 border-b border-blue-100 cursor-pointer hover:bg-blue-100 transition-colors" onClick={() => toggleTable(entityName)}>
+                                        <td colSpan="4" className="p-3">
+                                            <div className="flex items-center">
+                                                <span className={`transform transition-transform mr-2 text-blue-500 ${isExpanded ? 'rotate-90' : ''}`}>▶</span>
+                                                <span className="font-bold text-blue-900 text-lg">{entityName}</span>
+                                                {/* Handle description being short or long */}
+                                                <span className="ml-4 text-gray-600 text-sm italic truncate max-w-md">{data.description}</span>
+                                                <span className="ml-auto text-xs text-blue-900 font-medium">
+                                                    {data.size !== undefined && data.size !== null
+                                                        ? `${data.size?.toLocaleString()} complete entries`
+                                                        : `${data.columns.length} columns`}
+                                                </span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {isExpanded && data.columns.map((col, idx) => (
+                                        <tr key={`${entityName}-${col.name}-${idx}`} className="hover:bg-gray-50 border-b last:border-0 bg-white">
+                                            <td className="p-3 w-1/5 border-r border-gray-50"></td>
+                                            <td className="p-3 font-mono text-gray-700 w-1/4 font-semibold">{col.name}</td>
+                                            <td className="p-3 text-gray-500 w-1/6">{col.dataType}</td>
+                                            <td className="p-3 text-gray-600">{col.description}</td>
                                         </tr>
-                                        {isExpanded && (
-                                            <tr className="bg-gray-50 border-b border-gray-200">
-                                                <td className="p-3 border-r border-gray-100"></td>
-                                                <td colSpan="2" className="p-4 text-gray-700 leading-relaxed">
-                                                    {item.description}
-                                                </td>
-                                            </tr>
-                                        )}
-                                    </React.Fragment>
-                                );
-                            })}
+                                    ))}
+                                </React.Fragment>
+                            );
+                        })}
                         </tbody>
                     </table>
+                    </div>
+                )}
+                </div>
+            </>
+        )}
+
+{/* Other Data Types */}
+        {(isPreview || otherDataTypes.length > 0) && (
+            <>
+                <SectionHeading id="other-data-types" title="Other Data Types" onClick={onSectionClick ? () => onSectionClick('otherDataTypes') : undefined} />
+                <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden mb-10">
+                    {otherDataTypes.length > 0 ? (
+                        <table className="w-full text-left border-collapse">
+                            <tbody className="text-sm">
+                                {otherDataTypes.map((item, idx) => {
+                                    const isExpanded = expandedOtherData[idx];
+                                    return (
+                                        <React.Fragment key={idx}>
+                                            <tr
+                                                className="bg-white border-b border-gray-100 cursor-pointer hover:bg-blue-50 transition-colors"
+                                                onClick={() => toggleOtherData(idx)}
+                                            >
+                                                <td className="p-3 w-10 text-center select-none">
+                                                    <span className={`transform transition-transform inline-block text-blue-500 ${isExpanded ? 'rotate-90' : ''}`}>▶</span>
+                                                </td>
+                                                <td className="p-3 font-bold text-blue-900 w-1/2 select-none">
+                                                    {item.title}
+                                                </td>
+                                                <td className="p-3 text-right">
+                                                    {item.format && (
+                                                        <span className="text-xs bg-blue-50 text-blue-700 border border-blue-100 px-2 py-1 rounded font-mono">
+                                                            {item.format}
+                                                        </span>
+                                                    )}
+                                                </td>
+                                            </tr>
+                                            {isExpanded && (
+                                                <tr className="bg-gray-50 border-b border-gray-200">
+                                                    <td className="p-3 border-r border-gray-100"></td>
+                                                    <td colSpan="2" className="p-4 text-gray-700 leading-relaxed">
+                                                        {item.description}
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </React.Fragment>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    ) : isPreview ? (
+                        <p className="p-4 text-gray-500">Information not provided</p>
+                    ) : null}
                 </div>
             </>
         )}
                 {/* 1. Only render if data.erd exists */}
-        {data.erd && (
+        {(isPreview || data.erd) && (
             <>
                 {/* Section Heading */}
                 <div className="flex items-center justify-between mt-10 mb-4 border-b pb-2">
@@ -639,248 +1005,167 @@ const { derivedFilters, activeIcons } = useMemo(() => {
 
                 {/* Image Container with URL validation */}
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 mb-8 p-4 overflow-x-auto">
+                    {data.erd ? (
+                        <>
+                            {/* Display the source URL securely */}
+                            <div className="mb-4">
+                                <span className="font-semibold text-gray-700">Source URL: </span>
+                                <a href={data.erd} target="_blank" rel="noreferrer" className="text-blue-600 underline break-all">
+                                    {data.erd}
+                                </a>
+                            </div>
 
-                    {/* Display the source URL securely */}
-                    <div className="mb-4">
-                        <span className="font-semibold text-gray-700">Source URL: </span>
-                        <a href={data.erd} target="_blank" rel="noreferrer" className="text-blue-600 underline break-all">
-                            {data.erd}
-                        </a>
-                    </div>
-
-                    {/* Check if the URL string matches a standard image extension */}
-                    {typeof data.erd === 'string' && /\.(jpeg|jpg|gif|png|svg|webp)(\?.*)?$/i.test(data.erd) ? (
-                       <img
-                           src={data.erd}
-                           alt="Entity Relationship Diagram"
-                           className="min-w-full md:w-full h-auto object-contain"
-                       />
-                    ) : (
-                        <div className="p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 rounded">
-                            Warning: The provided URL does not appear to be a standard image format and may not display correctly.
-                        </div>
-                    )}
+                            {/* Check if the URL string matches a standard image extension */}
+                            {typeof data.erd === 'string' && /\.(jpeg|jpg|gif|png|svg|webp)(\?.*)?$/i.test(data.erd) ? (
+                            <img
+                                src={data.erd}
+                                alt="Entity Relationship Diagram"
+                                className="min-w-full md:w-full h-auto object-contain"
+                            />
+                            ) : (
+                                <div className="p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 rounded">
+                                    Warning: The provided URL does not appear to be a standard image format and may not display correctly.
+                                </div>
+                            )}
+                        </>
+                    ) : isPreview ? (
+                        <p className="text-gray-400 italic m-0">Information not provided</p>
+                    ) : null}
                 </div>
             </>
         )}
 
         {/* Observations */}
-        <SectionHeading id="observations" title="Observations" />
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
-            {observations.map((obs, idx) => (
-                <div key={idx} className="bg-white p-4 rounded-lg shadow-sm border-l-4 border-blue-400">
-                    <div className="text-2xl font-bold text-gray-800 mb-1">{obs.measuredValue?.toLocaleString()}</div>
-                    <div className="text-sm font-semibold text-gray-600">{obs.observedNode}</div>
-                    <div className="text-xs text-gray-400 mt-2">{obs.measuredProperty}</div>
-                </div>
-            ))}
-        </div>
-        {/* Demographics - Ethnicity Bar Chart */}
-        {mappedEthnicities && (
+        {(isPreview || observations.length > 0) && (
             <>
-                <SectionHeading id="demographic-frequency" title="Ethnicity Distribution" />
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-10">
-                    <div className="space-y-3"> {/* Increased gap slightly to accommodate wrapped text */}
-                        {mappedEthnicities.data.map((item, idx) => {
-                            // Calculate width percentage relative to the highest count
-                            const barWidth = mappedEthnicities.maxCount > 0
-                                ? `${(item.count / mappedEthnicities.maxCount) * 100}%`
-                                : '0%';
-
-                            // Alternate colors: blue and pink
-                            const barColor = idx % 2 === 0 ? 'bg-blue-600' : 'bg-pink-400';
-
-                            return (
-                                <div key={idx} className="flex items-center text-sm group min-h-[1.5rem]">
-                                    {/* Increased width to 60% (w-3/5) and removed 'truncate' to allow wrapping */}
-                                    <div className="w-3/5 text-right pr-4 text-gray-700 leading-snug" title={item.label}>
-                                        {item.label}
-                                    </div>
-                                    {/* Decreased width to 40% (w-2/5) for the bar chart */}
-                                    <div className="w-2/5 flex items-center">
-                                        <div className="flex-1 h-5 flex items-center">
-                                            <div
-                                                className={`h-full ${barColor} rounded-r transition-all duration-500 opacity-90 group-hover:opacity-100`}
-                                                style={{ width: barWidth }}
-                                            ></div>
-                                        </div>
-                                        <div className="ml-3 font-semibold text-gray-600 w-12 text-left">
-                                            {item.count}
-                                        </div>
-                                    </div>
-                                </div>
-                            );
-                        })}
+                <SectionHeading id="observations" title="Observations" onClick={onSectionClick ? () => onSectionClick('observations') : undefined} />
+                {observations.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10">
+                        {observations.map((obs, idx) => (
+                            <div key={idx} className="bg-white p-4 rounded-lg shadow-sm border-l-4 border-blue-400">
+                                <div className="text-2xl font-bold text-gray-800 mb-1">{obs.measuredValue?.toLocaleString()}</div>
+                                <div className="text-sm font-semibold text-gray-600">{obs.observedNode}</div>
+                                <div className="text-xs text-gray-400 mt-2">{obs.measuredProperty}</div>
+                                {obs.observationDate && <div className="text-xs text-gray-400 mt-1 italic">Date: {obs.observationDate}</div>}
+                            </div>
+                        ))}
                     </div>
+                ) : isPreview ? (
+                    <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-10">
+                        <p className="text-gray-400 italic m-0">Information not provided</p>
+                    </div>
+                ) : null}
+            </>
+        )}
+
+        {/* Demographics - Ethnicity Bar Chart */}
+        {(isPreview || mappedEthnicities) && (
+            <>
+                <SectionHeading id="demographic-frequency" title="Demographics" onClick={onSectionClick ? () => onSectionClick('demographicFrequency') : undefined} />
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-10">
+                    {mappedEthnicities ? (
+                        <div className="space-y-3">
+                            {mappedEthnicities.data.map((item, idx) => {
+                                const barWidth = mappedEthnicities.maxCount > 0
+                                    ? `${(item.count / mappedEthnicities.maxCount) * 100}%`
+                                    : '0%';
+                                const barColor = idx % 2 === 0 ? 'bg-blue-600' : 'bg-pink-400';
+                                return (
+                                    <div key={idx} className="flex items-center text-sm group min-h-[1.5rem]">
+                                        <div className="w-3/5 text-right pr-4 text-gray-700 leading-snug" title={item.label}>
+                                            {item.label}
+                                        </div>
+                                        <div className="w-2/5 flex items-center">
+                                            <div className="flex-1 h-5 flex items-center">
+                                                <div
+                                                    className={`h-full ${barColor} rounded-r transition-all duration-500 opacity-90 group-hover:opacity-100`}
+                                                    style={{ width: barWidth }}
+                                                ></div>
+                                            </div>
+                                            <div className="ml-3 font-semibold text-gray-600 w-12 text-left">
+                                                {item.count}
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    ) : isPreview ? (
+                        <p className="text-gray-400 italic m-0">Information not provided</p>
+                    ) : null}
                 </div>
             </>
         )}
+
         {/* Omics */}
-        {omics && (
+        {(isPreview || omics) && (
             <>
-                <SectionHeading id="omics" title="Omics Data" />
+                <SectionHeading id="omics" title="Omics" onClick={onSectionClick ? () => onSectionClick('omics') : undefined} />
                 <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-10 flex flex-col sm:flex-row gap-8">
-                    <div>
-                        <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Assay</span>
-                        <p className="text-base text-gray-800 m-0">{omics.assay || "Information not provided"}</p>
-                    </div>
-                    <div>
-                        <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Platform</span>
-                        <p className="text-base text-gray-800 m-0">{omics.platform || "Information not provided"}</p>
-                    </div>
+                    {omics ? (
+                        <>
+                            <div>
+                                <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Assay</span>
+                                <p className="text-base text-gray-800 m-0">{omics.assay || "Information not provided"}</p>
+                            </div>
+                            <div>
+                                <span className="block text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Platform</span>
+                                <p className="text-base text-gray-800 m-0">{omics.platform || "Information not provided"}</p>
+                            </div>
+                        </>
+                    ) : isPreview ? (
+                        <p className="text-gray-400 italic m-0">Information not provided</p>
+                    ) : null}
                 </div>
             </>
         )}
 
         {/* Provenance */}
-        {Object.keys(provenance).length > 0 && (
+        {(isPreview || isNotEmpty(provenance)) && (
             <>
-                <SectionHeading id="provenance" title="Provenance & Timelines" />
+                <SectionHeading id="provenance" title="Provenance" onClick={onSectionClick ? () => onSectionClick('provenance') : undefined} />
                 <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-10">
-                    {provenance.temporal && (
+                    {(isPreview || isNotEmpty(provenance.temporal) || provenance.origin) ? (
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                            <AccessItem label="Publishing Frequency" value={provenance.temporal.publishingFrequency} />
-                            <AccessItem label="Start Date" value={provenance.temporal.startDate} />
-                            <AccessItem label="End Date" value={provenance.temporal.endDate} />
-                            <AccessItem label="Time Lag" value={provenance.temporal.timeLag} />
+                            <AccessItem label="Origin" value={provenance.origin} isPreview={isPreview} />
+                            <AccessItem label="Publishing Frequency" value={provenance.temporal?.publishingFrequency} isPreview={isPreview} />
+                            <AccessItem label="Accrual Periodicity" value={provenance.temporal?.accrualPeriodicity} isPreview={isPreview} />
+                            <AccessItem label="Start Date" value={provenance.temporal?.startDate} isPreview={isPreview} />
+                            <AccessItem label="End Date" value={provenance.temporal?.endDate} isPreview={isPreview} />
+                            <AccessItem label="Time Lag" value={provenance.temporal?.timeLag} isPreview={isPreview} />
+                            <AccessItem label="Release Date" value={provenance.temporal?.distributionReleaseDate} isPreview={isPreview} />
                         </div>
+                    ) : (
+                        <p className="text-gray-400 italic m-0">Information not provided</p>
                     )}
                 </div>
             </>
         )}
 
-        {/* Enrichment & Linkage */}
-        {Object.keys(enrichmentAndLinkage).length > 0 && (
+
+        {/* Access, Usage & Formatting (Moved to bottom) */}
+        {(isPreview || isNotEmpty(data.accessibility?.usage) || isNotEmpty(data.accessibility?.formatAndStandards)) && (
             <>
-                <SectionHeading id="enrichment-and-linkage" title="Enrichment & Linkage" />
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-10 grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {Object.entries(enrichmentAndLinkage).map(([key, value]) => {
-                        if (!value || (Array.isArray(value) && value.length === 0)) return null;
-
-                        // Formats camelCase keys into Title Case readable strings
-                        const formattedKey = key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase());
-
-                        // Helper to determine if a string is a standard URL or a DOI
-                        const getHref = (str) => {
-                            if (typeof str !== 'string') return null;
-                            if (str.startsWith('http')) return str;
-                            if (str.startsWith('10.')) return `https://doi.org/${str}`;
-                            return null;
-                        };
-
-                        return (
-                            <div key={key}>
-                                <h4 className="font-bold text-gray-500 uppercase tracking-wide mb-2 text-sm">{formattedKey}</h4>
-                                <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700 break-words">
-                                    {Array.isArray(value) ? value.map((item, idx) => {
-                                        // 1. Handle Object types (derivedFrom, similarToDatasets)
-                                        if (typeof item === 'object' && item !== null) {
-                                            // Fallback to item.url if title and pid are missing
-                                            const displayText = `${item.title || ''} ${item.pid ? `[${item.pid}]` : ''}`.trim() || item.url;
-                                            const href = getHref(item.url);
-
-                                            return (
-                                                <li key={idx}>
-                                                    {href ? (
-                                                        <a href={href} target="_blank" rel="noreferrer" className="text-blue-600 hover:text-blue-800 transition-colors">
-                                                            {displayText}
-                                                        </a>
-                                                    ) : (
-                                                        <span>{displayText}</span>
-                                                    )}
-                                                </li>
-                                            );
-                                        }
-
-                                        // 2. Handle String types (e.g., plain URLs in tools, or DOIs)
-                                        const href = getHref(item);
-                                        return (
-                                            <li key={idx}>
-                                                {href ? (
-                                                    <a href={href} target="_blank" rel="noreferrer" className="text-blue-600 hover:text-blue-800 transition-colors break-all">
-                                                        {item}
-                                                    </a>
-                                                ) : (
-                                                    <span>{item}</span>
-                                                )}
-                                            </li>
-                                        );
-                                    }) : <li>{value}</li>}
-                                </ul>
+                <SectionHeading id="access-usage" title="Usage & Formatting" onClick={onSectionClick ? () => onSectionClick('accessibility') : undefined} />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                        <h3 className="font-bold text-blue-900 mb-4 border-b pb-2">Usage & Formats</h3>
+                        <AccessItem label="Data Use Limitation" value={Array.isArray(data.accessibility?.usage?.dataUseLimitation) ? data.accessibility.usage.dataUseLimitation.join(', ') : data.accessibility?.usage?.dataUseLimitation} isPreview={isPreview} />
+                        <AccessItem label="Data Use Requirements" value={Array.isArray(data.accessibility?.usage?.dataUseRequirements) ? data.accessibility.usage.dataUseRequirements.join(', ') : data.accessibility?.usage?.dataUseRequirements} isPreview={isPreview} />
+                        <AccessItem label="Investigations" value={Array.isArray(data.accessibility?.usage?.investigations) ? data.accessibility.usage.investigations.join(', ') : data.accessibility?.usage?.investigations} isPreview={isPreview} />
+                        <AccessItem label="Is Referenced By" value={Array.isArray(data.accessibility?.usage?.isReferencedBy) ? data.accessibility.usage.isReferencedBy.join(', ') : data.accessibility?.usage?.isReferencedBy} isPreview={isPreview} />
+                        {(isPreview || isNotEmpty(data.accessibility?.formatAndStandards)) && (
+                            <div className="mt-4 pt-4 border-t border-gray-100">
+                                <AccessItem label="Format" value={Array.isArray(data.accessibility?.formatAndStandards?.format) ? data.accessibility.formatAndStandards.format.join(', ') : data.accessibility?.formatAndStandards?.format} isPreview={isPreview} />
+                                <AccessItem label="Vocabulary Encoding" value={Array.isArray(data.accessibility?.formatAndStandards?.vocabularyEncodingScheme) ? data.accessibility.formatAndStandards.vocabularyEncodingScheme.join(', ') : data.accessibility?.formatAndStandards?.vocabularyEncodingScheme} isPreview={isPreview} />
+                                <AccessItem label="Conforms To" value={Array.isArray(data.accessibility?.formatAndStandards?.conformsTo) ? data.accessibility.formatAndStandards.conformsTo.join(', ') : data.accessibility?.formatAndStandards?.conformsTo} isPreview={isPreview} />
+                                <AccessItem label="Language" value={Array.isArray(data.accessibility?.formatAndStandards?.language) ? data.accessibility.formatAndStandards.language.join(', ') : data.accessibility?.formatAndStandards?.language} isPreview={isPreview} />
                             </div>
-                        )
-                    })}
+                        )}
+                    </div>
                 </div>
             </>
         )}
-
-      </main>
-      </Panel>
-        <Separator className="w-1 bg-gray-200 hover:bg-blue-400 transition-colors cursor-col-resize active:bg-blue-600" />
-
-      {/* --- RIGHT PANEL: Filters & Tags --- */}
-      <Panel defaultSize={20} minSize={15} >
-      {/* --- Right Panel --- */}
-      <aside className="w-full h-full bg-white shadow-lg p-6 border-l border-gray-100 overflow-y-auto">
-      <h3 className="text-lg font-bold text-gray-800 mb-4 uppercase tracking-wide">Filters & Tags</h3>
-
-        {/* Keywords */}
-        <div className="mb-6">
-            <h4 className="font-semibold text-blue-900 mb-2 border-b border-gray-100 pb-1">Keywords</h4>
-            <ul className="space-y-1">
-                {keywords.map((kw, i) => (
-                    <li key={i} className="text-sm text-gray-600 flex items-center">
-                        <span className="w-1.5 h-1.5 bg-blue-400 rounded-full mr-2"></span>
-                        {kw}
-                    </li>
-                ))}
-            </ul>
-        </div>
-      {/* Filters */}
-        <div className="space-y-6">
-             {/* Resource Creator */}
-             <div className="mb-4">
-                 <h4 className="font-bold text-blue-900 mb-2 border-b border-gray-200 pb-1 text-base">Resource Creator</h4>
-                 <p className="text-sm text-gray-600">{resourceCreators}</p>
-             </div>
-
-             {/* Dynamic Nested Filters */}
-             {Object.entries(derivedFilters).map(([groupName, categories]) => (
-                 <div key={groupName}>
-                     {/* Main Group Header (e.g. Cancer Filters) */}
-                     <h4 className="font-bold text-blue-900 mb-3 border-b border-gray-200 pb-1 text-base">{groupName}</h4>
-
-                     {/* Loop through Sub-Categories (e.g. CRUK Terms, TCGA Terms) */}
-                     {Object.entries(categories).map(([categoryName, items]) => (
-                        <div key={categoryName} className="mb-4 pl-1">
-                            {/* Sub-Category Header - Small & Uppercase */}
-                            <h5 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">{categoryName}</h5>
-
-                            <ul className="pl-2 border-l-2 border-gray-100 ml-1">
-                                {items.map((filter, idx) => (
-                                    <li key={idx} className="mb-2 text-sm group/filter">
-                                        <span className="text-gray-800 font-medium block">{filter.label}</span>
-                                        {/* Replace filter.path with filter.description if you want to show it */}
-                                        {filter.description && (
-                                            <span className="text-xs text-gray-500 block break-words mt-0.5 italic">
-                                                {filter.description}
-                                            </span>
-                                        )}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                     ))}
-                 </div>
-             ))}
-
-             {Object.keys(derivedFilters).length === 0 && (
-                <p className="text-sm text-gray-400 italic">No dataset filters applied.</p>
-             )}
-        </div>
-      </aside>
-      </Panel>
-      </Group>
-    </div>
+    </>
   );
 };

@@ -639,9 +639,18 @@ const FieldRenderer = ({
         const handleSimpleInputChange = (index, newVal) => {
             const newArr = [...items];
             newArr[index] = newVal;
-            if (index === items.length - 1 && newVal !== '') {
-                newArr.push('');
-            }
+            onChange(path, newArr);
+        };
+
+        const handleRemoveItem = (index) => {
+            const newArr = [...items];
+            newArr.splice(index, 1);
+            onChange(path, newArr);
+        };
+
+        const handleAddItem = () => {
+            const newArr = [...items];
+            newArr.push(fieldDef.items?.type === 'object' ? {} : '');
             onChange(path, newArr);
         };
 
@@ -671,7 +680,15 @@ const FieldRenderer = ({
                             const resolvedItemDef = itemSchema.$ref ? resolveRef(itemSchema.$ref) : itemSchema;
 
                             return (
-                                <div key={index} className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                                <div key={index} className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 relative group">
+                                    <button 
+                                        type="button" 
+                                        onClick={(e) => { e.stopPropagation(); handleRemoveItem(index); }}
+                                        className="absolute top-2 right-2 p-1 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors opacity-0 group-hover:opacity-100 z-10"
+                                        title="Remove item"
+                                    >
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                    </button>
                                     {resolvedItemDef.properties ? (
                                         Object.keys(resolvedItemDef.properties).map(childKey => (
                                             <FieldRenderer
@@ -680,15 +697,7 @@ const FieldRenderer = ({
                                                 prop={resolvedItemDef.properties[childKey]}
                                                 path={[...path, index, childKey]}
                                                 formData={formData}
-                                                onChange={(newPath, newVal) => {
-                                                    // Process the deep property change first
-                                                    onChange(newPath, newVal);
-
-                                                    // Instantly generate the next empty object if this is the last item
-                                                    if (index === items.length - 1) {
-                                                        onChange([...path, items.length], {});
-                                                    }
-                                                }}
+                                                onChange={onChange}
                                                 isRequired={resolvedItemDef.required?.includes(childKey)}
                                                 setActiveGuidance={setActiveGuidance}
                                                 level={level + 1}
@@ -697,7 +706,7 @@ const FieldRenderer = ({
                                     ) : (
                                         <input
                                             type="text"
-                                            className="w-full p-3 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500 text-lg"
+                                            className="w-full p-3 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500 text-lg pr-10"
                                             placeholder={prop.examples ? prop.examples.join(', ') : "Enter value..."}
                                             value={item || ''}
                                             onFocus={() => {
@@ -710,6 +719,16 @@ const FieldRenderer = ({
                                 </div>
                             );
                         })}
+                        <div className="pt-2 flex justify-start">
+                            <button
+                                type="button"
+                                onClick={handleAddItem}
+                                className="flex items-center text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition-colors bg-indigo-50 hover:bg-indigo-100 px-4 py-2 rounded-md"
+                            >
+                                <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
+                                Add another {prop.title || 'item'}
+                            </button>
+                        </div>
                     </div>
                 )}
             </div>
@@ -1144,24 +1163,7 @@ const SchemaForm = ({
                     setActiveGuidance={setActiveGuidance}
                 />
 
-                {/* INJECT ACCESS RIGHTS AFTER ABSTRACT */}
-                {sectionKey === 'summary' && propKey === 'abstract' && (
-                    <FieldRenderer
-                        key="injected-accessRights"
-                        propKey="accessRights"
-                        // Safely extract the definition from the HDRUK schema definitions
-                        prop={DATA_SCHEMA.$defs?.Access?.properties?.accessRights || {
-                            title: "Access Information",
-                            description: "Please explain how to gain access to the dataset and restrictions."
-                        }}
-                        // This path ensures the data saves to the exact location the backend needs
-                        path={['accessibility', 'access', 'accessRights']}
-                        formData={formData}
-                        onChange={onFormChange}
-                        isRequired={true}
-                        setActiveGuidance={setActiveGuidance}
-                    />
-                )}
+
             </React.Fragment>
         );
     })}
@@ -1339,6 +1341,9 @@ const SchemaPage = () => {
         };
 
         fetchDatasets();
+
+        window.addEventListener('authChange', fetchDatasets);
+        return () => window.removeEventListener('authChange', fetchDatasets);
     }, []);
 
 const handleSelectDataset = (e) => {
@@ -1849,6 +1854,7 @@ return (
         activeGuidance={currentGuidance}
         formData={formData}
         activeSection={activeSection}
+        setActiveSection={handleNavChange}
         onFormChange={handleDataChange}
         >
 
