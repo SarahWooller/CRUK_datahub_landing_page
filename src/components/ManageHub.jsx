@@ -19,6 +19,7 @@ export const ManageHub = () => {
     const [newUserName, setNewUserName] = useState('');
     const [newUserPassword, setNewUserPassword] = useState('');
     const [newUserRepeatPassword, setNewUserRepeatPassword] = useState('');
+    const [newUserIsAdmin, setNewUserIsAdmin] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [newTeamName, setNewTeamName] = useState('');
     
@@ -79,12 +80,12 @@ export const ManageHub = () => {
             const res = await fetch(`${API_BASE_URL}/admin/users`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify({ email: newUserEmail, name: newUserName, password: newUserPassword })
+                body: JSON.stringify({ email: newUserEmail, name: newUserName, password: newUserPassword, is_admin: newUserIsAdmin })
             });
             if (!res.ok) throw new Error((await res.json()).detail || 'Failed to create user');
             
             showMessage('User created successfully!');
-            setNewUserEmail(''); setNewUserName(''); setNewUserPassword(''); setNewUserRepeatPassword('');
+            setNewUserEmail(''); setNewUserName(''); setNewUserPassword(''); setNewUserRepeatPassword(''); setNewUserIsAdmin(false);
             fetchData();
         } catch (err) {
             showMessage(err.message, true);
@@ -107,6 +108,21 @@ export const ManageHub = () => {
         } finally {
             setUserToDelete(null);
             setDeleteConfirmText('');
+        }
+    };
+    
+    const handleToggleAdmin = async (userId, currentStatus) => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/admin/users/${userId}/admin`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({ is_admin: !currentStatus })
+            });
+            if (!res.ok) throw new Error((await res.json()).detail || 'Failed to update admin status');
+            showMessage(`Admin status updated successfully!`);
+            fetchData();
+        } catch (err) {
+            showMessage(err.message, true);
         }
     };
     
@@ -262,6 +278,18 @@ export const ManageHub = () => {
                                             <input type={showPassword ? "text" : "password"} required autoComplete="new-password" value={newUserRepeatPassword} onChange={e => setNewUserRepeatPassword(e.target.value)} className="w-full p-2 border border-gray-400 rounded-md bg-white focus:ring-2 focus:ring-blue-500 shadow-sm pr-10" />
                                         </div>
                                     </div>
+                                    <div className="mb-6 flex items-center">
+                                        <input 
+                                            type="checkbox" 
+                                            id="new_user_admin" 
+                                            checked={newUserIsAdmin} 
+                                            onChange={e => setNewUserIsAdmin(e.target.checked)} 
+                                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                        />
+                                        <label htmlFor="new_user_admin" className="ml-2 block text-sm text-gray-900 font-medium">
+                                            Grant Administrator Privileges
+                                        </label>
+                                    </div>
                                     <button type="submit" className="btn py-2 px-6 bg-blue-600 text-white rounded font-medium shadow">Create User</button>
                                 </form>
                             </div>
@@ -284,6 +312,7 @@ export const ManageHub = () => {
                                             <th className="p-3">Name</th>
                                             <th className="p-3">Email</th>
                                             <th className="p-3">Teams</th>
+                                            <th className="p-3 text-center">Admin</th>
                                             <th className="p-3 text-right">Actions</th>
                                         </tr>
                                     </thead>
@@ -294,6 +323,15 @@ export const ManageHub = () => {
                                                 <td className="p-3 text-gray-600">{user.email}</td>
                                                 <td className="p-3 text-sm text-gray-500">
                                                     {user.teams.length > 0 ? user.teams.map(t => teams.find(tm => tm.id === t)?.name || t).join(', ') : 'None'}
+                                                </td>
+                                                <td className="p-3 text-center">
+                                                    <input 
+                                                        type="checkbox" 
+                                                        checked={user.is_admin || false} 
+                                                        onChange={() => handleToggleAdmin(user.id, user.is_admin || false)}
+                                                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded cursor-pointer"
+                                                        title="Toggle Admin Status"
+                                                    />
                                                 </td>
                                                 <td className="p-3 text-right space-x-4">
                                                     <button onClick={() => { setUserToChangePassword(user); setAdminNewPassword(''); setAdminNewPasswordRepeat(''); setShowAdminPassword(false); }} className="text-blue-600 hover:text-blue-800 font-medium">Change Password</button>
