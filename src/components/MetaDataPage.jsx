@@ -37,7 +37,8 @@ export const MetadataPage = () => {
             setIsLoading(true);
 
             const params = new URLSearchParams(window.location.search);
-            const datasetId = params.get('id') || '3';
+            const pathIdMatch = window.location.pathname.match(/\/meta(?:\.html)?\/(\d+)/);
+            const datasetId = params.get('id') || (pathIdMatch ? pathIdMatch[1] : '3');
             // Public fetch - no Authorization header included
             const response = await fetch(`${API_BASE_URL}/datasets/${datasetId}`, {
                 method: 'GET',
@@ -858,10 +859,10 @@ export const DatasetDetailsContent = ({ data, isPreview = false, onSectionClick 
                     <summary className="cursor-pointer p-6 bg-blue-50 hover:bg-blue-100 transition flex justify-between items-center list-none">
                         <div>
                         <h3 className="font-bold text-lg text-blue-900 mb-2">Detailed Description</h3>
-                        <p className="text-gray-700 italic">
+                        <div className="text-gray-700 italic">
                             <MarkdownRenderer content={documentationPreview} />
                             <span className="text-blue-600 ml-2 font-semibold not-italic text-sm">(Click to expand)</span>
-                        </p>
+                        </div>
                         </div>
                         <span className="transform group-open:rotate-180 transition-transform duration-200 text-blue-500">▼</span>
                     </summary>

@@ -50,7 +50,7 @@ const PublicationCard = ({ publication }) => {
             publication.datasets.map((dataset) => (
               <a
                 key={dataset.id}
-                href={`/meta/${dataset.id}`}
+                href={`/src/meta?id=${dataset.id}`}
                 className="text-xs bg-blue-50 text-blue-700 border border-blue-200 px-2.5 py-1 rounded-md font-medium hover:bg-blue-100 transition-colors"
               >
                 {dataset.computed_title}
@@ -68,7 +68,7 @@ const PublicationCard = ({ publication }) => {
             publication.projects.map((project) => (
               <a
                 key={project.id}
-                href={`/projects/${project.id}`}
+                href={`/src/project_meta?pid=${project.id}`}
                 className="text-xs bg-purple-50 text-purple-700 border border-purple-200 px-2.5 py-1 rounded-md font-medium hover:bg-purple-100 transition-colors"
               >
                 {project.projectGrantName || `Project ID: ${project.id}`}

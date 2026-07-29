@@ -249,7 +249,7 @@ export const DatasetsSection = () => {
                                             <tr className="dataset-title-row">
                                                 <td colSpan="5" style={{ padding: '15px' }}>
                                                     <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap' }}>
-                                                        <a href={"../src/meta.html?id=" + dataset.id} className="dataset-title-link">
+                                                        <a href={`/src/meta?id=${dataset.id}`} className="dataset-title-link">
                                                             <CellValue value={dataset.title} />
                                                         </a>
                                                     </div>

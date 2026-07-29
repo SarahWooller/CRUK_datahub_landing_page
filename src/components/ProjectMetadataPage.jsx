@@ -60,7 +60,7 @@ export const ProjectMetadataPage = () => {
             <div className="flex flex-col justify-center items-center min-h-screen bg-gray-50">
                 <p className="text-xl text-red-600 font-semibold mb-4">{error}</p>
                 {(datasetId || project?.dataset_id) && (
-                    <a href={`meta.html?id=${datasetId || project.dataset_id}`} className="text-blue-600 hover:text-blue-800 font-medium underline transition-colors">
+                    <a href={`/src/meta?id=${datasetId || project.dataset_id}`} className="text-blue-600 hover:text-blue-800 font-medium underline transition-colors">
                         ← Return to Dataset {datasetId || project.dataset_id}
                     </a>
                 )}
@@ -140,7 +140,7 @@ export const ProjectMetadataPage = () => {
 
                         {(datasetId || project.dataset_id) && (
                             <a
-                                href={`meta.html?id=${datasetId || project.dataset_id}`}
+                                href={`/src/meta?id=${datasetId || project.dataset_id}`}
                                 className="inline-block mb-4 text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
                             >
                                 Linked Dataset
