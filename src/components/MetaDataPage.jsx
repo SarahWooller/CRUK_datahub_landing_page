@@ -90,7 +90,8 @@ export const MetadataPage = () => {
 };
 
 // This is the old MetadataPage but now takes the prop data so the main one wraps it
-const MetadataPageContent = ({data}) => {
+const MetadataPageContent = ({ data, onSectionClick }) => {
+
 
   const isNotEmpty = (obj) => {
       if (!obj) return false;
