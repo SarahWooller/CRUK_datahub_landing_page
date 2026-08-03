@@ -4,7 +4,7 @@ import FeedbackModal from './FeedbackModal.jsx';
 import questionData from '../feedback/upload_questions.json';
 import schema from '../utils/schema.json';
 import projectSchema from '../utils/projectSchema.json';
-import semanticSchema from '../utils/semanticSchema.json';
+import semanticSchema from 'cruk-semantic-schema';
 import JsonUpload from './JsonUpload.jsx';
 import UploadTopBar from './UploadTopBar.jsx';
 import prefixIconMapping from '../utils/prefix_icon_mapping.json';
