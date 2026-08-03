@@ -18,9 +18,7 @@ import { flattenSchemaToGrid } from '../utils/flattenSchemaToGrid.js';
 import prefixIconMapping from '../utils/prefix_icon_mapping.json';
 import { getExtra } from '../utils/getExtra.js';
 
-import { getApiBaseUrl } from '../utils/apiConfig.js';
-
-const API_BASE_URL = getApiBaseUrl();
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
 const METADATA_PRIORITY_SECTIONS = [
     "version"

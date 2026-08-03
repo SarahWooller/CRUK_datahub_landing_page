@@ -1,6 +1,5 @@
-import { getApiBaseUrl } from '../utils/apiConfig.js';
-
-const API_BASE_URL = getApiBaseUrl();
+import React, { useState, useEffect } from 'react';
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 export const ProjectMetadataPage = () => {
     const [project, setProject] = useState(null);
     const [datasetId, setDatasetId] = useState(null);
