@@ -24,7 +24,9 @@ import erdImage from '../assets/erd.png';
 // 4. IMPORT HELPER Functions
 import { MarkdownRenderer } from './MarkdownRenderer.jsx'
 
-const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
+import { getApiBaseUrl } from '../utils/apiConfig.js';
+
+const API_BASE_URL = getApiBaseUrl();
 // Add this wrapper component to handle fetching and loading states
 export const MetadataPage = () => {
   const [data, setData] = useState(null);

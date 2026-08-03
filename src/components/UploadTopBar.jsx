@@ -3,7 +3,9 @@ import exampleData from '../utils/new_dummies/dataset_00.json';
 import { getExtra } from '../utils/getExtra.js';
 import DeleteConfirmationModal from './DeleteConfirmationModal.jsx';
 
-const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
+import { getApiBaseUrl } from '../utils/apiConfig.js';
+
+const API_BASE_URL = getApiBaseUrl();
 
 // --- Icons ---
 const TrashIcon = () => (
