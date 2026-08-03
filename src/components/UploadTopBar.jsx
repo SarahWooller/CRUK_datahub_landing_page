@@ -4,6 +4,7 @@ import { getExtra } from '../utils/getExtra.js';
 import DeleteConfirmationModal from './DeleteConfirmationModal.jsx';
 
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
+console.log("🔍 Diagnostic: VITE_BACKEND_URL =", import.meta.env.VITE_BACKEND_URL, "| Active API_BASE_URL =", API_BASE_URL);
 
 // --- Icons ---
 const TrashIcon = () => (
