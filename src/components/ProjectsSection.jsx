@@ -1,5 +1,6 @@
-import React, { useState, useMemo, useEffect } from 'react';
-const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
+import { getApiBaseUrl } from '../utils/apiConfig.js';
+
+const API_BASE_URL = getApiBaseUrl();
 export const ProjectsSection = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [sortConfig, setSortConfig] = useState({ column: 'projectGrantStartDate', direction: 'desc' });
