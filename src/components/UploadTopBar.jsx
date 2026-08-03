@@ -197,7 +197,7 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType, onDeleteS
                 ? `${API_BASE_URL}/projects/`
                 : `${API_BASE_URL}/datasets/`;
 
-            const endpoint = `${baseEndpoint}${existingId}/`;
+            const endpoint = `${baseEndpoint}${existingId}`;
 
             const response = await fetch(endpoint, {
                 method: 'DELETE',
@@ -232,7 +232,7 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType, onDeleteS
                 ? `${API_BASE_URL}/projects/`
                 : `${API_BASE_URL}/datasets/`;
 
-            const endpoint = isUpdate ? `${baseEndpoint}${existingId}/` : baseEndpoint;
+            const endpoint = isUpdate ? `${baseEndpoint}${existingId}` : baseEndpoint;
 
             let processedData = associateIcons(formData, prefixIconMapping);
             const filters = processedData.datasetFilters || [];
