@@ -27,6 +27,7 @@
     "vite": "^5.4.0"
   },
   "dependencies": {
+    "cruk-semantic-schema": "git+https://github.com/UOSBioinformaticslab/cruk-semantic-schema.git#main",
     "papaparse": "^5.5.3",
     "re-resizable": "^6.11.2",
     "react-data-grid": "^7.0.0-beta.59",

@@ -7,7 +7,7 @@ import FeedbackModal from './FeedbackModal.jsx';
 import questionData from '../feedback/upload_questions.json';
 import hdrukSchema from '../utils/HDRUK4.0.0.json';
 import crukSchema from '../utils/CRUK1.0.0.json';
-import semanticSchema from '../utils/semanticSchema.json';
+import semanticSchema from 'cruk-semantic-schema';
 
 import { MarkdownRenderer } from './MarkdownRenderer.jsx';
 import DataTagger, { FilterChipArea } from './DataTagger.jsx';
