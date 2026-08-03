@@ -5,9 +5,36 @@ import PreviewTags from './PreviewTags.jsx';
 import PreviewMainContent from './PreviewMainContent.jsx';
 import AiUploadWidget from './AiUploadWidget.jsx';
 
+import exampleData from '../utils/new_dummies/dataset_00.json';
+
 const AssistantPane = ({ activeGuidance, formData, activeSection, setActiveSection, onFormChange, children }) => {
     const [activeTab, setActiveTab] = useState('guidance'); // 'guidance', 'ai', 'preview'
     const [viewMode, setViewMode] = useState('visual'); // 'visual', 'json'
+
+    const handleDownloadExample = () => {
+        try {
+            const blob = new Blob([JSON.stringify(exampleData, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "example_metadata.json";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        } catch (e) {
+            console.error("Error downloading example:", e);
+        }
+    };
+
+    const handleDownloadGuide = () => {
+        const link = document.createElement("a");
+        link.href = "/guidance.pdf";
+        link.download = "CRUK_Datahub_Guide.pdf";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
 
     useEffect(() => {
         if (activeTab === 'preview' && viewMode === 'visual') {
@@ -75,6 +102,36 @@ const AssistantPane = ({ activeGuidance, formData, activeSection, setActiveSecti
                             <p className="text-gray-500 text-sm italic">Select a field on the left to view guidance.</p>
                         )}
                         {children}
+
+                        {/* Reference Downloads & Tools in Guidance Section */}
+                        <div className="mt-8 border-t border-gray-100 pt-5">
+                            <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">
+                                Guidance Downloads & Tools
+                            </h4>
+                            <div className="space-y-2">
+                                <button
+                                    onClick={handleDownloadExample}
+                                    className="w-full flex items-center px-3 py-2.5 text-xs font-semibold text-gray-700 bg-gray-50 hover:bg-indigo-50 hover:text-indigo-700 rounded-lg border border-gray-200 transition-all shadow-sm focus:outline-none group"
+                                    title="Download a template example metadata JSON file"
+                                >
+                                    <svg className="w-4 h-4 mr-2.5 text-indigo-500 group-hover:scale-110 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                    </svg>
+                                    <span>Download Example Metadata (.json)</span>
+                                </button>
+
+                                <button
+                                    onClick={handleDownloadGuide}
+                                    className="w-full flex items-center px-3 py-2.5 text-xs font-semibold text-gray-700 bg-gray-50 hover:bg-indigo-50 hover:text-indigo-700 rounded-lg border border-gray-200 transition-all shadow-sm focus:outline-none group"
+                                    title="Download the official CRUK Datahub PDF user guide"
+                                >
+                                    <svg className="w-4 h-4 mr-2.5 text-indigo-500 group-hover:scale-110 transition-transform flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                    <span>Download User Guide (.pdf)</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

@@ -388,11 +388,13 @@ const WelcomeSection = ({
                 >
                     <option value="" disabled>-- Select an existing dataset --</option>
                     {existingDatasets.map(dataset => {
-                        // Use the title from the metadata, or fallback to the system ID
-                        const title = dataset.metadata_blob?.summary?.title || dataset.datasetid;
+                        const title = dataset.computed_title || dataset.metadata_blob?.summary?.title || dataset.datasetid;
+                        const statusTag = dataset.active
+                            ? (dataset.has_draft ? '[Active (Draft edits)]' : '[Active]')
+                            : '[Draft]';
                         return (
                             <option key={dataset.id} value={dataset.id}>
-                                {title}
+                                {title} {statusTag}
                             </option>
                         );
                     })}
@@ -1284,6 +1286,8 @@ const SchemaPage = () => {
     const [existingDatasets, setExistingDatasets] = useState([]);
     const [loadingDatasets, setLoadingDatasets] = useState(false);
     const [datasetError, setDatasetError] = useState('');
+    const [datasetStatus, setDatasetStatus] = useState({ active: false, has_draft: false, status: 'DRAFT' });
+
     // Safety Check on Initialization
     if (!DATA_SCHEMA || !DATA_SCHEMA.properties) {
         return (
@@ -1295,82 +1299,68 @@ const SchemaPage = () => {
     const [allFeedback, setAllFeedback] = useState({}); // Stores { sectionKey: "comment string" }
     const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
+    const fetchDatasets = useCallback(async () => {
+        const token = localStorage.getItem('token');
+        const currentUserId = parseInt(localStorage.getItem('userId'), 10);
+
+        if (!token || !currentUserId) return;
+
+        setLoadingDatasets(true);
+        try {
+            const response = await fetch(`${API_BASE_URL}/datasets/list/simple`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            setExistingDatasets(data);
+        } catch (err) {
+            console.error("❌ Fetch failed:", err.message);
+            setDatasetError(err.message);
+        } finally {
+            setLoadingDatasets(false);
+        }
+    }, []);
+
     useEffect(() => {
-        const fetchDatasets = async () => {
-            const token = localStorage.getItem('token');
-            const currentUserId = parseInt(localStorage.getItem('userId'), 10);
-            const currentTeamId = parseInt(localStorage.getItem('activeTeamId'), 10);
-
-            console.group("🔍 Dataset Fetch Debug");
-            console.log("1. Token Present:", !!token);
-            console.log("2. Current User ID:", currentUserId);
-            console.log("3. Current Team ID:", currentTeamId);
-
-            if (!token || !currentUserId) {
-                console.warn("❌ Missing token or userId. Aborting fetch.");
-                console.groupEnd();
-                return;
-            }
-
-            setLoadingDatasets(true);
-            try {
-                // FETCH DATASETS
-                const response = await fetch(`${API_BASE_URL}/datasets/`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                console.log("4. Raw Data from Backend:", data);
-
-                // Filter by team ID
-                const userDatasets = data.filter(d => d.team_id === currentTeamId);
-                console.log("5. Filtered Data (d.team_id === currentTeamId):", userDatasets);
-
-                setExistingDatasets(userDatasets);
-            } catch (err) {
-                console.error("❌ Fetch failed:", err.message);
-                setDatasetError(err.message);
-            } finally {
-                setLoadingDatasets(false);
-                console.groupEnd();
-            }
-        };
-
         fetchDatasets();
 
         window.addEventListener('authChange', fetchDatasets);
         return () => window.removeEventListener('authChange', fetchDatasets);
-    }, []);
+    }, [fetchDatasets]);
 
-const handleSelectDataset = (e) => {
-    const selectedId = e.target.value;
-    if (!selectedId) return;
+    const handleSelectDataset = async (e) => {
+        const selectedId = e.target.value;
+        if (!selectedId) return;
 
-    // Find the full dataset object based on the selected ID
-    const selected = existingDatasets.find(d => d.id.toString() === selectedId);
+        try {
+            const response = await fetch(`${API_BASE_URL}/datasets/${selectedId}?preview=true`);
+            if (response.ok) {
+                const result = await response.json();
+                const dataWithId = {
+                    ...(result.metadata_blob || {}),
+                    datasetid: result.id
+                };
+                setFormData(dataWithId);
+                setDatasetStatus({
+                    active: result.active,
+                    has_draft: result.has_draft,
+                    status: result.status
+                });
+            }
+        } catch (err) {
+            console.error("Error loading selected dataset:", err);
+        }
+    };
 
-    if (selected && selected.metadata_blob) {
-        // Merge the database ID into the metadata payload
-        const dataWithId = {
-            ...selected.metadata_blob,
-            datasetid: selected.id // UploadTopBar checks for formData.datasetid
-        };
-
-        // Set the state with the merged object
-        // (Use onFormChange([], dataWithId) if that is your primary state setter in SchemaPage)
-        setFormData(dataWithId);
-    }
-};
-
-const handleRecordDeleted = () => {
-    // Reset the form data to an empty object, or use your router to redirect
-    onFormChange([], {});
-
-};
+    const handleRecordDeleted = () => {
+        setFormData({});
+        setDatasetStatus({ active: false, has_draft: false, status: 'DRAFT' });
+        fetchDatasets();
+    };
 
     const handleSaveDraftFeedback = (section, answers) => {
         setAllFeedback(prev => {
@@ -1810,6 +1800,11 @@ return (
                 prefixIconMapping={prefixIconMapping}
                 pageType="datasets"
                 onDeleteSuccess={handleRecordDeleted}
+                datasetStatus={datasetStatus}
+                onSaveSuccess={(result) => {
+                    setDatasetStatus({ active: result.active, has_draft: result.has_draft, status: result.status });
+                    fetchDatasets();
+                }}
             />
 
             <div className="flex-grow overflow-hidden h-[calc(100vh-40px)]">

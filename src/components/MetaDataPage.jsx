@@ -39,8 +39,9 @@ export const MetadataPage = () => {
             const params = new URLSearchParams(window.location.search);
             const pathIdMatch = window.location.pathname.match(/\/meta(?:\.html)?\/(\d+)/);
             const datasetId = params.get('id') || (pathIdMatch ? pathIdMatch[1] : '3');
-            // Public fetch - no Authorization header included
-            const response = await fetch(`${API_BASE_URL}/datasets/${datasetId}`, {
+            const isPreview = params.get('preview') === 'true';
+            
+            const response = await fetch(`${API_BASE_URL}/datasets/${datasetId}${isPreview ? '?preview=true' : ''}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'

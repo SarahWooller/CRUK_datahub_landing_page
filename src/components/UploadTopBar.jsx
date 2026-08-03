@@ -1,31 +1,38 @@
-import React, { useMemo } from 'react';
-// Assuming the example file exists at this path
+import React, { useMemo, useState } from 'react';
 import exampleData from '../utils/new_dummies/dataset_00.json';
 import { getExtra } from '../utils/getExtra.js';
+import DeleteConfirmationModal from './DeleteConfirmationModal.jsx';
+
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
+
 // --- Icons ---
 const TrashIcon = () => (
-    <svg className="w-4 h-4 mr-2 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+    <svg className="w-3.5 h-3.5 mr-1.5 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
 );
 
 const DownloadIcon = () => (
-    <svg className="w-4 h-4 mr-2 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+    <svg className="w-3.5 h-3.5 mr-1.5 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
 );
 
 const ActiveIcon = () => (
-    <svg className="w-4 h-4 mr-2 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+    <svg className="w-3.5 h-3.5 mr-1.5 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7"></path></svg>
 );
 
 const SaveIcon = () => (
-    <svg className="w-4 h-4 mr-2 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
+    <svg className="w-3.5 h-3.5 mr-1.5 opacity-90" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path></svg>
 );
 
 const ChartIcon = () => (
-    <svg className="w-4 h-4 mr-2 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
+    <svg className="w-4 h-4 mr-2 text-indigo-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
+);
+
+const InfoIcon = () => (
+    <svg className="w-3.5 h-3.5 ml-1 opacity-70 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
 );
 
 // --- Component ---
-const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType, onDeleteSuccess }) => {
+const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType, onDeleteSuccess, datasetStatus, onSaveSuccess }) => {
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     // --- 1. Helper Logic ---
 
@@ -112,31 +119,13 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType, onDeleteS
         return { req: reqPercent, opt: optPercent };
     }, [formData, schema]);
 
-    // Identify if an existing record is loaded (you already have this logic for the PUT request)
     const isProject = pageType === 'project';
     const existingId = isProject ? (formData.pid || formData.id) : (formData.datasetid || formData.id);
     const isUpdate = !!existingId;
+    const recordTitle = formData.projectGrantName || formData.summary?.title || (existingId ? `${isProject ? 'Project' : 'Dataset'} #${existingId}` : null) || (isProject ? "New Project Record" : "New Dataset Record");
 
     // --- 2. Action Handlers ---
 
-    // RESTORED: Download the template example
-    const handleDownloadExample = () => {
-        try {
-            const blob = new Blob([JSON.stringify(exampleData, null, 2)], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = "example_metadata.json";
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-        } catch (e) {
-            console.error("Error downloading example:", e);
-        }
-    };
-
-    // MOVED: Download the user's current work
     const handleDownloadProgress = () => {
         try {
             let processedData = associateIcons(formData, prefixIconMapping);
@@ -167,7 +156,6 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType, onDeleteS
             const blob = new Blob([fileData], { type: "application/json" });
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
-            const isProject = pageType === 'project';
             const defaultName = isProject ? "project_metadata.json" : "dataset_metadata.json";
 
             const fileName = formData.projectGrantName || formData.summary?.title
@@ -184,32 +172,24 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType, onDeleteS
             console.error("Error exporting progress:", e);
         }
     };
+
     const transformForPHP = (data) => {
         return {
-            // team_id is required so the router can extract it
             team_id: parseInt(localStorage.getItem('activeTeamId')),
             pid: data.pid || "",
             version: data.version || "1.0",
             projectGrantName: data.projectGrantName || "",
             leadResearcher: data.leadResearcher || "",
             leadResearchInstitute: data.leadResearchInstitute || "",
-            grantNumbers: data.grantNumbers || "", // Use plural to match models.py
+            grantNumbers: data.grantNumbers || "",
             projectGrantStartDate: data.projectGrantStartDate || "",
             projectGrantEndDate: data.projectGrantEndDate || "",
             projectGrantScope: data.projectGrantScope || "",
-            // Required by ProjectBase schema
             metadata_blob: {}
         };
     };
 
-// Add this new deletion handler
-    const handleDeleteRecord = async () => {
-        const confirmDelete = window.confirm(
-            "Danger Zone: Are you sure you want to delete this record? This action cannot be undone."
-        );
-
-        if (!confirmDelete) return;
-
+    const confirmDeleteRecord = async () => {
         try {
             const token = localStorage.getItem('token');
             const baseEndpoint = isProject
@@ -232,7 +212,6 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType, onDeleteS
 
             alert(`Successfully deleted ${isProject ? 'Project' : 'Dataset'}.`);
 
-            // Notify the parent component to clear the form or redirect
             if (onDeleteSuccess) {
                 onDeleteSuccess();
             }
@@ -243,14 +222,10 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType, onDeleteS
         }
     };
 
-const handleSaveToDatabase = async () => {
+    const handleSaveToDatabase = async ({ markActive = false, unpublish = false } = {}) => {
         try {
             const token = localStorage.getItem('token');
             const activeTeamId = localStorage.getItem('activeTeamId');
-            const isProject = pageType === 'project';
-
-            const existingId = isProject ? (formData.pid || formData.id) : (formData.datasetid || formData.id);
-            const isUpdate = !!existingId;
 
             const baseEndpoint = isProject
                 ? `${API_BASE_URL}/projects/`
@@ -258,7 +233,6 @@ const handleSaveToDatabase = async () => {
 
             const endpoint = isUpdate ? `${baseEndpoint}${existingId}/` : baseEndpoint;
 
-            // --- NEW EXTRA TERMS LOOKUP ---
             let processedData = associateIcons(formData, prefixIconMapping);
             const filters = processedData.datasetFilters || [];
 
@@ -291,7 +265,6 @@ const handleSaveToDatabase = async () => {
                     console.error("Network failure during term resolution:", err);
                 }
             }
-            // --- END EXTRA TERMS LOOKUP ---
 
             let payload;
 
@@ -299,9 +272,11 @@ const handleSaveToDatabase = async () => {
                 payload = transformForPHP(processedData);
             } else {
                 payload = {
-                    metadata_blob: processedData, // Use the enriched data here
+                    metadata_blob: processedData,
                     team_id: parseInt(localStorage.getItem('activeTeamId')),
-                    status: "DRAFT"
+                    active: markActive,
+                    status: markActive ? "ACTIVE" : "DRAFT",
+                    unpublish: unpublish
                 };
             }
 
@@ -322,7 +297,17 @@ const handleSaveToDatabase = async () => {
             const result = await response.json();
             const displayId = isProject ? (result.pid || result.id) : result.datasetid;
 
-            alert(`Successfully ${isUpdate ? 'updated' : 'saved'} ${isProject ? 'Project' : 'Dataset'}. ID: ${displayId}`);
+            if (markActive) {
+                alert(`Successfully published ${isProject ? 'Project' : 'Dataset'}! ID: ${displayId}\nIt is now live on datasets.html and meta.html.`);
+            } else if (unpublish) {
+                alert(`Successfully unpublished ${isProject ? 'Project' : 'Dataset'}. ID: ${displayId}\nIt is now hidden from public view.`);
+            } else {
+                alert(`Successfully saved draft for ${isProject ? 'Project' : 'Dataset'}. ID: ${displayId}`);
+            }
+
+            if (onSaveSuccess) {
+                onSaveSuccess(result);
+            }
 
         } catch (error) {
             console.error("Save error:", error);
@@ -330,88 +315,125 @@ const handleSaveToDatabase = async () => {
         }
     };
 
-    const handleDownloadGuide = () => {
-        // This assumes your file is named 'guidance.pdf' in the public folder
-        const link = document.createElement("a");
-        link.href = "/guidance.pdf";
-        link.download = "CRUK_Datahub_Guide.pdf";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    const isActive = datasetStatus?.active || false;
+    const hasDraft = datasetStatus?.has_draft || false;
+
+    // Determine status badge config
+    let badgeConfig = {
+        label: 'DRAFT',
+        bg: 'bg-slate-800 text-slate-200 border-slate-700',
+        dot: 'bg-slate-400',
+        tooltip: 'DRAFT: Private working draft. Not visible on public browsing pages (datasets.html or public meta.html).'
     };
+
+    if (isActive && hasDraft) {
+        badgeConfig = {
+            label: 'ACTIVE (DRAFT EDITS)',
+            bg: 'bg-amber-950/80 text-amber-300 border-amber-800/60',
+            dot: 'bg-amber-400 animate-pulse',
+            tooltip: 'ACTIVE (DRAFT EDITS): The published version is live on datasets.html. You are currently working on unpublished draft edits.'
+        };
+    } else if (isActive) {
+        badgeConfig = {
+            label: 'ACTIVE',
+            bg: 'bg-emerald-950/80 text-emerald-300 border-emerald-800/60',
+            dot: 'bg-emerald-400',
+            tooltip: 'ACTIVE: Published and live. Visible to public visitors on datasets.html and meta.html.'
+        };
+    }
+
     // --- 3. Render ---
     return (
-        <div className="w-full h-10 bg-[var(--cruk-darkblue)] text-white flex items-center px-6 shadow-md z-20 relative text-sm font-medium">
+        <>
+            <div className="w-full h-12 bg-slate-900 border-b border-slate-800 text-white flex items-center px-6 shadow-lg z-20 relative text-xs font-medium backdrop-blur-md">
 
-            {/* Left: Dual Download Actions */}
-            <div className="flex-1 flex justify-start space-x-6">
-                <button
-                    onClick={handleDownloadExample}
-                    className="flex items-center hover:opacity-80 transition-opacity focus:outline-none"
-                    title="Download a template metadata file"
-                >
-                    <DownloadIcon />
-                    Download example
-                </button>
+                {/* Left: Status Badge & Hover Tooltip */}
+                <div className="flex-1 flex items-center space-x-3">
+                    <div className="group relative flex items-center">
+                        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold border ${badgeConfig.bg} shadow-inner transition-all`}>
+                            <span className={`w-2 h-2 rounded-full ${badgeConfig.dot} mr-1.5`}></span>
+                            {badgeConfig.label}
+                            <InfoIcon />
+                        </span>
 
-                <div className="w-px h-4 bg-white opacity-20 self-center"></div>
+                        {/* Hover Tooltip Box */}
+                        <div className="absolute left-0 top-full mt-2 w-72 p-3 bg-slate-800 text-slate-100 text-xs rounded-xl shadow-2xl border border-slate-700 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-all duration-200 z-50 leading-relaxed">
+                            <div className="font-bold text-indigo-300 mb-1">Status Explanation</div>
+                            {badgeConfig.tooltip}
+                        </div>
+                    </div>
 
-                <button
-                    onClick={handleDownloadProgress}
-                    className="flex items-center hover:opacity-80 transition-opacity focus:outline-none"
-                    title="Export your current progress as a JSON file"
-                >
-                    <DownloadIcon />
-                    Download progress to date
-                </button>
-                <div className="w-px h-4 bg-white opacity-20 self-center"></div>
-                <button
-                    onClick={handleDownloadGuide}
-                    className="flex items-center hover:opacity-80 transition-opacity focus:outline-none"
-                    title="Download the PDF user guide"
-                >
-                    <DownloadIcon />
-                    Download guide to uploading
-                </button>
-            </div>
-
-            {/* Centre: Actions */}
-            <div className="flex-1 flex justify-center space-x-8">
-                <button className="flex items-center hover:opacity-80 transition-opacity cursor-not-allowed opacity-70">
-                    <ActiveIcon />
-                    Make active
-                </button>
-                {/* Render the delete button only if we are editing an existing record */}
-                {isUpdate && (
                     <button
-                        onClick={handleDeleteRecord}
-                        className="flex items-center text-red-300 hover:text-red-500 transition-colors focus:outline-none"
+                        onClick={handleDownloadProgress}
+                        className="flex items-center text-slate-300 hover:text-white hover:bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700/60 transition-all focus:outline-none"
+                        title="Export your current progress as a JSON file"
                     >
-                        <TrashIcon />
-                        Delete
+                        <DownloadIcon />
+                        Export Progress JSON
                     </button>
-                )}
-                <button
-                    onClick={handleSaveToDatabase}
-                    className="flex items-center hover:text-green-400 transition-colors focus:outline-none"
-                >
-                    <SaveIcon />
-                    Save as draft
-                </button>
+                </div>
+
+                {/* Centre: Main Actions */}
+                <div className="flex items-center justify-center space-x-3">
+                    <button
+                        onClick={() => handleSaveToDatabase({ markActive: true })}
+                        className="flex items-center bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-1.5 rounded-lg shadow-sm font-semibold transition-all focus:outline-none active:scale-95"
+                        title="Publish and make visible on datasets.html and meta.html"
+                    >
+                        <ActiveIcon />
+                        Make active
+                    </button>
+
+                    <button
+                        onClick={() => handleSaveToDatabase({ markActive: false })}
+                        className="flex items-center bg-indigo-600 hover:bg-indigo-500 text-white px-3.5 py-1.5 rounded-lg shadow-sm font-semibold transition-all focus:outline-none active:scale-95"
+                        title="Save working progress as a draft"
+                    >
+                        <SaveIcon />
+                        Save as draft
+                    </button>
+
+                    {isActive && (
+                        <button
+                            onClick={() => handleSaveToDatabase({ unpublish: true })}
+                            className="flex items-center border border-amber-500/50 text-amber-300 hover:bg-amber-950/40 px-3 py-1.5 rounded-lg font-medium transition-all focus:outline-none"
+                            title="Unpublish dataset from public view"
+                        >
+                            Unpublish
+                        </button>
+                    )}
+
+                    {isUpdate && (
+                        <button
+                            onClick={() => setIsDeleteModalOpen(true)}
+                            className="flex items-center border border-red-500/40 text-red-300 hover:bg-red-950/60 px-3 py-1.5 rounded-lg font-medium transition-all focus:outline-none"
+                            title="Permanently delete this record"
+                        >
+                            <TrashIcon />
+                            Delete
+                        </button>
+                    )}
+                </div>
+
+                {/* Right: Completion Stats */}
+                <div className="flex-1 flex justify-end items-center text-slate-300">
+                    <ChartIcon />
+                    <span>
+                        Completion: <span className="font-bold text-emerald-400">{completionStats.req}%</span> (required) &nbsp;|&nbsp; <span className="font-bold text-indigo-300">{completionStats.opt}%</span> (optional)
+                    </span>
+                </div>
             </div>
 
-            {/* Right: Stats */}
-            <div className="flex-1 flex justify-end items-center">
-                <ChartIcon />
-                <span>
-                    Completion: <span className="font-bold text-green-300">{completionStats.req}%</span> (required) &nbsp;|&nbsp; <span className="font-bold text-blue-300">{completionStats.opt}%</span> (optional)
-                </span>
-            </div>
-        </div>
+            {/* Deletion Safety Modal */}
+            <DeleteConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => setIsDeleteModalOpen(false)}
+                onConfirm={confirmDeleteRecord}
+                title={recordTitle}
+                itemType={isProject ? "Project" : "Dataset"}
+            />
+        </>
     );
-
-
-
 };
 
 export default UploadTopBar;
