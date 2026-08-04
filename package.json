@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "dev_note.js",
+  "private": true,
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
