@@ -253,7 +253,7 @@ export const ProjectsSection = () => {
                                     <tr className="study-title-row">
                                         <td colSpan="5" style={{ paddingTop: '24px', paddingBottom: '8px' }}>
                                             <span className="study-title-text">
-                                                <a href={`${import.meta.env.DEV ? '/src/project_meta.html' : '/project_meta.html'}?pid=${encodeURIComponent(grant.pid)}`} className="study-title-link">
+                                                <a href={`/src/project_meta?pid=${encodeURIComponent(grant.pid)}`} className="study-title-link">
                                                     {grant.projectGrantName}
                                                 </a>
                                             </span>
