@@ -15,7 +15,7 @@ const CellValue = ({ value, isBoolean }) => {
 };
 
 // --- DatasetsSection Component ---
-export const DatasetsSection = () => {
+export const DatasetsSection = ({ custodianFilter }) => {
     const [datasets, setDatasets] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
@@ -76,6 +76,15 @@ export const DatasetsSection = () => {
 
     const filteredAndSortedDatasets = useMemo(() => {
         let currentDatasets = [...datasets];
+
+        if (custodianFilter) {
+            const lowerFilter = "cancer research horizons";
+            const shortFilter = "crh";
+            currentDatasets = currentDatasets.filter(dataset => {
+                const cust = (dataset.datasetCustodian || "").toLowerCase();
+                return cust.includes(lowerFilter) || cust.includes(shortFilter);
+            });
+        }
 
         if (searchTerm) {
             const lower = searchTerm.toLowerCase();

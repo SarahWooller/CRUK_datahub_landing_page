@@ -167,7 +167,7 @@ export const DatahubDashboard = () => {
 
       {/* Research Focus Section */}
       <div style={focusSectionStyle}>
-        <a href="/horizons" style={ctaContainerStyle}>
+        <a href="./horizons.html" style={ctaContainerStyle}>
           <div style={ctaImageStyle} aria-hidden="true"></div>
           <div style={ctaTextStyle}>
             Explore Cancer Research Horizons Data Resources

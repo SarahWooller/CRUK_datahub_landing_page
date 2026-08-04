@@ -58,6 +58,9 @@ const App = () => {
             <a href="./src/dashboard.html">The dashboard</a>
           </p>
           <p>
+            <a href="./src/horizons.html">Cancer Research Horizons Portfolio</a>
+          </p>
+          <p>
             <a href="https://gateway-web-five.vercel.app/en/search?type=datasets"><b>We are currently in the process of linking our search page</b> That page should appear here shortly.</a>
           </p>
         </div>

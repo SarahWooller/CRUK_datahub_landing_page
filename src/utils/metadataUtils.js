@@ -88,6 +88,7 @@ export const extractMetadataConstants = (data) => {
   const popSize = summary.populationSize || null;
   const title = summary.title || null;
   const abstract = summary.abstract || null;
+  const datasetCustodian = summary.dataCustodian?.name || null;
 
   // Accessibility extraction
   const accessFilter = filters.find(f => f.category === "accessType");
@@ -109,6 +110,7 @@ export const extractMetadataConstants = (data) => {
     nonCommercialUseOnly,
     dataRange,
     title,
-    abstract
+    abstract,
+    datasetCustodian
   };
 };

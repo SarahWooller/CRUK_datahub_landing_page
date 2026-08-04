@@ -348,7 +348,7 @@ const HelpOverlay = ({ isOpen, onClose }) => {
 };
 
 // Main Application Component
-export const FilterApp = () => {
+export const FilterApp = ({ custodianFilter }) => {
     const [activePanel, setActivePanel] = useState(null);
     const [selectedFilters, setSelectedFilters] = useState(new Set());
     const [snomedOverrides, setSnomedOverrides] = useState({}); // New state
@@ -658,7 +658,7 @@ return (
                     {/* --- End Filter Content Panel --- */}
                     {/* Render DatasetsSection inside the unified container */}
                     <div className="border-t border-gray-300 bg-white">
-                        <DatasetsSection />
+                        <DatasetsSection custodianFilter={custodianFilter} />
                     </div>
                 </div>
             </div>

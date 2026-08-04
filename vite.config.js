@@ -29,6 +29,7 @@ export default defineConfig({
         publications: resolve(__dirname, 'src/publications.html'),
         projects: resolve(__dirname, 'src/projects.html'),
         datasets: resolve(__dirname, 'src/datasets.html'),
+        horizons: resolve(__dirname, 'src/horizons.html'),
         sign_in: resolve(__dirname, 'src/sign_in.html'),
         upload: resolve(__dirname, 'src/upload.html'),
         upload_project: resolve(__dirname, 'src/upload_project.html'),
