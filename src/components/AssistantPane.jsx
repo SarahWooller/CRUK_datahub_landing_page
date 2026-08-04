@@ -5,7 +5,7 @@ import PreviewTags from './PreviewTags.jsx';
 import PreviewMainContent from './PreviewMainContent.jsx';
 import AiUploadWidget from './AiUploadWidget.jsx';
 
-import exampleData from '../utils/new_dummies/dataset_00.json';
+import exampleData from '../utils/template_dataset.json';
 
 const AssistantPane = ({ activeGuidance, formData, activeSection, setActiveSection, onFormChange, children }) => {
     const [activeTab, setActiveTab] = useState('guidance'); // 'guidance', 'ai', 'preview'

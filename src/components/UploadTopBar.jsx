@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import exampleData from '../utils/new_dummies/dataset_00.json';
+
 import { getExtra } from '../utils/getExtra.js';
 import DeleteConfirmationModal from './DeleteConfirmationModal.jsx';
 
