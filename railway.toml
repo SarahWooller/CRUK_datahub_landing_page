@@ -3,4 +3,4 @@ builder = "NIXPACKS"
 buildCommand = "npm install && npm run build"
 
 [deploy]
-startCommand = "ls -la dist && npm run start:prod"
+startCommand = "npm run start:prod"
