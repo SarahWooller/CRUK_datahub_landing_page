@@ -367,12 +367,7 @@ const { derivedFilters, activeIcons } = useMemo(() => {
                     label="Access Rights"
                     value={access.accessRights}
                 />
-                <AccessItem label="Data Controller" value={data.accessibility?.access?.dataController} />
-                <AccessItem label="Data Processor" value={data.accessibility?.access?.dataProcessor} />
-                <AccessItem label="Access Service" value={data.accessibility?.access?.accessService} />
-                <AccessItem label="Access Service Category" value={data.accessibility?.access?.accessServiceCategory} />
-                <AccessItem label="Access Request Cost" value={data.accessibility?.access?.accessRequestCost} />
-                <AccessItem label="Jurisdiction" value={Array.isArray(data.accessibility?.access?.jurisdiction) ? data.accessibility.access.jurisdiction.join(', ') : data.accessibility?.access?.jurisdiction} />
+
             </div>
         )}
       </nav>
@@ -485,13 +480,7 @@ const { derivedFilters, activeIcons } = useMemo(() => {
 
         {/* Filters */}
         <div className="space-y-4">
-             {/* Resource Creator */}
-             {resourceCreators && resourceCreators !== "Information not provided" && (
-                 <div className="mb-4">
-                     <h4 className="font-bold text-blue-900 mb-1 border-b border-gray-200 pb-1 text-base">Resource Creator</h4>
-                     <p className="text-sm text-gray-600">{resourceCreators}</p>
-                 </div>
-             )}
+
 
              {/* Dynamic Nested Filters - Expandable */}
              {Object.entries(derivedFilters).map(([groupName, categories]) => (
@@ -1128,15 +1117,11 @@ export const DatasetDetailsContent = ({ data, isPreview = false, onSectionClick 
             <>
                 <SectionHeading id="provenance" title="Provenance" onClick={onSectionClick ? () => onSectionClick('provenance') : undefined} />
                 <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-10">
-                    {(isPreview || isNotEmpty(provenance.temporal) || provenance.origin) ? (
+                    {(isPreview || isNotEmpty(provenance.temporal)) ? (
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                            <AccessItem label="Origin" value={provenance.origin} isPreview={isPreview} />
-                            <AccessItem label="Publishing Frequency" value={provenance.temporal?.publishingFrequency} isPreview={isPreview} />
-                            <AccessItem label="Accrual Periodicity" value={provenance.temporal?.accrualPeriodicity} isPreview={isPreview} />
                             <AccessItem label="Start Date" value={provenance.temporal?.startDate} isPreview={isPreview} />
                             <AccessItem label="End Date" value={provenance.temporal?.endDate} isPreview={isPreview} />
                             <AccessItem label="Time Lag" value={provenance.temporal?.timeLag} isPreview={isPreview} />
-                            <AccessItem label="Release Date" value={provenance.temporal?.distributionReleaseDate} isPreview={isPreview} />
                         </div>
                     ) : (
                         <p className="text-gray-400 italic m-0">Information not provided</p>
@@ -1147,28 +1132,7 @@ export const DatasetDetailsContent = ({ data, isPreview = false, onSectionClick 
 
 
         {/* Access, Usage & Formatting (Moved to bottom) */}
-        {(isPreview || isNotEmpty(data.accessibility?.usage) || isNotEmpty(data.accessibility?.formatAndStandards)) && (
-            <>
-                <SectionHeading id="access-usage" title="Usage & Formatting" onClick={onSectionClick ? () => onSectionClick('accessibility') : undefined} />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-                    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                        <h3 className="font-bold text-blue-900 mb-4 border-b pb-2">Usage & Formats</h3>
-                        <AccessItem label="Data Use Limitation" value={Array.isArray(data.accessibility?.usage?.dataUseLimitation) ? data.accessibility.usage.dataUseLimitation.join(', ') : data.accessibility?.usage?.dataUseLimitation} isPreview={isPreview} />
-                        <AccessItem label="Data Use Requirements" value={Array.isArray(data.accessibility?.usage?.dataUseRequirements) ? data.accessibility.usage.dataUseRequirements.join(', ') : data.accessibility?.usage?.dataUseRequirements} isPreview={isPreview} />
-                        <AccessItem label="Investigations" value={Array.isArray(data.accessibility?.usage?.investigations) ? data.accessibility.usage.investigations.join(', ') : data.accessibility?.usage?.investigations} isPreview={isPreview} />
-                        <AccessItem label="Is Referenced By" value={Array.isArray(data.accessibility?.usage?.isReferencedBy) ? data.accessibility.usage.isReferencedBy.join(', ') : data.accessibility?.usage?.isReferencedBy} isPreview={isPreview} />
-                        {(isPreview || isNotEmpty(data.accessibility?.formatAndStandards)) && (
-                            <div className="mt-4 pt-4 border-t border-gray-100">
-                                <AccessItem label="Format" value={Array.isArray(data.accessibility?.formatAndStandards?.format) ? data.accessibility.formatAndStandards.format.join(', ') : data.accessibility?.formatAndStandards?.format} isPreview={isPreview} />
-                                <AccessItem label="Vocabulary Encoding" value={Array.isArray(data.accessibility?.formatAndStandards?.vocabularyEncodingScheme) ? data.accessibility.formatAndStandards.vocabularyEncodingScheme.join(', ') : data.accessibility?.formatAndStandards?.vocabularyEncodingScheme} isPreview={isPreview} />
-                                <AccessItem label="Conforms To" value={Array.isArray(data.accessibility?.formatAndStandards?.conformsTo) ? data.accessibility.formatAndStandards.conformsTo.join(', ') : data.accessibility?.formatAndStandards?.conformsTo} isPreview={isPreview} />
-                                <AccessItem label="Language" value={Array.isArray(data.accessibility?.formatAndStandards?.language) ? data.accessibility.formatAndStandards.language.join(', ') : data.accessibility?.formatAndStandards?.language} isPreview={isPreview} />
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </>
-        )}
+
     </>
   );
 };

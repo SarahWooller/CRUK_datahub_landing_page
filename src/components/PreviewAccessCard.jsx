@@ -74,24 +74,6 @@ const PreviewAccessCard = ({ data, onSectionClick }) => {
                 isPreview={true}
                 onClick={onSectionClick ? () => onSectionClick('accessibility') : undefined}
             />
-            <AccessItem label="Data Controller" value={data.accessibility?.access?.dataController} isPreview={true} onClick={onSectionClick ? () => onSectionClick('accessibility') : undefined} />
-            <AccessItem label="Data Processor" value={data.accessibility?.access?.dataProcessor} isPreview={true} onClick={onSectionClick ? () => onSectionClick('accessibility') : undefined} />
-            <AccessItem label="Access Service" value={data.accessibility?.access?.accessService} isPreview={true} onClick={onSectionClick ? () => onSectionClick('accessibility') : undefined} />
-            <AccessItem label="Access Service Category" value={data.accessibility?.access?.accessServiceCategory} isPreview={true} onClick={onSectionClick ? () => onSectionClick('accessibility') : undefined} />
-            <AccessItem label="Access Request Cost" value={data.accessibility?.access?.accessRequestCost} isPreview={true} onClick={onSectionClick ? () => onSectionClick('accessibility') : undefined} />
-            <AccessItem label="Jurisdiction" value={Array.isArray(data.accessibility?.access?.jurisdiction) ? data.accessibility.access.jurisdiction.join(', ') : data.accessibility?.access?.jurisdiction} isPreview={true} onClick={onSectionClick ? () => onSectionClick('accessibility') : undefined} />
-            <AccessItem
-                label="Resource Creator"
-                value={resourceCreators}
-                isPreview={true}
-                onClick={onSectionClick ? () => onSectionClick('accessibility') : undefined}
-            />
-            <AccessItem
-                label="Delivery Lead Time"
-                value={access.deliveryLeadTime}
-                isPreview={true}
-                onClick={onSectionClick ? () => onSectionClick('accessibility') : undefined}
-            />
         </div>
     );
 };
