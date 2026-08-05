@@ -1,0 +1,29 @@
+{
+  "identifier": "cruk-study-0036",
+  "version": "1.0.0",
+  "revisions": [
+    {
+      "version": "1.0.0"
+    }
+  ],
+  "issued": "2026-08-05T15:05:57.772Z",
+  "modified": "2026-08-05T15:05:57.772Z",
+  "summary": {
+    "title": "CheckMate-214",
+    "abstract": "Nivolumab plus ipilimumab for advanced renal-cell carcinoma.",
+    "populationSize": 2545,
+    "contactPoint": "info@memorialsloanketteringcancercenter.ac.uk",
+    "dataCustodian": {
+      "identifier": "https://ror.org/0716750",
+      "name": "Memorial Sloan Kettering Cancer Center",
+      "contactPoint": "admin@memorialsloanketteringcancercenter.ac.uk"
+    },
+    "leadResearcher": "Dr. Robert Motzer",
+    "leadResearchInstitute": "Memorial Sloan Kettering Cancer Center"
+  },
+  "accessibility": {
+    "access": {
+      "accessRights": "Access requests must be submitted to the Memorial Sloan Kettering Cancer Center Data Access Committee. Approvals take approximately 4 weeks."
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "identifier": "cruk-study-0034",
+  "version": "1.0.0",
+  "revisions": [
+    {
+      "version": "1.0.0"
+    }
+  ],
+  "issued": "2026-08-05T15:05:57.772Z",
+  "modified": "2026-08-05T15:05:57.772Z",
+  "summary": {
+    "title": "TEXT",
+    "abstract": "Tamoxifen and Exemestane Trial.",
+    "populationSize": 2861,
+    "contactPoint": "info@instituteofoncologysouthernswitzerland.ac.uk",
+    "dataCustodian": {
+      "identifier": "https://ror.org/0563968",
+      "name": "Institute of Oncology Southern Switzerland",
+      "contactPoint": "admin@instituteofoncologysouthernswitzerland.ac.uk"
+    },
+    "leadResearcher": "Prof. Olivia Pagani",
+    "leadResearchInstitute": "Institute of Oncology Southern Switzerland"
+  },
+  "accessibility": {
+    "access": {
+      "accessRights": "Access requests must be submitted to the Institute of Oncology Southern Switzerland Data Access Committee. Approvals take approximately 4 weeks."
+    }
+  }
+}

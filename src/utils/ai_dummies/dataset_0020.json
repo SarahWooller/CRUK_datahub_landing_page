@@ -1,0 +1,59 @@
+{
+  "identifier": "cruk-study-0020",
+  "version": "1.0.0",
+  "revisions": [
+    {
+      "version": "1.0.0"
+    }
+  ],
+  "issued": "2026-08-05T15:05:57.771Z",
+  "modified": "2026-08-05T15:05:57.771Z",
+  "summary": {
+    "title": "FLAURA",
+    "abstract": "Osimertinib in untreated EGFR-mutated advanced NSCLC.",
+    "populationSize": 1511,
+    "contactPoint": "info@gustaveroussy.ac.uk",
+    "dataCustodian": {
+      "identifier": "https://ror.org/0699670",
+      "name": "Gustave Roussy",
+      "contactPoint": "admin@gustaveroussy.ac.uk"
+    },
+    "leadResearcher": "Prof. Jean-Charles Soria",
+    "leadResearchInstitute": "Gustave Roussy"
+  },
+  "accessibility": {
+    "access": {
+      "accessRights": "Access requests must be submitted to the Gustave Roussy Data Access Committee. Approvals take approximately 4 weeks."
+    }
+  },
+  "demographicFrequency": {
+    "ethnicity": [
+      {
+        "bin": "White - English, Welsh, Scottish, Northern Irish or British",
+        "count": 1615
+      },
+      {
+        "bin": "Asian or Asian British - Indian",
+        "count": 272
+      },
+      {
+        "bin": "Black or Black British - African",
+        "count": 26
+      }
+    ]
+  },
+  "observations": [
+    {
+      "observedNode": "Persons",
+      "measuredValue": 1511,
+      "observationDate": "2026-08-05T15:05:57.771Z",
+      "measuredProperty": "Count"
+    },
+    {
+      "observedNode": "Events",
+      "measuredValue": 1511,
+      "observationDate": "2026-08-05T15:05:57.771Z",
+      "measuredProperty": "Treatment Events"
+    }
+  ]
+}

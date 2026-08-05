@@ -8,19 +8,25 @@ import { FeedbackWidget } from './components/FeedbackWidget.jsx';
 import { InstructionsWidget } from './components/InstructionsWidget.jsx';
 import FloatingQRCode from './components/FloatingQRCode.jsx';
 
+import './utils/fetchInterceptor.js';
+import { ErrorBoundary } from './components/ErrorBoundary.jsx';
+
 function renderReactComponent(targetId, Component) {
   const targetElement = document.getElementById(targetId);
   if (targetElement) {
     const root = ReactDOM.createRoot(targetElement);
     root.render(
       <React.StrictMode>
-        {Component}
+        <ErrorBoundary>
+          {Component}
+        </ErrorBoundary>
       </React.StrictMode>
     );
   } else {
     console.error(`Target element '${targetId}' not found in the DOM.`);
   }
 }
+
 
 renderReactComponent('header', <Header/>);
 renderReactComponent('introduction', <Introduction/>);

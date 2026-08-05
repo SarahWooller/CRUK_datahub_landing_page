@@ -5,8 +5,7 @@ import StructuralMetadataGrid from "./StructuralMetadataGrid.jsx";
 import AssistantPane from './AssistantPane.jsx';
 import FeedbackModal from './FeedbackModal.jsx';
 import questionData from '../feedback/upload_questions.json';
-import hdrukSchema from '../utils/HDRUK4.0.0.json';
-import crukSchema from '../utils/CRUK1.0.0.json';
+import crukSchema from '../utils/CRUKv.1.0.0.json';
 import semanticSchema from 'cruk-semantic-schema';
 
 import { MarkdownRenderer } from './MarkdownRenderer.jsx';
@@ -100,14 +99,10 @@ const deepMerge = (target, source) => {
     return output;
 };
 // --- Safe Schema Loading and Merging ---
-const hdruk_SCHEMA = hdrukSchema.properties ? hdrukSchema : (hdrukSchema.fullContent || {});
 const cruk_SCHEMA = crukSchema.properties ? crukSchema : (crukSchema.fullContent || crukSchema);
 const OVERLAY_SCHEMA = semanticSchema.properties ? semanticSchema : (semanticSchema.fullContent || semanticSchema);
-// This creates a new object where semanticSchema properties overwrite rawSchema properties
-const MID_SCHEMA = deepMerge(hdruk_SCHEMA, cruk_SCHEMA);
-const DATA_SCHEMA = deepMerge(MID_SCHEMA, OVERLAY_SCHEMA);
-
-const VISIBLE_SECTIONS = DATA_SCHEMA.visibleSections
+const DATA_SCHEMA = deepMerge(cruk_SCHEMA, OVERLAY_SCHEMA);
+const VISIBLE_SECTIONS = DATA_SCHEMA.visibleSections || [];
 // --- CUSTOM VALIDATION RULES ---
 const EXTRA_VALIDATIONS = {
     "datasetFilters": (value) => {

@@ -1,0 +1,29 @@
+{
+  "identifier": "cruk-study-0028",
+  "version": "1.0.0",
+  "revisions": [
+    {
+      "version": "1.0.0"
+    }
+  ],
+  "issued": "2026-08-05T15:05:57.772Z",
+  "modified": "2026-08-05T15:05:57.772Z",
+  "summary": {
+    "title": "MATCH",
+    "abstract": "Molecular Analysis for Therapy Choice.",
+    "populationSize": 757,
+    "contactPoint": "info@ecogacrin.ac.uk",
+    "dataCustodian": {
+      "identifier": "https://ror.org/0692127",
+      "name": "ECOG-ACRIN",
+      "contactPoint": "admin@ecogacrin.ac.uk"
+    },
+    "leadResearcher": "Dr. Peter O'Dwyer",
+    "leadResearchInstitute": "ECOG-ACRIN"
+  },
+  "accessibility": {
+    "access": {
+      "accessRights": "Access requests must be submitted to the ECOG-ACRIN Data Access Committee. Approvals take approximately 4 weeks."
+    }
+  }
+}

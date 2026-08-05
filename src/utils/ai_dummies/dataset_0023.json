@@ -1,0 +1,45 @@
+{
+  "identifier": "cruk-study-0023",
+  "version": "1.0.0",
+  "revisions": [
+    {
+      "version": "1.0.0"
+    }
+  ],
+  "issued": "2026-08-05T15:05:57.772Z",
+  "modified": "2026-08-05T15:05:57.772Z",
+  "summary": {
+    "title": "SOLO1",
+    "abstract": "Olaparib maintenance therapy in BRCA-mutated advanced ovarian cancer.",
+    "populationSize": 1916,
+    "contactPoint": "info@stephensoncancercenter.ac.uk",
+    "dataCustodian": {
+      "identifier": "https://ror.org/0407716",
+      "name": "Stephenson Cancer Center",
+      "contactPoint": "admin@stephensoncancercenter.ac.uk"
+    },
+    "leadResearcher": "Prof. Kathleen Moore",
+    "leadResearchInstitute": "Stephenson Cancer Center"
+  },
+  "accessibility": {
+    "access": {
+      "accessRights": "Access requests must be submitted to the Stephenson Cancer Center Data Access Committee. Approvals take approximately 4 weeks."
+    }
+  },
+  "demographicFrequency": {
+    "ethnicity": [
+      {
+        "bin": "White - English, Welsh, Scottish, Northern Irish or British",
+        "count": 873
+      },
+      {
+        "bin": "Asian or Asian British - Indian",
+        "count": 317
+      },
+      {
+        "bin": "Black or Black British - African",
+        "count": 187
+      }
+    ]
+  }
+}

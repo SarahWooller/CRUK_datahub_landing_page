@@ -1,4 +1,6 @@
 import { createRoot } from 'react-dom/client'
+import './utils/fetchInterceptor.js';
+import { ErrorBoundary } from './components/ErrorBoundary.jsx';
 
 const App = () => {
   const containerStyle = {
@@ -79,4 +81,8 @@ const App = () => {
   );
 };
 
-createRoot(document.getElementById("root")).render(<App />);
+createRoot(document.getElementById("root")).render(
+  <ErrorBoundary>
+    <App />
+  </ErrorBoundary>
+);

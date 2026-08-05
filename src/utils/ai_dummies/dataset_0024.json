@@ -1,0 +1,45 @@
+{
+  "identifier": "cruk-study-0024",
+  "version": "1.0.0",
+  "revisions": [
+    {
+      "version": "1.0.0"
+    }
+  ],
+  "issued": "2026-08-05T15:05:57.772Z",
+  "modified": "2026-08-05T15:05:57.772Z",
+  "summary": {
+    "title": "BEACON",
+    "abstract": "Encorafenib, cetuximab, and binimetinib for BRAF V600E-mutated colorectal cancer.",
+    "populationSize": 2022,
+    "contactPoint": "info@mdandersoncancercenter.ac.uk",
+    "dataCustodian": {
+      "identifier": "https://ror.org/0268411",
+      "name": "MD Anderson Cancer Center",
+      "contactPoint": "admin@mdandersoncancercenter.ac.uk"
+    },
+    "leadResearcher": "Dr. Scott Kopetz",
+    "leadResearchInstitute": "MD Anderson Cancer Center"
+  },
+  "accessibility": {
+    "access": {
+      "accessRights": "Access requests must be submitted to the MD Anderson Cancer Center Data Access Committee. Approvals take approximately 4 weeks."
+    }
+  },
+  "demographicFrequency": {
+    "ethnicity": [
+      {
+        "bin": "White - English, Welsh, Scottish, Northern Irish or British",
+        "count": 1532
+      },
+      {
+        "bin": "Asian or Asian British - Indian",
+        "count": 41
+      },
+      {
+        "bin": "Black or Black British - African",
+        "count": 74
+      }
+    ]
+  }
+}

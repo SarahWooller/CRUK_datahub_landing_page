@@ -1,0 +1,115 @@
+{
+  "identifier": "cruk-study-0003",
+  "version": "1.0.0",
+  "revisions": [
+    {
+      "version": "1.0.0"
+    }
+  ],
+  "issued": "2026-08-05T15:05:57.770Z",
+  "modified": "2026-08-05T15:05:57.770Z",
+  "summary": {
+    "title": "STAMPEDE",
+    "abstract": "Systemic Therapy in Advancing or Metastatic Prostate cancer.",
+    "populationSize": 779,
+    "contactPoint": "info@universitycollegelondon.ac.uk",
+    "dataCustodian": {
+      "identifier": "https://ror.org/0380600",
+      "name": "University College London",
+      "contactPoint": "admin@universitycollegelondon.ac.uk"
+    },
+    "leadResearcher": "Prof. Nicholas James",
+    "leadResearchInstitute": "University College London"
+  },
+  "accessibility": {
+    "access": {
+      "accessRights": "Access requests must be submitted to the University College London Data Access Committee. Approvals take approximately 4 weeks."
+    }
+  },
+  "demographicFrequency": {
+    "ethnicity": [
+      {
+        "bin": "White - English, Welsh, Scottish, Northern Irish or British",
+        "count": 1671
+      },
+      {
+        "bin": "Asian or Asian British - Indian",
+        "count": 347
+      },
+      {
+        "bin": "Black or Black British - African",
+        "count": 94
+      }
+    ]
+  },
+  "structuralMetadata": [
+    {
+      "name": "PATIENTS",
+      "description": "Contains patient demographic and diagnostic data.",
+      "columns": [
+        {
+          "name": "patient_id",
+          "dataType": "string",
+          "description": "Unique patient identifier"
+        },
+        {
+          "name": "diagnosis_date",
+          "dataType": "date",
+          "description": "Date of primary diagnosis"
+        },
+        {
+          "name": "stage",
+          "dataType": "string",
+          "description": "Cancer stage at diagnosis"
+        }
+      ]
+    },
+    {
+      "name": "TREATMENTS",
+      "description": "Contains medication and therapy records.",
+      "columns": [
+        {
+          "name": "treatment_id",
+          "dataType": "string",
+          "description": "Unique treatment identifier"
+        },
+        {
+          "name": "drug_name",
+          "dataType": "string",
+          "description": "Name of the administered drug"
+        },
+        {
+          "name": "dosage",
+          "dataType": "number",
+          "description": "Dosage amount in mg"
+        }
+      ]
+    }
+  ],
+  "otherDataTypes": [
+    {
+      "title": "Pathology Slides",
+      "description": "High-resolution digital pathology slide images.",
+      "format": "TIFF"
+    },
+    {
+      "title": "Genomic Sequences",
+      "description": "Whole exome sequencing data files.",
+      "format": "BAM"
+    }
+  ],
+  "observations": [
+    {
+      "observedNode": "Persons",
+      "measuredValue": 779,
+      "observationDate": "2026-08-05T15:05:57.770Z",
+      "measuredProperty": "Count"
+    },
+    {
+      "observedNode": "Events",
+      "measuredValue": 3895,
+      "observationDate": "2026-08-05T15:05:57.770Z",
+      "measuredProperty": "Treatment Events"
+    }
+  ]
+}

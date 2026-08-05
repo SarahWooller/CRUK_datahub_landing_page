@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ErrorLogsTab } from './ErrorLogsTab.jsx';
 
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
@@ -241,10 +242,11 @@ export const ManageHub = () => {
             {success && <div className="mb-4 p-4 bg-green-50 text-green-700 border border-green-200 rounded">{success}</div>}
 
             {/* TABS */}
-            <div className="flex border-b mb-6">
-                <button className={`py-2 px-6 font-medium ${activeTab === 'users' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('users')}>Users</button>
-                <button className={`py-2 px-6 font-medium ${activeTab === 'teams' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('teams')}>Teams</button>
-                <button className={`py-2 px-6 font-medium ${activeTab === 'links' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('links')}>User-Team Links</button>
+            <div className="flex border-b mb-6 overflow-x-auto">
+                <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'users' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('users')}>Users</button>
+                <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'teams' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('teams')}>Teams</button>
+                <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'links' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('links')}>User-Team Links</button>
+                <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'errors' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('errors')}>Error Logs</button>
             </div>
 
             {loading ? (
@@ -531,6 +533,12 @@ export const ManageHub = () => {
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
+                    )}
+                    {/* ERROR LOGS TAB */}
+                    {activeTab === 'errors' && (
+                        <div className="bg-gray-50 p-6 rounded-lg mb-8 border border-gray-200 shadow-sm">
+                            <ErrorLogsTab token={token} />
                         </div>
                     )}
                 </>
