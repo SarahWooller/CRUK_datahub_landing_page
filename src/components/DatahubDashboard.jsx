@@ -1,7 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export const DatahubDashboard = () => {
   const [isBannerVisible, setIsBannerVisible] = useState(true);
+  const [showChatbotBanner, setShowChatbotBanner] = useState(true);
+
+  useEffect(() => {
+    if (!showChatbotBanner) return;
+    const hideBanner = () => setShowChatbotBanner(false);
+    
+    // Slight delay to prevent immediate dismissal on navigation click
+    const timeout = setTimeout(() => {
+      document.addEventListener('click', hideBanner);
+    }, 100);
+
+    return () => {
+      clearTimeout(timeout);
+      document.removeEventListener('click', hideBanner);
+    };
+  }, [showChatbotBanner]);
 
   const containerStyle = {
     backgroundColor: '#f0f7ff',
@@ -107,6 +123,48 @@ export const DatahubDashboard = () => {
 
   return (
     <div style={containerStyle}>
+      {/* Chatbot Alert Banner */}
+      {showChatbotBanner && (
+        <div 
+          onClick={() => setShowChatbotBanner(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            zIndex: 99999,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            backgroundColor: 'rgba(0, 0, 0, 0.6)',
+            cursor: 'pointer'
+        }}>
+          <div style={{
+            backgroundColor: '#ffffff',
+            color: '#003580',
+            padding: '40px 10vw',
+            width: '150vw',
+            textAlign: 'center',
+            transform: 'rotate(-10deg)',
+            boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
+            borderTop: '10px solid #e40085',
+            borderBottom: '10px solid #e40085'
+          }}>
+            <h3 style={{ margin: '0 0 16px 0', fontSize: '3.5rem', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '2px', color: '#e40085' }}>
+              ✨ New Feature: AI Analytics Chatbot! ✨
+            </h3>
+            <p style={{ margin: '0 0 16px 0', fontSize: '1.8rem', lineHeight: '1.4', fontWeight: 'bold' }}>
+              We've launched a new AI chatbot to help you query datasets and projects. Look for the <span style={{ color: '#e40085' }}>pink</span> chat icon in the bottom right!
+            </p>
+            <p style={{ margin: 0, fontSize: '1.2rem', fontWeight: 'normal', color: '#666' }}>
+              (click to dismiss)
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Promotional Banner */}
       {isBannerVisible && (
         <div style={{

@@ -58,28 +58,77 @@ const ChatWidget = () => {
         };
     }, [isDragging]);
 
-    const handleSend = async (text) => {
+    const handleSend = async (text, isSearchConfirmation = false) => {
         const query = text || input;
         if (!query.trim()) return;
 
-        setMessages(prev => [...prev, { role: 'user', text: query }]);
-        setInput('');
+        if (!isSearchConfirmation) {
+            setMessages(prev => [...prev, { role: 'user', text: query }]);
+        } else {
+            setMessages(prev => [...prev, { role: 'user', text: "Yes, search the internet." }]);
+        }
+        
+        if (!text) setInput('');
         setIsLoading(true);
 
         try {
             const aiUrl = import.meta.env.VITE_AI_URL || "http://localhost:8001";
+            const activeTeamId = localStorage.getItem('activeTeamId');
+            const userId = localStorage.getItem('userId');
+            
+            // Extract page context
+            const url = new URL(window.location.href);
+            const path = url.pathname;
+            const searchParams = new URLSearchParams(url.search);
+            
+            let pageType = 'unknown';
+            let entityId = null;
+            
+            if (path.includes('meta') && !path.includes('project')) {
+                pageType = 'dataset_detail';
+                entityId = searchParams.get('id');
+            } else if (path.includes('project_meta')) {
+                pageType = 'project_detail';
+                entityId = searchParams.get('pid');
+            } else if (path.includes('datasets')) {
+                pageType = 'datasets_list';
+            } else if (path.includes('projects')) {
+                pageType = 'projects_list';
+            }
+
+            const page_context = {
+                page: pageType,
+                entity_id: entityId
+            };
+            
+            const payload = { 
+                question: query, 
+                context: 'public',
+                is_search_confirmation: isSearchConfirmation,
+                team_id: activeTeamId,
+                user_id: userId,
+                page_context: page_context
+            };
+
             const response = await fetch(`${aiUrl}/api/ai/chat`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ question: query, context: 'public' })
+                body: JSON.stringify(payload)
             });
 
             if (!response.ok) throw new Error("Network response was not ok");
             const data = await response.json();
             
+            if (data.matching_ids && data.matching_ids.length > 0) {
+                window.dispatchEvent(new CustomEvent('ai-filter-datasets', { detail: data.matching_ids }));
+            }
+            
             setMessages(prev => [...prev, { 
                 role: 'assistant', 
-                text: data.answer || "I couldn't process that query."
+                text: data.answer || "I couldn't process that query.",
+                requires_search_confirmation: data.requires_search_confirmation,
+                citations: data.citations,
+                actions: data.actions
             }]);
         } catch (error) {
             setMessages(prev => [...prev, { 
@@ -99,12 +148,20 @@ const ChatWidget = () => {
 
     if (!isOpen) {
         return (
-            <button 
-                onClick={() => setIsOpen(true)}
-                className="fixed bottom-6 right-6 bg-[#E40085] hover:bg-[#c90075] text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg transition-transform hover:scale-105 z-50"
-            >
-                <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h2v2H9V9zm4 0h2v2h-2V9z"></path></svg>
-            </button>
+            <div className="fixed bottom-6 right-6 z-50 group">
+                {/* Custom Tooltip */}
+                <div className="absolute bottom-full right-0 mb-3 w-max px-3 py-2 bg-white text-gray-800 border border-gray-200 text-xs font-medium rounded-lg shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                    AI chatbot - powered by Gemini 3.5
+                    {/* Tooltip triangle tail */}
+                    <div className="absolute top-full right-5 -mt-px border-4 border-transparent border-t-white"></div>
+                </div>
+                <button 
+                    onClick={() => setIsOpen(true)}
+                    className="bg-[#E40085] hover:bg-[#c90075] text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg transition-transform hover:scale-105"
+                >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+                </button>
+            </div>
         );
     }
 
@@ -141,6 +198,44 @@ const ChatWidget = () => {
                             : 'bg-white border border-gray-200 text-gray-800 rounded-bl-none shadow-sm'
                         }`}>
                             <p className="text-sm whitespace-pre-wrap">{msg.text}</p>
+                            
+                            {msg.citations && msg.citations.length > 0 && (
+                                <div className="mt-2 pt-2 border-t border-gray-200">
+                                    <p className="text-xs text-gray-500 font-semibold mb-1">Sources:</p>
+                                    <ul className="list-disc pl-4">
+                                        {msg.citations.map((c, i) => (
+                                            <li key={i}><a href={c.url} target="_blank" rel="noopener noreferrer" className="text-[#E40085] hover:underline text-xs">{c.title}</a></li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+
+                            {msg.actions && msg.actions.length > 0 && (
+                                <div className="flex flex-col gap-2 mt-2 pt-2 border-t border-gray-200">
+                                    {msg.actions.map((act, i) => (
+                                        <a key={i} href={`./upload.html?datasetId=${act.id}`} className="block text-center bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 px-3 py-1.5 rounded-md text-sm font-medium transition-colors">
+                                            {act.label}
+                                        </a>
+                                    ))}
+                                </div>
+                            )}
+
+                            {msg.requires_search_confirmation && idx === messages.length - 1 && (
+                                <div className="flex gap-2 mt-3 border-t border-gray-200 pt-3">
+                                    <button 
+                                        onClick={() => handleSend(messages[idx-1]?.text, true)} 
+                                        className="bg-[#E40085] text-white px-3 py-1.5 rounded-md text-sm font-medium hover:bg-[#c90075] transition-colors"
+                                    >
+                                        Yes, search
+                                    </button>
+                                    <button 
+                                        onClick={() => setMessages(prev => [...prev, { role: 'user', text: 'No' }, { role: 'assistant', text: 'Okay, no problem.' }])} 
+                                        className="bg-gray-100 border border-gray-300 text-gray-700 px-3 py-1.5 rounded-md text-sm font-medium hover:bg-gray-200 transition-colors"
+                                    >
+                                        No
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 ))}

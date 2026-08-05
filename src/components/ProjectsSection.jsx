@@ -5,6 +5,7 @@ export const ProjectsSection = () => {
     const [sortConfig, setSortConfig] = useState({ column: 'projectGrantStartDate', direction: 'desc' });
     const [grants, setGrants] = useState([]);
     const [showScope, setShowScope] = useState(true);
+    const [aiFilterIds, setAiFilterIds] = useState(null);
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -39,6 +40,14 @@ export const ProjectsSection = () => {
         return () => window.removeEventListener('authChange', fetchProjects);
     }, []);
 
+    useEffect(() => {
+        const handleAiFilter = (e) => {
+            setAiFilterIds(e.detail);
+        };
+        window.addEventListener('ai-filter-datasets', handleAiFilter);
+        return () => window.removeEventListener('ai-filter-datasets', handleAiFilter);
+    }, []);
+
     const filteredAndSortedGrants = useMemo(() => {
         let currentGrants = [...grants];
 
@@ -52,6 +61,12 @@ export const ProjectsSection = () => {
             );
         }
 
+        if (aiFilterIds) {
+            currentGrants = currentGrants.filter(grant => 
+                aiFilterIds.includes(grant.pid?.toString() || grant.id?.toString())
+            );
+        }
+
         currentGrants.sort((a, b) => {
             const valA = a[sortConfig.column] || '';
             const valB = b[sortConfig.column] || '';
@@ -62,7 +77,7 @@ export const ProjectsSection = () => {
         });
 
         return currentGrants;
-    }, [grants, searchTerm, sortConfig]);
+    }, [grants, searchTerm, sortConfig, aiFilterIds]);
 
     const handleSort = (column) => {
         setSortConfig(prevConfig => ({
@@ -206,6 +221,14 @@ export const ProjectsSection = () => {
             `}</style>
 
             <div className="dashboard-container">
+                {aiFilterIds && (
+                    <div style={{ padding: '20px 30px 0 30px' }}>
+                        <div className="bg-pink-100 border border-pink-300 text-pink-800 px-4 py-3 rounded-lg flex justify-between items-center shadow-sm">
+                            <span><strong>AI Filter Active:</strong> Showing {filteredAndSortedGrants.length} matching projects based on your chat question.</span>
+                            <button onClick={() => setAiFilterIds(null)} className="text-pink-800 hover:text-pink-900 font-bold hover:underline transition-colors px-2 py-1 rounded">Clear AI Filter</button>
+                        </div>
+                    </div>
+                )}
                 <div className="dashboard-header">
 
                     <div className="controls-wrapper">

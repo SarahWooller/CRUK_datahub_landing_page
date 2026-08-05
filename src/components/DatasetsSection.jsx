@@ -22,6 +22,7 @@ export const DatasetsSection = ({ custodianFilter }) => {
     const [isDeepSearch, setIsDeepSearch] = useState(false);
     const [sortConfig, setSortConfig] = useState({ column: 'title', direction: 'asc' });
     const [showSynopsis, setShowSynopsis] = useState(true);
+    const [aiFilterIds, setAiFilterIds] = useState(null);
 
     const [cart, setCart] = useState([]);
     const [favourites, setFavourites] = useState([]);
@@ -55,6 +56,14 @@ export const DatasetsSection = ({ custodianFilter }) => {
         };
 
         fetchDatasets();
+    }, []);
+
+    useEffect(() => {
+        const handleAiFilter = (e) => {
+            setAiFilterIds(e.detail);
+        };
+        window.addEventListener('ai-filter-datasets', handleAiFilter);
+        return () => window.removeEventListener('ai-filter-datasets', handleAiFilter);
     }, []);
 
     const toggleFavourite = (id) => {
@@ -95,6 +104,12 @@ export const DatasetsSection = ({ custodianFilter }) => {
             );
         }
 
+        if (aiFilterIds) {
+            currentDatasets = currentDatasets.filter(dataset => 
+                aiFilterIds.includes(dataset.rawData?.datasetid || dataset.id.toString())
+            );
+        }
+
         currentDatasets.sort((a, b) => {
             if (sortConfig.column === 'favourite') {
                 const isFavA = favourites.includes(a.id);
@@ -112,7 +127,7 @@ export const DatasetsSection = ({ custodianFilter }) => {
         });
 
         return currentDatasets;
-    }, [datasets, searchTerm, isDeepSearch, sortConfig, favourites]);
+    }, [datasets, searchTerm, isDeepSearch, sortConfig, favourites, aiFilterIds]);
 
     const handleSort = (column) => {
         setSortConfig(prevConfig => ({
@@ -160,6 +175,14 @@ export const DatasetsSection = ({ custodianFilter }) => {
             `}</style>
 
             <section className="datasets-section">
+                {aiFilterIds && (
+                    <div style={{ marginBottom: '15px' }}>
+                        <div className="bg-pink-100 border border-pink-300 text-pink-800 px-4 py-3 rounded-lg flex justify-between items-center shadow-sm">
+                            <span><strong>AI Filter Active:</strong> Showing {filteredAndSortedDatasets.length} matching datasets based on your chat question.</span>
+                            <button onClick={() => setAiFilterIds(null)} className="text-pink-800 hover:text-pink-900 font-bold hover:underline transition-colors px-2 py-1 rounded">Clear AI Filter</button>
+                        </div>
+                    </div>
+                )}
                 <div className="controls-container">
                     <div>
                         <input
