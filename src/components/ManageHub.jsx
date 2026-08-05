@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ErrorLogsTab } from './ErrorLogsTab.jsx';
+import { AdminAnalyticsTab } from './AdminAnalyticsTab.jsx';
 
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
@@ -247,6 +248,7 @@ export const ManageHub = () => {
                 <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'teams' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('teams')}>Teams</button>
                 <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'links' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('links')}>User-Team Links</button>
                 <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'errors' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('errors')}>Error Logs</button>
+                <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'analytics' ? 'border-b-2 border-[#E40085] text-[#E40085]' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('analytics')}>AI Analytics</button>
             </div>
 
             {loading ? (
@@ -539,6 +541,12 @@ export const ManageHub = () => {
                     {activeTab === 'errors' && (
                         <div className="bg-gray-50 p-6 rounded-lg mb-8 border border-gray-200 shadow-sm">
                             <ErrorLogsTab token={token} />
+                        </div>
+                    )}
+                    {/* AI ANALYTICS TAB */}
+                    {activeTab === 'analytics' && (
+                        <div className="mb-8 shadow-sm">
+                            <AdminAnalyticsTab />
                         </div>
                     )}
                 </>

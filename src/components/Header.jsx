@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SignInModal from './SignInModal.jsx';
 import { ChangePasswordModal } from './ChangePasswordModal.jsx';
+import ChatWidget from './ChatWidget.jsx';
 import "../styles/style.css"
 
 export const Header = () => {
@@ -85,6 +86,7 @@ export const Header = () => {
     };
 
     return (
+        <>
         <header className="main-header p-2 sm:p-8 bg-gray-50">
             <div className="banner">
                 <div className="logo-placeholder">
@@ -193,5 +195,7 @@ export const Header = () => {
                 </ul>
             </nav>
         </header>
+        <ChatWidget />
+        </>
     );
 };
