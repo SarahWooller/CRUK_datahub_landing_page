@@ -31,6 +31,7 @@
     "vite": "^5.4.0"
   },
   "dependencies": {
+    "@marsidev/react-turnstile": "^1.5.5",
     "cruk-semantic-schema": "git+https://github.com/UOSBioinformaticslab/cruk-semantic-schema.git#main",
     "jsdom": "^29.1.1",
     "papaparse": "^5.5.3",

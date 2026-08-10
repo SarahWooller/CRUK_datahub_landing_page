@@ -1,12 +1,79 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { Turnstile } from '@marsidev/react-turnstile';
+import ReactMarkdown from 'react-markdown';
+
+const getPageContext = () => {
+    const url = new URL(window.location.href);
+    const path = url.pathname;
+    const searchParams = new URLSearchParams(url.search);
+    
+    let pageType = 'unknown';
+    let entityId = null;
+    
+    if (path.includes('meta') && !path.includes('project')) {
+        pageType = 'dataset_detail';
+        entityId = searchParams.get('id');
+    } else if (path.includes('project_meta')) {
+        pageType = 'project_detail';
+        entityId = searchParams.get('pid');
+    } else if (path.includes('datasets')) {
+        pageType = 'datasets_list';
+    } else if (path.includes('projects')) {
+        pageType = 'projects_list';
+    } else if (path.includes('publications')) {
+        pageType = 'publications_list';
+    } else if (path.includes('tools') || path.includes('page-4')) {
+        pageType = 'tools_list';
+    }
+
+    return { page: pageType, entity_id: entityId };
+};
+
+const getInitialGreeting = (pageType) => {
+    switch(pageType) {
+        case 'datasets_list':
+            return "Hi! I'm here to help you find out reports about the datasets in the CRUK metadata catalogue. You can ask me things like 'Find datasets with information about ethnicity'.";
+        case 'projects_list':
+            return "Hi! I'm here to help you find out reports about the projects in the CRUK metadata catalogue. You can ask me things like 'Find projects with information about lung cancer'.";
+        case 'publications_list':
+            return "Hi! I'm here to help you find out reports about the publications in the CRUK metadata catalogue. You can ask me things like 'Find publications from 2023'.";
+        case 'tools_list':
+            return "Hi! I'm here to help you find out reports about the tools in the CRUK metadata catalogue. You can ask me things like 'Find tools for genomic analysis'.";
+        case 'dataset_detail':
+            return "Hi! I'm here to help you find out reports about the datasets in the CRUK metadata catalogue. You can ask me things like 'Find datasets with information about ethnicity'.\n\n*(Note: Your search will be confined to this specific dataset).*";
+        case 'project_detail':
+            return "Hi! I'm here to help you find out reports about the projects in the CRUK metadata catalogue. You can ask me things like 'Find projects with information about lung cancer'.\n\n*(Note: Your search will be confined to this specific project).*";
+        default:
+            return "Hi! I'm here to help you find out about the datasets, projects, publications and tools in the metadata catalogue.";
+    }
+};
 
 const ChatWidget = () => {
+    const pageContext = useRef(getPageContext());
     const [isOpen, setIsOpen] = useState(false);
-    const [messages, setMessages] = useState([
-        { role: 'assistant', text: "Hi! I'm here to help you generate reports about the datasets in your database. You can ask me things like 'Find out how many datasets have information about ethnicity'." }
-    ]);
+    
+    // Initialize messages from sessionStorage, or fallback to default greeting
+    const [messages, setMessages] = useState(() => {
+        const saved = sessionStorage.getItem('crukChatMessages');
+        if (saved) {
+            try {
+                return JSON.parse(saved);
+            } catch (e) {
+                console.error("Failed to parse chat messages", e);
+            }
+        }
+        return [{ role: 'assistant', text: getInitialGreeting(pageContext.current.page) }];
+    });
+
+    // Save messages to sessionStorage whenever they change
+    useEffect(() => {
+        sessionStorage.setItem('crukChatMessages', JSON.stringify(messages));
+    }, [messages]);
+
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [turnstileToken, setTurnstileToken] = useState(null);
+    const [turnstileKey, setTurnstileKey] = useState(0);
     
     // Dragging state
     const [position, setPosition] = useState(null);
@@ -23,6 +90,12 @@ const ChatWidget = () => {
     useEffect(() => {
         scrollToBottom();
     }, [messages]);
+
+    const handleClear = (e) => {
+        e.stopPropagation();
+        setMessages([{ role: 'assistant', text: getInitialGreeting(pageContext.current.page) }]);
+        sessionStorage.removeItem('crukChatMessages');
+    };
 
     // Dragging logic
     const handleMouseDown = (e) => {
@@ -76,38 +149,14 @@ const ChatWidget = () => {
             const activeTeamId = localStorage.getItem('activeTeamId');
             const userId = localStorage.getItem('userId');
             
-            // Extract page context
-            const url = new URL(window.location.href);
-            const path = url.pathname;
-            const searchParams = new URLSearchParams(url.search);
-            
-            let pageType = 'unknown';
-            let entityId = null;
-            
-            if (path.includes('meta') && !path.includes('project')) {
-                pageType = 'dataset_detail';
-                entityId = searchParams.get('id');
-            } else if (path.includes('project_meta')) {
-                pageType = 'project_detail';
-                entityId = searchParams.get('pid');
-            } else if (path.includes('datasets')) {
-                pageType = 'datasets_list';
-            } else if (path.includes('projects')) {
-                pageType = 'projects_list';
-            }
-
-            const page_context = {
-                page: pageType,
-                entity_id: entityId
-            };
-            
             const payload = { 
                 question: query, 
                 context: 'public',
                 is_search_confirmation: isSearchConfirmation,
                 team_id: activeTeamId,
                 user_id: userId,
-                page_context: page_context
+                page_context: pageContext.current,
+                turnstile_token: turnstileToken
             };
 
             const response = await fetch(`${aiUrl}/api/ai/chat`, {
@@ -137,6 +186,7 @@ const ChatWidget = () => {
             }]);
         } finally {
             setIsLoading(false);
+            setTurnstileKey(prev => prev + 1); // Force new token generation for the next question
         }
     };
 
@@ -180,12 +230,22 @@ const ChatWidget = () => {
                     <div className="w-2 h-2 bg-[#E40085] rounded-full animate-pulse"></div>
                     <h3 className="text-gray-800 font-semibold">Datahub Analytics AI</h3>
                 </div>
-                <button 
-                    onClick={(e) => { e.stopPropagation(); setIsOpen(false); }} 
-                    className="text-gray-400 hover:text-gray-600 transition-colors p-1"
-                >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
-                </button>
+                <div className="flex gap-1">
+                    <button 
+                        onClick={handleClear}
+                        title="Clear Chat"
+                        className="text-gray-400 hover:text-red-500 transition-colors p-1"
+                    >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                    </button>
+                    <button 
+                        onClick={(e) => { e.stopPropagation(); setIsOpen(false); }} 
+                        className="text-gray-400 hover:text-gray-600 transition-colors p-1"
+                        title="Minimize"
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                </div>
             </div>
 
             {/* Chat Area */}
@@ -197,7 +257,9 @@ const ChatWidget = () => {
                             ? 'bg-[#E40085] text-white rounded-br-none' 
                             : 'bg-white border border-gray-200 text-gray-800 rounded-bl-none shadow-sm'
                         }`}>
-                            <p className="text-sm whitespace-pre-wrap">{msg.text}</p>
+                            <div className="text-sm prose prose-sm max-w-none prose-p:my-1 prose-ul:my-1 prose-li:my-0 break-words">
+                                <ReactMarkdown>{msg.text}</ReactMarkdown>
+                            </div>
                             
                             {msg.citations && msg.citations.length > 0 && (
                                 <div className="mt-2 pt-2 border-t border-gray-200">
@@ -213,7 +275,7 @@ const ChatWidget = () => {
                             {msg.actions && msg.actions.length > 0 && (
                                 <div className="flex flex-col gap-2 mt-2 pt-2 border-t border-gray-200">
                                     {msg.actions.map((act, i) => (
-                                        <a key={i} href={`./upload.html?datasetId=${act.id}`} className="block text-center bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 px-3 py-1.5 rounded-md text-sm font-medium transition-colors">
+                                        <a key={i} href={act.type === 'view_project' ? `./project_meta.html?pid=${act.id}` : `./meta.html?id=${act.id}`} className="block text-center bg-blue-50 text-blue-700 border border-blue-200 hover:bg-blue-100 px-3 py-1.5 rounded-md text-sm font-medium transition-colors">
                                             {act.label}
                                         </a>
                                     ))}
@@ -265,6 +327,16 @@ const ChatWidget = () => {
                     </div>
                 )}
                 <div ref={messagesEndRef} />
+            </div>
+
+            {/* Hidden Bot Protection */}
+            <div className="hidden">
+                <Turnstile 
+                    key={turnstileKey}
+                    siteKey="1x00000000000000000000AA" 
+                    onSuccess={(token) => setTurnstileToken(token)}
+                    options={{ theme: 'light', size: 'invisible' }}
+                />
             </div>
 
             {/* Input Area */}
