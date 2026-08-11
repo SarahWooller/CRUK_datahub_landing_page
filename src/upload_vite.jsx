@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import SchemaPage from './components/SchemaPage.jsx';
+import FloatingQRCode from './components/FloatingQRCode.jsx';
 import { Header } from './components/Header.jsx'
-import { InstructionsWidget } from './components/InstructionsWidget.jsx';
+
 
 function renderReactComponent(targetId, Component) {
   // 1. Get the target DOM element
@@ -24,10 +25,8 @@ function renderReactComponent(targetId, Component) {
   }
 }
 
-renderReactComponent('header', <Header/>)
-renderReactComponent('upload', <SchemaPage/>)
-renderReactComponent(upload, SchemaPage);
-renderReactComponent(
-  'instructions_widget',
-  <InstructionsWidget fileUrl="/upload_help.md" />
-);
+renderReactComponent('header', <Header/>);
+renderReactComponent('upload', <SchemaPage/>);
+renderReactComponent('qr', <FloatingQRCode/>);
+
+

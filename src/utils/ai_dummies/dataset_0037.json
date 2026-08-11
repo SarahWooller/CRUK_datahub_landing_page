@@ -1,0 +1,29 @@
+{
+  "identifier": "cruk-study-0037",
+  "version": "1.0.0",
+  "revisions": [
+    {
+      "version": "1.0.0"
+    }
+  ],
+  "issued": "2026-08-05T15:05:57.772Z",
+  "modified": "2026-08-05T15:05:57.772Z",
+  "summary": {
+    "title": "IMpower150",
+    "abstract": "Atezolizumab for advanced non-squamous NSCLC.",
+    "populationSize": 5066,
+    "contactPoint": "info@adventhealthcancerinstitute.ac.uk",
+    "dataCustodian": {
+      "identifier": "https://ror.org/062105",
+      "name": "AdventHealth Cancer Institute",
+      "contactPoint": "admin@adventhealthcancerinstitute.ac.uk"
+    },
+    "leadResearcher": "Dr. Mark Socinski",
+    "leadResearchInstitute": "AdventHealth Cancer Institute"
+  },
+  "accessibility": {
+    "access": {
+      "accessRights": "Access requests must be submitted to the AdventHealth Cancer Institute Data Access Committee. Approvals take approximately 4 weeks."
+    }
+  }
+}

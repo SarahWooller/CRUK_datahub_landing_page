@@ -1,0 +1,29 @@
+{
+  "identifier": "cruk-study-0044",
+  "version": "1.0.0",
+  "revisions": [
+    {
+      "version": "1.0.0"
+    }
+  ],
+  "issued": "2026-08-05T15:05:57.773Z",
+  "modified": "2026-08-05T15:05:57.773Z",
+  "summary": {
+    "title": "CHAARTED",
+    "abstract": "Chemohormonal therapy in metastatic hormone-sensitive prostate cancer.",
+    "populationSize": 4407,
+    "contactPoint": "info@danafarbercancerinstitute.ac.uk",
+    "dataCustodian": {
+      "identifier": "https://ror.org/0655324",
+      "name": "Dana-Farber Cancer Institute",
+      "contactPoint": "admin@danafarbercancerinstitute.ac.uk"
+    },
+    "leadResearcher": "Dr. Christopher Sweeney",
+    "leadResearchInstitute": "Dana-Farber Cancer Institute"
+  },
+  "accessibility": {
+    "access": {
+      "accessRights": "Access requests must be submitted to the Dana-Farber Cancer Institute Data Access Committee. Approvals take approximately 4 weeks."
+    }
+  }
+}

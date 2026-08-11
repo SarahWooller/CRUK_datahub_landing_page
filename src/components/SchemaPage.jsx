@@ -2,21 +2,22 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { Panel, Group, Separator } from "react-resizable-panels";
 import CsvUploader from "./CsvUploader.jsx"
 import StructuralMetadataGrid from "./StructuralMetadataGrid.jsx";
+import AssistantPane from './AssistantPane.jsx';
 import FeedbackModal from './FeedbackModal.jsx';
 import questionData from '../feedback/upload_questions.json';
-import hdrukSchema from '../utils/HDRUK4.0.0.json';
-import crukSchema from '../utils/CRUK1.0.0.json';
-import semanticSchema from '../utils/semanticSchema.json';
+import crukSchema from '../utils/CRUKv.1.0.0.json';
+import semanticSchema from 'cruk-semantic-schema';
 
-import { MarkdownRenderer } from './MarkdownRenderer';
-import DataTagger, { FilterChipArea } from './DataTagger';
-import JsonUpload from './JsonUpload';
-import UploadTopBar from './UploadTopBar';
-import { filterData } from '../utils/filter-setup';
+import { MarkdownRenderer } from './MarkdownRenderer.jsx';
+import DataTagger, { FilterChipArea } from './DataTagger.jsx';
+import JsonUpload from './JsonUpload.jsx';
+import UploadTopBar from './UploadTopBar.jsx';
+import { filterData } from '../utils/filter-setup.js';
+import { flattenSchemaToGrid } from '../utils/flattenSchemaToGrid.js';
 import prefixIconMapping from '../utils/prefix_icon_mapping.json';
+import { getExtra } from '../utils/getExtra.js';
 
-
-
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
 const METADATA_PRIORITY_SECTIONS = [
     "version"
@@ -27,7 +28,7 @@ const welcomeGuidance = {
     guidance: `Welcome to the CRUK Datahub. [cite_start]This tool helps you prepare metadata for the Health Data Gateway. [cite: 2] \\n\\n **Steps to success:** \\n 1. Review the **Checklist** in this panel. [cite_start]\\n 2. Use **Manual Entry** or **JSON Upload** to start. [cite: 27, 28] [cite_start]\\n 3. Complete all sections until you see **Green Ticks**. [cite: 21] [cite_start]\\n 4. **Download** your final JSON for submission. [cite: 47]`
 };
 
-// SchemaPage.jsx - Utility to remove "readiness" slots
+// Utility to remove "readiness" slots
 const removeEmptyArrayEntries = (data) => {
     if (Array.isArray(data)) {
         return data
@@ -98,14 +99,10 @@ const deepMerge = (target, source) => {
     return output;
 };
 // --- Safe Schema Loading and Merging ---
-const hdruk_SCHEMA = hdrukSchema.properties ? hdrukSchema : (hdrukSchema.fullContent || {});
 const cruk_SCHEMA = crukSchema.properties ? crukSchema : (crukSchema.fullContent || crukSchema);
 const OVERLAY_SCHEMA = semanticSchema.properties ? semanticSchema : (semanticSchema.fullContent || semanticSchema);
-// This creates a new object where semanticSchema properties overwrite rawSchema properties
-const MID_SCHEMA = deepMerge(hdruk_SCHEMA, cruk_SCHEMA);
-const DATA_SCHEMA = deepMerge(MID_SCHEMA, OVERLAY_SCHEMA);
-
-const VISIBLE_SECTIONS = DATA_SCHEMA.visibleSections
+const DATA_SCHEMA = deepMerge(cruk_SCHEMA, OVERLAY_SCHEMA);
+const VISIBLE_SECTIONS = DATA_SCHEMA.visibleSections || [];
 // --- CUSTOM VALIDATION RULES ---
 const EXTRA_VALIDATIONS = {
     "datasetFilters": (value) => {
@@ -360,7 +357,8 @@ const WelcomeSection = ({
 
         {/* Change <p> to <div> here to allow the JsonUpload div descendant */}
         <div className="text-sm text-gray-600 mb-1 leading-relaxed">
-            If this is a new dataset, you can either input the metadata manually or, if you have done this before, you can directly upload a json with some or all of the required information.
+            If this is a new dataset, you can either input the metadata manually following the guidance in the right hand panel, switch tab to use the AI uploader, or if you have done this before, you can directly upload a json with some or all of the required information.
+
             <JsonUpload
                 schema={DATA_SCHEMA}
                 onUpload={onUpload}
@@ -385,11 +383,13 @@ const WelcomeSection = ({
                 >
                     <option value="" disabled>-- Select an existing dataset --</option>
                     {existingDatasets.map(dataset => {
-                        // Use the title from the metadata, or fallback to the system ID
-                        const title = dataset.metadata_blob?.summary?.title || dataset.datasetid;
+                        const title = dataset.computed_title || dataset.metadata_blob?.summary?.title || dataset.datasetid;
+                        const statusTag = dataset.active
+                            ? (dataset.has_draft ? '[Active (Draft edits)]' : '[Active]')
+                            : '[Draft]';
                         return (
                             <option key={dataset.id} value={dataset.id}>
-                                {title}
+                                {title} {statusTag}
                             </option>
                         );
                     })}
@@ -636,9 +636,18 @@ const FieldRenderer = ({
         const handleSimpleInputChange = (index, newVal) => {
             const newArr = [...items];
             newArr[index] = newVal;
-            if (index === items.length - 1 && newVal !== '') {
-                newArr.push('');
-            }
+            onChange(path, newArr);
+        };
+
+        const handleRemoveItem = (index) => {
+            const newArr = [...items];
+            newArr.splice(index, 1);
+            onChange(path, newArr);
+        };
+
+        const handleAddItem = () => {
+            const newArr = [...items];
+            newArr.push(fieldDef.items?.type === 'object' ? {} : '');
             onChange(path, newArr);
         };
 
@@ -668,7 +677,15 @@ const FieldRenderer = ({
                             const resolvedItemDef = itemSchema.$ref ? resolveRef(itemSchema.$ref) : itemSchema;
 
                             return (
-                                <div key={index} className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                                <div key={index} className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 relative group">
+                                    <button 
+                                        type="button" 
+                                        onClick={(e) => { e.stopPropagation(); handleRemoveItem(index); }}
+                                        className="absolute top-2 right-2 p-1 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors opacity-0 group-hover:opacity-100 z-10"
+                                        title="Remove item"
+                                    >
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                    </button>
                                     {resolvedItemDef.properties ? (
                                         Object.keys(resolvedItemDef.properties).map(childKey => (
                                             <FieldRenderer
@@ -677,15 +694,7 @@ const FieldRenderer = ({
                                                 prop={resolvedItemDef.properties[childKey]}
                                                 path={[...path, index, childKey]}
                                                 formData={formData}
-                                                onChange={(newPath, newVal) => {
-                                                    // Process the deep property change first
-                                                    onChange(newPath, newVal);
-
-                                                    // Instantly generate the next empty object if this is the last item
-                                                    if (index === items.length - 1) {
-                                                        onChange([...path, items.length], {});
-                                                    }
-                                                }}
+                                                onChange={onChange}
                                                 isRequired={resolvedItemDef.required?.includes(childKey)}
                                                 setActiveGuidance={setActiveGuidance}
                                                 level={level + 1}
@@ -694,7 +703,7 @@ const FieldRenderer = ({
                                     ) : (
                                         <input
                                             type="text"
-                                            className="w-full p-3 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500 text-lg"
+                                            className="w-full p-3 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500 text-lg pr-10"
                                             placeholder={prop.examples ? prop.examples.join(', ') : "Enter value..."}
                                             value={item || ''}
                                             onFocus={() => {
@@ -707,6 +716,16 @@ const FieldRenderer = ({
                                 </div>
                             );
                         })}
+                        <div className="pt-2 flex justify-start">
+                            <button
+                                type="button"
+                                onClick={handleAddItem}
+                                className="flex items-center text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition-colors bg-indigo-50 hover:bg-indigo-100 px-4 py-2 rounded-md"
+                            >
+                                <svg className="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"></path></svg>
+                                Add another {prop.title || 'item'}
+                            </button>
+                        </div>
                     </div>
                 )}
             </div>
@@ -912,11 +931,14 @@ const FieldRenderer = ({
 };
 
 // --- Component: Structural Metadata Wrapper ---
+// --- Component: Structural Metadata Wrapper ---
 const StructuralMetadataSection = ({ formData, onFormChange, DATA_SCHEMA, onUpdateGuidance }) => {
     const [flatGridData, setFlatGridData] = useState([]);
 
+    // We use a ref to prevent infinite loops when the grid updates the parent form data
+    const isInternalUpdate = useRef(false);
+
     // Extract guidance from the schema.
-    // Fallbacks to .properties included just in case standard JSON schema nesting applies.
     const tableGuidance = {
         title: "Table Guidelines",
         guidance: DATA_SCHEMA?.$defs?.DataTable?.name?.guidance
@@ -931,6 +953,24 @@ const StructuralMetadataSection = ({ formData, onFormChange, DATA_SCHEMA, onUpda
                || "Provide the column details."
     };
 
+    // --- NEW: Sync external formData into the flat grid ---
+    useEffect(() => {
+        // If the grid itself triggered the data change, do not rebuild the grid array.
+        // This prevents cursor jumping and infinite re-renders.
+        if (isInternalUpdate.current) {
+            isInternalUpdate.current = false;
+            return;
+        }
+
+        const tables = formData?.structuralMetadata?.tables;
+        if (tables && Array.isArray(tables) && tables.length > 0) {
+            console.log("🔄 External data detected, flattening schema for grid...");
+            setFlatGridData(flattenSchemaToGrid(tables));
+        } else {
+            setFlatGridData([]); // Reset if the section is truly empty
+        }
+    }, [formData?.structuralMetadata]);
+
     // Set table guidance as the default when the section loads
     useEffect(() => {
         if (onUpdateGuidance) {
@@ -942,11 +982,13 @@ const StructuralMetadataSection = ({ formData, onFormChange, DATA_SCHEMA, onUpda
         setFlatGridData(parsedData);
     };
 
-const handleSaveToSchema = (nestedSchemaData) => {
-    console.log("📡 Section receiving data from Grid:", nestedSchemaData);
-    // Pushes changes into formData.structuralMetadata in the background
-    onFormChange(['structuralMetadata'], nestedSchemaData);
-};
+    const handleSaveToSchema = (nestedSchemaData) => {
+        console.log("📡 Section receiving data from Grid:", nestedSchemaData);
+        // Flag this change as internal so the useEffect above skips the sync
+        isInternalUpdate.current = true;
+        // Pushes changes into formData.structuralMetadata in the background
+        onFormChange(['structuralMetadata'], nestedSchemaData);
+    };
 
     // Determine which guidance to show based on the column key
     const handleCellFocus = (columnKey) => {
@@ -1054,6 +1096,33 @@ const SchemaForm = ({
     const definition = resolveDefinition(sectionSchema);
     const isContainer = definition && (definition.type === 'object' || definition.properties);
 
+    // Extract keys and apply custom sorting logic
+    let propertyKeys = [];
+    if (isContainer) {
+        propertyKeys = Object.keys(definition.properties);
+
+        if (sectionKey === 'summary') {
+            const summaryOrder = DATA_SCHEMA.summaryOrder || definition.summaryOrder || [
+                "title", "leadResearcher", "leadResearchInstitute", "contactPoint", "doiName", "abstract",
+                "dataCustodian", "populationSize", "keywords", "datasetAliases"
+            ];
+
+            propertyKeys.sort((a, b) => {
+                const indexA = summaryOrder.indexOf(a);
+                const indexB = summaryOrder.indexOf(b);
+
+                // Both items are in the array, sort by their index position
+                if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+                // Only a is in the array, it goes first
+                if (indexA !== -1) return -1;
+                // Only b is in the array, it goes first
+                if (indexB !== -1) return 1;
+
+                return 0;
+            });
+        }
+    }
+
     return (
         <div className="w-full p-8 overflow-y-auto pb-20">
             <h1 className="text-3xl font-extrabold mb-2 text-gray-800">
@@ -1064,37 +1133,37 @@ const SchemaForm = ({
             {isContainer ? (
                 <div className="space-y-6">
 
-                   {Object.keys(definition.properties)
+                   {propertyKeys
                     .filter((propKey) => {
                         // 1. Check top-level inclusion (e.g., summary)
                         const sectionIncluded = DATA_SCHEMA.included?.[sectionKey];
                         if (sectionIncluded && !sectionIncluded.includes(propKey)) return false;
 
                         // 2. Check if this specific field has its own inclusion list (e.g., datasetCustodian)
-                        // This is what was missing!
                         const fieldIncluded = DATA_SCHEMA.included?.[propKey];
                         if (fieldIncluded && Array.isArray(fieldIncluded)) {
-                            // If the field is an object (like datasetCustodian), we keep it
-                            // but the FieldRenderer below will filter its children.
                             return true;
                         }
 
                         return true;
                     })
                     .map((propKey) => {
-                        return (
-                            <FieldRenderer
-                                key={propKey}
-                                propKey={propKey}
-                                prop={definition.properties[propKey]}
-                                path={[sectionKey, propKey]}
-                                formData={formData}
-                                onChange={onFormChange}
-                                isRequired={definition.required?.includes(propKey)}
-                                setActiveGuidance={setActiveGuidance}
-                            />
-                        );
-                    })}
+        return (
+            <React.Fragment key={propKey}>
+                <FieldRenderer
+                    propKey={propKey}
+                    prop={definition.properties[propKey]}
+                    path={[sectionKey, propKey]}
+                    formData={formData}
+                    onChange={onFormChange}
+                    isRequired={definition.required?.includes(propKey)}
+                    setActiveGuidance={setActiveGuidance}
+                />
+
+
+            </React.Fragment>
+        );
+    })}
                 </div>
             ) : (
                 <div className="space-y-6">
@@ -1212,6 +1281,8 @@ const SchemaPage = () => {
     const [existingDatasets, setExistingDatasets] = useState([]);
     const [loadingDatasets, setLoadingDatasets] = useState(false);
     const [datasetError, setDatasetError] = useState('');
+    const [datasetStatus, setDatasetStatus] = useState({ active: false, has_draft: false, status: 'DRAFT' });
+
     // Safety Check on Initialization
     if (!DATA_SCHEMA || !DATA_SCHEMA.properties) {
         return (
@@ -1223,79 +1294,68 @@ const SchemaPage = () => {
     const [allFeedback, setAllFeedback] = useState({}); // Stores { sectionKey: "comment string" }
     const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
 
-    useEffect(() => {
-        const fetchDatasets = async () => {
-            const token = localStorage.getItem('token');
-            const currentUserId = parseInt(localStorage.getItem('userId'), 10);
-            const currentTeamId = parseInt(localStorage.getItem('activeTeamId'), 10);
+    const fetchDatasets = useCallback(async () => {
+        const token = localStorage.getItem('token');
+        const currentUserId = parseInt(localStorage.getItem('userId'), 10);
 
-            console.group("🔍 Dataset Fetch Debug");
-            console.log("1. Token Present:", !!token);
-            console.log("2. Current User ID:", currentUserId);
-            console.log("3. Current Team ID:", currentTeamId);
+        if (!token || !currentUserId) return;
 
-            if (!token || !currentUserId) {
-                console.warn("❌ Missing token or userId. Aborting fetch.");
-                console.groupEnd();
-                return;
+        setLoadingDatasets(true);
+        try {
+            const response = await fetch(`${API_BASE_URL}/datasets/list/simple`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            setLoadingDatasets(true);
-            try {
-                // FETCH DATASETS
-                const response = await fetch('http://127.0.0.1:8000/datasets/', {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                console.log("4. Raw Data from Backend:", data);
-
-                // Filter by team ID
-                const userDatasets = data.filter(d => d.team_id === currentTeamId);
-                console.log("5. Filtered Data (d.team_id === currentTeamId):", userDatasets);
-
-                setExistingDatasets(userDatasets);
-            } catch (err) {
-                console.error("❌ Fetch failed:", err.message);
-                setDatasetError(err.message);
-            } finally {
-                setLoadingDatasets(false);
-                console.groupEnd();
-            }
-        };
-
-        fetchDatasets();
+            const data = await response.json();
+            setExistingDatasets(data);
+        } catch (err) {
+            console.error("❌ Fetch failed:", err.message);
+            setDatasetError(err.message);
+        } finally {
+            setLoadingDatasets(false);
+        }
     }, []);
 
-const handleSelectDataset = (e) => {
-    const selectedId = e.target.value;
-    if (!selectedId) return;
+    useEffect(() => {
+        fetchDatasets();
 
-    // Find the full dataset object based on the selected ID
-    const selected = existingDatasets.find(d => d.id.toString() === selectedId);
+        window.addEventListener('authChange', fetchDatasets);
+        return () => window.removeEventListener('authChange', fetchDatasets);
+    }, [fetchDatasets]);
 
-    if (selected && selected.metadata_blob) {
-        // Merge the database ID into the metadata payload
-        const dataWithId = {
-            ...selected.metadata_blob,
-            datasetid: selected.id // UploadTopBar checks for formData.datasetid
-        };
+    const handleSelectDataset = async (e) => {
+        const selectedId = e.target.value;
+        if (!selectedId) return;
 
-        // Set the state with the merged object
-        // (Use onFormChange([], dataWithId) if that is your primary state setter in SchemaPage)
-        setFormData(dataWithId);
-    }
-};
+        try {
+            const response = await fetch(`${API_BASE_URL}/datasets/${selectedId}?preview=true`);
+            if (response.ok) {
+                const result = await response.json();
+                const dataWithId = {
+                    ...(result.metadata_blob || {}),
+                    datasetid: result.id
+                };
+                setFormData(dataWithId);
+                setDatasetStatus({
+                    active: result.active,
+                    has_draft: result.has_draft,
+                    status: result.status
+                });
+            }
+        } catch (err) {
+            console.error("Error loading selected dataset:", err);
+        }
+    };
 
-const handleRecordDeleted = () => {
-    // Reset the form data to an empty object, or use your router to redirect
-    onFormChange([], {});
-
-};
+    const handleRecordDeleted = () => {
+        setFormData({});
+        setDatasetStatus({ active: false, has_draft: false, status: 'DRAFT' });
+        fetchDatasets();
+    };
 
     const handleSaveDraftFeedback = (section, answers) => {
         setAllFeedback(prev => {
@@ -1560,83 +1620,120 @@ const handleFinalSubmit = (currentSection, currentAnswers) => {
             icons: Array.from(uniqueIcons)
         };
     };
-        const downloadJSON = () => {
-                // 1. Associate icons based on dataset filters
-                let processedData = associateIcons(formData, prefixIconMapping);
-                processedData = removeEmptyArrayEntries(processedData);
 
-                // 2. Apply Semantic Defaults
-                const applyDefaults = (data, sectionKey) => {
-                    if (!data) return data;
+        const downloadJSON = async () => {
+    // 1. Associate icons based on dataset filters
+    let processedData = associateIcons(formData, prefixIconMapping);
+    processedData = removeEmptyArrayEntries(processedData);
 
-                    // Resolve the definition specifically from $defs where Summary is stored
-                    const sectionSchema = DATA_SCHEMA.properties[sectionKey];
-                    let definition = sectionSchema;
+const filters = processedData.datasetFilters || [];
+    const tops = filters.filter(f => f.id?.startsWith("0_0_0")).map(f => f.label);
+    const hist = filters.filter(f => f.id?.startsWith("0_0_1")).map(f => f.label);
 
-                    if (sectionSchema?.$ref) {
-                        definition = resolveRef(sectionSchema.$ref);
-                    } else if (sectionSchema?.allOf) {
-                        const refItem = sectionSchema.allOf.find(i => i.$ref);
-                        if (refItem) definition = resolveRef(refItem.$ref);
-                    }
+    console.log("DEBUG 1 - Tops extracted:", tops);
+    console.log("DEBUG 2 - Hist extracted:", hist);
 
-                    const sectionProps = definition?.properties;
-                    if (!sectionProps) return data;
+    if (tops.length > 0 && hist.length > 0) {
+        try {
+            console.log("DEBUG 3 - Entering API block. Both tops and hist exist.");
+            const token = localStorage.getItem('token');
 
-                    const updated = { ...data };
-                    Object.keys(sectionProps).forEach(key => {
-                        // If field is empty, apply default (e.g., populationSize: 0)
-                        if (isEmpty(updated[key]) && sectionProps[key].default !== undefined) {
-                            updated[key] = sectionProps[key].default;
-                        }
-                    });
-                    return updated;
-                };
+            const response = await fetch(`${API_BASE_URL}datasets/extra-terms`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ topographies: tops, histologies: hist })
+            });
 
-        // Apply defaults to the summary section
-        if (processedData.summary) {
-            processedData.summary = applyDefaults(processedData.summary, 'summary');
-        }
+            console.log("DEBUG 4 - API Response Status:", response.status);
 
-        // 3. Version & Revision Logic
-        const currentVersion = processedData.version;
-        const revisions = processedData.revisions || [];
+            if (response.ok) {
+                const lookupMap = await response.json();
+                console.log("DEBUG 5 - lookupMap from database:", lookupMap);
 
-        if (currentVersion) {
-            const versionExists = revisions.some(rev => rev.version === currentVersion);
+                const convertedTerms = getExtra(processedData, lookupMap);
+                console.log("DEBUG 6 - convertedTerms calculated:", convertedTerms);
 
-            if (!versionExists) {
-                const newRevision = {
-                    version: currentVersion,
-                    url: null
-                };
-
-                processedData = {
-                    ...processedData,
-                    revisions: [...revisions, newRevision]
-                };
+                processedData.datasetFilters = [...processedData.datasetFilters, ...convertedTerms];
+                console.log("DEBUG 7 - Final merged filters:", processedData.datasetFilters);
+            } else {
+                console.warn("DEBUG ERROR - API returned status:", response.status);
             }
+        } catch (err) {
+            console.error("DEBUG ERROR - Network failure:", err);
+        }
+    } else {
+        console.log("DEBUG - Bypassing lookup. Missing either topography or histology tags.");
+    }
+
+    // 3. Apply Semantic Defaults
+    const applyDefaults = (data, sectionKey) => {
+        if (!data) return data;
+        const sectionSchema = DATA_SCHEMA.properties[sectionKey];
+        let definition = sectionSchema;
+
+        if (sectionSchema?.$ref) {
+            definition = resolveRef(sectionSchema.$ref);
+        } else if (sectionSchema?.allOf) {
+            const refItem = sectionSchema.allOf.find(i => i.$ref);
+            if (refItem) definition = resolveRef(refItem.$ref);
         }
 
-        // 4. Update Timestamps
-        processedData.modified = new Date().toISOString();
+        const sectionProps = definition?.properties;
+        if (!sectionProps) return data;
 
-        // 5. Generate and trigger download
-        const fileData = JSON.stringify(processedData, null, 2);
-        const blob = new Blob([fileData], { type: "application/json" });
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-
-        const fileName = processedData.summary?.title
-            ? `${processedData.summary.title.replace(/\s+/g, '_')}_metadata.json`
-            : "dataset_metadata.json";
-
-        link.download = fileName;
-        link.href = url;
-        link.click();
-
-        URL.revokeObjectURL(url);
+        const updated = { ...data };
+        Object.keys(sectionProps).forEach(key => {
+            if (isEmpty(updated[key]) && sectionProps[key].default !== undefined) {
+                updated[key] = sectionProps[key].default;
+            }
+        });
+        return updated;
     };
+
+    if (processedData.summary) {
+        processedData.summary = applyDefaults(processedData.summary, 'summary');
+    }
+
+    // 4. Version & Revision Logic
+    const currentVersion = processedData.version;
+    const revisions = processedData.revisions || [];
+
+    if (currentVersion) {
+        const versionExists = revisions.some(rev => rev.version === currentVersion);
+        if (!versionExists) {
+            const newRevision = {
+                version: currentVersion,
+                url: null
+            };
+            processedData = {
+                ...processedData,
+                revisions: [...revisions, newRevision]
+            };
+        }
+    }
+
+    // 5. Update Timestamps
+    processedData.modified = new Date().toISOString();
+
+    // 6. Generate and trigger download
+    const fileData = JSON.stringify(processedData, null, 2);
+    const blob = new Blob([fileData], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    const fileName = processedData.summary?.title
+        ? `${processedData.summary.title.replace(/\s+/g, '_')}_metadata.json`
+        : "dataset_metadata.json";
+
+    link.download = fileName;
+    link.href = url;
+    link.click();
+
+    URL.revokeObjectURL(url);
+};
 
 return (
         <div className="flex flex-col min-h-screen font-sans bg-white">
@@ -1698,13 +1795,13 @@ return (
                 prefixIconMapping={prefixIconMapping}
                 pageType="datasets"
                 onDeleteSuccess={handleRecordDeleted}
+                datasetStatus={datasetStatus}
+                onSaveSuccess={(result) => {
+                    setDatasetStatus({ active: result.active, has_draft: result.has_draft, status: result.status });
+                    fetchDatasets();
+                }}
             />
-            <button
-            onClick={() => setIsFeedbackOpen(true)}
-            className="fixed bottom-6 right-6 bg-orange-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 z-40 font-bold"
-        >
-            Feedback
-            </button>
+
             <div className="flex-grow overflow-hidden h-[calc(100vh-40px)]">
                 <Group orientation="horizontal">
 
@@ -1741,10 +1838,17 @@ return (
                     <Separator className="w-1 bg-gray-200 hover:bg-indigo-400 transition-colors cursor-col-resize" />
 
                     {/* RIGHT PANEL: Guidance or Tags */}
+{/* RIGHT PANEL: Guidance, AI, or Preview */}
 <Panel defaultSize={25} minSize={20}>
-    <GuidancePanel activeGuidance={currentGuidance}>
+    <AssistantPane
+        activeGuidance={currentGuidance}
+        formData={formData}
+        activeSection={activeSection}
+        setActiveSection={handleNavChange}
+        onFormChange={handleDataChange}
+        >
 
-        {/* Append Active Tags directly inside GuidancePanel when viewing filters */}
+        {/* Append Active Tags directly inside AssistantPane when viewing filters */}
         {activeSection === 'datasetFilters' && (
             <div className="mt-4 border-t pt-4 border-gray-200">
                 <h2 className="text-sm font-bold mb-3 text-gray-700">Active Tags</h2>
@@ -1769,7 +1873,7 @@ return (
             </div>
         )}
 
-    </GuidancePanel>
+    </AssistantPane>
 </Panel>
 
 

@@ -1,35 +1,88 @@
 import { createRoot } from 'react-dom/client'
+import './utils/fetchInterceptor.js';
+import { ErrorBoundary } from './components/ErrorBoundary.jsx';
 
-const links =
-    <div>
+const App = () => {
+  const containerStyle = {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '2vw',
+    padding: '2vh 2vw',
+    alignItems: 'stretch',
+    fontFamily: 'sans-serif',
+    height: '100vh',
+    boxSizing: 'border-box',
+    backgroundColor: '#f9f9f9'
+  };
+
+  // Flexible container for the poster
+  const posterContainerStyle = {
+    flex: '1.5', // Takes up more space than the text section
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    border: '1px solid #ddd',
+    borderRadius: '8px',
+    padding: '10px',
+    overflow: 'hidden'
+  };
+
+  // Ensures the poster scales without distortion
+  const posterImageStyle = {
+    maxWidth: '100%',
+    maxHeight: '100%',
+    objectFit: 'contain',
+    borderRadius: '4px'
+  };
+
+  // Scalable text side on the right
+  const contentStyle = {
+    flex: '1', // Scales proportionally with the screen
+    maxWidth: '450px',
+    minWidth: '280px',
+    padding: '20px',
+    backgroundColor: '#fff',
+    border: '1px solid #ddd',
+    borderRadius: '8px',
+    overflowY: 'auto',
+    fontSize: '1.1rem' // Larger font per general preference
+  };
+
+  return (
+    <div style={containerStyle}>
+
+      <div style={contentStyle}>
+        <h2 style={{ color: '#00007a', marginTop: 0 }}>CRUK Datahub Navigation</h2>
         <p>The most up to date pages are as follows</p>
-        <p>
-            <a href="./src/alt_studies.html"> alt_studies.html- For finding studies and displaying a brief synopsis. </a>
-        </p>
-        <p>
-            <a href="./src/meta.html"> meta.html- For displaying the metadata of the selected dataset. </a>
-        </p>
-        <p>
-            <a href="./src/upload.html"> upload.html - for uploading data. </a>
-        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+          <p>
+            <a href="./src/dashboard.html">The dashboard</a>
+          </p>
+          <p>
+            <a href="./src/horizons.html">Cancer Research Horizons Portfolio</a>
+          </p>
+          <p>
+            <a href="https://gateway-web-five.vercel.app/en/search?type=datasets"><b>We are currently in the process of linking our search page</b> That page should appear here shortly.</a>
+          </p>
+        </div>
+      </div>
 
-        <p> Older versions are also included </p>
-        <p>
-            <a href="./src/top_bar.html"> Example with the filters given as a horizontal navbar. </a>
-        </p>
-        <p>
-            <a href="./src/vert_bar.html"> Example with the filters given as a vertical navbar. </a>
-        </p>
-        <p>
-            <a href="./src/just_vert_bar.html"> Example with just the filters given as a vertical navbar. </a>
-        </p>
-        <p>
-            <a href="./metadata.html"> Example page of how the metadata might be displayed. </a>
-        </p>
+      <div style={posterContainerStyle}>
+        <img
+          src="/poster.png"
+          alt="CRUK Datahub Poster"
+          style={posterImageStyle}
+        />
+      </div>
 
-        <p>
-            <a href="./structural_metadata.html"> Example page of how the structural metadata might be displayed. </a>
-        </p>
-    </div>;
 
-createRoot(document.getElementById("root")).render(links);
+    </div>
+  );
+};
+
+createRoot(document.getElementById("root")).render(
+  <ErrorBoundary>
+    <App />
+  </ErrorBoundary>
+);

@@ -1,16 +1,17 @@
 import React, { useState, useMemo, useEffect } from 'react';
-
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 export const ProjectsSection = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [sortConfig, setSortConfig] = useState({ column: 'projectGrantStartDate', direction: 'desc' });
     const [grants, setGrants] = useState([]);
     const [showScope, setShowScope] = useState(true);
+    const [aiFilterIds, setAiFilterIds] = useState(null);
 
     useEffect(() => {
         const fetchProjects = async () => {
             const token = localStorage.getItem('token');
             try {
-                const response = await fetch('http://127.0.0.1:8000/projects/', {
+                const response = await fetch(`${API_BASE_URL}/projects/`, {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json'
@@ -18,12 +19,33 @@ export const ProjectsSection = () => {
                 });
                 if (!response.ok) throw new Error("Failed to fetch database records");
                 const data = await response.json();
-                setGrants(data);
+                const mappedGrants = data.map(grant => ({
+                    ...grant,
+                    projectGrantName: grant.project_grant_name,
+                    leadResearcher: grant.lead_researcher,
+                    leadResearchInstitute: grant.lead_research_institute,
+                    projectGrantStartDate: grant.project_grant_start_date,
+                    projectGrantEndDate: grant.project_grant_end_date,
+                    grantNumbers: grant.grant_numbers,
+                    projectGrantScope: grant.project_grant_scope
+                }));
+                setGrants(mappedGrants);
             } catch (error) {
                 console.error("Error loading from database:", error);
             }
         };
         fetchProjects();
+
+        window.addEventListener('authChange', fetchProjects);
+        return () => window.removeEventListener('authChange', fetchProjects);
+    }, []);
+
+    useEffect(() => {
+        const handleAiFilter = (e) => {
+            setAiFilterIds(e.detail);
+        };
+        window.addEventListener('ai-filter-datasets', handleAiFilter);
+        return () => window.removeEventListener('ai-filter-datasets', handleAiFilter);
     }, []);
 
     const filteredAndSortedGrants = useMemo(() => {
@@ -39,6 +61,12 @@ export const ProjectsSection = () => {
             );
         }
 
+        if (aiFilterIds) {
+            currentGrants = currentGrants.filter(grant => 
+                aiFilterIds.includes(grant.pid?.toString() || grant.id?.toString())
+            );
+        }
+
         currentGrants.sort((a, b) => {
             const valA = a[sortConfig.column] || '';
             const valB = b[sortConfig.column] || '';
@@ -49,7 +77,7 @@ export const ProjectsSection = () => {
         });
 
         return currentGrants;
-    }, [grants, searchTerm, sortConfig]);
+    }, [grants, searchTerm, sortConfig, aiFilterIds]);
 
     const handleSort = (column) => {
         setSortConfig(prevConfig => ({
@@ -193,6 +221,14 @@ export const ProjectsSection = () => {
             `}</style>
 
             <div className="dashboard-container">
+                {aiFilterIds && (
+                    <div style={{ padding: '20px 30px 0 30px' }}>
+                        <div className="bg-pink-100 border border-pink-300 text-pink-800 px-4 py-3 rounded-lg flex justify-between items-center shadow-sm">
+                            <span><strong>AI Filter Active:</strong> Showing {filteredAndSortedGrants.length} matching projects based on your chat question.</span>
+                            <button onClick={() => setAiFilterIds(null)} className="text-pink-800 hover:text-pink-900 font-bold hover:underline transition-colors px-2 py-1 rounded">Clear AI Filter</button>
+                        </div>
+                    </div>
+                )}
                 <div className="dashboard-header">
 
                     <div className="controls-wrapper">
@@ -240,7 +276,7 @@ export const ProjectsSection = () => {
                                     <tr className="study-title-row">
                                         <td colSpan="5" style={{ paddingTop: '24px', paddingBottom: '8px' }}>
                                             <span className="study-title-text">
-                                                <a href={`project_meta.html?id=${grant.pid}`} className="study-title-link">
+                                                <a href={`/src/project_meta?pid=${encodeURIComponent(grant.pid)}`} className="study-title-link">
                                                     {grant.projectGrantName}
                                                 </a>
                                             </span>

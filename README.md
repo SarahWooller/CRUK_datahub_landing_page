@@ -79,4 +79,26 @@ alt_studies.html
     - import erdImage from '../assets/erd.png';
 
 
+### Automatic Dataset Filter Injection
 
+When uploading or editing a dataset schema (e.g., in `SchemaPage.jsx`), the system automatically maps and injects relevant CRUK and TCGA terms into the `datasetFilters` array before the data is saved.
+
+### AI Chatbot (ChatWidget)
+
+The landing page features a floating AI chatbot widget (`ChatWidget.jsx`) that helps users query datasets and projects:
+- **Persistent Memory**: The chat history is saved in `sessionStorage` so users can click on suggested datasets, navigate to new pages, and retain their chat context.
+- **Rich Formatting**: Responses are formatted using `react-markdown`.
+- **Invisible Bot Protection**: Integrates Cloudflare Turnstile to generate secure tokens and protect the backend AI from automated abuse.
+- **Action Buttons**: The AI automatically generates "View Dataset" or "View Project" buttons based on matched database records to guide the user seamlessly.
+
+**How it works:**
+1. **Extraction**: Just before saving, the frontend extracts any user-selected Topography tags (IDs starting with `"0_0_0"`) and Histology tags (IDs starting with `"0_0_1"`).
+2. **Interrogation**: If both are present, it sends a `POST` request to the backend endpoint (`/datasets/extra-terms`) containing the selected tags.
+3. **Appending**: The backend processes this and returns a `lookupMap` of corresponding CRUK and TCGA dataset filters. The frontend then dynamically merges these new extra terms into the final dataset payload.
+
+### Boolean Filter Search System
+
+The Study Browser implements a programmatic filter engine (`filterLogic.js`) that allows for complex boolean querying:
+- **Infix to Prefix**: The user's visual selections (e.g., `(Breast AND Cancer) OR Genomics`) are parsed into an infix string, which the engine converts into a recursive prefix notation string.
+- **Set Evaluation**: This prefix string is dynamically evaluated into native JavaScript `Set` union/intersection operations (e.g. `Set.prototype.intersection`).
+- **CAUTION**: The final evaluation currently uses `eval()` to execute the constructed string. While this operates entirely client-side, the use of `eval()` is a known security vulnerability (XSS/Code Injection) that should be refactored into a safer Abstract Syntax Tree (AST) evaluator in production.

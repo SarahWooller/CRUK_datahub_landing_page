@@ -1,0 +1,29 @@
+{
+  "identifier": "cruk-study-0050",
+  "version": "1.0.0",
+  "revisions": [
+    {
+      "version": "1.0.0"
+    }
+  ],
+  "issued": "2026-08-05T15:05:57.773Z",
+  "modified": "2026-08-05T15:05:57.773Z",
+  "summary": {
+    "title": "ENZAMET",
+    "abstract": "Enzalutamide with standard first-line therapy in prostate cancer.",
+    "populationSize": 3650,
+    "contactPoint": "info@monashuniversity.ac.uk",
+    "dataCustodian": {
+      "identifier": "https://ror.org/087511",
+      "name": "Monash University",
+      "contactPoint": "admin@monashuniversity.ac.uk"
+    },
+    "leadResearcher": "Prof. Ian Davis",
+    "leadResearchInstitute": "Monash University"
+  },
+  "accessibility": {
+    "access": {
+      "accessRights": "Access requests must be submitted to the Monash University Data Access Committee. Approvals take approximately 4 weeks."
+    }
+  }
+}

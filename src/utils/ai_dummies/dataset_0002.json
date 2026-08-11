@@ -1,0 +1,115 @@
+{
+  "identifier": "cruk-study-0002",
+  "version": "1.0.0",
+  "revisions": [
+    {
+      "version": "1.0.0"
+    }
+  ],
+  "issued": "2026-08-05T15:05:57.770Z",
+  "modified": "2026-08-05T15:05:57.770Z",
+  "summary": {
+    "title": "OPTIMAM (Breast)",
+    "abstract": "Optimising the use of mammography in breast cancer screening.",
+    "populationSize": 944,
+    "contactPoint": "info@royalsurreycountyhospital.ac.uk",
+    "dataCustodian": {
+      "identifier": "https://ror.org/0826138",
+      "name": "Royal Surrey County Hospital",
+      "contactPoint": "admin@royalsurreycountyhospital.ac.uk"
+    },
+    "leadResearcher": "Prof. Kenneth Young",
+    "leadResearchInstitute": "Royal Surrey County Hospital"
+  },
+  "accessibility": {
+    "access": {
+      "accessRights": "Access requests must be submitted to the Royal Surrey County Hospital Data Access Committee. Approvals take approximately 4 weeks."
+    }
+  },
+  "demographicFrequency": {
+    "ethnicity": [
+      {
+        "bin": "White - English, Welsh, Scottish, Northern Irish or British",
+        "count": 1565
+      },
+      {
+        "bin": "Asian or Asian British - Indian",
+        "count": 293
+      },
+      {
+        "bin": "Black or Black British - African",
+        "count": 110
+      }
+    ]
+  },
+  "structuralMetadata": [
+    {
+      "name": "PATIENTS",
+      "description": "Contains patient demographic and diagnostic data.",
+      "columns": [
+        {
+          "name": "patient_id",
+          "dataType": "string",
+          "description": "Unique patient identifier"
+        },
+        {
+          "name": "diagnosis_date",
+          "dataType": "date",
+          "description": "Date of primary diagnosis"
+        },
+        {
+          "name": "stage",
+          "dataType": "string",
+          "description": "Cancer stage at diagnosis"
+        }
+      ]
+    },
+    {
+      "name": "TREATMENTS",
+      "description": "Contains medication and therapy records.",
+      "columns": [
+        {
+          "name": "treatment_id",
+          "dataType": "string",
+          "description": "Unique treatment identifier"
+        },
+        {
+          "name": "drug_name",
+          "dataType": "string",
+          "description": "Name of the administered drug"
+        },
+        {
+          "name": "dosage",
+          "dataType": "number",
+          "description": "Dosage amount in mg"
+        }
+      ]
+    }
+  ],
+  "otherDataTypes": [
+    {
+      "title": "Pathology Slides",
+      "description": "High-resolution digital pathology slide images.",
+      "format": "TIFF"
+    },
+    {
+      "title": "Genomic Sequences",
+      "description": "Whole exome sequencing data files.",
+      "format": "BAM"
+    }
+  ],
+  "observations": [
+    {
+      "observedNode": "Persons",
+      "measuredValue": 944,
+      "observationDate": "2026-08-05T15:05:57.770Z",
+      "measuredProperty": "Count"
+    },
+    {
+      "observedNode": "Events",
+      "measuredValue": 4720,
+      "observationDate": "2026-08-05T15:05:57.770Z",
+      "measuredProperty": "Treatment Events"
+    }
+  ]
+}

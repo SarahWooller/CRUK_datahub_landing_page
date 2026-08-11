@@ -1,0 +1,29 @@
+{
+  "identifier": "cruk-study-0035",
+  "version": "1.0.0",
+  "revisions": [
+    {
+      "version": "1.0.0"
+    }
+  ],
+  "issued": "2026-08-05T15:05:57.772Z",
+  "modified": "2026-08-05T15:05:57.772Z",
+  "summary": {
+    "title": "KEYNOTE-024",
+    "abstract": "Pembrolizumab for advanced NSCLC with PD-L1 expression.",
+    "populationSize": 221,
+    "contactPoint": "info@lungenclinicgrosshansdorf.ac.uk",
+    "dataCustodian": {
+      "identifier": "https://ror.org/027396",
+      "name": "LungenClinic Grosshansdorf",
+      "contactPoint": "admin@lungenclinicgrosshansdorf.ac.uk"
+    },
+    "leadResearcher": "Dr. Martin Reck",
+    "leadResearchInstitute": "LungenClinic Grosshansdorf"
+  },
+  "accessibility": {
+    "access": {
+      "accessRights": "Access requests must be submitted to the LungenClinic Grosshansdorf Data Access Committee. Approvals take approximately 4 weeks."
+    }
+  }
+}

@@ -1,6 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 export const DatahubDashboard = () => {
+  const [isBannerVisible, setIsBannerVisible] = useState(true);
+  const [showChatbotBanner, setShowChatbotBanner] = useState(true);
+
+  useEffect(() => {
+    if (!showChatbotBanner) return;
+    const hideBanner = () => setShowChatbotBanner(false);
+    
+    // Slight delay to prevent immediate dismissal on navigation click
+    const timeout = setTimeout(() => {
+      document.addEventListener('click', hideBanner);
+    }, 100);
+
+    return () => {
+      clearTimeout(timeout);
+      document.removeEventListener('click', hideBanner);
+    };
+  }, [showChatbotBanner]);
+
   const containerStyle = {
     backgroundColor: '#f0f7ff',
     maxWidth: '90%',
@@ -105,6 +123,88 @@ export const DatahubDashboard = () => {
 
   return (
     <div style={containerStyle}>
+      {/* Chatbot Alert Banner */}
+      {showChatbotBanner && (
+        <div 
+          onClick={() => setShowChatbotBanner(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            zIndex: 99999,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            overflow: 'hidden',
+            backgroundColor: 'rgba(0, 0, 0, 0.6)',
+            cursor: 'pointer'
+        }}>
+          <div style={{
+            backgroundColor: '#ffffff',
+            color: '#003580',
+            padding: '40px 10vw',
+            width: '150vw',
+            textAlign: 'center',
+            transform: 'rotate(-10deg)',
+            boxShadow: '0 20px 50px rgba(0,0,0,0.5)',
+            borderTop: '10px solid #e40085',
+            borderBottom: '10px solid #e40085'
+          }}>
+            <h3 style={{ margin: '0 0 16px 0', fontSize: '3.5rem', fontWeight: '900', textTransform: 'uppercase', letterSpacing: '2px', color: '#e40085' }}>
+              ✨ New Feature: AI Analytics Chatbot! ✨
+            </h3>
+            <p style={{ margin: '0 0 16px 0', fontSize: '1.8rem', lineHeight: '1.4', fontWeight: 'bold' }}>
+              We've launched a new AI chatbot to help you query datasets and projects. Look for the <span style={{ color: '#e40085' }}>pink</span> chat icon in the bottom right!
+            </p>
+            <p style={{ margin: 0, fontSize: '1.2rem', fontWeight: 'normal', color: '#666' }}>
+              (click to dismiss)
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Promotional Banner */}
+      {isBannerVisible && (
+        <div style={{
+          backgroundColor: '#003580',
+          color: '#ffffff',
+          padding: '16px 24px',
+          borderRadius: '8px',
+          marginBottom: '24px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+        }}>
+          <div>
+            <h3 style={{ margin: '0 0 8px 0', fontSize: '1.25rem', color: '#e40085' }}>Funded by CRUK? Showcase your data.</h3>
+            <p style={{ margin: 0, fontSize: '1rem', lineHeight: '1.5' }}>
+              Join the researchers making their metadata discoverable in three easy steps: <br />
+              1) <a href="#" style={{ color: '#ffcc00', textDecoration: 'underline', fontWeight: 'bold' }}>Register your email</a>. 
+              2) Register your team
+              3) Upload your metadata using quick AI tools.
+            </p>
+          </div>
+          <button 
+            onClick={() => setIsBannerVisible(false)}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              color: '#ffffff',
+              fontSize: '1.5rem',
+              cursor: 'pointer',
+              marginLeft: '16px',
+              opacity: 0.8
+            }}
+            aria-label="Dismiss banner"
+          >
+            &times;
+          </button>
+        </div>
+      )}
+
       {/* Hero Section with Inset Strapline */}
       <div style={heroSectionStyle}>
         <div style={insetBoxStyle}>
@@ -117,15 +217,15 @@ export const DatahubDashboard = () => {
 
       {/* Navigation Grid */}
       <div style={gridStyle}>
-        <a href="./studies2.html" style={buttonStyle}>Browse or Search Datasets</a>
+        <a href="./datasets.html" style={buttonStyle}>Browse or Search Datasets</a>
         <a href="./projects.html" style={buttonStyle}>Browse or Search Projects</a>
-        <a href="/page-3" style={buttonStyle}>Browse or Search Associated Publications</a>
+        <a href="./publications.html" style={buttonStyle}>Browse or Search Associated Publications</a>
         <a href="/page-4" style={buttonStyle}>Browse or Search Associated Tools</a>
       </div>
 
       {/* Research Focus Section */}
       <div style={focusSectionStyle}>
-        <a href="/horizons" style={ctaContainerStyle}>
+        <a href="./horizons.html" style={ctaContainerStyle}>
           <div style={ctaImageStyle} aria-hidden="true"></div>
           <div style={ctaTextStyle}>
             Explore Cancer Research Horizons Data Resources
