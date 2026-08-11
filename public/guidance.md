@@ -10,20 +10,25 @@ You will need the following information.
 
 **Grant Documentation**: CRUK grant number (and optionally a list of any other funding bodies).
 
-**Dataset Basics**: Information describing your dataset, including a unique title, a concise abstract (up to 255 characters), and longer description of the dataset. This is an opportunity to include high quality information about the technical standards and methods used. If you have a website for your project or dataset you will able to link it.
+**Dataset Basics**: Information describing your dataset, including a unique title, lead researcher and institute, a concise abstract (up to 255 characters), and longer description of the dataset. This is an opportunity to include high quality information about the technical standards and methods used. If you have a website for your project or dataset you will able to link it.
 
-**Technical Specs**: ICD-O descriptors for the cancers covered by the dataset are required. There is a search bar to help you find the right terms. These will automatically be translated into TCGA and CRUK cancer terms. 
-It is also helpful to have a list of the data formats (CSV, DICOM, etc.) and terminologies (ICD-10, SNOMED CT) used.
+If the datasets is linked to other datasets you will be able to make that link.
 
-**Structural Assets**: We ask for descriptions of the tables and the columns within, so that researchers can easily find out whether you have the information they need without needing to put in an enquiry.
+**Access Information**: You will need the name of your Data Custodian organisation a functional email for data access requests, and a description of data access requirements.
+
+**Technical Specs**: ICD-O descriptors for the cancers covered by the dataset are required. There is a search bar to help you find the right terms. These will automatically be translated into TCGA and CRUK cancer terms.
+
+**Structural Metadata**: We ask for descriptions of the tables and the columns within, so that researchers can easily find out whether you have the information they need without needing to put in an enquiry.
 In order to give an idea of the completeness of the dataset we also ask you to include for each table how many complete rows there are.
-Please make descriptions understandable. And, if you have a complex relational database it is helpful to include an **Entity Relationship Diagram image file** (PNG/JPG/SVG < 5MB) to show how the different tables link together.  
+
+You can upload the Structural Metadata as a csv file. The column headings must be: Table Name, Table Description, Table Size, Column Name, Data Type, Col Description, Sensitive,
+Value Name, Value Description, Frequency.
+
+Values are not required. Please make descriptions understandable. And, if you have a complex relational database it is helpful to include an **Entity Relationship Diagram image file** (PNG/JPG/SVG < 5MB) to show how the different tables link together.  
 
 **Demographics**: Summarized counts for Age and Ethnicity.
 
 **Observations**:If you have summary statistics about your dataset (like 5500 Matched tumour-normal samples) it is an excellent way to show your dataset to its best advantage.
-
-**Contacts**: You will need the name of your Data Custodian organisation and a functional email for data access requests.
 
 
 ### Navigation & Workflow
