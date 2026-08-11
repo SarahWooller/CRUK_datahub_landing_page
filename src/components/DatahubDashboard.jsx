@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 
 export const DatahubDashboard = () => {
   const [isBannerVisible, setIsBannerVisible] = useState(true);
-  const [showChatbotBanner, setShowChatbotBanner] = useState(true);
+  const [showChatbotBanner, setShowChatbotBanner] = useState(() => {
+    return localStorage.getItem('hideAiBanner') !== 'true';
+  });
 
   useEffect(() => {
     if (!showChatbotBanner) return;
@@ -18,6 +20,12 @@ export const DatahubDashboard = () => {
       document.removeEventListener('click', hideBanner);
     };
   }, [showChatbotBanner]);
+
+  const handleNeverShowAgain = (e) => {
+    e.stopPropagation(); // Stop the click from bubbling up and just dismissing
+    localStorage.setItem('hideAiBanner', 'true');
+    setShowChatbotBanner(false);
+  };
 
   const containerStyle = {
     backgroundColor: '#f0f7ff',
@@ -159,8 +167,22 @@ export const DatahubDashboard = () => {
               We've launched a new AI chatbot to help you query datasets and projects. Look for the <span style={{ color: '#e40085' }}>pink</span> chat icon in the bottom right!
             </p>
             <p style={{ margin: 0, fontSize: '1.2rem', fontWeight: 'normal', color: '#666' }}>
-              (click to dismiss)
+              (click anywhere to dismiss)
             </p>
+            <button 
+              onClick={handleNeverShowAgain}
+              style={{
+                marginTop: '12px',
+                background: 'transparent',
+                border: 'none',
+                color: '#e40085',
+                textDecoration: 'underline',
+                fontSize: '1rem',
+                cursor: 'pointer'
+              }}
+            >
+              Don't show this again
+            </button>
           </div>
         </div>
       )}
