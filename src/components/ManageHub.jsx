@@ -8,6 +8,7 @@ export const ManageHub = () => {
     const [activeTab, setActiveTab] = useState('users');
     const [users, setUsers] = useState([]);
     const [teams, setTeams] = useState([]);
+    const [invitations, setInvitations] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -52,13 +53,15 @@ export const ManageHub = () => {
         setLoading(true);
         try {
             const headers = { 'Authorization': `Bearer ${token}` };
-            const [usersRes, teamsRes] = await Promise.all([
+            const [usersRes, teamsRes, invRes] = await Promise.all([
                 fetch(`${API_BASE_URL}/admin/users`, { headers }),
-                fetch(`${API_BASE_URL}/admin/teams`, { headers })
+                fetch(`${API_BASE_URL}/admin/teams`, { headers }),
+                fetch(`${API_BASE_URL}/admin/invitations`, { headers })
             ]);
             
             if (usersRes.ok) setUsers(await usersRes.json());
             if (teamsRes.ok) setTeams(await teamsRes.json());
+            if (invRes.ok) setInvitations(await invRes.json());
         } catch (err) {
             setError('Failed to fetch data');
         } finally {
@@ -507,24 +510,29 @@ export const ManageHub = () => {
                                 </form>
                             </div>
 
-                            <h3 className="text-xl font-bold mb-4">Current Links</h3>
+                            <h3 className="text-xl font-bold mb-4">Current Links & Invitations</h3>
                             <div className="overflow-x-auto">
                                 <table className="min-w-full bg-white border">
                                     <thead>
                                         <tr className="bg-gray-100 text-left border-b">
-                                            <th className="p-3">User</th>
+                                            <th className="p-3">User / Email</th>
                                             <th className="p-3">Team</th>
+                                            <th className="p-3">Status</th>
                                             <th className="p-3 text-right">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {/* Render Active Links */}
                                         {users.flatMap(user => 
                                             user.teams.map(teamId => {
                                                 const teamName = teams.find(t => t.id === teamId)?.name || `Team #${teamId}`;
                                                 return (
-                                                    <tr key={`${user.id}-${teamId}`} className="border-b hover:bg-gray-50">
+                                                    <tr key={`active-${user.id}-${teamId}`} className="border-b hover:bg-gray-50">
                                                         <td className="p-3 font-medium">{user.name} <span className="text-gray-500 font-normal">({user.email})</span></td>
                                                         <td className="p-3">{teamName}</td>
+                                                        <td className="p-3">
+                                                            <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-bold rounded-full">ACTIVE</span>
+                                                        </td>
                                                         <td className="p-3 text-right">
                                                             <button onClick={() => handleUnlink(user.id, teamId)} className="text-red-600 hover:text-red-800 font-medium">Unlink</button>
                                                         </td>
@@ -532,6 +540,26 @@ export const ManageHub = () => {
                                                 );
                                             })
                                         )}
+                                        {/* Render Pending/Rejected Invitations */}
+                                        {invitations.filter(inv => inv.status !== 'ACCEPTED').map(inv => {
+                                            const teamName = inv.team ? inv.team.name : (teams.find(t => t.id === inv.team_id)?.name || `Team #${inv.team_id}`);
+                                            const isPending = inv.status === 'PENDING';
+                                            return (
+                                                <tr key={`inv-${inv.id}`} className="border-b hover:bg-gray-50 bg-gray-50">
+                                                    <td className="p-3 font-medium text-gray-500 italic">Unknown User <span className="font-normal">({inv.email})</span></td>
+                                                    <td className="p-3">{teamName}</td>
+                                                    <td className="p-3">
+                                                        <span className={`px-2 py-1 text-xs font-bold rounded-full ${isPending ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>
+                                                            {inv.status}
+                                                        </span>
+                                                    </td>
+                                                    <td className="p-3 text-right">
+                                                        {/* Could add a 'Cancel Invite' action here in the future */}
+                                                        <span className="text-gray-400 text-sm italic">No actions</span>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
                                     </tbody>
                                 </table>
                             </div>

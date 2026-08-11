@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import SignInModal from './SignInModal.jsx';
 import { ChangePasswordModal } from './ChangePasswordModal.jsx';
+import { ManageTeamModal } from './ManageTeamModal.jsx';
+import { InvitationsModal } from './InvitationsModal.jsx';
 import ChatWidget from './ChatWidget.jsx';
 import "../styles/style.css"
 
@@ -11,6 +13,7 @@ export const Header = () => {
     const [userTeams, setUserTeams] = useState([]);
     const [activeTeamId, setActiveTeamId] = useState(null);
     const [isDataDropdownOpen, setIsDataDropdownOpen] = useState(false);
+    const [isManageTeamModalOpen, setIsManageTeamModalOpen] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
@@ -138,6 +141,15 @@ export const Header = () => {
                 onClose={() => setIsChangePasswordModalOpen(false)} 
             />
 
+            <ManageTeamModal
+                isOpen={isManageTeamModalOpen}
+                onClose={() => setIsManageTeamModalOpen(false)}
+                activeTeamId={activeTeamId}
+                userTeams={userTeams}
+            />
+
+            <InvitationsModal userName={userName} />
+
             <nav className="thin-navbar">
                 <ul>
                     <li><a href="./about.html">About</a></li>
@@ -169,7 +181,7 @@ export const Header = () => {
                                 <ul className="absolute left-0 mt-2 w-64 bg-white shadow-xl border border-gray-200 rounded-md py-2 z-50" style={{ display: 'block' }}>
                                     {activeTeamId && (
                                         <>
-                                            <li><a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Manage team membership</a></li>
+                                            <li><a href="#" onClick={(e) => { e.preventDefault(); setIsManageTeamModalOpen(true); setIsDataDropdownOpen(false); }} className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Manage team membership</a></li>
                                             <li><a href="./upload.html" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload or change a dataset</a></li>
                                             <li><a href="./upload_project.html" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload or change a project</a></li>
                                             <li><a href="./upload_publications.html" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload and link a publication</a></li>
