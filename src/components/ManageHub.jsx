@@ -4,11 +4,18 @@ import { AdminAnalyticsTab } from './AdminAnalyticsTab.jsx';
 
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
+
+
 export const ManageHub = () => {
     const [activeTab, setActiveTab] = useState('users');
     const [users, setUsers] = useState([]);
     const [teams, setTeams] = useState([]);
     const [invitations, setInvitations] = useState([]);
+    const [userTeamLinks, setUserTeamLinks] = useState([]);
+    const [enquiries, setEnquiries] = useState([]);
+    const [enquiriesSortField, setEnquiriesSortField] = useState('created_at');
+    const [enquiriesSortOrder, setEnquiriesSortOrder] = useState('desc');
+    const [enquiriesCurrentPage, setEnquiriesCurrentPage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -35,6 +42,9 @@ export const ManageHub = () => {
     const [userToDelete, setUserToDelete] = useState(null);
     const [deleteConfirmText, setDeleteConfirmText] = useState('');
     
+    // Enquiry Modal State
+    const [viewEnquiry, setViewEnquiry] = useState(null);
+    
     // Change Password state (Admin)
     const [userToChangePassword, setUserToChangePassword] = useState(null);
     const [adminNewPassword, setAdminNewPassword] = useState('');
@@ -53,15 +63,19 @@ export const ManageHub = () => {
         setLoading(true);
         try {
             const headers = { 'Authorization': `Bearer ${token}` };
-            const [usersRes, teamsRes, invRes] = await Promise.all([
+            const [usersRes, teamsRes, invRes, linksRes, enqRes] = await Promise.all([
                 fetch(`${API_BASE_URL}/admin/users`, { headers }),
                 fetch(`${API_BASE_URL}/admin/teams`, { headers }),
-                fetch(`${API_BASE_URL}/admin/invitations`, { headers })
+                fetch(`${API_BASE_URL}/admin/invitations`, { headers }),
+                fetch(`${API_BASE_URL}/admin/user_team_links`, { headers }),
+                fetch(`${API_BASE_URL}/admin/enquiries`, { headers })
             ]);
             
             if (usersRes.ok) setUsers(await usersRes.json());
             if (teamsRes.ok) setTeams(await teamsRes.json());
             if (invRes.ok) setInvitations(await invRes.json());
+            if (linksRes.ok) setUserTeamLinks(await linksRes.json());
+            if (enqRes.ok) setEnquiries(await enqRes.json());
         } catch (err) {
             setError('Failed to fetch data');
         } finally {
@@ -229,6 +243,21 @@ export const ManageHub = () => {
         }
     };
 
+    const handleToggleTeamAdmin = async (userId, teamId, currentStatus) => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/admin/users/${userId}/teams/${teamId}/admin`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify({ is_admin: !currentStatus })
+            });
+            if (!res.ok) throw new Error((await res.json()).detail || 'Failed to update team admin status');
+            showMessage(`Team Admin status updated successfully!`);
+            fetchData();
+        } catch (err) {
+            showMessage(err.message, true);
+        }
+    };
+
     if (!isAdmin) {
         return (
             <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-lg shadow text-center">
@@ -250,6 +279,7 @@ export const ManageHub = () => {
                 <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'users' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('users')}>Users</button>
                 <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'teams' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('teams')}>Teams</button>
                 <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'links' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('links')}>User-Team Links</button>
+                <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'notifications' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('notifications')}>Notifications</button>
                 <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'errors' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('errors')}>Error Logs</button>
                 <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'analytics' ? 'border-b-2 border-[#E40085] text-[#E40085]' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('analytics')}>AI Analytics</button>
             </div>
@@ -518,6 +548,7 @@ export const ManageHub = () => {
                                             <th className="p-3">User / Email</th>
                                             <th className="p-3">Team</th>
                                             <th className="p-3">Status</th>
+                                            <th className="p-3 text-center">Team Admin</th>
                                             <th className="p-3 text-right">Actions</th>
                                         </tr>
                                     </thead>
@@ -526,12 +557,23 @@ export const ManageHub = () => {
                                         {users.flatMap(user => 
                                             user.teams.map(teamId => {
                                                 const teamName = teams.find(t => t.id === teamId)?.name || `Team #${teamId}`;
+                                                const linkData = userTeamLinks.find(l => l.user_id === user.id && l.team_id === teamId);
+                                                const isTeamAdmin = linkData ? linkData.is_team_admin : false;
                                                 return (
                                                     <tr key={`active-${user.id}-${teamId}`} className="border-b hover:bg-gray-50">
                                                         <td className="p-3 font-medium">{user.name} <span className="text-gray-500 font-normal">({user.email})</span></td>
                                                         <td className="p-3">{teamName}</td>
                                                         <td className="p-3">
                                                             <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-bold rounded-full">ACTIVE</span>
+                                                        </td>
+                                                        <td className="p-3 text-center">
+                                                            <input 
+                                                                type="checkbox" 
+                                                                checked={isTeamAdmin} 
+                                                                onChange={() => handleToggleTeamAdmin(user.id, teamId, isTeamAdmin)}
+                                                                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded cursor-pointer"
+                                                                title="Toggle Team Admin Status"
+                                                            />
                                                         </td>
                                                         <td className="p-3 text-right">
                                                             <button onClick={() => handleUnlink(user.id, teamId)} className="text-red-600 hover:text-red-800 font-medium">Unlink</button>
@@ -553,6 +595,9 @@ export const ManageHub = () => {
                                                             {inv.status}
                                                         </span>
                                                     </td>
+                                                    <td className="p-3 text-center">
+                                                        <span className="text-gray-400">-</span>
+                                                    </td>
                                                     <td className="p-3 text-right">
                                                         {/* Could add a 'Cancel Invite' action here in the future */}
                                                         <span className="text-gray-400 text-sm italic">No actions</span>
@@ -565,6 +610,151 @@ export const ManageHub = () => {
                             </div>
                         </div>
                     )}
+
+                    {/* NOTIFICATIONS TAB */}
+                    {activeTab === 'notifications' && (() => {
+                        const sortedEnquiries = [...enquiries].sort((a, b) => {
+                            let valA = a[enquiriesSortField] || '';
+                            let valB = b[enquiriesSortField] || '';
+                            if (typeof valA === 'string') valA = valA.toLowerCase();
+                            if (typeof valB === 'string') valB = valB.toLowerCase();
+                            
+                            if (valA < valB) return enquiriesSortOrder === 'asc' ? -1 : 1;
+                            if (valA > valB) return enquiriesSortOrder === 'asc' ? 1 : -1;
+                            return 0;
+                        });
+
+                        const handleSort = (field) => {
+                            if (enquiriesSortField === field) {
+                                setEnquiriesSortOrder(enquiriesSortOrder === 'asc' ? 'desc' : 'asc');
+                            } else {
+                                setEnquiriesSortField(field);
+                                setEnquiriesSortOrder('asc');
+                            }
+                            setEnquiriesCurrentPage(1); // Reset page on sort
+                        };
+
+                        const itemsPerPage = 20;
+                        const totalPages = Math.ceil(sortedEnquiries.length / itemsPerPage);
+                        const startIndex = (enquiriesCurrentPage - 1) * itemsPerPage;
+                        const currentEnquiries = sortedEnquiries.slice(startIndex, startIndex + itemsPerPage);
+
+                        return (
+                        <div>
+                            <h3 className="text-xl font-bold mb-4">All Notifications (Enquiries)</h3>
+                            <div className="border border-gray-200 rounded-lg overflow-hidden">
+                                <div className="max-h-[600px] overflow-y-auto overflow-x-auto">
+                                    <table className="min-w-full bg-white relative">
+                                        <thead className="bg-gray-100 text-left sticky top-0 z-10 shadow-sm">
+                                            <tr>
+                                                <th className="p-3 cursor-pointer hover:bg-gray-200" onClick={() => handleSort('created_at')}>
+                                                    Timestamp {enquiriesSortField === 'created_at' && (enquiriesSortOrder === 'asc' ? '↑' : '↓')}
+                                                </th>
+                                                <th className="p-3 cursor-pointer hover:bg-gray-200" onClick={() => handleSort('team_name')}>
+                                                    Team {enquiriesSortField === 'team_name' && (enquiriesSortOrder === 'asc' ? '↑' : '↓')}
+                                                </th>
+                                                <th className="p-3 cursor-pointer hover:bg-gray-200" onClick={() => handleSort('dataset_name')}>
+                                                    Dataset {enquiriesSortField === 'dataset_name' && (enquiriesSortOrder === 'asc' ? '↑' : '↓')}
+                                                </th>
+                                                <th className="p-3 cursor-pointer hover:bg-gray-200" onClick={() => handleSort('applicant_name')}>
+                                                    Applicant Name {enquiriesSortField === 'applicant_name' && (enquiriesSortOrder === 'asc' ? '↑' : '↓')}
+                                                </th>
+                                                <th className="p-3">Institute</th>
+                                                <th className="p-3">Email</th>
+                                                <th className="p-3">Enquiry</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {currentEnquiries.map(enq => (
+                                                <tr key={enq.id} className="border-b hover:bg-gray-50 align-top">
+                                                    <td className="p-3 text-sm text-gray-500 whitespace-nowrap">{new Date(enq.created_at).toLocaleString()}</td>
+                                                    <td className="p-3 font-medium text-[var(--cruk-darkblue)]">{enq.team_name}</td>
+                                                    <td className="p-3 font-medium text-gray-800">{enq.dataset_name || 'N/A'}</td>
+                                                    <td className="p-3">{enq.applicant_name}</td>
+                                                    <td className="p-3 text-sm">{enq.applicant_organisation}</td>
+                                                    <td className="p-3 text-sm text-gray-600"><a href={`mailto:${enq.applicant_email}`}>{enq.applicant_email}</a></td>
+                                                    <td className="p-3 text-sm">
+                                                        {enq.enquiry_text.length > 100 ? (
+                                                            <>
+                                                                {enq.enquiry_text.substring(0, 100)}...
+                                                                <button 
+                                                                    className="block text-blue-600 hover:underline text-xs mt-1 font-medium"
+                                                                    onClick={() => setViewEnquiry(enq)}
+                                                                >
+                                                                    View Full Enquiry
+                                                                </button>
+                                                            </>
+                                                        ) : (
+                                                            enq.enquiry_text
+                                                        )}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                    {enquiries.length === 0 && <p className="p-4 text-center text-gray-500">No notifications found.</p>}
+                                </div>
+                            </div>
+                            
+                            {/* Pagination Controls */}
+                            {totalPages > 1 && (
+                                <div className="flex justify-between items-center mt-4 px-2">
+                                    <div className="text-sm text-gray-500">
+                                        Showing {startIndex + 1} to {Math.min(startIndex + itemsPerPage, sortedEnquiries.length)} of {sortedEnquiries.length} entries
+                                    </div>
+                                    <div className="flex space-x-2">
+                                        <button 
+                                            onClick={() => setEnquiriesCurrentPage(prev => Math.max(prev - 1, 1))}
+                                            disabled={enquiriesCurrentPage === 1}
+                                            className={`px-3 py-1 rounded ${enquiriesCurrentPage === 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}`}
+                                        >
+                                            Previous
+                                        </button>
+                                        <div className="px-3 py-1 bg-blue-50 text-blue-700 font-medium rounded">
+                                            Page {enquiriesCurrentPage} of {totalPages}
+                                        </div>
+                                        <button 
+                                            onClick={() => setEnquiriesCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                                            disabled={enquiriesCurrentPage === totalPages}
+                                            className={`px-3 py-1 rounded ${enquiriesCurrentPage === totalPages ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}`}
+                                        >
+                                            Next
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+                            {/* Enquiry Details Modal */}
+                            {viewEnquiry && (
+                                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                                    <div className="bg-white p-6 rounded-lg max-w-2xl w-full shadow-2xl flex flex-col max-h-[90vh]">
+                                        <div className="flex justify-between items-start mb-4 border-b pb-4">
+                                            <div>
+                                                <h3 className="text-xl font-bold text-gray-800">Enquiry Details</h3>
+                                                <p className="text-sm text-gray-500 mt-1">From: {viewEnquiry.applicant_name} ({viewEnquiry.applicant_organisation})</p>
+                                                <p className="text-sm text-gray-500">Dataset: {viewEnquiry.dataset_name || 'N/A'}</p>
+                                            </div>
+                                            <button onClick={() => setViewEnquiry(null)} className="text-gray-400 hover:text-gray-600 font-bold text-xl">&times;</button>
+                                        </div>
+                                        <div className="flex-1 overflow-y-auto pr-2">
+                                            <div className="bg-gray-50 p-4 rounded border border-gray-100 text-gray-700 whitespace-pre-wrap">
+                                                {viewEnquiry.enquiry_text}
+                                            </div>
+                                        </div>
+                                        <div className="mt-6 pt-4 border-t text-right">
+                                            <button 
+                                                onClick={() => setViewEnquiry(null)} 
+                                                className="px-6 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded"
+                                            >
+                                                Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                        );
+                    })()}
+
                     {/* ERROR LOGS TAB */}
                     {activeTab === 'errors' && (
                         <div className="bg-gray-50 p-6 rounded-lg mb-8 border border-gray-200 shadow-sm">

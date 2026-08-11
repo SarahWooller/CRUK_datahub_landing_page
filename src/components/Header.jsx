@@ -3,6 +3,7 @@ import SignInModal from './SignInModal.jsx';
 import { ChangePasswordModal } from './ChangePasswordModal.jsx';
 import { ManageTeamModal } from './ManageTeamModal.jsx';
 import { InvitationsModal } from './InvitationsModal.jsx';
+import { DataCustodiansModal } from './DataCustodiansModal.jsx';
 import ChatWidget from './ChatWidget.jsx';
 import "../styles/style.css"
 
@@ -13,7 +14,9 @@ export const Header = () => {
     const [userTeams, setUserTeams] = useState([]);
     const [activeTeamId, setActiveTeamId] = useState(null);
     const [isDataDropdownOpen, setIsDataDropdownOpen] = useState(false);
+    const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const [isManageTeamModalOpen, setIsManageTeamModalOpen] = useState(false);
+    const [isDataCustodiansModalOpen, setIsDataCustodiansModalOpen] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
 
     useEffect(() => {
@@ -148,6 +151,11 @@ export const Header = () => {
                 userTeams={userTeams}
             />
 
+            <DataCustodiansModal
+                isOpen={isDataCustodiansModalOpen}
+                onClose={() => setIsDataCustodiansModalOpen(false)}
+            />
+
             <InvitationsModal userName={userName} />
 
             <nav className="thin-navbar">
@@ -168,29 +176,48 @@ export const Header = () => {
                         </li>
                     )}
 
-                    {userName && (
+                    {!userName ? (
+                        <li>
+                            <a 
+                                href="#" 
+                                onClick={(e) => { e.preventDefault(); setIsDataCustodiansModalOpen(true); }}
+                                className="nav-link-main font-bold text-yellow-300"
+                            >
+                                Data Custodians
+                            </a>
+                        </li>
+                    ) : (
                         <li className="relative">
                             <a 
                                 href="#" 
                                 className="nav-link-main font-bold text-yellow-300 flex items-center"
                                 onClick={(e) => { e.preventDefault(); setIsDataDropdownOpen(!isDataDropdownOpen); }}
                             >
-                                Manage my data <span className="ml-1 text-xs">▼</span>
+                                Data Custodian Actions <span className="ml-1 text-xs">▼</span>
                             </a>
-                            {isDataDropdownOpen && (
+                            {isDataDropdownOpen && (() => {
+                                const activeTeam = userTeams.find(t => t.id.toString() === activeTeamId?.toString());
+                                const isTeamAdmin = activeTeam ? activeTeam.is_team_admin : false;
+                                return (
                                 <ul className="absolute left-0 mt-2 w-64 bg-white shadow-xl border border-gray-200 rounded-md py-2 z-50" style={{ display: 'block' }}>
+                                    <li>
+                                        <a href="./team_request.html" className="block px-4 py-2 text-sm font-medium hover:bg-blue-50" style={{color: '#2563eb'}}>Register a new Data Custodian</a>
+                                    </li>
                                     {activeTeamId && (
                                         <>
-                                            <li><a href="#" onClick={(e) => { e.preventDefault(); setIsManageTeamModalOpen(true); setIsDataDropdownOpen(false); }} className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Manage team membership</a></li>
-                                            <li><a href="./upload.html" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload or change a dataset</a></li>
-                                            <li><a href="./upload_project.html" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload or change a project</a></li>
+                                            <li className="border-t border-gray-200 my-1"></li>
+                                            {isTeamAdmin && (
+                                                <>
+                                                    <li><a href="#" onClick={(e) => { e.preventDefault(); setIsManageTeamModalOpen(true); setIsDataDropdownOpen(false); }} className="block px-4 py-2 text-sm hover:bg-blue-50 font-bold" style={{color: '#2563eb'}}>Team management</a></li>
+                                                    <li className="border-t border-gray-200 my-1 pt-1"><span className="block px-4 py-1 text-xs font-bold text-gray-500 uppercase">Uploads</span></li>
+                                                </>
+                                            )}
+                                            <li><a href="./upload.html" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload dataset</a></li>
+                                            <li><a href="./upload_project.html" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload project</a></li>
                                             <li><a href="./upload_publications.html" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload and link a publication</a></li>
                                             <li><a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload and link a tool</a></li>
                                         </>
                                     )}
-                                    <li className={activeTeamId ? "border-t border-gray-200 mt-2" : ""}>
-                                        <a href="./team_request.html" className="block px-4 py-2 text-sm font-medium hover:bg-blue-50" style={{color: '#2563eb'}}>Register a new team space</a>
-                                    </li>
                                     <li className="border-t border-gray-200 mt-2 pt-2">
                                         <button 
                                             onClick={(e) => { e.preventDefault(); setIsChangePasswordModalOpen(true); setIsDataDropdownOpen(false); }} 
@@ -201,7 +228,8 @@ export const Header = () => {
                                         </button>
                                     </li>
                                 </ul>
-                            )}
+                                );
+                            })()}
                         </li>
                     )}
                 </ul>
