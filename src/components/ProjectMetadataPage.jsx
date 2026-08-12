@@ -74,7 +74,9 @@ export const ProjectMetadataPage = () => {
     return (
         <div className="min-h-screen bg-gray-50 font-sans text-gray-800 p-8">
             <div className="max-w-4xl mx-auto">
-
+                <div className="mb-4">
+                    <a href="./projects.html" className="text-blue-600 hover:underline font-medium">← Back to all projects</a>
+                </div>
                 {/* Navigation / Header */}
                 <div className="mb-8">
                     <h1 className="text-4xl font-extrabold text-blue-900 mb-3">

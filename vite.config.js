@@ -38,6 +38,8 @@ export default defineConfig({
         test: resolve(__dirname, 'src/test.html'),
         team_request: resolve(__dirname, 'src/team_request.html'),
         manage_hub: resolve(__dirname, 'src/manage_hub.html'),
+        data_custodians: resolve(__dirname, 'src/data_custodians.html'),
+        data_custodian: resolve(__dirname, 'src/data_custodian.html'),
       },
     },
   },

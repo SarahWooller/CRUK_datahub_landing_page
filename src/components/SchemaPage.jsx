@@ -1302,7 +1302,12 @@ const SchemaPage = () => {
 
         setLoadingDatasets(true);
         try {
-            const response = await fetch(`${API_BASE_URL}/datasets/list/simple`, {
+            const activeTeamId = localStorage.getItem('activeTeamId');
+            const url = activeTeamId 
+                ? `${API_BASE_URL}/datasets/list/simple?team_id=${activeTeamId}`
+                : `${API_BASE_URL}/datasets/list/simple`;
+                
+            const response = await fetch(url, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 

@@ -301,6 +301,9 @@ const { derivedFilters, activeIcons } = useMemo(() => {
       {/* --- LEFT PANEL: Navigation --- */}
       <Panel defaultSize={20} minSize={15}>
         <nav className="w-full h-full bg-white shadow-md p-6 overflow-y-auto flex flex-col">
+        <div className="mb-6">
+            <a href="./datasets.html" className="text-blue-600 hover:underline font-medium text-sm">← Back to all datasets</a>
+        </div>
         <h3 className="text-xl font-bold text-blue-900 mb-6 border-b pb-2">Overview</h3>
         <ul className="space-y-3 mb-8">
           {[

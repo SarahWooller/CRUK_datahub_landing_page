@@ -100,5 +100,14 @@ The landing page features a floating AI chatbot widget (`ChatWidget.jsx`) that h
 
 The Study Browser implements a programmatic filter engine (`filterLogic.js`) that allows for complex boolean querying:
 - **Infix to Prefix**: The user's visual selections (e.g., `(Breast AND Cancer) OR Genomics`) are parsed into an infix string, which the engine converts into a recursive prefix notation string.
-- **Set Evaluation**: This prefix string is dynamically evaluated into native JavaScript `Set` union/intersection operations (e.g. `Set.prototype.intersection`).
 - **CAUTION**: The final evaluation currently uses `eval()` to execute the constructed string. While this operates entirely client-side, the use of `eval()` is a known security vulnerability (XSS/Code Injection) that should be refactored into a safer Abstract Syntax Tree (AST) evaluator in production.
+
+### Data Custodians
+
+**Data Custodian Page (`data_custodian.html`)**
+This public-facing page dynamically displays all the assets managed by a specific Data Custodian (team). It fetches the team's profile, active datasets, active projects, publications, and tools to showcase their portfolio to researchers.
+
+**Data Custodian Actions**
+Users who are members of a Data Custodian team have access to specific actions and views:
+- **Managing Assets**: When navigating to the upload page (`upload.html`), members can view and edit both their published (active) datasets and their unpublished drafts. The dropdown is automatically filtered to only show datasets belonging to their active team.
+- **Team Management**: Team administrators can view and manage their team's assets, invite new members, and review data access enquiries submitted by the public.

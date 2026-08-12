@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+
 export const DatahubDashboard = () => {
   const [isBannerVisible, setIsBannerVisible] = useState(true);
   const [showChatbotBanner, setShowChatbotBanner] = useState(() => {
@@ -239,18 +240,23 @@ export const DatahubDashboard = () => {
 
       {/* Navigation Grid */}
       <div style={gridStyle}>
-        <a href="./datasets.html" style={buttonStyle}>Browse or Search Datasets</a>
-        <a href="./projects.html" style={buttonStyle}>Browse or Search Projects</a>
-        <a href="./publications.html" style={buttonStyle}>Browse or Search Associated Publications</a>
+        <a href="/src/datasets" style={buttonStyle}>Browse or Search Datasets</a>
+        <a href="/src/projects" style={buttonStyle}>Browse or Search Projects</a>
+        <a href="/src/publications" style={buttonStyle}>Browse or Search Associated Publications</a>
         <a href="/page-4" style={buttonStyle}>Browse or Search Associated Tools</a>
       </div>
 
       {/* Research Focus Section */}
       <div style={focusSectionStyle}>
-        <a href="./horizons.html" style={ctaContainerStyle}>
+        <a href="/src/horizons" style={ctaContainerStyle}>
           <div style={ctaImageStyle} aria-hidden="true"></div>
           <div style={ctaTextStyle}>
             Explore Cancer Research Horizons Data Resources
+          </div>
+        </a>
+        <a href="/src/data_custodians" style={{...ctaContainerStyle, marginTop: '20px'}}>
+          <div style={{...ctaTextStyle, width: '100%', textAlign: 'center'}}>
+            Meet our Data Custodians
           </div>
         </a>
       </div>
