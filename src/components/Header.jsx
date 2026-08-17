@@ -18,6 +18,7 @@ export const Header = () => {
     const [isManageTeamModalOpen, setIsManageTeamModalOpen] = useState(false);
     const [isDataCustodiansModalOpen, setIsDataCustodiansModalOpen] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isUploadExpanded, setIsUploadExpanded] = useState(false);
 
     useEffect(() => {
         const storedName = localStorage.getItem('userName');
@@ -201,31 +202,42 @@ export const Header = () => {
                                 return (
                                 <ul className="absolute left-0 mt-2 w-64 bg-white shadow-xl border border-gray-200 rounded-md py-2 z-50" style={{ display: 'block' }}>
                                     <li>
-                                        <a href="./team_request.html" className="block px-4 py-2 text-sm font-medium hover:bg-blue-50" style={{color: '#2563eb'}}>Register a new Data Custodian</a>
+                                        <a href="./team_request.html" className="block px-4 py-2 text-sm font-medium !text-blue-600 hover:bg-blue-50">Register a new Data Custodian</a>
                                     </li>
                                     {activeTeamId && (
                                         <>
                                             <li className="border-t border-gray-200 my-1"></li>
                                             {isTeamAdmin && (
                                                 <>
-                                                    <li><a href="#" onClick={(e) => { e.preventDefault(); setIsManageTeamModalOpen(true); setIsDataDropdownOpen(false); }} className="block px-4 py-2 text-sm hover:bg-blue-50 font-bold" style={{color: '#2563eb'}}>Team management</a></li>
-                                                    <li className="border-t border-gray-200 my-1 pt-1"><span className="block px-4 py-1 text-xs font-bold text-gray-500 uppercase">Uploads</span></li>
+                                                    <li><a href="#" onClick={(e) => { e.preventDefault(); setIsManageTeamModalOpen(true); setIsDataDropdownOpen(false); }} className="block px-4 py-2 text-sm font-medium !text-blue-600 hover:bg-blue-50">Manage the Team</a></li>
+                                                    <li><a href="#" onClick={(e) => { e.preventDefault(); setIsManageTeamModalOpen(true); setIsDataDropdownOpen(false); }} className="block px-4 py-2 text-sm font-medium !text-blue-600 hover:bg-blue-50">View Notifications</a></li>
+                                                    <li className="border-t border-gray-200 my-1 pt-1"></li>
                                                 </>
                                             )}
-                                            <li><a href="./upload.html" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload dataset</a></li>
-                                            <li><a href="./upload_project.html" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload project</a></li>
-                                            <li><a href="./upload_publications.html" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload and link a publication</a></li>
-                                            <li><a href="./upload_tool.html" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload and link a tool</a></li>
+                                            <li>
+                                                <a href="#" onClick={(e) => { e.preventDefault(); setIsUploadExpanded(!isUploadExpanded); }} className="w-full flex justify-between items-center px-4 py-2 text-sm font-medium !text-blue-600 hover:bg-blue-50">
+                                                    <span>Upload info</span>
+                                                    <span>{isUploadExpanded ? '▲' : '▼'}</span>
+                                                </a>
+                                                {isUploadExpanded && (
+                                                    <ul className="bg-gray-50 border-y border-gray-200 py-1 block">
+                                                        <li><a href="./upload.html" className="block px-8 py-2 text-sm !text-blue-600 hover:bg-blue-100">Upload dataset</a></li>
+                                                        <li><a href="./upload_project.html" className="block px-8 py-2 text-sm !text-blue-600 hover:bg-blue-100">Upload project</a></li>
+                                                        <li><a href="./upload_publications.html" className="block px-8 py-2 text-sm !text-blue-600 hover:bg-blue-100">Upload and link a publication</a></li>
+                                                        <li><a href="./upload_tool.html" className="block px-8 py-2 text-sm !text-blue-600 hover:bg-blue-100">Upload and link a tool</a></li>
+                                                    </ul>
+                                                )}
+                                            </li>
                                         </>
                                     )}
                                     <li className="border-t border-gray-200 mt-2 pt-2">
-                                        <button 
+                                        <a 
+                                            href="#"
                                             onClick={(e) => { e.preventDefault(); setIsChangePasswordModalOpen(true); setIsDataDropdownOpen(false); }} 
-                                            className="block w-full text-left px-4 py-2 text-sm font-medium hover:bg-blue-50" 
-                                            style={{color: '#374151'}}
+                                            className="block w-full text-left px-4 py-2 text-sm font-medium !text-blue-600 hover:bg-blue-50"
                                         >
-                                            Change my password
-                                        </button>
+                                            Change my Password
+                                        </a>
                                     </li>
                                 </ul>
                                 );

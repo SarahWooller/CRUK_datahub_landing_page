@@ -1,1 +1,1 @@
-Cancer Research Horizons is the blah blah blah
+We take cutting-edge innovations from the lab bench to the bedside, translating them into effective tools, treatments and diagnostics for people with cancer.

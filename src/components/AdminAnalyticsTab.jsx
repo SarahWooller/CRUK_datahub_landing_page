@@ -26,7 +26,7 @@ export const AdminAnalyticsTab = () => {
         setIsLoading(true);
 
         try {
-            const aiUrl = import.meta.env.VITE_AI_URL || "http://localhost:8001";
+            const aiUrl = import.meta.env.VITE_MICROSERVICE_URL || "http://localhost:8001";
             const response = await fetch(`${aiUrl}/api/ai/chat`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

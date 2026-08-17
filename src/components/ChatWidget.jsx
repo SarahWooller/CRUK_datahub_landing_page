@@ -145,7 +145,7 @@ const ChatWidget = () => {
         setIsLoading(true);
 
         try {
-            const aiUrl = import.meta.env.VITE_AI_URL || "http://localhost:8001";
+            const aiUrl = import.meta.env.VITE_MICROSERVICE_URL || "http://localhost:8001";
             const activeTeamId = localStorage.getItem('activeTeamId');
             const userId = localStorage.getItem('userId');
             

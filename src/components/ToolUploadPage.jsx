@@ -139,6 +139,7 @@ export const ToolUploadPage = () => {
             team_id: parseInt(activeTeamId, 10),
             linked_datasets: resolvedDatasetIds,
             linked_projects: resolvedProjectIds,
+            status: "ACTIVE",
         };
 
         try {
@@ -245,7 +246,7 @@ export const ToolUploadPage = () => {
                         
                         <div className="space-y-6">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">URL or Github link (optional)</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">URL or Github link</label>
                                 <p className="text-xs text-gray-400 mb-2">Where can we find this analysis script, tool or software?</p>
                                 <input type="text" name="url" value={formData.url} onChange={handleChange} className="w-full border border-teal-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-500" />
                             </div>
@@ -256,27 +257,27 @@ export const ToolUploadPage = () => {
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Description (optional)</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
                                 <textarea name="description" value={formData.description} onChange={handleChange} rows="4" className="w-full border border-teal-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-500"></textarea>
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Results / Insights (optional)</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Results / Insights</label>
                                 <textarea name="results_insights" value={formData.results_insights} onChange={handleChange} rows="4" className="w-full border border-teal-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-500"></textarea>
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Authors (optional)</label>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Authors</label>
                                 <input type="text" name="associated_authors" value={formData.associated_authors} onChange={handleChange} placeholder="e.g. Jane Doe, John Smith" className="w-full border border-teal-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-500" />
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Tech Stack (comma separated) (optional)</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Tech Stack (comma separated)</label>
                                     <input type="text" name="tech_stack" value={formData.tech_stack} onChange={handleChange} placeholder="e.g. Python, R, React" className="w-full border border-teal-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-500" />
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">License (optional)</label>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">License</label>
                                     <input type="text" name="license" list="license-options" value={formData.license} onChange={handleChange} placeholder="e.g. MIT, GPL-3.0" className="w-full border border-teal-400 rounded px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-teal-500" />
                                     <datalist id="license-options">
                                         <option value="MIT" />

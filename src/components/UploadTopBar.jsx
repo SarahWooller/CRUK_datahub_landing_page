@@ -174,7 +174,7 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType, onDeleteS
         }
     };
 
-    const transformForPHP = (data) => {
+    const transformForPHP = (data, markActive) => {
         return {
             team_id: parseInt(localStorage.getItem('activeTeamId')),
             pid: data.pid || "",
@@ -186,7 +186,8 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType, onDeleteS
             projectGrantStartDate: data.projectGrantStartDate || "",
             projectGrantEndDate: data.projectGrantEndDate || "",
             projectGrantScope: data.projectGrantScope || "",
-            metadata_blob: {}
+            metadata_blob: {},
+            status: markActive ? "ACTIVE" : "DRAFT"
         };
     };
 
@@ -270,7 +271,7 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType, onDeleteS
             let payload;
 
             if (isProject) {
-                payload = transformForPHP(processedData);
+                payload = transformForPHP(processedData, markActive);
             } else {
                 payload = {
                     metadata_blob: processedData,
