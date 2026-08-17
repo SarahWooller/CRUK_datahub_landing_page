@@ -31,6 +31,7 @@ export const MetadataPage = () => {
   const [data, setData] = useState(null);
   const [teamId, setTeamId] = useState(null);
   const [teamName, setTeamName] = useState(null);
+  const [dbTools, setDbTools] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -62,6 +63,8 @@ export const MetadataPage = () => {
             setData(dbResult.metadata_blob || dbResult);
             setTeamId(dbResult.team_id || (dbResult.metadata_blob ? dbResult.metadata_blob.team_id : null));
             setTeamName(dbResult.team_name || null);
+            setDbTools(dbResult.tools || []);
+            setError(null);
             setError(null);
 
         } catch (err) {
@@ -93,11 +96,11 @@ export const MetadataPage = () => {
   }
 
   // Render the main content component, passing the guaranteed data
-  return <MetadataPageContent data={data} teamId={teamId} teamName={teamName} />;
+  return <MetadataPageContent data={data} teamId={teamId} teamName={teamName} dbTools={dbTools} />;
 };
 
 // This is the old MetadataPage but now takes the prop data so the main one wraps it
-const MetadataPageContent = ({ data, teamId, teamName, onSectionClick }) => {
+const MetadataPageContent = ({ data, teamId, teamName, dbTools, onSectionClick }) => {
 
 
   const isNotEmpty = (obj) => {
@@ -380,7 +383,7 @@ const { derivedFilters, activeIcons } = useMemo(() => {
 
       <Panel defaultSize={55} minSize={30}>
         <main className="w-full h-full p-8 overflow-y-auto relative bg-white">
-            <DatasetDetailsContent data={data} isPreview={false} onSectionClick={onSectionClick} />
+            <DatasetDetailsContent data={data} isPreview={false} onSectionClick={onSectionClick} dbTools={dbTools} />
         </main>
       </Panel>
         <Separator className="w-1 bg-gray-200 hover:bg-blue-400 transition-colors cursor-col-resize active:bg-blue-600" />
@@ -537,7 +540,7 @@ const { derivedFilters, activeIcons } = useMemo(() => {
   );
 };
 
-export const DatasetDetailsContent = ({ data, isPreview = false, onSectionClick }) => {
+export const DatasetDetailsContent = ({ data, isPreview = false, onSectionClick, dbTools = [] }) => {
   const isNotEmpty = (obj) => {
       if (!obj) return false;
       if (Array.isArray(obj)) return obj.length > 0;
@@ -1142,6 +1145,28 @@ export const DatasetDetailsContent = ({ data, isPreview = false, onSectionClick 
             </>
         )}
 
+
+        {/* Tools */}
+        {(isPreview || (dbTools && dbTools.length > 0)) && (
+            <>
+                <SectionHeading id="tools" title="Tools & Software" onClick={onSectionClick ? () => onSectionClick('tools') : undefined} />
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 mb-10">
+                    {dbTools && dbTools.length > 0 ? (
+                        <ul className="space-y-3">
+                            {dbTools.map(t => (
+                                <li key={t.id}>
+                                    <a href={`/src/tool?id=${t.id}`} className="text-lg font-medium text-blue-600 hover:underline break-all">
+                                        {t.name}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : isPreview ? (
+                        <p className="text-gray-400 italic m-0">No associated tools</p>
+                    ) : null}
+                </div>
+            </>
+        )}
 
         {/* Access, Usage & Formatting (Moved to bottom) */}
 

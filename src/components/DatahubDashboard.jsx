@@ -243,7 +243,7 @@ export const DatahubDashboard = () => {
         <a href="/src/datasets" style={buttonStyle}>Browse or Search Datasets</a>
         <a href="/src/projects" style={buttonStyle}>Browse or Search Projects</a>
         <a href="/src/publications" style={buttonStyle}>Browse or Search Associated Publications</a>
-        <a href="/page-4" style={buttonStyle}>Browse or Search Associated Tools</a>
+        <a href="/src/tools" style={buttonStyle}>Browse or Search Associated Tools</a>
       </div>
 
       {/* Research Focus Section */}

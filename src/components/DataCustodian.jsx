@@ -43,6 +43,7 @@ export const DataCustodian = () => {
     const sortedProjects = [...projects].sort((a, b) => (a.title || '').localeCompare(b.title || ''));
     const sortedDatasets = [...datasets].sort((a, b) => (a.title || '').localeCompare(b.title || ''));
     const sortedPublications = [...publications].sort((a, b) => (a.paper_title || '').localeCompare(b.paper_title || ''));
+    const sortedTools = [...(tools || [])].sort((a, b) => (a.name || '').localeCompare(b.name || ''));
 
     return (
         <div className="flex-grow overflow-hidden h-[calc(100vh-40px)]">
@@ -147,8 +148,20 @@ export const DataCustodian = () => {
 
                         {/* Tools Section */}
                         <section id="tools" className="scroll-mt-40">
-                            <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">Tools & Software (0)</h2>
-                            <p className="text-gray-500 italic">No tools or software currently listed for this custodian.</p>
+                            <h2 className="text-2xl font-bold text-gray-800 mb-6 border-b pb-2">Tools & Software ({sortedTools.length})</h2>
+                            {sortedTools.length > 0 ? (
+                                <ul className="space-y-3">
+                                    {sortedTools.map(t => (
+                                        <li key={t.id}>
+                                            <a href={`/src/tool?id=${t.id}`} className="text-lg font-medium text-blue-600 hover:underline break-all">
+                                                {t.name}
+                                            </a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p className="text-gray-500 italic">No tools or software currently listed for this custodian.</p>
+                            )}
                         </section>
                     </div>
                 </div>

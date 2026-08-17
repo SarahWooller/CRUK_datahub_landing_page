@@ -215,7 +215,7 @@ export const Header = () => {
                                             <li><a href="./upload.html" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload dataset</a></li>
                                             <li><a href="./upload_project.html" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload project</a></li>
                                             <li><a href="./upload_publications.html" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload and link a publication</a></li>
-                                            <li><a href="#" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload and link a tool</a></li>
+                                            <li><a href="./upload_tool.html" className="block px-4 py-2 text-sm hover:bg-blue-50" style={{color: '#374151'}}>Upload and link a tool</a></li>
                                         </>
                                     )}
                                     <li className="border-t border-gray-200 mt-2 pt-2">

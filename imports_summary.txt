@@ -1,0 +1,335 @@
+### File: meta_vite.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import FloatingQRCode from './components/FloatingQRCode.jsx';
+import { MetadataPage} from './components/MetaDataPage.jsx';
+import { Header } from './components/Header.jsx'
+
+### File: test.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import PublicationSearch from './utils/PublicationSearch.jsx';
+import { Header } from './components/Header.jsx';
+
+### File: just_vert_bar_vite.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { VertFilterApp } from './components/JustVertFilterApp.jsx';
+import { Header } from './components/Header.jsx'
+
+### File: project_meta_vite.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { ProjectMetadataPage} from './components/ProjectMetadataPage.jsx';
+import { Header } from './components/Header.jsx'
+import FloatingQRCode from './components/FloatingQRCode.jsx';
+
+### File: protect_data.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Header } from './components/Header.jsx'
+import { ProtectData } from './components/ProtectData.jsx';
+
+### File: about.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Header } from './components/Header.jsx'
+import { About } from './components/About.jsx';
+
+### File: publications.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Introduction } from './components/ProjectIntroduction.jsx';
+import { PublicationDashboard } from './components/PublicationDashboard.jsx';
+import { Header } from './components/Header.jsx';
+
+### File: dash_vite.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { DatahubDashboard} from './components/DatahubDashboard.jsx';
+import { Header } from './components/Header.jsx'
+
+### File: upload_project_vite.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import SchemaPage from './components/ProjectGrantSchemaPage.jsx';
+import FloatingQRCode from './components/FloatingQRCode.jsx';
+import { Header } from './components/Header.jsx'
+import { InstructionsWidget } from './components/InstructionsWidget.jsx';
+
+### File: sign_in.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Header } from './components/Header.jsx'
+import { SignIn } from './components/SignIn.jsx';
+
+### File: projects_vite.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Introduction } from './components/ProjectIntroduction.jsx';
+import { ProjectsSection } from './components/ProjectsSection.jsx';
+import { Header } from './components/Header.jsx';
+
+### File: main.jsx
+import { createRoot } from 'react-dom/client'
+
+### File: upload_publications_vite.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import PublicationUpload from './components/PublicationUpload.jsx';
+import FloatingQRCode from './components/FloatingQRCode.jsx';
+import { Header } from './components/Header.jsx'
+
+### File: upload_vite.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import SchemaPage from './components/SchemaPage.jsx';
+import FloatingQRCode from './components/FloatingQRCode.jsx';
+import { Header } from './components/Header.jsx'
+
+### File: top_bar_vite.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { FilterApp } from './components/HorFilterApp.jsx';
+import { Header } from './components/Header.jsx'
+import { StudiesSection } from './components/StudiesSection.jsx'
+
+### File: datasets_vite.jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { Introduction } from './components/Introduction2.jsx';
+import { FilterApp } from './components/FilterApp.jsx';
+import { Header } from './components/Header.jsx';
+import { FeedbackWidget } from './components/FeedbackWidget.jsx';
+import { InstructionsWidget } from './components/InstructionsWidget.jsx';
+import FloatingQRCode from './components/FloatingQRCode.jsx';
+
+### File: utils/PublicationSearch.jsx
+import React, { useState } from 'react';
+
+### File: utils/logic-utils.js
+import { filterDetailsMap } from './filter-setup.js';
+
+### File: utils/metadataUtils.js
+import animalIcon from '../assets/animal.webp';
+import backgroundIcon from '../assets/background.webp';
+import biobankIcon from '../assets/biobank.webp';
+import invitroIcon from '../assets/invitro.webp';
+import longitudinalIcon from '../assets/longitudinal.webp';
+import treatmentsIcon from '../assets/treatments.webp';
+import omicsIcon from '../assets/omics.webp';
+import imagingIcon from '../assets/medical_imaging.webp';
+import labResultsIcon from '../assets/lab_results.webp';
+
+### File: utils/filterLogic.js
+import { filterData } from './longer_filter_data.js';
+import { studyData } from './mock_study_data.js';
+
+### File: utils/filter-setup.js
+import { filterData } from './longer_filter_data.js';
+
+### File: components/CsvUploader.jsx
+import React from 'react';
+import Papa from 'papaparse';
+
+### File: components/Header.jsx
+import React from 'react';
+import "../styles/style.css"
+
+### File: components/InstructionsWidget.jsx
+import React, { useState, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
+
+### File: components/ProjectsSection.jsx
+import React, { useState, useMemo, useEffect } from 'react';
+
+### File: components/PreviewMainContent.jsx
+import React, { useState, useMemo } from 'react';
+import { MarkdownRenderer } from './MarkdownRenderer.jsx';
+import { ICON_MAPPING, ETHNICITY_CATEGORIES, getFirstTwoSentences } from '../utils/metadataUtils';
+import { StatCard, SectionHeading } from './PreviewSharedUI';
+
+### File: components/MarkdownRenderer.jsx
+import React from 'react';
+
+### File: components/FilterApp.jsx
+import { DatasetsSection } from './DatasetsSection.jsx';
+import { filterDetailsMap, filterData } from '../utils/filter-setup.js';
+import { filterType, includeParents, plusParents, getMessage, calculateLogicMessage } from '../utils/logic-utils.js';
+import { executeFilterLogic } from '../utils/filterLogic.js';
+import React from 'react';
+import "../styles/style.css"
+
+### File: components/ProjectMetadataPage.jsx
+import React, { useState, useEffect } from 'react';
+
+### File: components/MetaDataPage.jsx
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import ReactDOM from 'react-dom/client';
+import { Panel, Group, Separator } from "react-resizable-panels";
+import { filterData } from '../utils/longer_filter_data.js';
+import { ICON_MAPPING, ETHNICITY_CATEGORIES, flattenFilterTree, getFilterConfig, getFirstTwoSentences, normalizeList } from '../utils/metadataUtils';
+import { StatCard, SectionHeading, AccessItem } from '../components/PreviewSharedUI';
+import erdImage from '../assets/erd.png';
+import { MarkdownRenderer } from './MarkdownRenderer.jsx'
+
+### File: components/SignInModal.jsx
+import React, { useState } from 'react';
+
+### File: components/PreviewTags.jsx
+import React, { useMemo } from 'react';
+import { normalizeList } from '../utils/metadataUtils';
+
+### File: components/UploadTopBar.jsx
+import React, { useMemo } from 'react';
+import exampleData from '../utils/new_dummies/dataset_00.json';
+import { getExtra } from '../utils/getExtra.js';
+
+### File: components/About.jsx
+import React from 'react';
+import "../styles/style.css"
+
+### File: components/SignIn.jsx
+import React, { useState } from 'react';
+
+### File: components/AltStudiesSection.jsx
+import React, { useState, useMemo } from 'react';
+
+### File: components/DatasetsSection.jsx
+import React, { useState, useEffect, useMemo } from 'react';
+import { extractMetadataConstants } from '../utils/metadataUtils';
+
+### File: components/DatahubDashboard.jsx
+import React from 'react';
+
+### File: components/DataTagger.jsx
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
+import { filterDetailsMap, filterData } from '../utils/filter-setup.js';
+import "../styles/style.css"
+
+### File: components/AssistantPane.jsx
+import React, { useState, useEffect } from 'react';
+import { MarkdownRenderer } from './MarkdownRenderer.jsx';
+import PreviewAccessCard from './PreviewAccessCard.jsx';
+import PreviewTags from './PreviewTags.jsx';
+import PreviewMainContent from './PreviewMainContent.jsx';
+
+### File: components/Introduction.jsx
+import React, { useState, useEffect, useMemo } from 'react';
+
+### File: components/TargetSelector.jsx
+import React, { useState, useEffect } from 'react';
+
+### File: components/FeedbackFallback.jsx
+import React from 'react';
+
+### File: components/ProtectData.jsx
+import React from 'react';
+
+### File: components/ProjectIntroduction.jsx
+import React from 'react';
+
+### File: components/PublicationFilters.jsx
+import React from 'react';
+
+### File: components/JsonUpload.jsx
+import React, { useState, useRef } from 'react';
+
+### File: components/FloatingQRCode.jsx
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { Rnd } from 'react-rnd';
+import feedbackQrCode from './feedback.png';
+
+### File: components/Introduction2.jsx
+import React from 'react';
+
+### File: components/PreviewSharedUI.jsx
+import React from 'react';
+
+### File: components/PublicationList.jsx
+import React, { useState } from 'react';
+
+### File: components/FeedbackModal.jsx
+import React, { useEffect, useRef } from 'react';
+import { useForm } from 'react-hook-form';
+import Draggable from 'react-draggable';
+import { Resizable } from 're-resizable';
+
+### File: components/StructuralMetadataGrid.jsx
+import React, { useState, useEffect } from 'react';
+import { DataGrid } from 'react-data-grid';
+import 'react-data-grid/lib/styles.css';
+
+### File: components/ProjectGrantSchemaPage.jsx
+import React, { useState, useCallback } from 'react';
+import { Panel, Group, Separator } from "react-resizable-panels";
+import FeedbackModal from './FeedbackModal.jsx';
+import questionData from '../feedback/upload_questions.json';
+import schema from '../utils/schema.json';
+import projectSchema from '../utils/projectSchema.json';
+import semanticSchema from '../utils/semanticSchema.json';
+import JsonUpload from './JsonUpload.jsx';
+import UploadTopBar from './UploadTopBar.jsx';
+import prefixIconMapping from '../utils/prefix_icon_mapping.json';
+
+### File: components/HorFilterApp.jsx
+import { filterDetailsMap, filterData } from '../utils/filter-setup.js';
+import { filterType, includeParents, plusParents, getMessage, calculateLogicMessage } from '../utils/logic-utils.js';
+import { executeFilterLogic } from '../utils/filterLogic.js';
+import React from 'react';
+import "../styles/style.css"
+
+### File: components/SchemaPage.jsx
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import { Panel, Group, Separator } from "react-resizable-panels";
+import CsvUploader from "./CsvUploader.jsx"
+import StructuralMetadataGrid from "./StructuralMetadataGrid.jsx";
+import AssistantPane from './AssistantPane.jsx';
+import FeedbackModal from './FeedbackModal.jsx';
+import questionData from '../feedback/upload_questions.json';
+import hdrukSchema from '../utils/HDRUK4.0.0.json';
+import crukSchema from '../utils/CRUK1.0.0.json';
+import semanticSchema from '../utils/semanticSchema.json';
+import { MarkdownRenderer } from './MarkdownRenderer.jsx';
+import DataTagger, { FilterChipArea } from './DataTagger.jsx';
+import JsonUpload from './JsonUpload.jsx';
+import UploadTopBar from './UploadTopBar.jsx';
+import { filterData } from '../utils/filter-setup.js';
+import { flattenSchemaToGrid } from '../utils/flattenSchemaToGrid.js';
+import prefixIconMapping from '../utils/prefix_icon_mapping.json';
+import { getExtra } from '../utils/getExtra.js';
+
+### File: components/JustVertFilterApp.jsx
+import { filterDetailsMap, filterData } from '../utils/filter-setup.js';
+import { filterType, includeParents, plusParents, getMessage, calculateLogicMessage } from '../utils/logic-utils.js';
+import { executeFilterLogic } from '../utils/filterLogic.js';
+import React from 'react';
+import "../styles/style.css"
+
+### File: components/PreviewAccessCard.jsx
+import React from 'react';
+import { AccessItem } from './PreviewSharedUI';
+
+### File: components/PublicationUpload.jsx
+import React, { useState, useEffect } from 'react';
+import TargetSelector from './TargetSelector';
+
+### File: components/PublicationDashboard.jsx
+import React, { useState, useEffect, useMemo } from 'react';
+import PublicationFilters from './PublicationFilters';
+import PublicationList from './PublicationList';
+
+### File: components/FeedbackWidget.jsx
+import React from 'react';
+import { createPortal } from 'react-dom';
+import FeedbackModal from './FeedbackModal.jsx';
+import FeedbackFallback from './FeedbackFallback.jsx';
+import { useFeedback } from '../hooks/useFeedback.js';
+import viewQuestions from '../feedback/searchpage.json';
+
+### File: hooks/useFeedback.js
+import { useState } from 'react';
+
+### File: hooks/UserContext.jsx
+import React, { createContext, useState, useContext, useEffect } from 'react';

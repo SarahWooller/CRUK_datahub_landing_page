@@ -204,6 +204,25 @@ export const ProjectMetadataPage = () => {
                         </div>
                     </div>
                 )}
+
+                {project.tools && project.tools.length > 0 && (
+                    <div className="mb-10">
+                        <div className="flex items-center space-x-3 mb-6 border-b pb-2">
+                            <h2 className="text-2xl font-bold text-gray-800 m-0">Tools & Software</h2>
+                        </div>
+                        <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                            <ul className="space-y-3">
+                                {project.tools.map((t, idx) => (
+                                    <li key={idx}>
+                                        <a href={`/src/tool?id=${t.id}`} className="text-lg font-medium text-blue-600 hover:underline break-all">
+                                            {t.name}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
