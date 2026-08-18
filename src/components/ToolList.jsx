@@ -3,10 +3,18 @@ import React from 'react';
 const ToolCard = ({ tool }) => {
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm mb-4 hover:shadow-md transition-shadow">
-      <h3 className="text-xl font-bold text-gray-900 mb-2 hover:text-blue-600">
-        <a href={`/src/tool?id=${tool.id}`} target="_blank" rel="noopener noreferrer">
-          {tool.name}
-        </a>
+      <h3 className="text-xl font-bold text-gray-900 mb-2 flex items-baseline">
+        <span>{tool.name}</span>
+        {tool.url && (
+          <a
+            href={tool.url.startsWith('http') ? tool.url : `https://${tool.url}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-normal text-blue-600 hover:underline ml-3"
+          >
+            (link to external website)
+          </a>
+        )}
       </h3>
 
       <div className="text-sm text-gray-600 flex flex-wrap gap-2 mb-4">
