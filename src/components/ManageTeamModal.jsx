@@ -4,7 +4,7 @@ const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000"
 
 
 
-export const ManageTeamModal = ({ isOpen, onClose, activeTeamId, userTeams }) => {
+export const ManageTeamModal = ({ isOpen, onClose, activeTeamId, userTeams, mode = 'members' }) => {
     const [inviteEmail, setInviteEmail] = useState('');
     const [inviteAsAdmin, setInviteAsAdmin] = useState(false);
     const [notificationEmail, setNotificationEmail] = useState('');
@@ -13,7 +13,6 @@ export const ManageTeamModal = ({ isOpen, onClose, activeTeamId, userTeams }) =>
     const [status, setStatus] = useState('idle'); // idle, loading, success, error
     const [message, setMessage] = useState('');
     const [isLoadingData, setIsLoadingData] = useState(false);
-    const [activeTab, setActiveTab] = useState('members'); // members, notifications
     const [viewEnquiry, setViewEnquiry] = useState(null);
 
     const activeTeam = userTeams?.find(t => t.id.toString() === activeTeamId?.toString());
@@ -155,7 +154,9 @@ export const ManageTeamModal = ({ isOpen, onClose, activeTeamId, userTeams }) =>
                     &times;
                 </button>
                 
-                <h2 className="text-2xl font-bold mb-6 text-[var(--cruk-darkblue)]">Manage Team: {activeTeam?.name}</h2>
+                <h2 className="text-2xl font-bold mb-6 text-[var(--cruk-darkblue)]">
+                    {mode === 'notifications' ? 'Team Notifications:' : 'Manage Team:'} {activeTeam?.name}
+                </h2>
                 
                 {status !== 'idle' && status !== 'loading' && (
                     <div className={`p-3 mb-4 rounded font-bold text-sm ${status === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
@@ -167,16 +168,7 @@ export const ManageTeamModal = ({ isOpen, onClose, activeTeamId, userTeams }) =>
                     <p className="text-gray-500">Loading team data...</p>
                 ) : (
                     <>
-                        {/* TABS */}
-                        <div className="flex border-b mb-6 overflow-x-auto">
-                            <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'members' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('members')}>Members & Settings</button>
-                            <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'notifications' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('notifications')}>
-                                Notifications
-                                {enquiries.length > 0 && <span className="ml-2 bg-blue-100 text-blue-800 text-xs py-0.5 px-2 rounded-full">{enquiries.length}</span>}
-                            </button>
-                        </div>
-
-                        {activeTab === 'members' && (
+                        {mode === 'members' && (
                             <>
                                 {/* 1. Notification Email Settings */}
                         <div className="mb-8 p-4 border border-gray-200 rounded-lg">
@@ -275,9 +267,12 @@ export const ManageTeamModal = ({ isOpen, onClose, activeTeamId, userTeams }) =>
                         </>
                         )}
 
-                        {activeTab === 'notifications' && (
+                        {mode === 'notifications' && (
                             <div className="mb-4">
-                                <h3 className="font-bold text-lg mb-3">Team Notifications</h3>
+                                <div className="flex justify-between items-center mb-3">
+                                    <h3 className="font-bold text-lg">Team Notifications</h3>
+                                    {enquiries.length > 0 && <span className="bg-blue-100 text-blue-800 text-xs font-bold py-1 px-3 rounded-full">{enquiries.length} Enquiries</span>}
+                                </div>
                                 <div className="border border-gray-200 rounded-lg overflow-hidden">
                                     <div className="max-h-96 overflow-y-auto">
                                         <table className="w-full text-sm relative">

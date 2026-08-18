@@ -16,6 +16,7 @@ export const Header = () => {
     const [isDataDropdownOpen, setIsDataDropdownOpen] = useState(false);
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const [isManageTeamModalOpen, setIsManageTeamModalOpen] = useState(false);
+    const [manageTeamModalMode, setManageTeamModalMode] = useState('members');
     const [isDataCustodiansModalOpen, setIsDataCustodiansModalOpen] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [isUploadExpanded, setIsUploadExpanded] = useState(false);
@@ -147,6 +148,7 @@ export const Header = () => {
 
             <ManageTeamModal
                 isOpen={isManageTeamModalOpen}
+                mode={manageTeamModalMode}
                 onClose={() => setIsManageTeamModalOpen(false)}
                 activeTeamId={activeTeamId}
                 userTeams={userTeams}
@@ -209,8 +211,8 @@ export const Header = () => {
                                             <li className="border-t border-gray-200 my-1"></li>
                                             {isTeamAdmin && (
                                                 <>
-                                                    <li><a href="#" onClick={(e) => { e.preventDefault(); setIsManageTeamModalOpen(true); setIsDataDropdownOpen(false); }} className="block px-4 py-2 text-sm font-medium !text-blue-600 hover:bg-blue-50">Manage the Team</a></li>
-                                                    <li><a href="#" onClick={(e) => { e.preventDefault(); setIsManageTeamModalOpen(true); setIsDataDropdownOpen(false); }} className="block px-4 py-2 text-sm font-medium !text-blue-600 hover:bg-blue-50">View Notifications</a></li>
+                                                    <li><a href="#" onClick={(e) => { e.preventDefault(); setManageTeamModalMode('members'); setIsManageTeamModalOpen(true); setIsDataDropdownOpen(false); }} className="block px-4 py-2 text-sm font-medium !text-blue-600 hover:bg-blue-50">Manage the Team</a></li>
+                                                    <li><a href="#" onClick={(e) => { e.preventDefault(); setManageTeamModalMode('notifications'); setIsManageTeamModalOpen(true); setIsDataDropdownOpen(false); }} className="block px-4 py-2 text-sm font-medium !text-blue-600 hover:bg-blue-50">View Notifications</a></li>
                                                     <li className="border-t border-gray-200 my-1 pt-1"></li>
                                                 </>
                                             )}
@@ -220,11 +222,11 @@ export const Header = () => {
                                                     <span>{isUploadExpanded ? '▲' : '▼'}</span>
                                                 </a>
                                                 {isUploadExpanded && (
-                                                    <ul className="bg-gray-50 border-y border-gray-200 py-1 block">
-                                                        <li><a href="./upload.html" className="block px-8 py-2 text-sm !text-blue-600 hover:bg-blue-100">Upload dataset</a></li>
-                                                        <li><a href="./upload_project.html" className="block px-8 py-2 text-sm !text-blue-600 hover:bg-blue-100">Upload project</a></li>
-                                                        <li><a href="./upload_publications.html" className="block px-8 py-2 text-sm !text-blue-600 hover:bg-blue-100">Upload and link a publication</a></li>
-                                                        <li><a href="./upload_tool.html" className="block px-8 py-2 text-sm !text-blue-600 hover:bg-blue-100">Upload and link a tool</a></li>
+                                                    <ul className="bg-gray-50 border-y border-gray-200 py-1 !flex !flex-col w-full">
+                                                        <li className="w-full"><a href="./upload.html" className="block w-full px-8 py-2 text-sm !text-blue-600 hover:bg-blue-100">Upload dataset</a></li>
+                                                        <li className="w-full"><a href="./upload_project.html" className="block w-full px-8 py-2 text-sm !text-blue-600 hover:bg-blue-100">Upload project</a></li>
+                                                        <li className="w-full"><a href="./upload_publications.html" className="block w-full px-8 py-2 text-sm !text-blue-600 hover:bg-blue-100">Upload and link a publication</a></li>
+                                                        <li className="w-full"><a href="./upload_tool.html" className="block w-full px-8 py-2 text-sm !text-blue-600 hover:bg-blue-100">Upload and link a tool</a></li>
                                                     </ul>
                                                 )}
                                             </li>
