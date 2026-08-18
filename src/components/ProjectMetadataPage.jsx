@@ -80,7 +80,7 @@ export const ProjectMetadataPage = () => {
                 {/* Navigation / Header */}
                 <div className="mb-8">
                     <h1 className="text-4xl font-extrabold text-blue-900 mb-3">
-                        {project.projectGrantName}
+                        {project.project_grant_name || project.title || "Unnamed Project"}
                     </h1>
                     <div className="text-sm text-gray-500 font-mono">
                         Project ID: {project.pid || project.id}
@@ -95,10 +95,12 @@ export const ProjectMetadataPage = () => {
                                 Lead Researcher
                             </span>
                             <p className="text-lg font-semibold text-gray-800 m-0">
-                                {project.leadResearcher || "N/A"}
-                            </p>
-                            <p className="text-sm text-gray-600 mt-1 italic">
-                                {project.leadResearchInstitute || "N/A"}
+                                {project.lead_researcher || "N/A"} 
+                                {project.lead_research_institute && (
+                                    <span className="text-sm font-normal text-gray-600 italic ml-2">
+                                        ({project.lead_research_institute})
+                                    </span>
+                                )}
                             </p>
                         </div>
 
@@ -107,7 +109,7 @@ export const ProjectMetadataPage = () => {
                                 Timeline
                             </span>
                             <p className="text-base text-gray-800 m-0">
-                                {project.projectGrantStartDate || "Unknown"} to {project.projectGrantEndDate || "Ongoing"}
+                                {project.project_grant_start_date ? project.project_grant_start_date.split('T')[0].split(' ')[0] : "Unknown"} to {project.project_grant_end_date ? project.project_grant_end_date.split('T')[0].split(' ')[0] : "Ongoing"}
                             </p>
                         </div>
 
@@ -116,7 +118,7 @@ export const ProjectMetadataPage = () => {
                                 Grant Number(s)
                             </span>
                             <p className="text-base font-mono text-gray-700 m-0">
-                                {project.grantNumber || "N/A"}
+                                {project.grant_numbers || project.grant_number || "N/A"}
                             </p>
                         </div>
 
@@ -125,7 +127,7 @@ export const ProjectMetadataPage = () => {
                                 Project Scope
                             </span>
                             <p className="text-base text-gray-700 m-0 leading-relaxed">
-                                {project.projectGrantScope || "No scope provided."}
+                                {project.project_grant_scope || "No scope provided."}
                             </p>
                         </div>
                     </div>

@@ -286,8 +286,8 @@ export const ProjectsSection = () => {
                                     <tr className="study-data-row">
                                         <td>{grant.leadResearcher}</td>
                                         <td>{grant.leadResearchInstitute}</td>
-                                        <td>{grant.projectGrantStartDate}</td>
-                                        <td>{grant.projectGrantEndDate}</td>
+                                        <td>{grant.projectGrantStartDate ? grant.projectGrantStartDate.split('T')[0].split(' ')[0] : ''}</td>
+                                        <td>{grant.projectGrantEndDate ? grant.projectGrantEndDate.split('T')[0].split(' ')[0] : ''}</td>
                                         <td>{grant.grantNumbers}</td>
                                     </tr>
 
