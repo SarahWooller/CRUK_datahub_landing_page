@@ -51,7 +51,7 @@ export const DataCustodian = () => {
                 {/* Sticky Sidebar Navigation */}
                 <div className="w-full md:w-1/4 h-full bg-white shadow-md p-6 overflow-y-auto flex flex-col z-10 border-r border-gray-100">
                     <div className="mb-6">
-                        <a href="/src/data_custodians" className="text-blue-600 hover:underline font-medium text-sm">← Back to all custodians</a>
+                        <a href="./data_custodians.html" className="text-blue-600 hover:underline font-medium text-sm">← Back to all custodians</a>
                     </div>
                     <h3 className="text-xl font-bold text-blue-900 mb-6 border-b pb-2">Overview</h3>
                     <ul className="space-y-3">

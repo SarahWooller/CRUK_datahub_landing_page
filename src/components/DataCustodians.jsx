@@ -30,7 +30,7 @@ export const DataCustodians = () => {
         <div className="max-w-7xl mx-auto p-8">
             <div className="flex justify-between items-center mb-8">
                 <h1 className="text-3xl font-bold text-[var(--cruk-darkblue)]">Meet our Data Custodians</h1>
-                <a href="/src/dashboard" className="text-blue-600 hover:underline">Back to Dashboard</a>
+                <a href="./dashboard.html" className="text-blue-600 hover:underline">Back to Dashboard</a>
             </div>
 
             <div className="mb-6">
