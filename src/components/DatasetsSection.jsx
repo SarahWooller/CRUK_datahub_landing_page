@@ -193,16 +193,6 @@ export const DatasetsSection = ({ custodianFilter }) => {
                             style={{ padding: '10px', fontSize: '1.1rem', width: '300px' }}
                         />
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <input
-                            type="checkbox"
-                            id="deep_search"
-                            checked={isDeepSearch}
-                            onChange={(e) => setIsDeepSearch(e.target.checked)}
-                            style={{ transform: "scale(1.5)", marginRight: "10px", marginLeft: "20px", cursor: 'pointer' }}
-                        />
-                        <label htmlFor="deep_search" style={{ cursor: 'pointer' }}>Deep Search</label>
-                    </div>
                     <div>
                         <label style={{ marginRight: '10px' }}>Sort by:</label>
                         <select
