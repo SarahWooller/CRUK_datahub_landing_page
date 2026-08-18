@@ -19,7 +19,7 @@ export const ManageHub = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
-    
+
     // Auth context
     const token = localStorage.getItem('token');
     const isAdmin = localStorage.getItem('isAdmin') === 'true';
@@ -32,7 +32,7 @@ export const ManageHub = () => {
     const [newUserIsAdmin, setNewUserIsAdmin] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [newTeamName, setNewTeamName] = useState('');
-    
+
     // Linking state
     const [selectedUserId, setSelectedUserId] = useState('');
     const [selectedTeamId, setSelectedTeamId] = useState('');
@@ -41,16 +41,16 @@ export const ManageHub = () => {
     const [teamToDelete, setTeamToDelete] = useState(null);
     const [userToDelete, setUserToDelete] = useState(null);
     const [deleteConfirmText, setDeleteConfirmText] = useState('');
-    
+
     // Enquiry Modal State
     const [viewEnquiry, setViewEnquiry] = useState(null);
-    
+
     // Change Password state (Admin)
     const [userToChangePassword, setUserToChangePassword] = useState(null);
     const [adminNewPassword, setAdminNewPassword] = useState('');
     const [adminNewPasswordRepeat, setAdminNewPasswordRepeat] = useState('');
     const [showAdminPassword, setShowAdminPassword] = useState(false);
-    
+
     // Search state
     const [userSearchTerm, setUserSearchTerm] = useState('');
 
@@ -62,15 +62,16 @@ export const ManageHub = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
+            const MIDDLELAYER_URL = import.meta.env.VITE_MIDDLELAYER_URL || "http://localhost:8002";
             const headers = { 'Authorization': `Bearer ${token}` };
             const [usersRes, teamsRes, invRes, linksRes, enqRes] = await Promise.all([
                 fetch(`${API_BASE_URL}/admin/users`, { headers }),
                 fetch(`${API_BASE_URL}/admin/teams`, { headers }),
                 fetch(`${API_BASE_URL}/admin/invitations`, { headers }),
                 fetch(`${API_BASE_URL}/admin/user_team_links`, { headers }),
-                fetch(`${API_BASE_URL}/admin/enquiries`, { headers })
+                fetch(`${MIDDLELAYER_URL}/admin/enquiries`, { headers })
             ]);
-            
+
             if (usersRes.ok) setUsers(await usersRes.json());
             if (teamsRes.ok) setTeams(await teamsRes.json());
             if (invRes.ok) setInvitations(await invRes.json());
@@ -102,7 +103,7 @@ export const ManageHub = () => {
                 body: JSON.stringify({ email: newUserEmail, name: newUserName, password: newUserPassword, is_admin: newUserIsAdmin })
             });
             if (!res.ok) throw new Error((await res.json()).detail || 'Failed to create user');
-            
+
             showMessage('User created successfully!');
             setNewUserEmail(''); setNewUserName(''); setNewUserPassword(''); setNewUserRepeatPassword(''); setNewUserIsAdmin(false);
             fetchData();
@@ -119,7 +120,7 @@ export const ManageHub = () => {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (!res.ok) throw new Error('Failed to delete user');
-            
+
             showMessage('User deleted successfully!');
             fetchData();
         } catch (err) {
@@ -129,7 +130,7 @@ export const ManageHub = () => {
             setDeleteConfirmText('');
         }
     };
-    
+
     const handleToggleAdmin = async (userId, currentStatus) => {
         try {
             const res = await fetch(`${API_BASE_URL}/admin/users/${userId}/admin`, {
@@ -144,7 +145,7 @@ export const ManageHub = () => {
             showMessage(err.message, true);
         }
     };
-    
+
     const handleAdminChangePassword = async (e) => {
         e.preventDefault();
         if (!userToChangePassword) return;
@@ -158,7 +159,7 @@ export const ManageHub = () => {
                 body: JSON.stringify({ new_password: adminNewPassword })
             });
             if (!res.ok) throw new Error((await res.json()).detail || 'Failed to change password');
-            
+
             showMessage(`Password changed successfully for ${userToChangePassword.name}!`);
         } catch (err) {
             showMessage(err.message, true);
@@ -180,7 +181,7 @@ export const ManageHub = () => {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (!res.ok) throw new Error((await res.json()).detail || 'Failed to create team');
-            
+
             showMessage('Team created successfully!');
             setNewTeamName('');
             fetchData();
@@ -197,7 +198,7 @@ export const ManageHub = () => {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (!res.ok) throw new Error('Failed to delete team');
-            
+
             showMessage(`Team deleted successfully (Projects wiped: ${deleteProjects})!`);
             fetchData();
         } catch (err) {
@@ -211,14 +212,14 @@ export const ManageHub = () => {
     const handleLinkUserToTeam = async (e) => {
         e.preventDefault();
         if (!selectedUserId || !selectedTeamId) return showMessage('Please select both a user and a team', true);
-        
+
         try {
             const res = await fetch(`${API_BASE_URL}/admin/users/${selectedUserId}/teams/${selectedTeamId}`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (!res.ok) throw new Error((await res.json()).detail || 'Failed to link user to team');
-            
+
             showMessage('User successfully linked to team!');
             setSelectedUserId(''); setSelectedTeamId('');
             fetchData();
@@ -235,7 +236,7 @@ export const ManageHub = () => {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (!res.ok) throw new Error('Failed to unlink user');
-            
+
             showMessage('User unlinked from team successfully!');
             fetchData();
         } catch (err) {
@@ -270,7 +271,7 @@ export const ManageHub = () => {
     return (
         <div className="max-w-6xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md mb-20">
             <h1 className="text-3xl font-bold mb-6 text-[var(--cruk-darkblue)] border-b pb-4">Manage the Hub</h1>
-            
+
             {error && <div className="mb-4 p-4 bg-red-50 text-red-700 border border-red-200 rounded">{error}</div>}
             {success && <div className="mb-4 p-4 bg-green-50 text-green-700 border border-green-200 rounded">{success}</div>}
 
@@ -316,11 +317,11 @@ export const ManageHub = () => {
                                         </div>
                                     </div>
                                     <div className="mb-6 flex items-center">
-                                        <input 
-                                            type="checkbox" 
-                                            id="new_user_admin" 
-                                            checked={newUserIsAdmin} 
-                                            onChange={e => setNewUserIsAdmin(e.target.checked)} 
+                                        <input
+                                            type="checkbox"
+                                            id="new_user_admin"
+                                            checked={newUserIsAdmin}
+                                            onChange={e => setNewUserIsAdmin(e.target.checked)}
                                             className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                                         />
                                         <label htmlFor="new_user_admin" className="ml-2 block text-sm text-gray-900 font-medium">
@@ -333,15 +334,15 @@ export const ManageHub = () => {
 
                             <div className="flex justify-between items-center mb-4">
                                 <h3 className="text-xl font-bold">All Users</h3>
-                                <input 
-                                    type="text" 
-                                    placeholder="Search users..." 
-                                    value={userSearchTerm} 
-                                    onChange={e => setUserSearchTerm(e.target.value)} 
+                                <input
+                                    type="text"
+                                    placeholder="Search users..."
+                                    value={userSearchTerm}
+                                    onChange={e => setUserSearchTerm(e.target.value)}
                                     className="p-2 border border-gray-400 rounded-md bg-white w-64 shadow-sm"
                                 />
                             </div>
-                            
+
                             <div className="overflow-x-auto">
                                 <table className="min-w-full bg-white border">
                                     <thead>
@@ -362,9 +363,9 @@ export const ManageHub = () => {
                                                     {user.teams.length > 0 ? user.teams.map(t => teams.find(tm => tm.id === t)?.name || t).join(', ') : 'None'}
                                                 </td>
                                                 <td className="p-3 text-center">
-                                                    <input 
-                                                        type="checkbox" 
-                                                        checked={user.is_admin || false} 
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={user.is_admin || false}
                                                         onChange={() => handleToggleAdmin(user.id, user.is_admin || false)}
                                                         className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded cursor-pointer"
                                                         title="Toggle Admin Status"
@@ -387,21 +388,21 @@ export const ManageHub = () => {
                                         <h3 className="text-2xl font-bold text-red-600 mb-4">Delete User</h3>
                                         <p className="mb-4 text-gray-700">Are you sure you want to delete <strong>{userToDelete.name}</strong> ({userToDelete.email})?</p>
                                         <p className="mb-6 text-sm text-gray-500">Their uploaded datasets and projects will be preserved, but unlinked from them.</p>
-                                        
+
                                         <div className="mb-6">
                                             <label className="block text-sm font-bold text-gray-700 mb-2">Type their name <span className="text-red-600">"{userToDelete.name}"</span> to confirm:</label>
-                                            <input 
-                                                type="text" 
+                                            <input
+                                                type="text"
                                                 autoComplete="off"
-                                                value={deleteConfirmText} 
-                                                onChange={e => setDeleteConfirmText(e.target.value)} 
+                                                value={deleteConfirmText}
+                                                onChange={e => setDeleteConfirmText(e.target.value)}
                                                 className="w-full p-2 border border-gray-400 rounded-md focus:border-red-500 focus:ring-1 focus:ring-red-500 shadow-sm"
                                             />
                                         </div>
-                                        
+
                                         <div className="space-y-4">
-                                            <button 
-                                                onClick={confirmDeleteUser} 
+                                            <button
+                                                onClick={confirmDeleteUser}
                                                 disabled={deleteConfirmText !== userToDelete.name}
                                                 className={`w-full p-3 font-bold rounded ${deleteConfirmText === userToDelete.name ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
                                             >
@@ -421,7 +422,7 @@ export const ManageHub = () => {
                                     <div className="bg-white p-8 rounded-lg max-w-md w-full shadow-2xl">
                                         <h3 className="text-2xl font-bold mb-4">Change Password</h3>
                                         <p className="mb-6 text-gray-700">Set a new password for <strong>{userToChangePassword.name}</strong>.</p>
-                                        
+
                                         <form onSubmit={handleAdminChangePassword}>
                                             <div className="relative mb-4">
                                                 <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
@@ -434,7 +435,7 @@ export const ManageHub = () => {
                                                 <label className="block text-sm font-medium text-gray-700 mb-1">Repeat New Password</label>
                                                 <input type={showAdminPassword ? "text" : "password"} required autoComplete="new-password" value={adminNewPasswordRepeat} onChange={e => setAdminNewPasswordRepeat(e.target.value)} className="w-full p-2 border border-gray-400 rounded-md bg-white focus:ring-2 focus:ring-blue-500 shadow-sm pr-10" />
                                             </div>
-                                            
+
                                             <div className="space-y-4">
                                                 <button type="submit" className="w-full p-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded shadow">
                                                     Change Password
@@ -494,7 +495,7 @@ export const ManageHub = () => {
                                     <div className="bg-white p-8 rounded-lg max-w-md w-full shadow-2xl">
                                         <h3 className="text-2xl font-bold text-red-600 mb-4">Delete Team: {teamToDelete.name}</h3>
                                         <p className="mb-6 text-gray-700">How would you like to handle the projects and datasets owned by this team?</p>
-                                        
+
                                         <div className="space-y-4">
                                             <button onClick={() => confirmDeleteTeam(false)} className="w-full p-3 bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold rounded">
                                                 Preserve Data (Unlink them)
@@ -554,7 +555,7 @@ export const ManageHub = () => {
                                     </thead>
                                     <tbody>
                                         {/* Render Active Links */}
-                                        {users.flatMap(user => 
+                                        {users.flatMap(user =>
                                             user.teams.map(teamId => {
                                                 const teamName = teams.find(t => t.id === teamId)?.name || `Team #${teamId}`;
                                                 const linkData = userTeamLinks.find(l => l.user_id === user.id && l.team_id === teamId);
@@ -567,9 +568,9 @@ export const ManageHub = () => {
                                                             <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-bold rounded-full">ACTIVE</span>
                                                         </td>
                                                         <td className="p-3 text-center">
-                                                            <input 
-                                                                type="checkbox" 
-                                                                checked={isTeamAdmin} 
+                                                            <input
+                                                                type="checkbox"
+                                                                checked={isTeamAdmin}
                                                                 onChange={() => handleToggleTeamAdmin(user.id, teamId, isTeamAdmin)}
                                                                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded cursor-pointer"
                                                                 title="Toggle Team Admin Status"
@@ -618,7 +619,7 @@ export const ManageHub = () => {
                             let valB = b[enquiriesSortField] || '';
                             if (typeof valA === 'string') valA = valA.toLowerCase();
                             if (typeof valB === 'string') valB = valB.toLowerCase();
-                            
+
                             if (valA < valB) return enquiriesSortOrder === 'asc' ? -1 : 1;
                             if (valA > valB) return enquiriesSortOrder === 'asc' ? 1 : -1;
                             return 0;
@@ -640,118 +641,118 @@ export const ManageHub = () => {
                         const currentEnquiries = sortedEnquiries.slice(startIndex, startIndex + itemsPerPage);
 
                         return (
-                        <div>
-                            <h3 className="text-xl font-bold mb-4">All Notifications (Enquiries)</h3>
-                            <div className="border border-gray-200 rounded-lg overflow-hidden">
-                                <div className="max-h-[600px] overflow-y-auto overflow-x-auto">
-                                    <table className="min-w-full bg-white relative">
-                                        <thead className="bg-gray-100 text-left sticky top-0 z-10 shadow-sm">
-                                            <tr>
-                                                <th className="p-3 cursor-pointer hover:bg-gray-200" onClick={() => handleSort('created_at')}>
-                                                    Timestamp {enquiriesSortField === 'created_at' && (enquiriesSortOrder === 'asc' ? '↑' : '↓')}
-                                                </th>
-                                                <th className="p-3 cursor-pointer hover:bg-gray-200" onClick={() => handleSort('team_name')}>
-                                                    Team {enquiriesSortField === 'team_name' && (enquiriesSortOrder === 'asc' ? '↑' : '↓')}
-                                                </th>
-                                                <th className="p-3 cursor-pointer hover:bg-gray-200" onClick={() => handleSort('dataset_name')}>
-                                                    Dataset {enquiriesSortField === 'dataset_name' && (enquiriesSortOrder === 'asc' ? '↑' : '↓')}
-                                                </th>
-                                                <th className="p-3 cursor-pointer hover:bg-gray-200" onClick={() => handleSort('applicant_name')}>
-                                                    Applicant Name {enquiriesSortField === 'applicant_name' && (enquiriesSortOrder === 'asc' ? '↑' : '↓')}
-                                                </th>
-                                                <th className="p-3">Institute</th>
-                                                <th className="p-3">Email</th>
-                                                <th className="p-3">Enquiry</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {currentEnquiries.map(enq => (
-                                                <tr key={enq.id} className="border-b hover:bg-gray-50 align-top">
-                                                    <td className="p-3 text-sm text-gray-500 whitespace-nowrap">{new Date(enq.created_at).toLocaleString()}</td>
-                                                    <td className="p-3 font-medium text-[var(--cruk-darkblue)]">{enq.team_name}</td>
-                                                    <td className="p-3 font-medium text-gray-800">{enq.dataset_name || 'N/A'}</td>
-                                                    <td className="p-3">{enq.applicant_name}</td>
-                                                    <td className="p-3 text-sm">{enq.applicant_organisation}</td>
-                                                    <td className="p-3 text-sm text-gray-600"><a href={`mailto:${enq.applicant_email}`}>{enq.applicant_email}</a></td>
-                                                    <td className="p-3 text-sm">
-                                                        {enq.enquiry_text.length > 100 ? (
-                                                            <>
-                                                                {enq.enquiry_text.substring(0, 100)}...
-                                                                <button 
-                                                                    className="block text-blue-600 hover:underline text-xs mt-1 font-medium"
-                                                                    onClick={() => setViewEnquiry(enq)}
-                                                                >
-                                                                    View Full Enquiry
-                                                                </button>
-                                                            </>
-                                                        ) : (
-                                                            enq.enquiry_text
-                                                        )}
-                                                    </td>
+                            <div>
+                                <h3 className="text-xl font-bold mb-4">All Notifications (Enquiries)</h3>
+                                <div className="border border-gray-200 rounded-lg overflow-hidden">
+                                    <div className="max-h-[600px] overflow-y-auto overflow-x-auto">
+                                        <table className="min-w-full bg-white relative">
+                                            <thead className="bg-gray-100 text-left sticky top-0 z-10 shadow-sm">
+                                                <tr>
+                                                    <th className="p-3 cursor-pointer hover:bg-gray-200" onClick={() => handleSort('created_at')}>
+                                                        Timestamp {enquiriesSortField === 'created_at' && (enquiriesSortOrder === 'asc' ? '↑' : '↓')}
+                                                    </th>
+                                                    <th className="p-3 cursor-pointer hover:bg-gray-200" onClick={() => handleSort('team_name')}>
+                                                        Team {enquiriesSortField === 'team_name' && (enquiriesSortOrder === 'asc' ? '↑' : '↓')}
+                                                    </th>
+                                                    <th className="p-3 cursor-pointer hover:bg-gray-200" onClick={() => handleSort('dataset_name')}>
+                                                        Dataset {enquiriesSortField === 'dataset_name' && (enquiriesSortOrder === 'asc' ? '↑' : '↓')}
+                                                    </th>
+                                                    <th className="p-3 cursor-pointer hover:bg-gray-200" onClick={() => handleSort('applicant_name')}>
+                                                        Applicant Name {enquiriesSortField === 'applicant_name' && (enquiriesSortOrder === 'asc' ? '↑' : '↓')}
+                                                    </th>
+                                                    <th className="p-3">Institute</th>
+                                                    <th className="p-3">Email</th>
+                                                    <th className="p-3">Enquiry</th>
                                                 </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                    {enquiries.length === 0 && <p className="p-4 text-center text-gray-500">No notifications found.</p>}
-                                </div>
-                            </div>
-                            
-                            {/* Pagination Controls */}
-                            {totalPages > 1 && (
-                                <div className="flex justify-between items-center mt-4 px-2">
-                                    <div className="text-sm text-gray-500">
-                                        Showing {startIndex + 1} to {Math.min(startIndex + itemsPerPage, sortedEnquiries.length)} of {sortedEnquiries.length} entries
+                                            </thead>
+                                            <tbody>
+                                                {currentEnquiries.map(enq => (
+                                                    <tr key={enq.id} className="border-b hover:bg-gray-50 align-top">
+                                                        <td className="p-3 text-sm text-gray-500 whitespace-nowrap">{new Date(enq.created_at).toLocaleString()}</td>
+                                                        <td className="p-3 font-medium text-[var(--cruk-darkblue)]">{enq.team_name}</td>
+                                                        <td className="p-3 font-medium text-gray-800">{enq.dataset_name || 'N/A'}</td>
+                                                        <td className="p-3">{enq.applicant_name}</td>
+                                                        <td className="p-3 text-sm">{enq.applicant_organisation}</td>
+                                                        <td className="p-3 text-sm text-gray-600"><a href={`mailto:${enq.applicant_email}`}>{enq.applicant_email}</a></td>
+                                                        <td className="p-3 text-sm">
+                                                            {enq.enquiry_text.length > 100 ? (
+                                                                <>
+                                                                    {enq.enquiry_text.substring(0, 100)}...
+                                                                    <button
+                                                                        className="block text-blue-600 hover:underline text-xs mt-1 font-medium"
+                                                                        onClick={() => setViewEnquiry(enq)}
+                                                                    >
+                                                                        View Full Enquiry
+                                                                    </button>
+                                                                </>
+                                                            ) : (
+                                                                enq.enquiry_text
+                                                            )}
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                        {enquiries.length === 0 && <p className="p-4 text-center text-gray-500">No notifications found.</p>}
                                     </div>
-                                    <div className="flex space-x-2">
-                                        <button 
-                                            onClick={() => setEnquiriesCurrentPage(prev => Math.max(prev - 1, 1))}
-                                            disabled={enquiriesCurrentPage === 1}
-                                            className={`px-3 py-1 rounded ${enquiriesCurrentPage === 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}`}
-                                        >
-                                            Previous
-                                        </button>
-                                        <div className="px-3 py-1 bg-blue-50 text-blue-700 font-medium rounded">
-                                            Page {enquiriesCurrentPage} of {totalPages}
-                                        </div>
-                                        <button 
-                                            onClick={() => setEnquiriesCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                                            disabled={enquiriesCurrentPage === totalPages}
-                                            className={`px-3 py-1 rounded ${enquiriesCurrentPage === totalPages ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}`}
-                                        >
-                                            Next
-                                        </button>
-                                    </div>
                                 </div>
-                            )}
-                            {/* Enquiry Details Modal */}
-                            {viewEnquiry && (
-                                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                                    <div className="bg-white p-6 rounded-lg max-w-2xl w-full shadow-2xl flex flex-col max-h-[90vh]">
-                                        <div className="flex justify-between items-start mb-4 border-b pb-4">
-                                            <div>
-                                                <h3 className="text-xl font-bold text-gray-800">Enquiry Details</h3>
-                                                <p className="text-sm text-gray-500 mt-1">From: {viewEnquiry.applicant_name} ({viewEnquiry.applicant_organisation})</p>
-                                                <p className="text-sm text-gray-500">Dataset: {viewEnquiry.dataset_name || 'N/A'}</p>
-                                            </div>
-                                            <button onClick={() => setViewEnquiry(null)} className="text-gray-400 hover:text-gray-600 font-bold text-xl">&times;</button>
+
+                                {/* Pagination Controls */}
+                                {totalPages > 1 && (
+                                    <div className="flex justify-between items-center mt-4 px-2">
+                                        <div className="text-sm text-gray-500">
+                                            Showing {startIndex + 1} to {Math.min(startIndex + itemsPerPage, sortedEnquiries.length)} of {sortedEnquiries.length} entries
                                         </div>
-                                        <div className="flex-1 overflow-y-auto pr-2">
-                                            <div className="bg-gray-50 p-4 rounded border border-gray-100 text-gray-700 whitespace-pre-wrap">
-                                                {viewEnquiry.enquiry_text}
-                                            </div>
-                                        </div>
-                                        <div className="mt-6 pt-4 border-t text-right">
-                                            <button 
-                                                onClick={() => setViewEnquiry(null)} 
-                                                className="px-6 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded"
+                                        <div className="flex space-x-2">
+                                            <button
+                                                onClick={() => setEnquiriesCurrentPage(prev => Math.max(prev - 1, 1))}
+                                                disabled={enquiriesCurrentPage === 1}
+                                                className={`px-3 py-1 rounded ${enquiriesCurrentPage === 1 ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}`}
                                             >
-                                                Close
+                                                Previous
+                                            </button>
+                                            <div className="px-3 py-1 bg-blue-50 text-blue-700 font-medium rounded">
+                                                Page {enquiriesCurrentPage} of {totalPages}
+                                            </div>
+                                            <button
+                                                onClick={() => setEnquiriesCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                                                disabled={enquiriesCurrentPage === totalPages}
+                                                className={`px-3 py-1 rounded ${enquiriesCurrentPage === totalPages ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}`}
+                                            >
+                                                Next
                                             </button>
                                         </div>
                                     </div>
-                                </div>
-                            )}
-                        </div>
+                                )}
+                                {/* Enquiry Details Modal */}
+                                {viewEnquiry && (
+                                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                                        <div className="bg-white p-6 rounded-lg max-w-2xl w-full shadow-2xl flex flex-col max-h-[90vh]">
+                                            <div className="flex justify-between items-start mb-4 border-b pb-4">
+                                                <div>
+                                                    <h3 className="text-xl font-bold text-gray-800">Enquiry Details</h3>
+                                                    <p className="text-sm text-gray-500 mt-1">From: {viewEnquiry.applicant_name} ({viewEnquiry.applicant_organisation})</p>
+                                                    <p className="text-sm text-gray-500">Dataset: {viewEnquiry.dataset_name || 'N/A'}</p>
+                                                </div>
+                                                <button onClick={() => setViewEnquiry(null)} className="text-gray-400 hover:text-gray-600 font-bold text-xl">&times;</button>
+                                            </div>
+                                            <div className="flex-1 overflow-y-auto pr-2">
+                                                <div className="bg-gray-50 p-4 rounded border border-gray-100 text-gray-700 whitespace-pre-wrap">
+                                                    {viewEnquiry.enquiry_text}
+                                                </div>
+                                            </div>
+                                            <div className="mt-6 pt-4 border-t text-right">
+                                                <button
+                                                    onClick={() => setViewEnquiry(null)}
+                                                    className="px-6 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium rounded"
+                                                >
+                                                    Close
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
                         );
                     })()}
 

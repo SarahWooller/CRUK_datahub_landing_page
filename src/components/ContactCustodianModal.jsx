@@ -16,7 +16,7 @@ export const ContactCustodianModal = ({ isOpen, onClose, teamId, teamName, datas
             const storedName = localStorage.getItem('userName');
             const storedEmail = localStorage.getItem('userEmail');
             const storedOrg = localStorage.getItem('userOrg');
-            
+
             if (storedName && storedEmail) {
                 setUser({
                     name: storedName,
@@ -26,7 +26,7 @@ export const ContactCustodianModal = ({ isOpen, onClose, teamId, teamName, datas
             } else {
                 setUser(null);
             }
-            
+
             // Reset state
             setContactNumber('');
             setEnquiryText('');
@@ -75,7 +75,7 @@ export const ContactCustodianModal = ({ isOpen, onClose, teamId, teamName, datas
             setError("Please enter your enquiry.");
             return;
         }
-        
+
         if (!teamId) {
             setError("No team associated with this dataset. Unable to send enquiry.");
             return;
@@ -83,9 +83,10 @@ export const ContactCustodianModal = ({ isOpen, onClose, teamId, teamName, datas
 
         setIsSubmitting(true);
         const token = localStorage.getItem('token');
+        const MIDDLELAYER_URL = import.meta.env.VITE_MIDDLELAYER_URL || "http://localhost:8002";
 
         try {
-            const response = await fetch(`${API_BASE_URL}/teams/${teamId}/enquiries`, {
+            const response = await fetch(`${MIDDLELAYER_URL}/teams/${teamId}/enquiries`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -95,7 +96,10 @@ export const ContactCustodianModal = ({ isOpen, onClose, teamId, teamName, datas
                     contact_number: contactNumber || null,
                     dataset_name: datasetName || null,
                     enquiry_text: enquiryText,
-                    consent_given: consentGiven
+                    consent_given: consentGiven,
+                    applicant_name: user?.name,
+                    applicant_email: user?.email,
+                    applicant_organisation: user?.applicant_organisation
                 })
             });
 
@@ -119,13 +123,13 @@ export const ContactCustodianModal = ({ isOpen, onClose, teamId, teamName, datas
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 px-4 py-6 overflow-y-auto">
             <div className="bg-white rounded-lg p-8 max-w-3xl w-full shadow-2xl relative my-auto">
-                <button 
+                <button
                     onClick={onClose}
                     className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors text-xl font-bold"
                 >
                     &times;
                 </button>
-                
+
                 <h2 className="text-2xl font-bold text-gray-800 mb-2">{teamName}</h2>
                 <p className="text-sm text-gray-600 mb-6">
                     Send a general enquiry regarding <strong>{datasetName || 'this dataset'}</strong>. You will receive an email copy of the enquiry sent. The Data Custodian will reply via email to your preferred email address, with a copy shared with the CRUK metadata catalogue.
@@ -137,7 +141,7 @@ export const ContactCustodianModal = ({ isOpen, onClose, teamId, teamName, datas
                     </div>
                 ) : (
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        
+
                         {error && (
                             <div className="bg-red-50 border border-red-200 text-red-700 p-3 rounded text-sm">
                                 {error}
@@ -147,10 +151,10 @@ export const ContactCustodianModal = ({ isOpen, onClose, teamId, teamName, datas
                         <div>
                             <label className="block text-sm font-semibold text-gray-700">Name <span className="text-red-500">*</span></label>
                             <p className="text-xs text-gray-500 mb-1">This is automatically filled from your profile and cannot be changed in this form.</p>
-                            <input 
-                                type="text" 
-                                value={user.name || ''} 
-                                disabled 
+                            <input
+                                type="text"
+                                value={user.name || ''}
+                                disabled
                                 className="w-full border border-gray-200 rounded p-2 bg-gray-100 text-gray-600 cursor-not-allowed"
                             />
                         </div>
@@ -158,28 +162,28 @@ export const ContactCustodianModal = ({ isOpen, onClose, teamId, teamName, datas
                         <div>
                             <label className="block text-sm font-semibold text-gray-700">Applicant organisation <span className="text-red-500">*</span></label>
                             <p className="text-xs text-gray-500 mb-1">This is automatically filled from your profile and cannot be changed in this form.</p>
-                            <input 
-                                type="text" 
-                                value={user.applicant_organisation || 'University of Sussex'} 
-                                disabled 
+                            <input
+                                type="text"
+                                value={user.applicant_organisation || 'University of Sussex'}
+                                disabled
                                 className="w-full border border-gray-200 rounded p-2 bg-gray-100 text-gray-600 cursor-not-allowed"
                             />
                         </div>
 
                         <div>
                             <label className="block text-sm font-semibold text-gray-700">Email <span className="text-red-500">*</span></label>
-                            <input 
-                                type="text" 
-                                value={user.email || ''} 
-                                disabled 
+                            <input
+                                type="text"
+                                value={user.email || ''}
+                                disabled
                                 className="w-full border border-gray-200 rounded p-2 bg-gray-100 text-gray-600 cursor-not-allowed"
                             />
                         </div>
 
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-1">Contact number (optional)</label>
-                            <input 
-                                type="text" 
+                            <input
+                                type="text"
                                 value={contactNumber}
                                 onChange={(e) => setContactNumber(e.target.value)}
                                 className="w-full border border-gray-300 rounded p-2 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none"
@@ -189,7 +193,7 @@ export const ContactCustodianModal = ({ isOpen, onClose, teamId, teamName, datas
                         <div>
                             <label className="block text-sm font-semibold text-gray-700 mb-1">Your enquiry <span className="text-red-500">*</span></label>
                             <div className="relative">
-                                <textarea 
+                                <textarea
                                     rows="5"
                                     maxLength="1500"
                                     value={enquiryText}
@@ -203,9 +207,9 @@ export const ContactCustodianModal = ({ isOpen, onClose, teamId, teamName, datas
                         </div>
 
                         <div className="pt-4 border-t border-gray-200 flex items-start">
-                            <input 
-                                type="checkbox" 
-                                id="consent" 
+                            <input
+                                type="checkbox"
+                                id="consent"
                                 checked={consentGiven}
                                 onChange={(e) => setConsentGiven(e.target.checked)}
                                 className="mt-1 mr-3 h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500"
@@ -216,7 +220,7 @@ export const ContactCustodianModal = ({ isOpen, onClose, teamId, teamName, datas
                         </div>
 
                         <div className="flex justify-end pt-2">
-                            <button 
+                            <button
                                 type="submit"
                                 disabled={isSubmitting}
                                 className={`px-6 py-2 rounded text-white font-medium ${isSubmitting ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700 transition-colors shadow'}`}
