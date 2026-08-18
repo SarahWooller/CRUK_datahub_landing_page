@@ -14,8 +14,10 @@ const PublicationCard = ({ publication }) => {
   // Extract the first sentence or first line of the abstract safely
   const getFirstLine = (text) => {
     if (!text) return "No abstract available.";
-    const match = text.match(/[^.!?]+[.!?]/);
-    return match ? match[0] : text.substring(0, 100) + "...";
+    // Replace HTML tags with a space, then collapse multiple spaces into one
+    const plainText = text.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    const match = plainText.match(/[^.!?]+[.!?]/);
+    return match ? match[0] : plainText.substring(0, 100) + "...";
   };
   console.log("found these datasets", publication.datasets);
 
@@ -92,8 +94,12 @@ const PublicationCard = ({ publication }) => {
           ABSTRACT
         </button>
 
-        <p className="pl-4 text-gray-600 leading-relaxed">
-          {isExpanded ? publication.abstract : getFirstLine(publication.abstract)}
+        <div className="pl-4 text-gray-600 leading-relaxed">
+          {isExpanded ? (
+            <div dangerouslySetInnerHTML={{ __html: publication.abstract }} />
+          ) : (
+            getFirstLine(publication.abstract)
+          )}
           {!isExpanded && publication.abstract && (
             <button
               onClick={() => setIsExpanded(true)}
@@ -102,7 +108,7 @@ const PublicationCard = ({ publication }) => {
               Read more
             </button>
           )}
-        </p>
+        </div>
       </div>
     </div>
   );
