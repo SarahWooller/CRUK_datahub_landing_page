@@ -73,10 +73,24 @@ export const ManageHub = () => {
             ]);
 
             if (usersRes.ok) setUsers(await usersRes.json());
-            if (teamsRes.ok) setTeams(await teamsRes.json());
+            
+            let fetchedTeams = [];
+            if (teamsRes.ok) {
+                fetchedTeams = await teamsRes.json();
+                setTeams(fetchedTeams);
+            }
+            
             if (invRes.ok) setInvitations(await invRes.json());
             if (linksRes.ok) setUserTeamLinks(await linksRes.json());
-            if (enqRes.ok) setEnquiries(await enqRes.json());
+            
+            if (enqRes.ok) {
+                const enqData = await enqRes.json();
+                const enqWithTeams = enqData.map(enq => ({
+                    ...enq,
+                    team_name: fetchedTeams.find(t => t.id === enq.team_id)?.name || `Team ${enq.team_id}`
+                }));
+                setEnquiries(enqWithTeams);
+            }
         } catch (err) {
             setError('Failed to fetch data');
         } finally {
