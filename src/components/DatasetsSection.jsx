@@ -243,20 +243,30 @@ export const DatasetsSection = ({ custodianFilter }) => {
                         <table className="datasets-table">
                             <thead>
                                 <tr>
-                                    <th onClick={() => handleSort('leadResearcher')}>
-                                        Lead Researcher <span className="sort-indicator">{getSortIndicator('leadResearcher')}</span>
+                                    <th>
+                                        <button className="w-full text-left font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 rounded" onClick={() => handleSort('leadResearcher')}>
+                                            Lead Researcher <span className="sort-indicator">{getSortIndicator('leadResearcher')}</span>
+                                        </button>
                                     </th>
-                                    <th onClick={() => handleSort('popSize')}>
-                                        Pop. Size <span className="sort-indicator">{getSortIndicator('popSize')}</span>
+                                    <th>
+                                        <button className="w-full text-left font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 rounded" onClick={() => handleSort('popSize')}>
+                                            Pop. Size <span className="sort-indicator">{getSortIndicator('popSize')}</span>
+                                        </button>
                                     </th>
-                                    <th onClick={() => handleSort('accessibility')}>
-                                        Accessibility <span className="sort-indicator">{getSortIndicator('accessibility')}</span>
+                                    <th>
+                                        <button className="w-full text-left font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 rounded" onClick={() => handleSort('accessibility')}>
+                                            Accessibility <span className="sort-indicator">{getSortIndicator('accessibility')}</span>
+                                        </button>
                                     </th>
-                                    <th onClick={() => handleSort('nonCommercialUseOnly')}>
-                                        Non-Commercial Use Only <span className="sort-indicator">{getSortIndicator('nonCommercialUseOnly')}</span>
+                                    <th>
+                                        <button className="w-full text-left font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 rounded" onClick={() => handleSort('nonCommercialUseOnly')}>
+                                            Non-Commercial Use Only <span className="sort-indicator">{getSortIndicator('nonCommercialUseOnly')}</span>
+                                        </button>
                                     </th>
-                                    <th onClick={() => handleSort('dataRange')}>
-                                        Data Range <span className="sort-indicator">{getSortIndicator('dataRange')}</span>
+                                    <th>
+                                        <button className="w-full text-left font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 rounded" onClick={() => handleSort('dataRange')}>
+                                            Data Range <span className="sort-indicator">{getSortIndicator('dataRange')}</span>
+                                        </button>
                                     </th>
                                 </tr>
                             </thead>

@@ -13,11 +13,12 @@ export default function ToolFilters({
 
       {/* Tool Search Field */}
       <div className="mb-6">
-        <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">
+        <label htmlFor="searchTools" className="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">
           Search Tools
         </label>
         <div className="relative">
           <input
+            id="searchTools"
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -27,6 +28,7 @@ export default function ToolFilters({
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
+              aria-label="Clear tool search"
               className="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-600 text-xs"
             >
               ✕
@@ -37,11 +39,12 @@ export default function ToolFilters({
 
       {/* Dataset Search Field */}
       <div className="mb-6">
-        <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">
+        <label htmlFor="searchLinkedDatasets" className="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">
           Search Linked Datasets
         </label>
         <div className="relative">
           <input
+            id="searchLinkedDatasets"
             type="text"
             value={datasetSearchQuery}
             onChange={(e) => setDatasetSearchQuery(e.target.value)}
@@ -51,6 +54,7 @@ export default function ToolFilters({
           {datasetSearchQuery && (
             <button
               onClick={() => setDatasetSearchQuery('')}
+              aria-label="Clear dataset search"
               className="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-600 text-xs"
             >
               ✕
@@ -61,11 +65,12 @@ export default function ToolFilters({
 
       {/* Project Search Field */}
       <div className="mb-6">
-        <label className="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">
+        <label htmlFor="searchLinkedProjects" className="block text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2">
           Search Linked Projects
         </label>
         <div className="relative">
           <input
+            id="searchLinkedProjects"
             type="text"
             value={projectSearchQuery}
             onChange={(e) => setProjectSearchQuery(e.target.value)}
@@ -75,6 +80,7 @@ export default function ToolFilters({
           {projectSearchQuery && (
             <button
               onClick={() => setProjectSearchQuery('')}
+              aria-label="Clear project search"
               className="absolute right-2.5 top-2.5 text-gray-400 hover:text-gray-600 text-xs"
             >
               ✕

@@ -2,7 +2,7 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import FeedbackModal from './FeedbackModal.jsx';
 import FeedbackFallback from './FeedbackFallback.jsx';
-import { useFeedback } from '../hooks/useFeedback.js';
+import { useFeedback } from '../hooks/useFeedback';
 import viewQuestions from '../feedback/searchpage.json'; // Or create a new questions file for this page
 
 export const FeedbackWidget = () => {

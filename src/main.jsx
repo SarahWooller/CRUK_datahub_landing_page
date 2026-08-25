@@ -53,7 +53,7 @@ const App = () => {
     <div style={containerStyle}>
 
       <div style={contentStyle}>
-        <h2 style={{ color: '#00007a', marginTop: 0 }}>CRUK Datahub Navigation</h2>
+        <h1 style={{ color: '#00007a', marginTop: 0 }}>CRUK Datahub Navigation</h1>
         <p>The most up to date pages are as follows</p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
           <p>
