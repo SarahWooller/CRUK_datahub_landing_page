@@ -1,113 +1,67 @@
-This project is a series of pages to inform the design of the new CRUK pilot metadata hub.
-It is built in react and run using npm/vite.
-The most uptodate version can be viewed on my github.io pages
-http://sarahwooller.github.io/CRUK_datahub_landing_page
+# CRUK Datahub Landing Page
 
- ### Viewing and Using Locally 
-1) Install Node.js
-2) in the directory above vite initialize npm:
-`npm init -y`
-3) install vite
-`npm install vite @vitejs/plugin-react react react-dom --save-dev`
-This will install a package.json and package-lock.json which you dont need
-and a node_modules directory which you do and should be placed in the vite directory.
-4) navigate to vite
-5) Run the http://localhost:5173  using `npm run dev`
-8) To update on github I've used 
-9) run `npm run build` to build to the docs folder (specified in vite.config.js). 
-10) To check everything is running nicely before committing to github you can then head over to docs and use 
-`npx http-server`
+Welcome to the **CRUK Datahub Landing Page** frontend application. This repository contains the React-based user interface for browsing, filtering, and managing cancer research datasets, tools, and project metadata.
 
-### The Structure of the pages
-The pages are built from index.html which create a root for ./src/main.jsx to spin out links from.
+## 🌟 Key Features
 
-each of these pages takes the same form - a basic html page with identified divs and a corresponding _vite.jsx page 
-that links the html page to its corresponding components.
+- **Advanced Dataset Filtering Engine:** Features a custom, PubMed-style Boolean logic search (AND/OR, brackets) that allows researchers to build highly specific dataset queries.
+- **Hierarchical Terminology Browser:** Integrated support for exploring and filtering by major cancer classification systems, including:
+  - ICD-O (Topography & Histology)
+  - SNOMED-CT
+  - TCGA
+  - CRUK-specific terms
+- **Dataset & Tool Catalogue:** A dynamic, sortable interface for viewing research meta datasets and software tools, complete with synopses, accessibility restrictions, and structural metadata summaries.
+- **AI-Assisted Filtering:** Seamless integration with backend AI microservices to allow natural language queries to pre-filter complex dataset lists.
 
-##### Study Browser
+## 🏗 Architecture Overview
 
-alt_studies.html
--    alt_studies_vite.jsx
-  - import { Introduction } from './components/Introduction.jsx' 
-  - import { FilterApp } from './components/HorFilterApp.jsx' 
-    - import { filterDetailsMap, filterData } from '../utils/filter-setup'; 
-      - import { filterData } from './longer_filter_data.js';
-    - import { filterType, includeParents, plusParents, getMessage, calculateLogicMessage
-        } from '../utils/logic-utils'; 
-      - import { filterDetailsMap } from './filter-setup.js';
-        - import { filterData } from './longer_filter_data.js';
-    - import { executeFilterLogic } from '../utils/filterLogic.js'; 
-      - import { filterData } from './longer_filter_data.js'; 
-      - import { studyData } from './mock_study_data.js';
-    - import "../styles/style.css"
-  - import { Header } from './components/Header.jsx' 
-    - import "../styles/style.css"
-  - import { StudiesSection } from './components/AltStudiesSection.jsx'
+The application is built as a modern Multi-Page Application (MPA) prioritizing fast client-side interactions and modular design. Rather than relying on a single entry point, the frontend uses Vite's multi-page capabilities to serve distinct HTML files for different sections of the platform, each mounting their respective React component trees.
 
-###### Page for uploading data
+### Frontend Tech Stack
+- **Framework:** React.js
+- **Build Tool:** Vite (configured for multiple HTML entry points and optimized production bundles)
+- **Styling:** Tailwind CSS combined with custom CSS variables (e.g., CRUK brand colors) for a responsive, accessible, and visually distinct interface.
+- **Routing:** Handled via distinct HTML files (e.g., `/datasets.html`, `/upload.html`) rather than a purely client-side React router.
 
-- upload.html
-  - upload_vite.jsx
-    - import SchemaPage from './components/SchemaPage2.jsx'; 
-      - import schema from '../utils/schema.json';
-      - import DataTagger, { FilterChipArea } from './DataTagger';
-        - import { filterDetailsMap, filterData } from '../utils/filter-setup';
-          - import { filterData } from './longer_filter_data.js';
-        - import "../styles/style.css"
-      - import JsonUpload from './JsonUpload'; 
-      - import UploadTopBar from './UploadTopBar'; 
-      - import { filterData } from '../utils/filter-setup';
-        - import exampleData from '../utils/example_for_download.json';
+### Core Subsystems
 
-    - import { Header } from './components/Header.jsx'
-      - import "../styles/style.css"
+1. **Client-Side Query Evaluator (`src/utils/filterLogic.js`)**
+   - The application does not rely purely on backend SQL for search. Instead, it converts visual filter selections into Boolean prefix expressions, dynamically generating and evaluating JavaScript `Set` operations in the browser for instant, offline-capable filtering across thousands of records.
 
-##### Page for displaying data
+2. **Terminology Data Layer (`src/utils/longer_filter_data.js`)**
+   - Employs a local hierarchical JSON structure for the taxonomy tree. This is processed on initialization into a flattened, `O(1)` lookup map for high-performance rendering of the nested filter UI.
 
-- meta.html
-  - meta_vite.jsx
-    - import mammogramData from '../utils/mammogram.json'; 
-    - import animalIcon from '../assets/animal.webp';
-    - import backgroundIcon from '../assets/background.webp';
-    - import biobankIcon from '../assets/biobank.webp';
-    - import invitroIcon from '../assets/invitro.webp';
-    - import longitudinalIcon from '../assets/longitudinal.webp';
-    - import treatmentsIcon from '../assets/treatments.webp';
-    - import omicsIcon from '../assets/omics.webp';
-    - import imagingIcon from '../assets/medical_imaging.webp';
-    - import labResultsIcon from '../assets/lab_results.webp';
-    - import erdImage from '../assets/erd.png';
+3. **Backend Connectivity**
+   - Designed to run alongside a Python-based middleware (`middle/`) and AI microservice architecture (`ai/`).
+   - Fetches live metadata and handles data access requests via standard REST APIs configured through `import.meta.env.VITE_BACKEND_URL`.
 
+---
 
-### Automatic Dataset Filter Injection
+## 📄 Application Pages
 
-When uploading or editing a dataset schema (e.g., in `SchemaPage.jsx`), the system automatically maps and injects relevant CRUK and TCGA terms into the `datasetFilters` array before the data is saved.
+The frontend is divided into several dedicated pages, each focusing on a specific workflow within the Datahub ecosystem:
 
-### AI Chatbot (ChatWidget)
+### Catalogues & Browsing
+- **`index.html`**: The main entry point and general landing page for the hub.
+- **`datasets.html`**: The primary data catalogue featuring the advanced terminology search, Boolean filtering, and dataset listings.
+- **`tools.html`**: A dedicated catalogue for browsing registered software tools and analytical pipelines.
+- **`projects.html`**: A directory for viewing ongoing or completed research projects utilizing the datahub.
+- **`publications.html`**: A listing of academic publications linked to the data, tools, or projects within the hub.
 
-The landing page features a floating AI chatbot widget (`ChatWidget.jsx`) that helps users query datasets and projects:
-- **Persistent Memory**: The chat history is saved in `sessionStorage` so users can click on suggested datasets, navigate to new pages, and retain their chat context.
-- **Rich Formatting**: Responses are formatted using `react-markdown`.
-- **Invisible Bot Protection**: Integrates Cloudflare Turnstile to generate secure tokens and protect the backend AI from automated abuse.
-- **Action Buttons**: The AI automatically generates "View Dataset" or "View Project" buttons based on matched database records to guide the user seamlessly.
+### Metadata Viewing
+- **`meta.html`**: Detailed view page for an individual dataset's structural and descriptive metadata.
+- **`project_meta.html` / `tool.html`**: Dedicated detail pages for viewing in-depth information about specific projects and tools.
 
-**How it works:**
-1. **Extraction**: Just before saving, the frontend extracts any user-selected Topography tags (IDs starting with `"0_0_0"`) and Histology tags (IDs starting with `"0_0_1"`).
-2. **Interrogation**: If both are present, it sends a `POST` request to the backend endpoint (`/datasets/extra-terms`) containing the selected tags.
-3. **Appending**: The backend processes this and returns a `lookupMap` of corresponding CRUK and TCGA dataset filters. The frontend then dynamically merges these new extra terms into the final dataset payload.
+### Data Upload & Management
+- **`upload.html`**: The main interface for data custodians to submit new datasets into the hub.
+- **`upload_tool.html` / `upload_project.html` / `upload_publications.html`**: Specialized forms for registering tools, projects, and publications, ensuring metadata conforms to the hub's schemas.
+- **`manage_hub.html` / `dashboard.html`**: Administrative interfaces for managing submissions, users, and overall hub activity.
 
-### Boolean Filter Search System
+### User Workflows
+- **`sign_in.html`**: Authentication portal for researchers and data custodians.
+- **`team_request.html`**: Interface for users to request access to specific datasets or to form research teams.
+- **`data_custodian.html` / `data_custodians.html`**: Pages detailing the data custodians and their specific access requirements or contact procedures.
 
-The Study Browser implements a programmatic filter engine (`filterLogic.js`) that allows for complex boolean querying:
-- **Infix to Prefix**: The user's visual selections (e.g., `(Breast AND Cancer) OR Genomics`) are parsed into an infix string, which the engine converts into a recursive prefix notation string.
-- **CAUTION**: The final evaluation currently uses `eval()` to execute the constructed string. While this operates entirely client-side, the use of `eval()` is a known security vulnerability (XSS/Code Injection) that should be refactored into a safer Abstract Syntax Tree (AST) evaluator in production.
+---
 
-### Data Custodians
-
-**Data Custodian Page (`data_custodian.html`)**
-This public-facing page dynamically displays all the assets managed by a specific Data Custodian (team). It fetches the team's profile, active datasets, active projects, publications, and tools to showcase their portfolio to researchers.
-
-**Data Custodian Actions**
-Users who are members of a Data Custodian team have access to specific actions and views:
-- **Managing Assets**: When navigating to the upload page (`upload.html`), members can view and edit both their published (active) datasets and their unpublished drafts. The dropdown is automatically filtered to only show datasets belonging to their active team.
-- **Team Management**: Team administrators can view and manage their team's assets, invite new members, and review data access enquiries submitted by the public.
+*Note: This README is a high-level overview. If you need deeper technical details on specific modules (e.g., the set-evaluation engine, the AI integration, or the deployment pipeline), please refer to the specific implementation plans or request targeted documentation.*
