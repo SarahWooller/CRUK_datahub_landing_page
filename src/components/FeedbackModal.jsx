@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import Draggable from 'react-draggable';
 import { Resizable } from 're-resizable';
+import FocusLock from 'react-focus-lock';
 
 const generalCommentField = {
     id: "general_comments",
@@ -51,7 +52,8 @@ const FeedbackModal = ({ isOpen, onClose, activeSection, allFeedback, onSaveDraf
 
     return (
         <div className="fixed inset-0 z-[9999] pointer-events-none flex items-center justify-center">
-            <Draggable nodeRef={nodeRef} handle=".drag-handle" bounds="parent">
+            <FocusLock returnFocus={true}>
+                <Draggable nodeRef={nodeRef} handle=".drag-handle" bounds="parent">
                 <div ref={nodeRef} className="pointer-events-auto" style={{ position: 'absolute' }}>
                     <Resizable
                         defaultSize={{ width: 520, height: 'auto' }}
@@ -130,7 +132,8 @@ const FeedbackModal = ({ isOpen, onClose, activeSection, allFeedback, onSaveDraf
                         </form>
                     </Resizable>
                 </div>
-            </Draggable>
+                </Draggable>
+            </FocusLock>
         </div>
     );
 };

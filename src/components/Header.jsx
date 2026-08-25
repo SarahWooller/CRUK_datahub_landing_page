@@ -190,7 +190,19 @@ export const Header = () => {
                             </a>
                         </li>
                     ) : (
-                        <li className="relative">
+                        <li 
+                            className="relative"
+                            onBlur={(e) => {
+                                if (!e.currentTarget.contains(e.relatedTarget)) {
+                                    setIsDataDropdownOpen(false);
+                                }
+                            }}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Escape') {
+                                    setIsDataDropdownOpen(false);
+                                }
+                            }}
+                        >
                             <a 
                                 href="#" 
                                 className="nav-link-main font-bold text-yellow-300 flex items-center"

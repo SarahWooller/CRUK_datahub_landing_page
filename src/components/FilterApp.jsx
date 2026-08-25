@@ -95,6 +95,12 @@ const NestedFilterItem = ({ item, handleFilterChange, selectedFilters, level }) 
                     data-filter-group={primaryGroup}
                     checked={isChecked}
                     onChange={() => handleFilterChange(fullId)}
+                    onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            handleFilterChange(fullId);
+                        }
+                    }}
                 />
 
                 {/* FIX 2: Applied 'relative' and 'hover:z-20' here instead.
@@ -727,7 +733,7 @@ const CancerTypePanel = ({ handleFilterChange,
     // --- Sub-Component for a Classification Card/Button ---
     const ClassificationCard = ({ title, description, classificationKey, emoji }) => {
         const isActive = selectedClassification === classificationKey;
-        const baseClasses = "flex flex-col items-center justify-center p-6 bg-white rounded-lg shadow-md border-2 transition duration-200 cursor-pointer text-center relative";
+        const baseClasses = "flex flex-col items-center justify-center p-6 bg-white rounded-lg shadow-md border-2 transition duration-200 cursor-pointer text-center relative focus:outline-none focus:ring-4 focus:ring-[var(--cruk-pink)]/50";
         const activeClasses = 'border-[var(--cruk-pink)] ring-4 ring-[var(--cruk-pink)]/20 shadow-lg scale-[1.02]';
         const inactiveClasses = 'border-gray-200 hover:border-[var(--cruk-pink)]/50';
 
@@ -746,7 +752,8 @@ const CancerTypePanel = ({ handleFilterChange,
         }
 
         return (
-            <div
+            <button
+                type="button"
                 className={`${baseClasses} ${isActive ? activeClasses : inactiveClasses}`}
                 onClick={() => setSelectedClassification(classificationKey)}
             >
@@ -760,7 +767,7 @@ const CancerTypePanel = ({ handleFilterChange,
                         {filterCount} Selected
                     </span>
                 )}
-            </div>
+            </button>
         );
     };
 
@@ -1112,6 +1119,12 @@ const AccessibilityPanel = ({ handleFilterChange, selectedFilters, searchTerm, s
                                         data-filter-group="access"
                                         checked={isChecked}
                                         onChange={() => handleFilterChange(fullId)}
+                                        onKeyDown={(e) => {
+                                            if (e.key === 'Enter') {
+                                                e.preventDefault();
+                                                handleFilterChange(fullId);
+                                            }
+                                        }}
                                     />
                                     <label htmlFor={fullId} className="text-gray-700 select-none flex-grow cursor-pointer text-sm">
                                         {item.label} <span className="text-xs text-gray-500 ml-1">({item.count})</span>

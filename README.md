@@ -64,4 +64,24 @@ The frontend is divided into several dedicated pages, each focusing on a specifi
 
 ---
 
+## ♿ Accessibility Improvements (Completed)
+
+The application has undergone significant remediation to meet WCAG 2.1 AA standards. Key improvements include:
+
+- **Global Semantics**: All HTML entry points now include `<html lang="en">` and proper `<title>` tags for screen readers.
+- **Heading Hierarchy**: Restructured headings (e.g., ensuring `<h1>` is present and headings are strictly hierarchical) across the platform.
+- **Form Linkage & Unique IDs**: Dynamic schema forms now generate mathematically unique IDs for every field (e.g., `id="field-summary-title"`) and use explicit `<label htmlFor="...">` tags, guaranteeing reliable form-to-label association for screen readers.
+- **Accessible Toggles & Interactive Elements**: Expandable/collapsible sections (like schema nested objects or "CRUK Cancer Terms") have been converted from `<div>` to native `<button type="button">` tags. They now support full keyboard operability (Tab, Enter) and utilize `aria-expanded` attributes.
+- **ARIA Landmarks and Roles**: Added `<main>` and `<aside>` landmarks to critical pages. Tab-based navigation (like in `ManageHub.jsx`) properly implements `role="tablist"` and `role="tab"`.
+- **Focus Trapping**: Integrated `react-focus-lock` to securely trap keyboard focus within active modals (Admin Modals, Feedback), preventing keyboard users from accidentally interacting with the background page.
+- **Keyboard Operability (Dropdowns)**: Custom dropdown menus (such as "Data Custodian Actions") now correctly close on `Blur` (when tabbing away) and on `Escape` keypress, aligning with WCAG expectations.
+
+## 🔜 What Remains to be Done
+
+1. **Refactor PubMed-style Search UI**: The current search filter allows users to manually edit a free-text `textarea`. This needs to be replaced with a robust, token-based UI where users can only toggle logical operators (`AND`/`OR`) and group tokens with brackets, preventing them from modifying the underlying filter names.
+2. **Remove `eval()` Security Risk**: The `executeFilterLogic` function in `src/utils/filterLogic.js` currently relies on `eval()` to execute the query string. This must be refactored into a safe, AST-based expression evaluator or entirely replaced by the new token-based logic system.
+3. **Data Flow Propagation**: Complete the connection between the newly structured filter logic and the `DatasetsSection`, ensuring that the resulting array of filtered dataset IDs correctly propagates downward to update the displayed datasets in real-time.
+
+---
+
 *Note: This README is a high-level overview. If you need deeper technical details on specific modules (e.g., the set-evaluation engine, the AI integration, or the deployment pipeline), please refer to the specific implementation plans or request targeted documentation.*

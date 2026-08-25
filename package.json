@@ -38,6 +38,7 @@
     "re-resizable": "^6.11.2",
     "react-data-grid": "^7.0.0-beta.59",
     "react-draggable": "^4.5.0",
+    "react-focus-lock": "^2.13.7",
     "react-hook-form": "^7.71.1",
     "react-markdown": "^10.1.0",
     "react-resizable-panels": "^4.6.2",

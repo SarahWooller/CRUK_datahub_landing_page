@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ErrorLogsTab } from './ErrorLogsTab.jsx';
 import { AdminAnalyticsTab } from './AdminAnalyticsTab.jsx';
+import FocusLock from 'react-focus-lock';
 
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
@@ -385,8 +386,8 @@ export const ManageHub = () => {
                                                         title="Toggle Admin Status"
                                                     />
                                                 </td>
-                                                <td className="p-3 text-right space-x-4">
-                                                    <button onClick={() => { setUserToChangePassword(user); setAdminNewPassword(''); setAdminNewPasswordRepeat(''); setShowAdminPassword(false); }} className="text-blue-600 hover:text-blue-800 font-medium">Change Password</button>
+                                                <td className="p-3 text-right">
+                                                    <button onClick={() => { setUserToChangePassword(user); setAdminNewPassword(''); setAdminNewPasswordRepeat(''); setShowAdminPassword(false); }} className="text-blue-600 hover:text-blue-800 font-medium mr-4">Change Password</button>
                                                     <button onClick={() => { setUserToDelete(user); setDeleteConfirmText(''); }} className="text-red-600 hover:text-red-800 font-medium">Delete</button>
                                                 </td>
                                             </tr>
@@ -398,7 +399,8 @@ export const ManageHub = () => {
                             {/* DELETE USER MODAL */}
                             {userToDelete && (
                                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                                    <div className="bg-white p-8 rounded-lg max-w-md w-full shadow-2xl">
+                                    <FocusLock returnFocus={true}>
+                                        <div className="bg-white p-8 rounded-lg max-w-md w-full shadow-2xl">
                                         <h3 className="text-2xl font-bold text-red-600 mb-4">Delete User</h3>
                                         <p className="mb-4 text-gray-700">Are you sure you want to delete <strong>{userToDelete.name}</strong> ({userToDelete.email})?</p>
                                         <p className="mb-6 text-sm text-gray-500">Their uploaded datasets and projects will be preserved, but unlinked from them.</p>
@@ -427,13 +429,15 @@ export const ManageHub = () => {
                                             </button>
                                         </div>
                                     </div>
+                                    </FocusLock>
                                 </div>
                             )}
 
                             {/* CHANGE PASSWORD MODAL */}
                             {userToChangePassword && (
                                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                                    <div className="bg-white p-8 rounded-lg max-w-md w-full shadow-2xl">
+                                    <FocusLock returnFocus={true}>
+                                        <div className="bg-white p-8 rounded-lg max-w-md w-full shadow-2xl">
                                         <h3 className="text-2xl font-bold mb-4">Change Password</h3>
                                         <p className="mb-6 text-gray-700">Set a new password for <strong>{userToChangePassword.name}</strong>.</p>
 
@@ -460,6 +464,7 @@ export const ManageHub = () => {
                                             </div>
                                         </form>
                                     </div>
+                                    </FocusLock>
                                 </div>
                             )}
                         </div>
@@ -506,7 +511,8 @@ export const ManageHub = () => {
                             {/* DELETE TEAM MODAL */}
                             {teamToDelete && (
                                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                                    <div className="bg-white p-8 rounded-lg max-w-md w-full shadow-2xl">
+                                    <FocusLock returnFocus={true}>
+                                        <div className="bg-white p-8 rounded-lg max-w-md w-full shadow-2xl">
                                         <h3 className="text-2xl font-bold text-red-600 mb-4">Delete Team: {teamToDelete.name}</h3>
                                         <p className="mb-6 text-gray-700">How would you like to handle the projects and datasets owned by this team?</p>
 
@@ -522,6 +528,7 @@ export const ManageHub = () => {
                                             </button>
                                         </div>
                                     </div>
+                                    </FocusLock>
                                 </div>
                             )}
                         </div>
@@ -614,7 +621,6 @@ export const ManageHub = () => {
                                                         <span className="text-gray-400">-</span>
                                                     </td>
                                                     <td className="p-3 text-right">
-                                                        {/* Could add a 'Cancel Invite' action here in the future */}
                                                         <span className="text-gray-400 text-sm italic">No actions</span>
                                                     </td>
                                                 </tr>
@@ -741,6 +747,7 @@ export const ManageHub = () => {
                                 {/* Enquiry Details Modal */}
                                 {viewEnquiry && (
                                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                                        <FocusLock returnFocus={true}>
                                         <div className="bg-white p-6 rounded-lg max-w-2xl w-full shadow-2xl flex flex-col max-h-[90vh]">
                                             <div className="flex justify-between items-start mb-4 border-b pb-4">
                                                 <div>
@@ -764,6 +771,7 @@ export const ManageHub = () => {
                                                 </button>
                                             </div>
                                         </div>
+                                        </FocusLock>
                                     </div>
                                 )}
                             </div>
