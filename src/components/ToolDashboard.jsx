@@ -65,7 +65,7 @@ export function ToolDashboard() {
         projectSearchQuery={projectSearchQuery}
         setProjectSearchQuery={setProjectSearchQuery}
       />
-      <div className="flex-1 p-6 bg-gray-50 flex flex-col overflow-hidden">
+      <main className="flex-1 p-6 bg-gray-50 flex flex-col overflow-hidden">
         <div className="mb-4 flex justify-between items-end">
           <h1 className="text-2xl font-bold text-gray-900">Tools Directory</h1>
           <span className="text-sm text-gray-500 font-medium">
@@ -73,7 +73,7 @@ export function ToolDashboard() {
           </span>
         </div>
         <ToolList tools={filteredTools} />
-      </div>
+      </main>
     </div>
   );
 }

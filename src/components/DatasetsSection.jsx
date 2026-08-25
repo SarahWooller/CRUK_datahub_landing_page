@@ -173,8 +173,7 @@ export const DatasetsSection = ({ custodianFilter }) => {
                 .expand-collapse-btn { background: none; border: none; color: #0056b3; font-size: 1.1rem; font-weight: bold; text-decoration: underline; cursor: pointer; padding: 10px 20px; transition: color 0.2s; }
                 .expand-collapse-btn:hover { color: #003060; background-color: #eef; border-radius: 4px; }
             `}</style>
-
-            <section className="datasets-section">
+            <main className="datasets-section">
                 {aiFilterIds && (
                     <div style={{ marginBottom: '15px' }}>
                         <div className="bg-pink-100 border border-pink-300 text-pink-800 px-4 py-3 rounded-lg flex justify-between items-center shadow-sm">
@@ -312,7 +311,7 @@ export const DatasetsSection = ({ custodianFilter }) => {
                         </table>
                     )}
                 </div>
-            </section>
+            </main>
         </div>
     );
 };

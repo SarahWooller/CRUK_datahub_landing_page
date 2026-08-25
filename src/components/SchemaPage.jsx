@@ -494,11 +494,12 @@ const FrequencyGrid = ({ value, onChange, enumOptions, label }) => {
 
                     return (
                         <React.Fragment key={binLabel}>
-                            <div className="flex items-center text-gray-700 text-sm font-medium">
+                            <label htmlFor={`freq-${label}-${binLabel.replace(/\s+/g, '-')}`} className="flex items-center text-gray-700 text-sm font-medium">
                                 {binLabel}
-                            </div>
+                            </label>
                             <div>
                                 <input
+                                    id={`freq-${label}-${binLabel.replace(/\s+/g, '-')}`}
                                     type="number"
                                     min="0"
                                     placeholder="0"
@@ -653,8 +654,10 @@ const FieldRenderer = ({
 
         return (
             <div className="mb-10 bg-gray-50 p-4 rounded-lg border border-gray-200">
-                <div
-                    className="mb-4 flex justify-between items-center cursor-pointer select-none"
+                <button
+                    type="button"
+                    aria-expanded={isExpanded}
+                    className="w-full mb-4 flex justify-between items-center cursor-pointer select-none bg-transparent border-none p-0 text-left focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
                     onClick={() => setIsExpanded(!isExpanded)}
                 >
                     <div>
@@ -668,7 +671,7 @@ const FieldRenderer = ({
                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
                         )}
                     </div>
-                </div>
+                </button>
 
                 {isExpanded && (
                     <div className="space-y-4">
@@ -735,8 +738,10 @@ const FieldRenderer = ({
     if (fieldDef.type === 'object' && fieldDef.properties && !isArray) {
         return (
             <div className={`border-l-2 border-indigo-200 pl-4 mb-6 ${level > 0 ? 'mt-4' : ''}`}>
-                <div
-                    className="flex justify-between items-center cursor-pointer mb-4 select-none group"
+                <button
+                    type="button"
+                    aria-expanded={isExpanded}
+                    className="w-full flex justify-between items-center cursor-pointer mb-4 select-none group bg-transparent border-none p-0 text-left focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
                     onClick={() => setIsExpanded(!isExpanded)}
                 >
                     <h3 className="text-md font-bold text-gray-700 group-hover:text-indigo-600 transition-colors">
@@ -749,7 +754,7 @@ const FieldRenderer = ({
                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path></svg>
                         )}
                     </div>
-                </div>
+                </button>
 
                 {isExpanded && (
                     <div className="space-y-2">
@@ -827,9 +832,11 @@ const FieldRenderer = ({
         }
     };
 
+    const fieldId = `field-${path.join('-')}`;
+
     return (
         <div className={`bg-white p-4 rounded-lg shadow-sm border border-gray-100 mb-4 ${level > 0 ? 'ml-0' : ''}`}>
-            <label className="block text-sm font-bold text-gray-700 mb-1">
+            <label htmlFor={fieldId} className="block text-sm font-bold text-gray-700 mb-1">
                 {prop.title || propKey} {isRequired && <span className="text-red-500">*</span>}
             </label>
             <p className="text-base text-gray-500 mb-4">{prop.description}</p>
@@ -864,6 +871,7 @@ const FieldRenderer = ({
                 </div>
             ) : inputType === 'select-single' ? (
                 <select
+                    id={fieldId}
                     className="w-full p-2 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500"
                     onFocus={handleFocus}
                     value={currentValue || ''}
@@ -874,6 +882,7 @@ const FieldRenderer = ({
                 </select>
             ) : inputType === 'textarea' ? (
                 <textarea
+                    id={fieldId}
                     ref={textareaRef}
                     className="w-full p-2 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500 overflow-hidden resize-none"
                     placeholder={placeholder}
@@ -885,6 +894,7 @@ const FieldRenderer = ({
             ) : inputType === 'checkbox' ? (
                  <div className="flex items-center">
                     <button
+                        id={fieldId}
                         type="button"
                         className={`${
                             !!currentValue ? 'bg-indigo-600' : 'bg-gray-200'
@@ -910,6 +920,7 @@ const FieldRenderer = ({
                  </div>
             ) : inputType === 'file' ? (
                 <input
+                    id={fieldId}
                     type="file"
                     accept="image/*"
                     className="w-full p-2 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100"
@@ -918,6 +929,7 @@ const FieldRenderer = ({
                 />
             ) : (
                 <input
+                    id={fieldId}
                     type={inputType}
                     className="w-full p-2 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500"
                     placeholder={placeholder}

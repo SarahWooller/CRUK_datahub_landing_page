@@ -9,7 +9,7 @@ export default function ToolFilters({
   setProjectSearchQuery
 }) {
   return (
-    <div className="w-80 bg-gray-50 border-r border-gray-200 p-6 flex flex-col h-full overflow-y-auto">
+    <aside className="w-80 bg-gray-50 border-r border-gray-200 p-6 flex flex-col h-full overflow-y-auto">
 
       {/* Tool Search Field */}
       <div className="mb-6">
@@ -89,6 +89,6 @@ export default function ToolFilters({
         </div>
       </div>
 
-    </div>
+    </aside>
   );
 }

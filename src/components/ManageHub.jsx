@@ -283,20 +283,20 @@ export const ManageHub = () => {
     }
 
     return (
-        <div className="max-w-6xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md mb-20">
+        <main className="max-w-6xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md mb-20">
             <h1 className="text-3xl font-bold mb-6 text-[var(--cruk-darkblue)] border-b pb-4">Manage the Hub</h1>
 
             {error && <div className="mb-4 p-4 bg-red-50 text-red-700 border border-red-200 rounded">{error}</div>}
             {success && <div className="mb-4 p-4 bg-green-50 text-green-700 border border-green-200 rounded">{success}</div>}
 
             {/* TABS */}
-            <div className="flex border-b mb-6 overflow-x-auto">
-                <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'users' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('users')}>Users</button>
-                <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'teams' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('teams')}>Teams</button>
-                <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'links' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('links')}>User-Team Links</button>
-                <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'notifications' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('notifications')}>Notifications</button>
-                <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'errors' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('errors')}>Error Logs</button>
-                <button className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'analytics' ? 'border-b-2 border-[#E40085] text-[#E40085]' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('analytics')}>AI Analytics</button>
+            <div role="tablist" className="flex border-b mb-6 overflow-x-auto">
+                <button role="tab" aria-selected={activeTab === 'users'} className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'users' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('users')}>Users</button>
+                <button role="tab" aria-selected={activeTab === 'teams'} className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'teams' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('teams')}>Teams</button>
+                <button role="tab" aria-selected={activeTab === 'links'} className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'links' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('links')}>User-Team Links</button>
+                <button role="tab" aria-selected={activeTab === 'notifications'} className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'notifications' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('notifications')}>Notifications</button>
+                <button role="tab" aria-selected={activeTab === 'errors'} className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'errors' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('errors')}>Error Logs</button>
+                <button role="tab" aria-selected={activeTab === 'analytics'} className={`py-2 px-6 font-medium whitespace-nowrap ${activeTab === 'analytics' ? 'border-b-2 border-[#E40085] text-[#E40085]' : 'text-gray-500 hover:text-gray-700'}`} onClick={() => setActiveTab('analytics')}>AI Analytics</button>
             </div>
 
             {loading ? (
@@ -784,6 +784,6 @@ export const ManageHub = () => {
                     )}
                 </>
             )}
-        </div>
+        </main>
     );
 };
