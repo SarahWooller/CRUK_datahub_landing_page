@@ -5,7 +5,7 @@ export const ProjectsSection = () => {
     const [sortConfig, setSortConfig] = useState({ column: 'projectGrantStartDate', direction: 'desc' });
     const [grants, setGrants] = useState([]);
     const [showScope, setShowScope] = useState(true);
-    const [aiFilterIds, setAiFilterIds] = useState(null);
+    const [activeFilterIds, setActiveFilterIds] = useState(null);
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -41,11 +41,11 @@ export const ProjectsSection = () => {
     }, []);
 
     useEffect(() => {
-        const handleAiFilter = (e) => {
-            setAiFilterIds(e.detail);
+        const handleApplyFilter = (e) => {
+            setActiveFilterIds(e.detail?.tokens !== undefined ? e.detail.tokens : e.detail);
         };
-        window.addEventListener('ai-filter-datasets', handleAiFilter);
-        return () => window.removeEventListener('ai-filter-datasets', handleAiFilter);
+        window.addEventListener('apply-dataset-filters', handleApplyFilter);
+        return () => window.removeEventListener('apply-dataset-filters', handleApplyFilter);
     }, []);
 
     const filteredAndSortedGrants = useMemo(() => {
@@ -61,9 +61,9 @@ export const ProjectsSection = () => {
             );
         }
 
-        if (aiFilterIds) {
+        if (activeFilterIds) {
             currentGrants = currentGrants.filter(grant => 
-                aiFilterIds.includes(grant.pid?.toString() || grant.id?.toString())
+                activeFilterIds.includes(grant.pid?.toString() || grant.id?.toString())
             );
         }
 
@@ -77,7 +77,7 @@ export const ProjectsSection = () => {
         });
 
         return currentGrants;
-    }, [grants, searchTerm, sortConfig, aiFilterIds]);
+    }, [grants, searchTerm, sortConfig, activeFilterIds]);
 
     const handleSort = (column) => {
         setSortConfig(prevConfig => ({
@@ -221,11 +221,11 @@ export const ProjectsSection = () => {
             `}</style>
 
             <div className="dashboard-container">
-                {aiFilterIds && (
-                    <div style={{ padding: '20px 30px 0 30px' }}>
+                {activeFilterIds && (
+                    <div style={{ marginBottom: '15px' }}>
                         <div className="bg-pink-100 border border-pink-300 text-pink-800 px-4 py-3 rounded-lg flex justify-between items-center shadow-sm">
-                            <span><strong>AI Filter Active:</strong> Showing {filteredAndSortedGrants.length} matching projects based on your chat question.</span>
-                            <button onClick={() => setAiFilterIds(null)} className="text-pink-800 hover:text-pink-900 font-bold hover:underline transition-colors px-2 py-1 rounded">Clear AI Filter</button>
+                            <span><strong>Filter Active:</strong> Showing {filteredAndSortedGrants.length} matching projects.</span>
+                            <button onClick={() => setActiveFilterIds(null)} className="text-pink-800 hover:text-pink-900 font-bold hover:underline transition-colors px-2 py-1 rounded">Clear Filters</button>
                         </div>
                     </div>
                 )}

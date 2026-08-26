@@ -207,21 +207,19 @@ const FilterLogicBuilder = ({
 
     return (
         <div className="p-1 mt-2 border-t border-gray-200">
-            <div className="flex justify-between items-center mb-1">
+            <div className="flex items-center space-x-3 mb-2">
+                {isMessageManuallyEdited && (
+                    <button
+                        type="button"
+                        onClick={handleReset}
+                        className="text-xs text-white bg-blue-600 hover:bg-blue-700 transition duration-150 font-bold py-1.5 px-4 rounded shadow-md whitespace-nowrap"
+                    >
+                        Reset to Auto Logic
+                    </button>
+                )}
                 <p className="text-sm text-gray-700 font-semibold">
-                    Filter Logic: Use arrow keys to navigate. Press Enter/Space on AND/OR to toggle them. Press Backspace/Delete to remove items.
+                    Default logic shown below. Click to toggle AND/OR.
                 </p>
-                <div className="flex space-x-2">
-                    {isMessageManuallyEdited && (
-                        <button
-                            type="button"
-                            onClick={handleReset}
-                            className="text-xs text-blue-600 hover:text-blue-800 transition duration-150 font-medium py-1 px-2 rounded border border-blue-300 hover:bg-blue-50"
-                        >
-                            Reset to Auto Logic
-                        </button>
-                    )}
-                </div>
             </div>
 
             <div 
@@ -309,15 +307,18 @@ const FilterLogicBuilder = ({
 
 
 // Component for the dynamic chips display
-const FilterChipArea = ({
-    selectedFilters,
+const FilterChipArea = ({ 
+    selectedFilters, 
     handleFilterChange,
     logicTokens,
     setLogicTokens,
     isMessageManuallyEdited,
     setIsMessageManuallyEdited,
     snomedOverrides,
-    logicError
+    logicError,
+    shouldPulse,
+    showAdvancedLogic,
+    setShowAdvancedLogic
 }) => {
 
     const chips = useMemo(() => {
@@ -343,7 +344,11 @@ const FilterChipArea = ({
     }, [selectedFilters, snomedOverrides]);
 
     if (chips.length === 0) {
-        return null;
+        return (
+            <div className={`bg-gray-50 border-b border-l border-r border-gray-300 p-6 rounded-b-xl text-center shadow-inner transition duration-300 ease-in-out ${shouldPulse ? 'animate-pulse' : ''}`}>
+                <span className="text-gray-500 font-medium italic">👆 Select a category above to start building your custom filter</span>
+            </div>
+        );
     }
 
     return (
@@ -373,15 +378,32 @@ const FilterChipArea = ({
                 ))}
             </div>
 
+            <div className="mt-3 flex items-center justify-center space-x-3">
+                <button
+                    onClick={() => setShowAdvancedLogic(!showAdvancedLogic)}
+                    className="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center transition duration-150"
+                >
+                    {showAdvancedLogic ? 'Hide Advanced Logic Builder' : 'Show Advanced Logic Builder'}
+                    <svg className={`w-4 h-4 ml-1 transform transition-transform duration-200 ${showAdvancedLogic ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                {!showAdvancedLogic && isMessageManuallyEdited && (
+                    <span className="text-xs text-orange-600 font-bold bg-orange-50 border border-orange-200 rounded px-2 py-0.5">(Custom Logic Active)</span>
+                )}
+            </div>
+
             {/* Now using the interactive token builder component */}
-            <FilterLogicBuilder
-                selectedFilters={selectedFilters}
-                logicTokens={logicTokens}
-                setLogicTokens={setLogicTokens}
-                isMessageManuallyEdited={isMessageManuallyEdited}
-                setIsMessageManuallyEdited={setIsMessageManuallyEdited}
-                logicError={logicError}
-            />
+            {showAdvancedLogic && (
+                <div className="mt-3 bg-slate-50 border border-slate-200 rounded-lg p-3 shadow-inner">
+                    <FilterLogicBuilder
+                        selectedFilters={selectedFilters}
+                        logicTokens={logicTokens}
+                        setLogicTokens={setLogicTokens}
+                        isMessageManuallyEdited={isMessageManuallyEdited}
+                        setIsMessageManuallyEdited={setIsMessageManuallyEdited}
+                        logicError={logicError}
+                    />
+                </div>
+            )}
         </div>
     );
 };
@@ -460,6 +482,7 @@ export const FilterApp = ({ custodianFilter }) => {
     const [filteredIds, setFilteredIds] = useState(null); // Set of IDs that match the current search
     const [isSearching, setIsSearching] = useState(false); // Flag for search status
     const [logicError, setLogicError] = React.useState(false);
+    const [showAdvancedLogic, setShowAdvancedLogic] = useState(false);
 
     // Flatten all data for efficient searching
     const allFiltersArray = useMemo(() => Array.from(filterDetailsMap.values()), []);
@@ -618,6 +641,7 @@ export const FilterApp = ({ custodianFilter }) => {
             const validationResult = executeFilterLogic(logicTokens, []);
             if (!validationResult.success) {
                 setLogicError(true);
+                setShowAdvancedLogic(true); // Auto-expand on error
                 return; // Stop execution, keep sidebar open
             }
             
@@ -668,11 +692,14 @@ const renderPanel = () => {
     };
     const getNavButtonClasses = (panelKey) => {
         const isActive = activePanel === panelKey;
+        const noFiltersSelected = counts.total === 0 && !activePanel;
         const baseClasses = "flex flex-col items-center justify-center p-3 sm:p-4 bg-white rounded-lg shadow-md border-2 transition duration-200 cursor-pointer text-center relative flex-1 mx-1 sm:mx-2 my-1 sm:my-0";
         const activeClasses = 'border-[var(--cruk-pink)] shadow-lg scale-[1.02]';
         const inactiveClasses = 'border-gray-200 hover:border-[var(--cruk-pink)]/50 hover:shadow-lg';
 
-        return `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`;
+        let finalClasses = `${baseClasses} ${isActive ? activeClasses : inactiveClasses}`;
+        if (noFiltersSelected) finalClasses += " animate-pulse ring-2 ring-[var(--cruk-pink)] ring-opacity-30";
+        return finalClasses;
     };
     const isFindStudiesDisabled = counts.total === 0;
 
@@ -695,9 +722,9 @@ return (
                                 </h2>
                                 <button
                                     onClick={() => setShowHelp(true)}
-                                    className="ml-4 px-3 py-1 font-bold text-xs text-white bg-[var(--cruk-blue)] rounded-lg shadow-sm hover:opacity-90 transition duration-150 whitespace-nowrap"
+                                    className="ml-4 px-3 py-1 font-bold text-xs text-white bg-[var(--cruk-blue)] rounded-lg shadow-sm hover:opacity-90 transition duration-150 whitespace-nowrap flex items-center"
                                 >
-                                    Help
+                                    <span className="mr-1 text-sm">❓</span> Help
                                 </button>
                             </div>
 
@@ -728,7 +755,7 @@ return (
                             </button>
                             <button
                                 onClick={handleFindStudies}
-                                className={`w-1/2 sm:w-auto bg-[var(--cruk-pink)] text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-150 ${isFindStudiesDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'}`}
+                                className={`w-1/2 sm:w-auto bg-[var(--cruk-pink)] text-white font-bold py-3 px-4 rounded-lg shadow-md transition duration-150 ${isFindStudiesDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'} ${!isFindStudiesDisabled && !logicError ? 'animate-pulse ring-4 ring-[var(--cruk-pink)] ring-opacity-50' : ''}`}
                                 disabled={isFindStudiesDisabled}
                             >
                                 Find ({counts.total})
@@ -749,6 +776,9 @@ return (
                             setIsMessageManuallyEdited={setIsMessageManuallyEdited}
                             snomedOverrides={snomedOverrides} // Add this line here
                             logicError={logicError}
+                            shouldPulse={counts.total === 0 && !activePanel}
+                            showAdvancedLogic={showAdvancedLogic}
+                            setShowAdvancedLogic={setShowAdvancedLogic}
                         />
 
                         {/* Filter Panel Content / Default Content */}
