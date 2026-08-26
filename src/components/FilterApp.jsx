@@ -1,6 +1,6 @@
 import { DatasetsSection } from './DatasetsSection.jsx';
 import { filterDetailsMap, filterData } from '../utils/filter-setup.js';
-import { filterType, includeParents, plusParents, getMessage, calculateLogicMessage
+import { filterType, includeParents, plusParents, getMessage, calculateLogicTokens
 } from '../utils/logic-utils.js';
 import { executeFilterLogic } from '../utils/filterLogic.js';
 import React from 'react'; // React is now imported from node_modules
@@ -148,70 +148,163 @@ const NestedFilterItem = ({ item, handleFilterChange, selectedFilters, level }) 
     );
 };
 
-// NEW COMPONENT: Dynamic Logic Summary with Edit/Reset functionality
-const FilterLogicSummary = ({
+// NEW COMPONENT: Interactive Token Builder UI
+const FilterLogicBuilder = ({
     selectedFilters,
-    logicMessage,
-    setLogicMessage,
+    logicTokens,
+    setLogicTokens,
     isMessageManuallyEdited,
     setIsMessageManuallyEdited,
+    logicError
 }) => {
+    const [focusedIndex, setFocusedIndex] = React.useState(null);
 
-    // Handler for user input changes in the textarea
-    const handleMessageChange = useCallback((e) => {
-        setLogicMessage(e.target.value);
-        setIsMessageManuallyEdited(true); // User has edited the message
-    }, [setLogicMessage, setIsMessageManuallyEdited]);
-
-    // Handler to reset the message to the automatically generated logic
     const handleReset = useCallback(() => {
         const filters = Array.from(selectedFilters);
-        const autoMessage = calculateLogicMessage(filters, filterType, plusParents, includeParents, getMessage);
-        setLogicMessage(autoMessage);
-        setIsMessageManuallyEdited(false); // Reset edit state
-    }, [selectedFilters, setLogicMessage, setIsMessageManuallyEdited]);
-
+        const autoTokens = calculateLogicTokens(filters);
+        setLogicTokens(autoTokens);
+        setIsMessageManuallyEdited(false);
+    }, [selectedFilters, setLogicTokens, setIsMessageManuallyEdited]);
 
     if (!selectedFilters || selectedFilters.size === 0) {
         return null;
     }
 
-    const showResetButton = isMessageManuallyEdited;
+    const toggleOperator = (index) => {
+        const newTokens = [...logicTokens];
+        if (newTokens[index].type === 'operator') {
+            newTokens[index].value = newTokens[index].value === 'AND' ? 'OR' : 'AND';
+            setLogicTokens(newTokens);
+            setIsMessageManuallyEdited(true);
+        }
+    };
 
-    // Display
+    const removeToken = (index) => {
+        const newTokens = [...logicTokens];
+        newTokens.splice(index, 1);
+        setLogicTokens(newTokens);
+        setIsMessageManuallyEdited(true);
+        if (focusedIndex === index) setFocusedIndex(null);
+    };
+
+    const handleKeyDown = (e, index, token) => {
+        if (token.type === 'operator' && (e.key === 'Enter' || e.key === ' ')) {
+            e.preventDefault();
+            toggleOperator(index);
+        } else if ((e.key === 'Backspace' || e.key === 'Delete')) {
+            e.preventDefault();
+            removeToken(index);
+        } else if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            const nextEl = document.getElementById(`token-${index + 1}`);
+            if (nextEl) nextEl.focus();
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            const prevEl = document.getElementById(`token-${index - 1}`);
+            if (prevEl) prevEl.focus();
+        }
+    };
+
     return (
         <div className="p-1 mt-2 border-t border-gray-200">
             <div className="flex justify-between items-center mb-1">
                 <p className="text-sm text-gray-700 font-semibold">
-                    Filter Logic: once you have chosen your filters you can adjust the logic below.
+                    Filter Logic: Use arrow keys to navigate. Press Enter/Space on AND/OR to toggle them. Press Backspace/Delete to remove items.
                 </p>
-                {showResetButton && (
-                    <button
-                        type="button"
-                        onClick={handleReset}
-                        className="text-xs text-blue-600 hover:text-blue-800 transition duration-150 font-medium py-1 px-2 rounded border border-blue-300 hover:bg-blue-50"
-                    >
-                        Reset to Auto Logic
-                    </button>
-                )}
+                <div className="flex space-x-2">
+                    {isMessageManuallyEdited && (
+                        <button
+                            type="button"
+                            onClick={handleReset}
+                            className="text-xs text-blue-600 hover:text-blue-800 transition duration-150 font-medium py-1 px-2 rounded border border-blue-300 hover:bg-blue-50"
+                        >
+                            Reset to Auto Logic
+                        </button>
+                    )}
+                </div>
             </div>
-            <textarea
-                id="logic-summary-message"
-                className="w-full text-xs text-gray-800 bg-gray-50 p-2 rounded break-words font-mono border border-gray-300 resize-y focus:ring-[var(--cruk-pink)] focus:border-[var(--cruk-pink)]"
-                value={logicMessage || "No filters selected"}
-                onChange={handleMessageChange}
-                rows={Math.max(2, Math.ceil((logicMessage || "No filters selected").length / 100))} // Dynamic rows
-            />
 
-            {isMessageManuallyEdited && (
-                 <p className="text-xs text-orange-600 mt-1">Note: Filter logic has been manually edited. If you need to add filters reset logic first</p>
+            <div 
+                className="flex flex-wrap items-center gap-2 p-3 bg-gray-50 border border-gray-300 rounded min-h-[60px]"
+                role="toolbar"
+                aria-label="Filter Logic Builder"
+            >
+                {logicTokens && logicTokens.map((token, idx) => {
+                    if (token.type === 'filter') {
+                        return (
+                            <button
+                                key={token.keyId || idx}
+                                id={`token-${idx}`}
+                                type="button"
+                                className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                                onKeyDown={(e) => handleKeyDown(e, idx, token)}
+                                onFocus={() => setFocusedIndex(idx)}
+                                onClick={() => document.getElementById(`token-${idx}`).focus()}
+                                aria-label={`Filter: ${token.label}`}
+                            >
+                                {token.label}
+                                <span 
+                                    className="ml-2 text-blue-400 hover:text-blue-600 font-bold"
+                                    onClick={(e) => { e.stopPropagation(); removeToken(idx); }}
+                                    aria-hidden="true"
+                                >✕</span>
+                            </button>
+                        );
+                    } else if (token.type === 'operator') {
+                        return (
+                            <button
+                                key={token.keyId || idx}
+                                id={`token-${idx}`}
+                                type="button"
+                                className={`flex items-center px-2 py-1 text-xs font-bold rounded focus:outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer ${
+                                    token.value === 'AND' ? 'bg-orange-100 text-orange-800 border-orange-200' : 'bg-red-100 text-red-800 border-red-200'
+                                }`}
+                                onFocus={() => setFocusedIndex(idx)}
+                                onKeyDown={(e) => handleKeyDown(e, idx, token)}
+                                onClick={() => toggleOperator(idx)}
+                                aria-label={`Operator: ${token.value}. Press Enter to toggle.`}
+                            >
+                                {token.value}
+                                <span 
+                                    className={`ml-2 font-bold ${token.value === 'AND' ? 'text-orange-400 hover:text-orange-600' : 'text-red-400 hover:text-red-600'}`}
+                                    onClick={(e) => { e.stopPropagation(); removeToken(idx); }}
+                                    aria-hidden="true"
+                                >✕</span>
+                            </button>
+                        );
+                    } else if (token.type === 'bracket') {
+                        return (
+                            <button
+                                key={token.keyId || idx}
+                                id={`token-${idx}`}
+                                type="button"
+                                className="flex items-center px-2 py-1 text-gray-700 text-sm font-bold bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 cursor-pointer"
+                                onKeyDown={(e) => handleKeyDown(e, idx, token)}
+                                onClick={() => document.getElementById(`token-${idx}`).focus()}
+                                aria-label={`Bracket: ${token.value}`}
+                            >
+                                {token.value}
+                                <span 
+                                    className="ml-2 text-gray-400 hover:text-gray-600 font-bold"
+                                    onClick={(e) => { e.stopPropagation(); removeToken(idx); }}
+                                    aria-hidden="true"
+                                >✕</span>
+                            </button>
+                        );
+                    }
+                    return null;
+                })}
+            </div>
+
+            {isMessageManuallyEdited && !logicError && (
+                 <p className="text-xs text-orange-600 mt-1">Note: Filter logic has been manually edited. If you need to add new filters via checkboxes, reset logic first.</p>
+            )}
+            {logicError && (
+                 <p className="text-xs font-bold text-red-600 mt-1 border border-red-200 bg-red-50 p-2 rounded">Your expression needs fixing - click Reset to Auto Logic to try again</p>
             )}
         </div>
     );
 };
-
-// Export utility functions for use in FilterApp's useEffect
-FilterLogicSummary.utilityFunctions = { filterType, plusParents, includeParents, getMessage };
 // --- END LOGIC SUMMARY COMPONENT ---
 
 
@@ -219,11 +312,12 @@ FilterLogicSummary.utilityFunctions = { filterType, plusParents, includeParents,
 const FilterChipArea = ({
     selectedFilters,
     handleFilterChange,
-    logicMessage,
-    setLogicMessage,
+    logicTokens,
+    setLogicTokens,
     isMessageManuallyEdited,
     setIsMessageManuallyEdited,
-    snomedOverrides, // Accept the new prop
+    snomedOverrides,
+    logicError
 }) => {
 
     const chips = useMemo(() => {
@@ -279,13 +373,14 @@ const FilterChipArea = ({
                 ))}
             </div>
 
-            {/* Now using the dynamic, logic-compliant summary component */}
-            <FilterLogicSummary
+            {/* Now using the interactive token builder component */}
+            <FilterLogicBuilder
                 selectedFilters={selectedFilters}
-                logicMessage={logicMessage}
-                setLogicMessage={setLogicMessage}
+                logicTokens={logicTokens}
+                setLogicTokens={setLogicTokens}
                 isMessageManuallyEdited={isMessageManuallyEdited}
                 setIsMessageManuallyEdited={setIsMessageManuallyEdited}
+                logicError={logicError}
             />
         </div>
     );
@@ -358,26 +453,26 @@ export const FilterApp = ({ custodianFilter }) => {
     const [activePanel, setActivePanel] = useState(null);
     const [selectedFilters, setSelectedFilters] = useState(new Set());
     const [snomedOverrides, setSnomedOverrides] = useState({}); // New state
-    const [logicMessage, setLogicMessage] = useState("");
+    const [logicTokens, setLogicTokens] = useState([]);
     const [isMessageManuallyEdited, setIsMessageManuallyEdited] = useState(false);
     const [showHelp, setShowHelp] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredIds, setFilteredIds] = useState(null); // Set of IDs that match the current search
     const [isSearching, setIsSearching] = useState(false); // Flag for search status
+    const [logicError, setLogicError] = React.useState(false);
 
     // Flatten all data for efficient searching
     const allFiltersArray = useMemo(() => Array.from(filterDetailsMap.values()), []);
 
-    // Reuse the filter logic utilities from FilterLogicSummary
-    const { filterType, plusParents, includeParents, getMessage } = FilterLogicSummary.utilityFunctions;
+    // Reuse the filter logic utilities
+    // Removed utilityFunctions as they are directly imported now.
 
     // EFFECT to update logicMessage when filters change (unless manually edited)
     useEffect(() => {
         // Only calculate if the user hasn't manually overridden the message
         if (!isMessageManuallyEdited) {
-            const filters = Array.from(selectedFilters);
-            const newMessage = calculateLogicMessage(filters, filterType, plusParents, includeParents, getMessage);
-            setLogicMessage(newMessage);
+            const newTokens = calculateLogicTokens(Array.from(selectedFilters));
+            setLogicTokens(newTokens);
         }
     }, [selectedFilters, isMessageManuallyEdited, filterType, plusParents, includeParents, getMessage]);
 
@@ -509,33 +604,37 @@ export const FilterApp = ({ custodianFilter }) => {
         setSelectedFilters(new Set());
         setActivePanel(null);
         setSearchTerm(''); // Clear search on filter clear
-        setLogicMessage(''); // NEW: Clear message
+        setLogicTokens([]); // NEW: Clear message
         setIsMessageManuallyEdited(false); // NEW: Reset edit state
+        setLogicError(false);
     }, []);
 
     const handleFindStudies = useCallback(() => {
         // Log the current action
-        console.log(`Executing search with ${counts.total} filters. Current logic message: ${logicMessage}`);
+        console.log(`Executing search with ${counts.total} filters. Current logic tokens length: ${logicTokens?.length}`);
 
-        // 1. Check if filters are selected
-        if (counts.total > 0 && logicMessage) {
-            // 2. Execute the filter logic from the external utility file
-            const results = executeFilterLogic(logicMessage);
-
-            // 3. You can use the results object to update UI or perform further actions
-            if (results.success) {
-                // Example: Update the total count found in the button label or display the results studies
-                console.log(`Successfully found ${results.count} studies.`);
+        if (counts.total > 0 && logicTokens && logicTokens.length > 0) {
+            // Validate syntax before applying
+            const validationResult = executeFilterLogic(logicTokens, []);
+            if (!validationResult.success) {
+                setLogicError(true);
+                return; // Stop execution, keep sidebar open
             }
+            
+            setLogicError(false); // Clear any previous error
+
+            // Dispatch the AST tokens directly to the dataset list for evaluation
+            window.dispatchEvent(new CustomEvent('apply-dataset-filters', { detail: { tokens: logicTokens } }));
         } else {
-             // Optional: Alert the user if they press Find Studies with no filters (though button is disabled)
-             console.log("No studies to find. Please select filters first.");
+             setLogicError(false);
+             // If no filters selected, dispatch event with null tokens to show all
+             window.dispatchEvent(new CustomEvent('apply-dataset-filters', { detail: { tokens: null } }));
         }
 
         // Close the panel after finding studies
         setActivePanel(null);
 
-    }, [counts.total, logicMessage]); // Dependencies remain the same
+    }, [counts.total, logicTokens]); // Dependencies remain the same
 
 
 const renderPanel = () => {
@@ -644,11 +743,12 @@ return (
                         <FilterChipArea
                             selectedFilters={selectedFilters}
                             handleFilterChange={handleFilterChange}
-                            logicMessage={logicMessage}
-                            setLogicMessage={setLogicMessage}
+                            logicTokens={logicTokens}
+                            setLogicTokens={setLogicTokens}
                             isMessageManuallyEdited={isMessageManuallyEdited}
                             setIsMessageManuallyEdited={setIsMessageManuallyEdited}
                             snomedOverrides={snomedOverrides} // Add this line here
+                            logicError={logicError}
                         />
 
                         {/* Filter Panel Content / Default Content */}

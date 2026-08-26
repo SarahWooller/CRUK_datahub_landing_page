@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { extractMetadataConstants } from '../utils/metadataUtils';
+import { executeFilterLogic } from '../utils/filterLogic.js';
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
 
@@ -22,7 +23,7 @@ export const DatasetsSection = ({ custodianFilter }) => {
     const [isDeepSearch, setIsDeepSearch] = useState(false);
     const [sortConfig, setSortConfig] = useState({ column: 'title', direction: 'asc' });
     const [showSynopsis, setShowSynopsis] = useState(true);
-    const [aiFilterIds, setAiFilterIds] = useState(null);
+    const [activeFilterTokens, setActiveFilterTokens] = useState(null);
 
     const [cart, setCart] = useState([]);
     const [favourites, setFavourites] = useState([]);
@@ -59,11 +60,12 @@ export const DatasetsSection = ({ custodianFilter }) => {
     }, []);
 
     useEffect(() => {
-        const handleAiFilter = (e) => {
-            setAiFilterIds(e.detail);
+        const handleApplyFilter = (e) => {
+            const payload = e.detail?.tokens !== undefined ? e.detail.tokens : e.detail;
+            setActiveFilterTokens(payload);
         };
-        window.addEventListener('ai-filter-datasets', handleAiFilter);
-        return () => window.removeEventListener('ai-filter-datasets', handleAiFilter);
+        window.addEventListener('apply-dataset-filters', handleApplyFilter);
+        return () => window.removeEventListener('apply-dataset-filters', handleApplyFilter);
     }, []);
 
     const toggleFavourite = (id) => {
@@ -104,10 +106,18 @@ export const DatasetsSection = ({ custodianFilter }) => {
             );
         }
 
-        if (aiFilterIds) {
-            currentDatasets = currentDatasets.filter(dataset => 
-                aiFilterIds.includes(dataset.rawData?.datasetid || dataset.id.toString())
-            );
+        if (activeFilterTokens && activeFilterTokens.length > 0) {
+            const results = executeFilterLogic(activeFilterTokens, datasets);
+            if (results.success) {
+                const matchingIds = new Set(results.studies);
+                currentDatasets = currentDatasets.filter(dataset => {
+                    const id = dataset.rawData?.datasetid || dataset.id.toString();
+                    return matchingIds.has(id);
+                });
+            } else {
+                // If parsing fails or returns no success, show none
+                currentDatasets = [];
+            }
         }
 
         currentDatasets.sort((a, b) => {
@@ -127,7 +137,7 @@ export const DatasetsSection = ({ custodianFilter }) => {
         });
 
         return currentDatasets;
-    }, [datasets, searchTerm, isDeepSearch, sortConfig, favourites, aiFilterIds]);
+    }, [datasets, searchTerm, isDeepSearch, sortConfig, favourites, custodianFilter, activeFilterTokens]);
 
     const handleSort = (column) => {
         setSortConfig(prevConfig => ({
@@ -174,11 +184,13 @@ export const DatasetsSection = ({ custodianFilter }) => {
                 .expand-collapse-btn:hover { color: #003060; background-color: #eef; border-radius: 4px; }
             `}</style>
             <main className="datasets-section">
-                {aiFilterIds && (
-                    <div style={{ marginBottom: '15px' }}>
-                        <div className="bg-pink-100 border border-pink-300 text-pink-800 px-4 py-3 rounded-lg flex justify-between items-center shadow-sm">
-                            <span><strong>AI Filter Active:</strong> Showing {filteredAndSortedDatasets.length} matching datasets based on your chat question.</span>
-                            <button onClick={() => setAiFilterIds(null)} className="text-pink-800 hover:text-pink-900 font-bold hover:underline transition-colors px-2 py-1 rounded">Clear AI Filter</button>
+                {activeFilterTokens && (
+                    <div className="mt-4 flex items-center justify-between bg-pink-50 p-2 rounded border border-pink-200">
+                        <span className="text-pink-800 text-sm font-semibold">
+                            ⚠️ Showing filtered results ({filteredAndSortedDatasets.length} studies)
+                        </span>
+                        <div className="flex items-center">
+                            <button onClick={() => setActiveFilterTokens(null)} className="text-pink-800 hover:text-pink-900 font-bold hover:underline transition-colors px-2 py-1 rounded">Clear Filters</button>
                         </div>
                     </div>
                 )}

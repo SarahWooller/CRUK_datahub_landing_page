@@ -168,8 +168,8 @@ const ChatWidget = () => {
             if (!response.ok) throw new Error("Network response was not ok");
             const data = await response.json();
             
-            if (data.matching_ids && data.matching_ids.length > 0) {
-                window.dispatchEvent(new CustomEvent('ai-filter-datasets', { detail: data.matching_ids }));
+            if (data.matching_ids) {
+                window.dispatchEvent(new CustomEvent('apply-dataset-filters', { detail: data.matching_ids }));
             }
             
             setMessages(prev => [...prev, { 

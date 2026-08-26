@@ -101,10 +101,75 @@ const calculateLogicMessage = (filters, filterType, plusParents, includeParents,
     return messages.join(" AND ");
 };
 
+const getTokenArray = (thelist, joiner) => {
+    const validIds = thelist.filter(id => filterDetailsMap.has(id));
+    if (validIds.length === 0) return [];
+    if (validIds.length === 1) {
+        return [{ type: 'filter', id: validIds[0], label: filterDetailsMap.get(validIds[0]).label }];
+    }
+    
+    const validTokens = [{ type: 'bracket', value: '(' }];
+    validIds.forEach((id, idx) => {
+        validTokens.push({ type: 'filter', id, label: filterDetailsMap.get(id).label });
+        if (idx < validIds.length - 1) validTokens.push({ type: 'operator', value: joiner });
+    });
+    validTokens.push({ type: 'bracket', value: ')' });
+    return validTokens;
+};
+
+const calculateLogicTokens = (filters) => {
+    const hist = filters.filter(f => filterType(f) === "hist");
+    const top = filters.filter(f => filterType(f) === "top"
+        || filterType(f) === "cruk"
+        || filterType(f) === "snomed"
+        || filterType(f) === "tcga");
+    const data = filters.filter(f => filterType(f) === "data");
+    const access = filters.filter(f => filterType(f) === "access");
+
+    const messageGroups = [];
+
+    const hist_plus = plusParents(hist);
+    const hist_tokens = getTokenArray(hist_plus, "OR");
+    if (hist_tokens.length > 0) messageGroups.push(hist_tokens);
+
+    const top_plus = plusParents(top);
+    const top_tokens = getTokenArray(top_plus, "OR");
+    if (top_tokens.length > 0) messageGroups.push(top_tokens);
+
+    const data_messages = data.map(d => {
+        const listWithParents = includeParents(d).filter(id => filterDetailsMap.has(id));
+        return getTokenArray(listWithParents, "OR");
+    }).filter(arr => arr.length > 0);
+
+    if (data_messages.length > 0) {
+        const combinedDataTokens = [];
+        data_messages.forEach((arr, idx) => {
+            combinedDataTokens.push(...arr);
+            if (idx < data_messages.length - 1) combinedDataTokens.push({ type: 'operator', value: 'AND' });
+        });
+        messageGroups.push(combinedDataTokens);
+    }
+
+    const access_tokens = getTokenArray(access, "OR");
+    if (access_tokens.length > 0) messageGroups.push(access_tokens);
+
+    const finalTokens = [];
+    messageGroups.forEach((group, idx) => {
+        finalTokens.push(...group);
+        if (idx < messageGroups.length - 1) {
+            finalTokens.push({ type: 'operator', value: 'AND' });
+        }
+    });
+
+    return finalTokens.map((t, idx) => ({ ...t, keyId: `token-${idx}-${Math.random().toString(36).substr(2, 9)}` }));
+};
+
 export {
     filterType,
     includeParents,
     plusParents,
     getMessage,
-    calculateLogicMessage
+    calculateLogicMessage,
+    getTokenArray,
+    calculateLogicTokens
 };
