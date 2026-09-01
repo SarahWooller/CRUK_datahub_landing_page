@@ -1,0 +1,182 @@
+{
+    "identifier": "087654b3-2c0a-4b32-9c2e-1234567890b9",
+    "gwdmVersion": "2.1",
+    "metadata": {
+        "required": {
+            "gatewayId": "087654b3-2c0a-4b32-9c2e-1234567890b9",
+            "gatewayPid": "087654b3-2c0a-4b32-9c2e-1234567890b9",
+            "issued": "2018-01-01T00:00:00Z",
+            "modified": "2024-06-01T00:00:00Z",
+            "version": "1.0.0",
+            "revisions": [
+                {
+                    "version": "1.0.0",
+                    "url": "https://mho.org/datasets/087654b3-2c0a-4b32-9c2e-1234567890b9"
+                }
+            ]
+        },
+        "summary": {
+            "abstract": "Registry data evaluating long-term cardiovascular and metabolic toxicities in survivors of platinum-treated testicular cancer.",
+            "contactPoint": "data@mho.org",
+            "keywords": "Testicular;,;Cancer;,;Survivorship;,;Toxicity;,;Platinum",
+            "controlledKeywords": null,
+            "datasetType": null,
+            "datasetSubType": null,
+            "populationSize": 3100,
+            "description": "Other data types:\n- Echocardiograms (application/dicom): Cardiac function assessments",
+            "doiName": "10.2001/data.03",
+            "shortTitle": "Testicular Germ Cell Tumor Survivorship Database",
+            "title": "Testicular Germ Cell Tumor Survivorship Database",
+            "leadResearcher": "Dr. S. Wright",
+            "leadResearchInstitute": "Andrology Research Unit",
+            "datasetAliases": null,
+            "publisher": {
+                "name": "Men's Health Oncology",
+                "gatewayId": "https://ror.org/03testicular",
+                "rorId": null
+            },
+            "inPipeline": null,
+            "funders": null
+        },
+        "coverage": {
+            "typicalAgeRange": null,
+            "spatial": null,
+            "pathway": null,
+            "followUp": null,
+            "datasetCompleteness": null
+        },
+        "provenance": {
+            "origin": null,
+            "temporal": {
+                "timeLag": "Other",
+                "accrualPeriodicity": null,
+                "startDate": null,
+                "endDate": null,
+                "distributionReleaseDate": null
+            }
+        },
+        "accessibility": {
+            "access": {
+                "deliveryLeadTime": "Other",
+                "jurisdiction": "GB-ENG",
+                "dataController": "Men's Health Oncology",
+                "dataProcessor": "Men's Health Oncology",
+                "accessRights": "https://www.mho.org/terms",
+                "accessService": "https://www.mho.org/data-access",
+                "accessRequestCost": "Varies",
+                "accessServiceCategory": null
+            },
+            "usage": {
+                "dataUseLimitation": "General research use",
+                "dataUseRequirement": "Return to database or resource",
+                "resourceCreator": {
+                    "name": "Men's Health Oncology",
+                    "gatewayId": null,
+                    "rorId": null
+                }
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingSchemes": "OTHER",
+                "conformsTo": "OTHER",
+                "languages": "en",
+                "formats": "CSV;,;JSON"
+            }
+        },
+        "linkage": {
+            "isGeneratedUsing": null,
+            "dataUses": null,
+            "isReferenceIn": null,
+            "datasetLinkage": null,
+            "associatedMedia": null,
+            "tools": null,
+            "investigations": null,
+            "syntheticDataWebLink": null,
+            "publicationAboutDataset": null,
+            "publicationUsingDataset": null
+        },
+        "observations": [
+            {
+                "observedNode": "Events",
+                "measuredValue": 15500,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count",
+                "disambiguatingDescription": null
+            }
+        ],
+        "tissuesSampleCollection": [],
+        "demographicFrequency": null,
+        "omics": null,
+        "datasetFilters": [
+            {
+                "id": "0_0_0_11_2",
+                "label": "C62 Testis",
+                "category": "C60-C63 Male genital organs",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_1_25_1",
+                "label": "9061/3 Seminoma, NOS",
+                "category": "906-909 Germ cell neoplasms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_1",
+                "label": "research specific restrictions",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": "Limited to studies of a certain research type (DUO_0000012)"
+            },
+            {
+                "id": "0_2_2_0_6",
+                "label": "Saccharomyces cerevisiae",
+                "category": "Organism",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3",
+                "label": "Patient study",
+                "category": "dataType",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_3",
+                "label": "Treatments",
+                "category": "Patient study",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_4_4_0_0",
+                "label": "Epigenomics",
+                "category": "Biological molecules (eg DNA)",
+                "primaryGroup": "data-type",
+                "description": "chemical modifications to DNA/histones"
+            }
+        ],
+        "projectGrants": [
+            {
+                "pid": "14_000",
+                "projectGrantName": "Platinum Toxicity Tracking",
+                "leadResearcher": "Dr. S. Wright",
+                "leadResearchInstitute": "Andrology Research Unit",
+                "grantNumber": "MOV-333",
+                "projectGrantStartDate": "2019-01-01",
+                "projectGrantEndDate": "2024-12-31",
+                "projectGrantScope": "Audiometry, lipid panels, and treatment records"
+            }
+        ],
+        "icons": [
+            "Survivorship",
+            "Cardiology"
+        ],
+        "erd": {
+            "image": "https://github.com/mho/schema.png",
+            "description": null
+        },
+        "structuralMetadata": null
+    }
+}
