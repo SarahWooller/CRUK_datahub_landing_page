@@ -1,0 +1,96 @@
+{
+    "id": 6,
+    "datasetid": "DS-8943844B",
+    "metadata_blob": {
+        "version": "1.0.0",
+        "summary": {
+            "title": "OCCAMS Dataset",
+            "abstract": "A clinically linked multi-omic dataset containing 500 matched tumour-normal pairs from patients with early to advanced oesophageal and junctional adenocarcinoma. Sourced from 27 UK centres, the dataset integrates longitudinal clinical data with whole-genome sequencing, bulk RNAseq, and methylation array profiles.",
+            "dataCustodian": {
+                "name": "Cancer Research Horizons",
+                "description": "Exclusive commercial rights holder"
+            },
+            "leadResearchInstitute": "CRUK Cambridge Institute",
+            "contactPoint": "joseph.day@cancer.org.uk",
+            "populationSize": 500,
+            "keywords": [
+                "Oesophageal Cancer",
+                "Multi-omics",
+                "Genomics",
+                "Transcriptomics",
+                "Methylation",
+                "ctDNA",
+                "Matched Pairs"
+            ]
+        },
+        "documentation": {
+            "description": "The OCCAMS dataset is a comprehensive, clinically linked multi-omic resource containing data from 500 patients with early to advanced oesophageal and junctional adenocarcinoma recruited across 27 UK centres. It provides longitudinal clinical tracking\u2014with up to 10 years of survival data\u2014paired with standardized whole-genome sequencing, transcriptomic, and epigenomic profiles to facilitate deep molecular and clinical research.\n\n### Dataset Overview & Demographics\n- **Geography:** Patients recruited from 27 centres across the UK.\n- **Clinical Indications:** Early to advanced oesophageal adenocarcinoma and junctional adenocarcinoma.\n- **Patient Volume:** 500 patients providing matched tumour-normal sample pairs.\n- **Sex Distribution:** 85% Male, 15% Female.\n- **Clinical Pathway Details:** Cohort reflects approximately 4,300 patients treated with standard of care, including radiotherapy, chemotherapy, endoscopic therapy, and surgery (oesophagectomy).\n\n### Curated Clinical Data Scope\n- **Baseline & Demographics:** Captures patient gender, age at diagnosis, date of diagnosis, comorbidities, TNM tumour stage (at diagnosis and pre-treatment), histology, and tumour site.\n- **Treatment & Response:** Documents treatments given, start dates, number of cycles, total dose, treatment protocol, Mandard score for tumour response, and date of surgery.\n- **Recurrence & Survival:** Tracks date and site of recurrence, and provides follow-up survival data for up to 10 years, cross-checked with the Office for National Statistics (ONS).\n- **Exposures & Family History:** Includes smoker status, medication usage, and reflux history.\n\n### Multi-Omic Profiling & Sample Types\n- **Genomics (500 pairs):** Whole genome sequencing of matched tumour-normal pairs using Illumina NGS technology. Reference samples sequenced to 30x depth and tumour samples to 50x depth. Covers variant calls, SNVs, indels, SVs, CNAs, mutational signature exposures, and tumour mutational burden (Held in VCF, BEDPE, or CSV format).\n- **Transcriptomics (300 pairs):** Bulk RNAseq sequenced via Illumina NGS. RNA reads are quantified with TPM values calculated (Held in TXT format).\n- **Epigenetics (285 pairs):** Methylation array data generated via Illumina\u2019s MethylationEPIC BeadChip technology (Held in IDAT format).\n- **ctDNA Samples:** Approximately 750 whole blood samples suitable for ctDNA analysis, with longitudinal samples available.\n- **Sample Collection:** Primary tumour resections (prioritizing pre-treatment endoscopic biopsies or post-treatment surgical resections), matched normal tissue, and germline blood samples. Collected at multiple timepoints where possible (pre-chemotherapy, at surgery, post-surgery, post-chemotherapy).\n- **Standardization:** All sequencing data is processed and managed at the CRUK Cambridge Institute using QC tools like FASTQC and Picard.\n\n### Data Access Governance & Licensing\n- **Commercial Rights:** Cancer Research Horizons (CRH) holds exclusive commercial rights to the dataset.\n- **Licensing Terms:** Access is granted on a non-exclusive basis solely for the approved purpose via time-limited licences (typically a 3-year term).\n- **IP Ownership:** Any IP generated from using the data will be owned by the company, unless used in collaboration with CRH.\n- **Access Mechanism:** Access to sequencing reads is facilitated through the European Genome-phenome Archive (EGA), while access to variants and quantification may be provided via a separate server.\n- **Application Process:** Companies must submit a data access request to CRH outlining the proposed study, intended use (technical and lay terms), required data types/subsets, and potential patient benefit. Applications are reviewed by the OCCAMS Data Access Committee.",
+            "inPipeline": "Available"
+        },
+        "otherDataTypes": [
+            {
+                "title": "Genomic Data",
+                "description": "Whole genome sequencing of matched tumour-normal pairs (VCF, BEDPE, CSV formats)."
+            },
+            {
+                "title": "Transcriptomic Data",
+                "description": "Bulk RNAseq with quantified reads and calculated TPM values (TXT format)."
+            },
+            {
+                "title": "Epigenetic Data",
+                "description": "Methylation arrays using Illumina\u2019s MethylationEPIC BeadChip (IDAT format)."
+            },
+            {
+                "title": "ctDNA Bio-samples",
+                "description": "Whole blood samples suitable for longitudinal ctDNA analysis."
+            }
+        ],
+        "accessibility": {
+            "usage": {
+                "dataUseRequirements": [
+                    "Subject to a licence agreement with Cancer Research Horizons.",
+                    "Data access is offered on a non-exclusive basis and solely for the approved purpose.",
+                    "Licences are time-limited, with a typical term of 3 years."
+                ],
+                "resourceCreator": [
+                    "OCCAMS Consortium / CRUK Cambridge Institute."
+                ]
+            },
+            "access": {
+                "dataController": "Cancer Research Horizons.",
+                "accessService": "Data access requests reviewed by the OCCAMS Data Access Committee; facilitated through EGA."
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Genomics Samples",
+                "measuredValue": 500,
+                "disambiguatingDescription": "Matched tumour-normal sample pairs with whole genome sequencing."
+            },
+            {
+                "observedNode": "Transcriptomics Samples",
+                "measuredValue": 300,
+                "disambiguatingDescription": "Samples profiled with bulk RNAseq."
+            },
+            {
+                "observedNode": "Epigenetics Samples",
+                "measuredValue": 285,
+                "disambiguatingDescription": "Samples with Methylation array data."
+            },
+            {
+                "observedNode": "ctDNA Samples",
+                "measuredValue": 750,
+                "disambiguatingDescription": "Whole blood samples suitable for ctDNA analysis."
+            }
+        ],
+        "datasetid": 6,
+        "icons": []
+    },
+    "draft_metadata_blob": null,
+    "active": true,
+    "status": "ACTIVE",
+    "user_id": 1,
+    "team_id": 2,
+    "created_at": "2026-06-23T16:39:54.255736",
+    "updated_at": "2026-08-17T13:11:52.328591"
+}

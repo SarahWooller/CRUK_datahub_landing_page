@@ -1,0 +1,857 @@
+{
+    "id": 3,
+    "datasetid": "DS-E9A5280E",
+    "metadata_blob": {
+        "version": "1.0.0",
+        "summary": {
+            "title": "S:CORT Stratification in Colorectal Cancer",
+            "abstract": "New information! Demographics, Treatments, Responses, DNA mutations, morphology, RNA expression, Immunohistochemistry and DNA methylation profiles in colorectal cancer (CRC) patients",
+            "dataCustodian": {
+                "identifier": "https://ror.org/052gg0110",
+                "name": "Oxford University",
+                "description": "https://www.ox.ac.uk/",
+                "contactPoint": [
+                    "andrew.blake@oncology.ox.ac.uk",
+                    "tim.maughan@oncology.ox.ac.uk",
+                    ""
+                ]
+            },
+            "populationSize": 2000,
+            "keywords": [
+                "metastatic",
+                "oxaliplatin",
+                "radiation therapy",
+                "cetuximab",
+                "FOCUS",
+                "Grampian",
+                "New EPOC",
+                ""
+            ],
+            "contactPoint": "tim.maughan@oncology.ox.ac.uk",
+            "leadResearcher": "Professor Tim Maughan",
+            "leadResearchInstitute": "Oxford University"
+        },
+        "documentation": {
+            "description": "The aim of the combined effort of S-CORT is to better diagnose CRC in such a way as to increase the likelihood that the treatment with the highest chance of success, is prescribed to patients. It also aims to minimise the sometimes negative side effects associated with various therapies. In this comprehensive analysis, tissue taken from patients receiving surgery, radiotherapy and/or chemotherapy are analysed using techniques summarised above to identify signatures which will improve how those therapies are used going forward.\n\n## List of Figures\n\n[Figure 1 - Summary of Sample Pathways](https://ibb.co/8n7N8qG1)\t\n\n[Figure 2 Oxaliplatin Response Sample Attrition Summary](https://ibb.co/6cqcRB0Y)\t\t\n\n[Figure 3 Radiation Therapy Response Sample Attrition Summary](https://ibb.co/hxS8XBVg)\n\n[Figure 4 Cetuximab Response Sample Attrition Summary](https://ibb.co/1Y3LvhQB)\n\n## List of Tables\n\nTable 1 - Sample Origin\t5\n\nTable 2 - Summary of FOCUS samples selected for S:CORT analysis\t6\n\nTable 3 - Sanger S:CORT Sequencing Panel v2.\t16\n\n## Introduction\n\nThe S:CORT Consortium is funded by MRC and CRUK to assess DNA mutations, morphology, RNA expression, Immunohistochemistry and DNA methylation profiles in 2000 colorectal cancer (CRC) patients. In the majority of cases Formalin Fixed Paraffin Embedded (FFPE) blocks containing CRC were identified from clinical trials or patients on standard care and were subsequently sectioned and processed. Sections were sent to Queen\u2019s University, Belfast or Almac for RNA expression profiling. DNA was extracted and sent to the Sanger Institute and Birmingham University for DNA mutation and methylation profiling respectively. Immunohistochemistry was carried out at the University of Leeds and Queens University Belfast. All molecular, phenotypic and patient data have been compiled in Oxford for distribution and visualization. This pipeline is summarized in Figure 1. More details for the platforms and methods used to derive, interrogate, QC and visualize the data can be found in sections 8 to 12.\n\n## Sample Selection \n\nThe origin of the samples for the 3 main datasets for which data is available are summarized in the table below:\n\n| Cohort Name | Cohort Origin | Patients | Notes |\n|---|---|---|---|\n| Oxaliplatin Response | FOCUS clinical Trial | 411 | A phase 3 study in metastatic CRC patients. We analysed primary resection samples from patients who received 5FU or 5FU+Oxaliplatin as first line chemo for metastatic disease.\n|Radiation Therapy Response|Grampian NHS Diagnostic Archive|265|Rectal patients who only received neoadjuvant radiation with or without chemotherapy for which pre-treatment biopsies were sourced.|\n|Cetuximab Response|New EPOC Clinical Trial|128|A phase 3 study in CRC patients with resectable liver metastases comparing treatment with standard chemotherapy +/-  cetuximab. We analysed paired primary CRC and liver metastasis.| \n## Oxaliplatin Response\nIn order to understand in more detail the molecular basis of response to Oxaliplatin, samples from the FOCUS trial were used. This study recruited 2135 patients between May 2000 and Dec 2003 and tested various combinations and sequences of oxaliplatin and irinotecan with FU alone. We refer to the treatment arms here in the same way as shown in Figure 1 of the main FOCUS paper (Seymour M.T., Maughan T.S et al, Lancet 2007). Ignoring the arm that tested irinotecan use from baseline (arm C-IR, which randomised 356 patients) we have the following S-CORT groups summarised in Table 2 with which to compare the effect of oxaliplatin use over FU alone. We excluded patients who had not given explicit consent to further bowel cancer research, and those with rectal primaries, patients whose diagnosis was only from a biopsy and patients without follow up data to 12 weeks minimum. Figure 2 summarises the sample dropout rates for each assay and the number of patients from whom we have the differing datatypes. In addition, we have digital H&E images and digitised images of the following IHC markers (CD4, CD8, CD56, FOXP3, ICOS, IDO1, PDL1, PD1, CAIX and \u1d67H2AX).\n\n__FOCUS n=411__\n\n| |__CR/PR*__|__SD*__|__PD*__|__Total__|\n|---|---|---|---|---|\n|FU alone|108|127|90|__325__|\n|Ox+FU|56|19|11|__86__|\n|__TOTALS__|__164__|__146__|__101__|__411__|\n\n** CR=complete response, PR=partial response, SD=stable disease, PD=progressive disease for 12 week response. Numbers represent eligible patients.* \n\n**Definition of the S-CORT \u201cFU alone\u201d group** \n\n710 patients randomised into FOCUS arm A (FU alone until progression and then IRI; the FOCUS reference arm) \n\n356 into arm B-IR (FU alone until progression and then FU+IRI)   \n\n356 into arm B-OX (FU alone until progression and then FU+OX) \n\n**Definition of the S-CORT \u201cOxaliplatin\u201d group**\n\n 357 into arm C-OX (FU+Ox until progression)\n\n## Radiation Therapy Response\n\nThis is a series of 265 pre-treatment rectal cancer biopsies sequentially collected from patients treated with radiotherapy with or without chemotherapy in the Aberdeen cancer centre in routine NHS practice. Permission has been granted from the Grampian biorepository for use of the samples. Dr Les Samuel and Prof Graeme Murray (Aberdeen) have selected 135 patients with same treatment regimen (45Gy in 25 fractions over 5 weeks with oral capecitabine) and sufficient tissue to analyse and assessed pathological analysis of the resected tumour after RT as having: complete response (35), good partial response (48), partial response (42) and minimal response (6) as defined below:\n\n1. Complete response: complete absence of any microscopic evidence of residual cancer cells. \n2. Good partial response: There are only small foci of cells as evidence of residual cancer cells. \n3. Partial response: There is evidence of response to radiotherapy but substantial tumour remains.\n4. Minimal response: No reduction in tumour volume or tumour progression. \n\nFigure 3 summarises the sample drop out rates for each assay and the number of patients we have with each type of data. In addition, we have digital H&E images for each patient\u2019s tumour.  Note that in light of the small volume pre-treatment biopsies there was a significant drop out for the DNA methylation analysis. \n\n### Cetuximab Response\n\nIn order to understand in more detail the molecular basis of response to cetuximab, samples from the New EPOC (Primrose et al., 2014) clinical trial were used. Patients with KRAS exon 2 wild-type resectable or sub-optimally resectable colorectal liver metastases were randomised in a 1:1 ratio to receive chemotherapy with or without cetuximab before and after liver resection. This study recruited 272 patients who were randomly assigned to treatment between Feb 26, 2007, and Nov 1, 2012, when the trial was closed having met pre-defined futility criteria. Figure 4 summarises the sample drop out rates for each assay and the number of samples we have which type of data for, which comprises both primary CRCs and liver metastasis. In addition, we have survival/disease progression for each patient and digital H&E images for each patient\u2019s tumour. \n\n### Sample preparation\n\nSamples were curated in University of Leeds pathology department (Prof Phil Quirke, Susan Richman).   Presence of tumour in the sample was confirmed and the samples sections as illustrated below.\n\n### DNA Mutation\n\nDNA was extracted from FFPE samples in Leeds and mutation analysis was performed at the Sanger Institute, Cambridge and the pipeline is summarized in Figure .\n\n__*Sample Handling Summary*__\n\nSamples were shipped to the Wellcome Trust Sanger Institute team in FluidX 2-D barcoded tubes along with a sample manifest. Unique Sanger PD IDs were assigned to each sample upon arrival followed by three Quality Control (QC) steps performed by the Core Sample Management team. These steps involved i. Volume check, ii. Picogreen quantification and iii. Fluidigm genotyping in order to assess sample integrity. \n\n__*Sequencing library preparation and Illumina sequencing*__\n\nAfter QC assessment, samples which passed minimum DNA concentration (total DNA >=100ng) and genotyping were submitted for library preparation and Illumina sequencing. Library preparations were performed using the Custom SureSelect Library Prep Kit from Agilent Technologies - Part Number 930075. Libraries were submitted for in-solution capture hybridisation using a custom S:CORT colorectal V2 gene bait set, targeting all coding exons of 80 CRC driver genes (Table 3), 51 regions of recurrent copy number gains/losses (with deeper coverage of 22 cancer genes present in these regions), and 120 MSI regions (mononucleotide repeats). DNA amplification was then performed for 8 cycles before sequencing. Sequencing was performed on Illumina HiSeq2000 machines.\n\n__*Data analysis*__\n\nThe Illumina sequencing data BAM files were transferred to a dedicated variant calling pipeline developed by the Cancer Group Project (CGP) team for sequence alignment and data analyses. Variant calling algorithms were first run on the data for identification of base insertion/deletions and substitutions in the data \u2013 Pindel and Caveman C CGP algorithms). The data was then flagged for variants present only in the list of the cancer genes of the custom bait design as well as for variants seen in germline, FFPE normal samples to remove sequencing artefacts. Further analysis of the data involved flagging for non-synonymous coding variants and driver mutations and also identification of microsatellite instability (MSI). Driver mutations were defined according to whether any given gene was dominant or recessive. For the former, identification was based on comparisons of the S:CORT sample variants with recurrent mutations previously identified in a statistical analysis of 11,119 human tumours, spanning 41 cancer types (Chang et al, Nat Biotechnol, 2016)  as well as internally curated driver mutations from the Cancer Genome Project. For recessive genes, we included any truncating mutation (frameshift, nonsense and essential splice) as a putative driver mutation. \n\nThe Wellcome Trust Sanger Institute provided the following data to the Oxford repository: \n\n- BAM files (raw sequencing files aligned to the human reference genome), \n- vcf files (raw calls for variants), \n- flat file showing high quality variants with annotations (e.g. flagged for driver mutations), \n- classification of tumours for microsatellite instability (MSI), \n- a summary of coverage per tumour. \n\nThese files were uploaded via the Globus secure file transfer system and stored on the secure S:CORT fileserver. The original files were stored separately from the decrypted and uncompressed versions of the data to ensure data integrity at every stage of processing and the high quality variants were loaded into the secure MYSQL database held at Oxford. Data for coverage and allelic frequency of each mutation has been added to the database from the vcf files with an R script. Each mutation call and associated individual reads can be visualised from the BAM files using a genome viewer such as IGV. \n\n### RNA Profiling\n\n__*RNA Profiling of FFPE tissue*__\n\nFormalin fixed paraffin embedding (FFPE) is a well-established method for histopathological assessment but results in extensive RNA fragmentation and cross-linking, impacting on RNA profiling. Due to FFPE block processing, specific mRNA transcripts are more susceptible to degradation and the 5' end of the mRNA transcript is more sensitive to FFPE-dependent RNA degradation. To harness the power of large archived clinically annotated cohorts of FFPE tumour blocks, which is central to the S:CORT proposal, we have utilized FFPE-specific IVT reagents and the Almac Xcel Array. These arrays have probe designs focused on the extreme 3' of mRNA (Affymetrix Almac Xcel Array), as these regions are more stable in FFPE tissue. Furthermore IVT reagents specifically designed for FFPE-extracted RNA have been developed including both oligo-dT primers (binding to polyA tails and specific for mRNA) and random hexamers (annealing throughout the target molecule) for first strand cDNA synthesis.  This enables amplification at the 3' end and throughout the whole transcript which is more applicable to partially degraded mRNA.  \n\n__*Sample Handling Summary*__\n\nAt the Leeds University sample processing centre, 1 x 5 micron and 2 x 10 micron sections were prepared from all samples which had passed initial histology QC.  The 5 micron section was H&E stained followed by annotation of the tumour region by a qualified pathologist.  The H&E stained 1 x 5 micron and 2 x 10 micron sections were shipped at room temperature to Queens.  Upon sample receipt, the material transfer agreement was completed and returned to Leeds, specimens were registered on a Queens SCORT processing database followed by registering all Human Tissue Act (HTA) relevant material on the Queens HTA database.  \n\n__*Sample Macrodissection*__\n\nSamples were dewaxed and macrodissected following SCORT-SOP-002-Macrodissection-and-RNA-Extraction.  In short, dewaxing of samples was performed by an automated dewaxing process using the Tissue-Tek Prisma\u00ae/Film machine.  This incorporated 3 xylene washes of 2, 2 and 1 min followed by 2 washes in 95% and 90% ethanol respectively. Macrodissections were performed within a designated macrodissection area treated with an RNase Decontamination Solution.  The unstained section was overlaid on top of the H&E reference slide and using a clean scalpel blade the annotated area was scraped into a 1.5 ml RNase-free Eppendorf tubes containing the prepared Roche High Pure RNA Paraffin Kit tissue lysis reagent (Catalogue 03270289001).  \n\n__*Sample RNA Extraction*__\n\nThe Roche High Pure RNA Paraffin Kit instructions for use (Version 12) were followed for RNA extractions.  Following RNA extraction, SCORT-SOP-003- Nucleic Acid Quantification was followed detailing quantification of the total RNA using the Nanodrop set to the RNA-40 parameter.  Total RNA extraction, quantification and -80oC storage location details were logged onto the SCORT Specimen Receipt Records spreadsheet.  \n\n__*Preparation of fragmented and labelled cDNA from total RNA*__\n\nAfter RNA quantification, samples which had sufficient RNA concentration (\u2265 10 ng/\u00b5l) were submitted for RNA profiling.  The SCORT-SOP-004-3' IVT Pico Kit which details the GeneChip\u00ae 3' IVT Pico Reagent Kit (Part No. 703308; Version 1) instructions for use was followed.  \n\n__*Hybridisation, Scanning of Array and Storage of Subsequent CEL Files*__\n\nSCORT-SOP-005-Cartridge Array Hybridisation & Sample Registration was followed to hybridise the fragmented and labelled cDNA to the microarrays.  Following a 16 hour overnight hybridisation the arrays were washed and stained following the SCORT-SOP-006- Fluidics_Start Up_ Wash_Stain_ShutDown.  SCORT-SOP-007-Scanning of Array and Storage of CEL Files was performed to scan the hybridised arrays and to ensure the resulting image (CEL) files were securely backed up offsite to eliminateg the risk of catastrophic data loss.\n\n__*Quality control assessment of CEL Files*__\n\nThe protocol entitled \u2018SCORT-SOP-008-Analysis of CEL Files to Determine QC Metrics\u2018 was followed to assess QC metrics relating to monitor image quality, IVT, hybridisation to the array and RNA degradation prior to uploading to the Oxford server (Appendix 2).\n\n__*Data Analysis*__\n\nAlmac and Queens provided RNA profiling data as raw CEL files which were uploaded to Oxford using the data upload portal on the 17th February 2016. These files were stored on the secure file server at Oxford with the original files stored separately from the uncompressed version of the data. \n\nQuality control analysis was run on the samples using the R base AffyQC Module ([https://github.com/BiGCAT-UM/affyQC_Module](https://github.com/BiGCAT-UM/affyQC_Module)). This resulted in a variety of QC metrics and visualisations including box plots to show the distribution of the expression intensity across samples after normalization, PCA analysis, probe density histograms, chip hybridisation visualisation, normalised unscaled standard errors and RNA degradation plots. \n\nThe files were processed using the R libraries limma (http://bioconductor.org/packages/release/bioc/html/limma.html) and affy (http://bioconductor.org/packages/release/bioc/html/affy.html) to normalise the expression values using RMA and generate an expression matrix of probe intensities against the samples. This data was then used to generate an expression mean per gene data matrix giving a single expression value per gene, and both by probe and mean per gene data were then loaded into the MYSQL database at Oxford.  \n\nFurthermore, a classification for the Consensus Molecular Subtype (CMS) has been derived with a script based on the R package CMSclassifier ([https://github.com/Sage-Bionetworks/CMSclassifier](https://github.com/Sage-Bionetworks/CMSclassifier)) which has been kindly reviewed by one the original authors of the signature (Aurelien de Reynies). We obtained a sensible frequency of each subtype compared with the original CMS article (Guinney, Nat Med, 2015). \n\n \n\nIn addition to a gene by gene RNA amount, the below RNA signatures are scored for each sample.\n\n |__Signature__|__Type__|__Reference__|__Definition__|\n|---|---|---|---|\n|CMS|5 categories|Guinney, Nat Med, 2015|Consensus Molecular Subtypes with dishtinguising biological features|\n|CMS Intrinsic|5 categories|Sveen, Clin Cancer Res, 2018|CMS enriched for cancer cell-intrinsic genes for pre-clinical models|\n|CRIS|6 categories|Isella, Nat Commun, 2017|CRC Intrinsic Subtypes with distinctive peculiarities|\n|BRAF-like|Binary|Popovici, JCO, 2012|BRAF-Mutant-Like gene expression pattern|\n|Hypoxia (Buffa)|Continuous|Buffa, Br J Cancer, 2010|Hypoxia metagene mainly derived from breast and head and neck|\n|ISC|Continuous|Merlos-Suarez, Cell Stem Cell, 2011|Adult Intestinal Stem Cell signature|\n|Proliferation|Continuous|Merlos-Suarez, Cell Stem Cell, 2011|Proliferation of crypt cells|\n|LateTA|Continuous|Merlos-Suarez, Cell Stem Cell, 2011|Late Transient Amplifying (progenitor) cells|\n|TGFb Fibroblasts|Continuous|Calon, Cancer Cell, 2012|TGFb activation on fibroblasts|\n|TGFb Endothelial|Continuous|Calon, Cancer Cell, 2012|TGFb activation on endothelial|\n|TGFb Macrophage|Continuous|Calon, Cancer Cell, 2012|TGFb activation on macrophage|\n|TGFb Tcells|Continuous|Calon, Cancer Cell, 2012|TGFb activation on Tcells|\n|RSI|Continuous|Eschrich, Int J Radiat Oncol Biol Phys, 2009|Intrinsic RadioSensitivity Index derived from pancancer cell lines|\n|MCPcounter|Continuous|Becht, Genome Biol, 2016|Quantification of abundance of 10 cell types (8 immune and 2 stromal)|\n|ESTIMATE|Continuous|Yoshihara, Nat Comm, 2013|Estimation of fraction of stromal/immune cells|\n\n### mDNA Profiling\n\nThe Infinium HD FFPE methylation assay combines bisulfite conversion of genomic FFPE DNA and restoration followed by whole-genome amplification with direct, array-based capture. This results in the scoring of over 850,000 CpG loci on the Infinium HumanMethylation EPIC array. Signal intensity is recorded with the Illumina iScan system generating \u03b2-values which give the degree of methylation, covering approximately 99% of RefSeq genes, 96% of UCSC CpG islands, and specific commonly methylated CpG sites in human cancers.\n\nOne or two probes are used to interrogate a CpG locus, depending on the probe design for a particular CpG site. The Infinium I design has two probes per site and Infinium II has one probe per site. The 3' end of the probes is positioned directly adjacent to the CpG site (for Infinium I) or immediately adjacent to the site (for Infinium II). The Infinium HD methylation assay incorporates both of these chemistries with allele-specific single base extension of the probes utilizing a biotin labelled nucleotide (for C and G bases) or a dinitrophenyl labelled nucleotide (for A and T bases). Signal amplification of the incorporated label further improves the overall signal-to-noise ratio of the assay.\n\nThe workflow for the entire assay is in Appendix 1.\n\n__*Sample Submission*__\n\nDNA samples were sent to Birmingham University from the Sanger Institute. The DNA had been quantified by picogreen and normalized to 20 ng/\u00b5l. From this 17.5 \u00b5l (350 ng) of DNA was processed per sample. This is within the DNA input range Illumina recommend.\n\n__*FFPE QC Assay*__\n\nTo determine whether the FFPE DNA samples were suitable candidates for the Infinium HD FFPE methylation assay the quality was tested in duplicate by real-time PCR following the Illumina FFPE QC protocol  (Part # 15020981 Rev. C).\n\nAmplification of the FFPE sample DNA was compared with the amplification of a Quality Control Template (QCT). The real-time PCR threshold cycle (Ct) was averaged and a DCt for each sample was calculated (CtFFPE - CtQCT). \n\n__*Bisulphite Conversion*__\n\nAt least 50 ng of FFPE DNA was bisulfite converted using the EZ DNA Methylation Kit (cat# D5002, Zymo Research) following the manufacturer\u2019s instructions appropriate for the Illumina HD FFPE assay. Bisulphite conversion results in unmethylated cytosines converted to uracil, and methylated cytosines remaining unchanged. A total of 8 \u00b5l of DNA was eluted and taken through to the next stage FFPE DNA Restoration.\n\n__*FFPE DNA Restoration*__\n\nThe Infinium HD FFPE restore protocol, Part # 15014614 Rev C, restores degraded FFPE DNA to a state that is amplifiable.  All eluted restored DNA (approx. 8 \u00b5l) was taken through to the Infinium HD FFPE methylation assay.\n\n__*Infinium HD FFPE Methylation Assay*__\n\nThe protocol was carried out according to the Illumina recommendations for FFPE DNA (Part # 15027310 Rev. A).\n\nPost hybridization the signal intensity values were obtained by scanning on the Illumina iScan System to generate raw .idat files.   All samples were processed and scanned four 12x1 Infinium HumanMethylation450 beadchips.\n\n__*Infinium HD QC post-hybridisation *__\n\nTwo quality elements were assessed prior to downstream bioinformatics applying the raw .idat files to Illumina Genome Studio software v2011.1.\n\nThe first quality element checked assay and sample quality by assessing the signal intensity levels of a series of sample-independent and -dependent probes, the former using spike-in controls added prior to hybridization. Signal intensities for each need to fall within Illumina recommended ranges to determine whether a control probe has failed or not. \n\nThe second quality element looked at the signal intensity for each of the CpG loci and from this the % detected per sample was calculated at the confidence level p=0.05.  The cut-off value is \u226595% detection so a sample with less CpG sites detected would be flagged. \n\nThe University of Birmingham provided raw Idat files to the data repository which were uploaded on the 13th January 2016 using the data upload portal. These files were stored on the secure file server at Oxford with the original files stored separately from the uncompressed version of the data. \n\nQuality control was performed using MethylAid ([https://bioconductor.org/packages/release/bioc/html/MethylAid.html](https://bioconductor.org/packages/release/bioc/html/MethylAid.html)). Bad quality samples can be detected using sample-dependent and sample-independent controls present on the array. Deep exploration of bad quality samples was performed using several interactive diagnostic plots of the quality control probes present on the array. Furthermore, the impact of any batch effects were also explored. \n\nPlots for Median methylated vs Unmethylated, Overall Quality, Hybridisation, and detection P values were derived. The beta values for each CpG site in every sample was obtained using ChAMP ([https://www.bioconductor.org/packages/release/bioc/html/ChAMP.html](https://www.bioconductor.org/packages/release/bioc/html/ChAMP.html)) ranging from 0 (unmethylated) to 1 (methylated). This data was further processed by calculating the median value from only island CpG sites within each gene resulting in a single call per gene across the dataset. Both sets of data was loaded into the secure MYSQL database in Oxford.\n\n## Patient Data\n\nNon-identifiable patient data from the various sites was collated and uploaded using the SCORT data upload portal (https://upload.s-cort.org). These files were also securely backed up offsite allowing for data redundancy in case of disaster recovery. This required manual curation to harmonise the data and enable comparison of data from different trials. The raw unchanged data were loaded from these files into a secure MYSQL database in Oxford which is backed up daily. From that database the common patient fields were brought together to form the consensus S:CORT patient data fields and the data harmonised into the S:CORT patient database. This data was also exported to a comma separated flat file for use in the QC pipeline R scripts and visualisation tools, allowing analysis and visualisation among their variables. \n\n\n\n\n\n\n"
+        },
+        "icons": [
+            "Multi-omic Data",
+            "Patient Study"
+        ],
+        "projectGrants": [
+            {
+                "projectGrantScope": "The aim of the combined effort of S-CORT is to better diagnose CRC in such a way as to increase the likelihood that the treatment with the highest chance of success, is prescribed to patients. It also aims to minimise the sometimes negative side effects associated with various therapies. In this comprehensive analysis, tissue taken from patients receiving surgery, radiotherapy and/or chemotherapy are analysed using techniques summarised above to identify signatures which will improve how those therapies are used going forward.\n\nSurgical Intervention\nAs screening for bowel cancer becomes more effective we are increasing the proportion of patients who are presenting with the disease at an earlier stage. Currently, our ability to identify which of these early stage cancers are more likely to be invasive or metastasis, is limited. This information is critical in deciding what type of surgery should be performed to maximise the patient survival and quality of life.\n\nMedical Oncology\nA common drug used to treat late stage CRC patients is Oxaliplatin. This drug is known to work in only 50% of patients. Knowing which patients would respond better would reduce the number of patients who needlessly suffer the side effects of Oxaliplatin, but understanding the underlying biology of response will help the generation of novel therapies for patients for whom there is currently no effective treatment.\n\nClinical Radiotherapy\nRadiotherapy is an effective treatment for the majority of CRC patients but does come with side-effects. Determining which patients are more likely to respond will allow more effective deployment of this intervention and support the development of novel therapeutic approaches.",
+                "projectGrantName": "S:CORT",
+                "leadResearcher": "Tim Maughan",
+                "leadResearchInstitute": "Oxford University"
+            },
+            {}
+        ],
+        "datasetid": 3,
+        "datasetFilters": [
+            {
+                "id": "0_0_0_1_3",
+                "label": "C18 Colon",
+                "category": "C15-C26 Digestive organs",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_1_5",
+                "label": "814-838 Adenomas and adenocarcinomas",
+                "category": "icdOHistology",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_0_1_5",
+                "label": "C20 Rectum",
+                "category": "C15-C26 Digestive organs",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_4_4_0_0",
+                "label": "Epigenomics",
+                "category": "Biological molecules (eg DNA)",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_4_4_0_1",
+                "label": "Genomics",
+                "category": "Biological molecules (eg DNA)",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_4_4_1_3",
+                "label": "Tumour",
+                "category": "Source",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_1_3",
+                "label": "Immunohistochemistry",
+                "category": "Biopsy Reports and Lab Results",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_2",
+                "label": "collaboration required",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": ""
+            }
+        ],
+        "otherDataTypes": [
+            {
+                "title": "Scans of hybridised fragmented and labelled cDNA",
+                "format": "CEL",
+                "description": "\u2018SCORT-SOP-008-Analysis of CEL Files to Determine QC Metrics\u2018 was followed to assess QC metrics relating to monitor image quality, IVT, hybridisation to the array and RNA degradation"
+            },
+            {
+                "title": "H&E images and digitised images of immunohistochemistry markers",
+                "description": "H&E images and digitised images of the following IHC markers (CD4, CD8, CD56, FOXP3, ICOS, IDO1, PDL1, PD1, CAIX and gamma H2AX)."
+            },
+            {
+                "title": "digital H&E images for each patient\u2019s tumour"
+            },
+            {}
+        ],
+        "enrichmentAndLinkage": {
+            "publicationAboutDataset": [
+                "https://doi.org/10.1016/S1470-2045(14)70105-6",
+                "https://doi.org/10.1016/S0140-6736(07)61087-3",
+                ""
+            ]
+        },
+        "observations": [
+            {
+                "measuredProperty": "Count",
+                "observedNode": "Persons",
+                "measuredValue": 2000
+            },
+            {
+                "observedNode": "Persons",
+                "measuredValue": 411,
+                "measuredProperty": "Cohort count from FOCUS"
+            },
+            {
+                "observedNode": "Persons",
+                "measuredValue": 265,
+                "measuredProperty": "Grampian NHS cohort"
+            },
+            {
+                "observedNode": "Persons",
+                "measuredValue": 128,
+                "measuredProperty": "Cohort from new EPOC Clinical Trial"
+            },
+            {}
+        ],
+        "structuralMetadata": {
+            "tables": [
+                {
+                    "name": "Identifiers",
+                    "description": "All identifiers",
+                    "size": null,
+                    "columns": [
+                        {
+                            "name": "Pathology lab number",
+                            "dataType": "int",
+                            "description": "Examples include 1234",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Unique Sample Identifier at Source Lab",
+                            "dataType": "string",
+                            "description": "Examples include 12770/96-A5",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Unique Identifier of Patient",
+                            "dataType": "string",
+                            "description": "Examples include 3243",
+                            "sensitive": true,
+                            "values": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Patient Data",
+                    "description": "Demographics",
+                    "size": null,
+                    "columns": [
+                        {
+                            "name": "Age at diagnosis",
+                            "dataType": "int",
+                            "description": "Examples include 72",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Date of birth",
+                            "dataType": "date",
+                            "description": "Examples include 22/07/2004",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Gender",
+                            "dataType": "string",
+                            "description": "Examples include M, F",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Weight",
+                            "dataType": "float",
+                            "description": "Examples include 80.5",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Height",
+                            "dataType": "int",
+                            "description": "Examples include 180",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Ethnicity",
+                            "dataType": "string",
+                            "description": "Examples include White, Mixed, Asian, Arab",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Trial",
+                            "dataType": "string",
+                            "description": "Examples include FOCUS, COIN",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Treatment Allocation / Arm / Cohort",
+                            "dataType": "string",
+                            "description": "Examples include A, B, MdG->Ir, OxMdG",
+                            "sensitive": true,
+                            "values": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Cancer Details",
+                    "description": "Site, extent, stage ",
+                    "size": null,
+                    "columns": [
+                        {
+                            "name": "Site of Tumour",
+                            "dataType": "string",
+                            "description": "Examples include Left colon, Right colon, Rectosigmoid junction, Ascending colon, Transverse colon, Caecum",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "SNOMED Code",
+                            "dataType": "int",
+                            "description": "Examples include 363406005",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Bowel screen detected",
+                            "dataType": "string",
+                            "description": "Examples include Y, N",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Tumour differentiation",
+                            "dataType": "string",
+                            "description": "Examples include well, moderate, poor",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Tumour budding",
+                            "dataType": "string",
+                            "description": "Examples include Y, N",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Total number of lymph nodes",
+                            "dataType": "int",
+                            "description": "Examples include 7",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Number of positive lymph nodes",
+                            "dataType": "int",
+                            "description": "Examples include 3",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Radiological T stage",
+                            "dataType": "int",
+                            "description": "Examples include 0, 1, 2, 3, 4",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Radiological N stage",
+                            "dataType": "int",
+                            "description": "Examples include 0, 1, 2",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Radiological M stage",
+                            "dataType": "int",
+                            "description": "Examples include 0, 1",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Radiological TNM Stage",
+                            "dataType": "string",
+                            "description": "Examples include T0N0",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Radiological Extramural Vascular Invasion",
+                            "dataType": "string",
+                            "description": "Examples include Positive, Negative",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Pathologist T stage",
+                            "dataType": "int",
+                            "description": "Examples include 0, 1, 2, 3, 4",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Pathologist N stage",
+                            "dataType": "int",
+                            "description": "Examples include 0, 1, 2",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Pathologist M stage",
+                            "dataType": "int",
+                            "description": "Examples include 0, 1",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Pathologist TNM Stage",
+                            "dataType": "string",
+                            "description": "Examples include T0N0",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Pathologist Extramural Vascular Invasion",
+                            "dataType": "string",
+                            "description": "Examples include Positive, Negative",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Date of Metastasis",
+                            "dataType": "date",
+                            "description": "Examples include 22/07/2004",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Liver metastasis",
+                            "dataType": "string",
+                            "description": "Examples include Y, N",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Node metastasis",
+                            "dataType": "string",
+                            "description": "Examples include Y, N",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Lung metastasis",
+                            "dataType": "string",
+                            "description": "Examples include Y, N",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Peritoneum metastasis",
+                            "dataType": "string",
+                            "description": "Examples include Y, N",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Other metastasis",
+                            "dataType": "string",
+                            "description": "Examples include Brain, Bone",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Dukes stage",
+                            "dataType": "string",
+                            "description": "Examples include C2, A, B",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "WHO Performance Status",
+                            "dataType": "int",
+                            "description": "Examples include 0, 1, 2",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Distance of tumour from circumferential resection margin (mm)",
+                            "dataType": "int",
+                            "description": "Examples include 1, 5, 3",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Quality of mesorectal dissection",
+                            "dataType": "int",
+                            "description": "Examples include 1, 2 ,3",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Date of randomisation or registration",
+                            "dataType": "date",
+                            "description": "Examples include 22/07/2004",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Date of Diagnosis",
+                            "dataType": "date",
+                            "description": "Examples include 22/07/2004",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Date of Initial Assessment",
+                            "dataType": "date",
+                            "description": "Examples include 22/07/2004",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Baseline sum of longest diameter in target lesions (mm)",
+                            "dataType": "int",
+                            "description": "Examples include 45, 27",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Date of Biopsy",
+                            "dataType": "date",
+                            "description": "Examples include 22/07/2004",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Cancer Confirmed at Biopsy",
+                            "dataType": "string",
+                            "description": "Examples include Y, N",
+                            "sensitive": true,
+                            "values": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Surgery/Details",
+                    "description": "excision/date/operation type",
+                    "size": null,
+                    "columns": [
+                        {
+                            "name": "Excision",
+                            "dataType": "string",
+                            "description": "Examples include Y,N",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Date of Surgery",
+                            "dataType": "date",
+                            "description": "Examples include 22/07/2004",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Operation type",
+                            "dataType": "string",
+                            "description": "Examples include Resection",
+                            "sensitive": true,
+                            "values": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Treatment Details",
+                    "description": "radiotherapy/chemo",
+                    "size": null,
+                    "columns": [
+                        {
+                            "name": "Date of first fraction",
+                            "dataType": "date",
+                            "description": "Examples include 22/07/2004",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Date of last fraction",
+                            "dataType": "date",
+                            "description": "Examples include 22/07/2004",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "RT Duration",
+                            "dataType": "string",
+                            "description": "Examples include Xx days",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "RT Dose",
+                            "dataType": "string",
+                            "description": "Examples include Xx Gy",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "RT Fractions",
+                            "dataType": "int",
+                            "description": "Examples include 5,25",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Chemotherapy Drug",
+                            "dataType": "string",
+                            "description": "Examples include 5FU, Capecitabine, oxaliplatin",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Intent of Chemotherapy",
+                            "dataType": "string",
+                            "description": "Examples include Neoadjuvant, palliative, adjuvant",
+                            "sensitive": true,
+                            "values": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Outcome Details\nMultiple instances of:",
+                    "description": "Response/recurrence/death",
+                    "size": null,
+                    "columns": [
+                        {
+                            "name": "Date of Assessment",
+                            "dataType": "date",
+                            "description": "Examples include 22/07/2004",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Baseline sum of longest diameter in target lesions (mm)",
+                            "dataType": "int",
+                            "description": "Examples include 45, 27",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Response category (RECIST)",
+                            "dataType": "string",
+                            "description": "Examples include PD (progressive disease), SD (stable disease), PR (partial response), CR  (complete response), NE (not evaluable)",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Best overall response",
+                            "dataType": "string",
+                            "description": "Examples include PD (progressive disease), SD (stable disease), PR (partial response), CR  (complete response), NE (not evaluable)",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Recurrence",
+                            "dataType": "string",
+                            "description": "Examples include Y, N",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Local Recurrence",
+                            "dataType": "string",
+                            "description": "Examples include Y, N",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Distant Recurrence",
+                            "dataType": "string",
+                            "description": "Examples include Y, N",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Radiological Response to pre-op therapy (mTRG)",
+                            "dataType": "string",
+                            "description": "Examples include complete, good partial, partial, minimal",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Pathological Response to pre-op therapy (TRG) as defined by RCPath dataset",
+                            "dataType": "int",
+                            "description": "Examples include 1., no viable tumour cells (fibrosis or mucus lakes only) 2., single cells or scattered small groups of cancer cells 3., residual cancer outgrown by fibrosis 4., minimal or no regression (extensive residual tumour).",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Death",
+                            "dataType": "string",
+                            "description": "Examples include Y, N",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Date of Death",
+                            "dataType": "string",
+                            "description": "Examples include 22/07/2004",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Date of Last Follow up",
+                            "dataType": "string",
+                            "description": "Examples include 22/07/2004",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Cause of Death",
+                            "dataType": "string",
+                            "description": "Examples include cancer related, not cancer related",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Date of First Progression",
+                            "dataType": "date",
+                            "description": "Examples include 22/07/2004",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Overall Survival (Days)",
+                            "dataType": "int",
+                            "description": "Examples include 230",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Progression Free Survival (Days)",
+                            "dataType": "int",
+                            "description": "Examples include 170",
+                            "sensitive": true,
+                            "values": []
+                        }
+                    ]
+                },
+                {
+                    "name": "Molecular Details",
+                    "description": "Labs and genetic tests",
+                    "size": null,
+                    "columns": [
+                        {
+                            "name": "Date of Molecular Assessment",
+                            "dataType": "date",
+                            "description": "Examples include 22/07/2004",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "White Blood Count",
+                            "dataType": "float",
+                            "description": "Examples include 8, 3.2",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Platelet Count",
+                            "dataType": "int",
+                            "description": "Examples include 378, 223",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Neutrophil",
+                            "dataType": "float",
+                            "description": "Examples include 6.19, 3",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Lymphocytes",
+                            "dataType": "string",
+                            "description": "",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Bilirubin",
+                            "dataType": "int",
+                            "description": "Examples include 14, 15",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "ALKP",
+                            "dataType": "int",
+                            "description": "Examples include 229, 216",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "ALT",
+                            "dataType": "int",
+                            "description": "Examples include 49, 12",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "AST",
+                            "dataType": "int",
+                            "description": "Examples include 32, 41",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Creatinine clearance",
+                            "dataType": "int",
+                            "description": "Examples include 65, 69",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Date of Marker Test",
+                            "dataType": "date",
+                            "description": "Examples include 22/07/2004",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Raised Tumour Marker",
+                            "dataType": "string",
+                            "description": "Examples include Y, N",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Tumour Marker Name",
+                            "dataType": "string",
+                            "description": "Examples include CEA, Ca19.9",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Marker Value",
+                            "dataType": "int",
+                            "description": "Examples include 9, 696",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Kras Mutation",
+                            "dataType": "string",
+                            "description": "Examples include G12V, G12C, WT",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Braf Mutation",
+                            "dataType": "string",
+                            "description": "Examples include V600E, WT",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Nras Mutation",
+                            "dataType": "string",
+                            "description": "Examples include Q61K, WT",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "Pik3ca Mutation",
+                            "dataType": "string",
+                            "description": "Examples include E542K, WT",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "MMR Status",
+                            "dataType": "string",
+                            "description": "Examples include Positive, Negative",
+                            "sensitive": true,
+                            "values": []
+                        },
+                        {
+                            "name": "MMR Source",
+                            "dataType": "string",
+                            "description": "Examples include MLH1, MSH2, MSH6, PMS2",
+                            "sensitive": true,
+                            "values": []
+                        }
+                    ]
+                }
+            ]
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseLimitation": [
+                    "Cancer Research Horizons has exclusive rights to the S:CORT database To access S:CORT database, companies are required to submit a data access request to CRH (using the template provided), which is reviewed by the S:CORT Data Access Committee Key information required: Description of the proposed study & intended use of the data (in both technical & lay terms) The specific data types & cohorts that you would require access to Description of the potential patient benefit generated from the use of the dataset.  Access is subject to a licence agreement with Cancer Research Horizons, which includes terms that align with CRH\u2019s Guiding Principles to Commercial Data Partnerships\u200b Key terms: Data access is offered on a non-exclusive basis & solely for the approved purpose Any IP generated from use of the data will be owned by the company* Licences are time-limited (typical term is 3-years)  Data access will be facilitated through provision of access to a private instance of C-BIO Portal. ",
+                    ""
+                ]
+            },
+            "access": {
+                "accessRights": "https://www.cancerresearchhorizons.com/partners/data-partnerships/our-guiding-principles-data-partnerships",
+                "accessServiceCategory": "Varies based on project"
+            }
+        }
+    },
+    "draft_metadata_blob": null,
+    "active": true,
+    "status": "ACTIVE",
+    "user_id": 1,
+    "team_id": 1,
+    "created_at": "2026-04-28T16:28:40.295313",
+    "updated_at": "2026-08-03T14:59:05.588359"
+}

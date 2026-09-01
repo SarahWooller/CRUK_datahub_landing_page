@@ -1,0 +1,68 @@
+{
+    "id": 44,
+    "datasetid": "cruk-study-0033",
+    "metadata_blob": {
+        "identifier": "cruk-study-0033",
+        "version": "1.0.0",
+        "revisions": [
+            {
+                "version": "1.0.0"
+            }
+        ],
+        "issued": "2026-08-05T15:05:57.772Z",
+        "modified": "2026-08-05T15:05:57.772Z",
+        "summary": {
+            "title": "SOFT",
+            "abstract": "Suppression of Ovarian Function Trial.",
+            "populationSize": 326,
+            "contactPoint": "info@petermaccallumcancercentre.ac.uk",
+            "dataCustodian": {
+                "identifier": "https://ror.org/0438302",
+                "name": "Peter MacCallum Cancer Centre",
+                "contactPoint": "admin@petermaccallumcancercentre.ac.uk"
+            },
+            "leadResearcher": "Prof. Prudence Francis",
+            "leadResearchInstitute": "Peter MacCallum Cancer Centre"
+        },
+        "accessibility": {
+            "access": {
+                "accessRights": "Access requests must be submitted to the Peter MacCallum Cancer Centre Data Access Committee. Approvals take approximately 4 weeks."
+            }
+        }
+    },
+    "draft_metadata_blob": {
+        "identifier": "cruk-study-0033",
+        "version": "1.0.0",
+        "revisions": [
+            {
+                "version": "1.0.0"
+            }
+        ],
+        "issued": "2026-08-05T15:05:57.772Z",
+        "modified": "2026-08-05T15:05:57.772Z",
+        "summary": {
+            "title": "SOFT",
+            "abstract": "Suppression of Ovarian Function Trial.",
+            "populationSize": 326,
+            "contactPoint": "info@petermaccallumcancercentre.ac.uk",
+            "dataCustodian": {
+                "identifier": "https://ror.org/0438302",
+                "name": "Peter MacCallum Cancer Centre",
+                "contactPoint": "admin@petermaccallumcancercentre.ac.uk"
+            },
+            "leadResearcher": "Prof. Prudence Francis",
+            "leadResearchInstitute": "Peter MacCallum Cancer Centre"
+        },
+        "accessibility": {
+            "access": {
+                "accessRights": "Access requests must be submitted to the Peter MacCallum Cancer Centre Data Access Committee. Approvals take approximately 4 weeks."
+            }
+        }
+    },
+    "active": true,
+    "status": "ACTIVE",
+    "user_id": 1,
+    "team_id": 31,
+    "created_at": "2026-08-05T15:06:55.262635",
+    "updated_at": "2026-08-05T15:06:55.262646"
+}

@@ -1,0 +1,27 @@
+{
+    "id": 11,
+    "datasetid": "DS-74CF082C",
+    "metadata_blob": {
+        "summary": {
+            "title": "testing",
+            "dataCustodian": {
+                "name": "CRUK DataCustodian",
+                "identifier": "054225q67",
+                "contactPoint": "not given"
+            }
+        },
+        "icons": [],
+        "issued": "2026-09-01T16:06:19Z",
+        "modified": "2026-09-01T16:06:19Z",
+        "revisions": [],
+        "version": "1.0.0",
+        "identifier": "DS-74CF082C"
+    },
+    "draft_metadata_blob": null,
+    "active": true,
+    "status": "ACTIVE",
+    "user_id": 1,
+    "team_id": null,
+    "created_at": "2026-08-04T11:07:54.630575",
+    "updated_at": "2026-08-04T11:07:54.630588"
+}

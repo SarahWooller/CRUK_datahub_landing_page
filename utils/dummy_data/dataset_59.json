@@ -1,0 +1,20 @@
+{
+    "id": 62,
+    "datasetid": "DS-B13D084F",
+    "metadata_blob": {
+        "summary": {
+            "title": "New dataset",
+            "leadResearcher": "Prof Brown",
+            "leadResearchInstitute": "University of Edinburgh",
+            "contactPoint": "woollersarah@gmail.com"
+        },
+        "icons": []
+    },
+    "draft_metadata_blob": null,
+    "active": true,
+    "status": "ACTIVE",
+    "user_id": 1,
+    "team_id": null,
+    "created_at": "2026-08-11T19:19:56.887150",
+    "updated_at": "2026-08-11T19:19:56.887151"
+}

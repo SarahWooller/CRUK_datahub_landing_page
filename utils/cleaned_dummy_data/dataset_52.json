@@ -1,0 +1,68 @@
+{
+    "id": 55,
+    "datasetid": "cruk-study-0044",
+    "metadata_blob": {
+        "identifier": "cruk-study-0044",
+        "version": "1.0.0",
+        "revisions": [
+            {
+                "version": "1.0.0"
+            }
+        ],
+        "issued": "2026-08-05T15:05:57.773Z",
+        "modified": "2026-09-01T16:06:29Z",
+        "summary": {
+            "title": "CHAARTED",
+            "abstract": "Chemohormonal therapy in metastatic hormone-sensitive prostate cancer.",
+            "populationSize": 4407,
+            "contactPoint": "info@danafarbercancerinstitute.ac.uk",
+            "dataCustodian": {
+                "identifier": "02jzgtq86",
+                "name": "Dana-Farber Cancer Institute",
+                "contactPoint": "admin@danafarbercancerinstitute.ac.uk"
+            },
+            "leadResearcher": "Dr. Christopher Sweeney",
+            "leadResearchInstitute": "Dana-Farber Cancer Institute"
+        },
+        "accessibility": {
+            "access": {
+                "accessRights": "Access requests must be submitted to the Dana-Farber Cancer Institute Data Access Committee. Approvals take approximately 4 weeks."
+            }
+        }
+    },
+    "draft_metadata_blob": {
+        "identifier": "cruk-study-0044",
+        "version": "1.0.0",
+        "revisions": [
+            {
+                "version": "1.0.0"
+            }
+        ],
+        "issued": "2026-08-05T15:05:57.773Z",
+        "modified": "2026-08-05T15:05:57.773Z",
+        "summary": {
+            "title": "CHAARTED",
+            "abstract": "Chemohormonal therapy in metastatic hormone-sensitive prostate cancer.",
+            "populationSize": 4407,
+            "contactPoint": "info@danafarbercancerinstitute.ac.uk",
+            "dataCustodian": {
+                "identifier": "https://ror.org/0655324",
+                "name": "Dana-Farber Cancer Institute",
+                "contactPoint": "admin@danafarbercancerinstitute.ac.uk"
+            },
+            "leadResearcher": "Dr. Christopher Sweeney",
+            "leadResearchInstitute": "Dana-Farber Cancer Institute"
+        },
+        "accessibility": {
+            "access": {
+                "accessRights": "Access requests must be submitted to the Dana-Farber Cancer Institute Data Access Committee. Approvals take approximately 4 weeks."
+            }
+        }
+    },
+    "active": true,
+    "status": "ACTIVE",
+    "user_id": 1,
+    "team_id": 40,
+    "created_at": "2026-08-05T15:06:55.262635",
+    "updated_at": "2026-08-05T15:06:55.262646"
+}

@@ -1,0 +1,68 @@
+{
+    "id": 40,
+    "datasetid": "cruk-study-0029",
+    "metadata_blob": {
+        "identifier": "cruk-study-0029",
+        "version": "1.0.0",
+        "revisions": [
+            {
+                "version": "1.0.0"
+            }
+        ],
+        "issued": "2026-08-05T15:05:57.772Z",
+        "modified": "2026-09-01T16:06:25Z",
+        "summary": {
+            "title": "LUNG-MAP",
+            "abstract": "Master protocol for squamous cell lung cancer.",
+            "populationSize": 5118,
+            "contactPoint": "info@yalecancercenter.ac.uk",
+            "dataCustodian": {
+                "identifier": "03j7sze86",
+                "name": "Yale Cancer Center",
+                "contactPoint": "admin@yalecancercenter.ac.uk"
+            },
+            "leadResearcher": "Dr. Roy Herbst",
+            "leadResearchInstitute": "Yale Cancer Center"
+        },
+        "accessibility": {
+            "access": {
+                "accessRights": "Access requests must be submitted to the Yale Cancer Center Data Access Committee. Approvals take approximately 4 weeks."
+            }
+        }
+    },
+    "draft_metadata_blob": {
+        "identifier": "cruk-study-0029",
+        "version": "1.0.0",
+        "revisions": [
+            {
+                "version": "1.0.0"
+            }
+        ],
+        "issued": "2026-08-05T15:05:57.772Z",
+        "modified": "2026-08-05T15:05:57.772Z",
+        "summary": {
+            "title": "LUNG-MAP",
+            "abstract": "Master protocol for squamous cell lung cancer.",
+            "populationSize": 5118,
+            "contactPoint": "info@yalecancercenter.ac.uk",
+            "dataCustodian": {
+                "identifier": "https://ror.org/0786276",
+                "name": "Yale Cancer Center",
+                "contactPoint": "admin@yalecancercenter.ac.uk"
+            },
+            "leadResearcher": "Dr. Roy Herbst",
+            "leadResearchInstitute": "Yale Cancer Center"
+        },
+        "accessibility": {
+            "access": {
+                "accessRights": "Access requests must be submitted to the Yale Cancer Center Data Access Committee. Approvals take approximately 4 weeks."
+            }
+        }
+    },
+    "active": true,
+    "status": "ACTIVE",
+    "user_id": 1,
+    "team_id": 27,
+    "created_at": "2026-08-05T15:06:55.262635",
+    "updated_at": "2026-08-05T15:06:55.262646"
+}

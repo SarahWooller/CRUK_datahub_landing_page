@@ -1,0 +1,128 @@
+{
+    "id": 29,
+    "datasetid": "cruk-study-0018",
+    "metadata_blob": {
+        "identifier": "cruk-study-0018",
+        "version": "1.0.0",
+        "revisions": [
+            {
+                "version": "1.0.0"
+            }
+        ],
+        "issued": "2026-08-05T15:05:57.771Z",
+        "modified": "2026-09-01T16:06:23Z",
+        "summary": {
+            "title": "HERA",
+            "abstract": "Herceptin Adjuvant trial for HER2-positive early breast cancer.",
+            "populationSize": 3341,
+            "contactPoint": "info@royalmarsdenhospital.ac.uk",
+            "dataCustodian": {
+                "identifier": "034vb5t35",
+                "name": "Royal Marsden Hospital",
+                "contactPoint": "admin@royalmarsdenhospital.ac.uk"
+            },
+            "leadResearcher": "Prof. Ian Smith",
+            "leadResearchInstitute": "Royal Marsden Hospital"
+        },
+        "accessibility": {
+            "access": {
+                "accessRights": "Access requests must be submitted to the Royal Marsden Hospital Data Access Committee. Approvals take approximately 4 weeks."
+            }
+        },
+        "demographicFrequency": {
+            "ethnicity": [
+                {
+                    "bin": "White - English, Welsh, Scottish, Northern Irish or British",
+                    "count": 1567
+                },
+                {
+                    "bin": "Asian or Asian British - Indian",
+                    "count": 34
+                },
+                {
+                    "bin": "Black or Black British - African",
+                    "count": 144
+                }
+            ]
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 3341,
+                "observationDate": "2026-08-05T15:05:57.771Z",
+                "measuredProperty": "Count"
+            },
+            {
+                "observedNode": "Events",
+                "measuredValue": 10023,
+                "observationDate": "2026-08-05T15:05:57.771Z",
+                "measuredProperty": "Treatment Events"
+            }
+        ]
+    },
+    "draft_metadata_blob": {
+        "identifier": "cruk-study-0018",
+        "version": "1.0.0",
+        "revisions": [
+            {
+                "version": "1.0.0"
+            }
+        ],
+        "issued": "2026-08-05T15:05:57.771Z",
+        "modified": "2026-08-05T15:05:57.771Z",
+        "summary": {
+            "title": "HERA",
+            "abstract": "Herceptin Adjuvant trial for HER2-positive early breast cancer.",
+            "populationSize": 3341,
+            "contactPoint": "info@royalmarsdenhospital.ac.uk",
+            "dataCustodian": {
+                "identifier": "https://ror.org/0585391",
+                "name": "Royal Marsden Hospital",
+                "contactPoint": "admin@royalmarsdenhospital.ac.uk"
+            },
+            "leadResearcher": "Prof. Ian Smith",
+            "leadResearchInstitute": "Royal Marsden Hospital"
+        },
+        "accessibility": {
+            "access": {
+                "accessRights": "Access requests must be submitted to the Royal Marsden Hospital Data Access Committee. Approvals take approximately 4 weeks."
+            }
+        },
+        "demographicFrequency": {
+            "ethnicity": [
+                {
+                    "bin": "White - English, Welsh, Scottish, Northern Irish or British",
+                    "count": 1567
+                },
+                {
+                    "bin": "Asian or Asian British - Indian",
+                    "count": 34
+                },
+                {
+                    "bin": "Black or Black British - African",
+                    "count": 144
+                }
+            ]
+        },
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 3341,
+                "observationDate": "2026-08-05T15:05:57.771Z",
+                "measuredProperty": "Count"
+            },
+            {
+                "observedNode": "Events",
+                "measuredValue": 10023,
+                "observationDate": "2026-08-05T15:05:57.771Z",
+                "measuredProperty": "Treatment Events"
+            }
+        ]
+    },
+    "active": true,
+    "status": "ACTIVE",
+    "user_id": 1,
+    "team_id": 17,
+    "created_at": "2026-08-05T15:06:55.262635",
+    "updated_at": "2026-08-05T15:06:55.262646"
+}

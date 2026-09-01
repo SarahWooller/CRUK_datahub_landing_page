@@ -1,0 +1,88 @@
+{
+    "id": 4,
+    "datasetid": "DS-096E0CB7",
+    "metadata_blob": {
+        "version": "1.0.0",
+        "summary": {
+            "title": "Breast Cancer Imaging Mass Cytometry Database",
+            "abstract": "A spatial proteomics dataset derived from the Phase III NeoTRIP trial, featuring 279 patients with locally advanced or high-risk triple-negative breast cancer (TNBC). It contains longitudinal clinical data, digitized H&E images, and 1,855 high-plex imaging mass cytometry (IMC) images profiling 43 proteins to study the tumour microenvironment.",
+            "dataCustodian": {
+                "name": "Cancer Research Horizons",
+                "contactPoint": [
+                    "joseph.day@cancer.org.uk"
+                ],
+                "identifier": "02twrxy18"
+            },
+            "contactPoint": "joseph.day@cancer.org.uk",
+            "populationSize": 279,
+            "keywords": [
+                "Triple-negative breast cancer",
+                "TNBC",
+                "Imaging Mass Cytometry",
+                "IMC",
+                "NeoTRIP trial",
+                "Immunotherapy",
+                "Spatial proteomics",
+                "Tumour Microenvironment"
+            ]
+        },
+        "documentation": {
+            "description": "The Breast Cancer Imaging Mass Cytometry Database is a pioneering spatial proteomics resource derived from the Phase III NeoTRIP trial, containing longitudinal data from 279 patients with high-risk or locally advanced triple-negative breast cancer treated with neoadjuvant chemotherapy or anti-PD-L1 immunotherapy. It offers single-cell resolution insights into the tumour microenvironment via 1,855 high-plex tissue images profiling 43 proteins, alongside digitized H&E slides and linked clinical outcome data.\n\n### Trial & Clinical Overview\n* **Indication:** High-risk or locally advanced triple-negative breast cancer (TNBC).\n* **Clinical Source:** Phase III multi-centre NeoTRIP trial.\n* **Treatments:** 1st line neoadjuvant chemotherapy (Carboplatin + nab-paclitaxel) administered alone, or in combination with PD-L1 checkpoint inhibition (Atezolizumab).\n\n### Sample & Cohort Breakdown\n* **Total Cohort:** 279 patients providing 660 FFPE tumour tissue samples collected longitudinally.\n* **Atezolizumab + Chemotherapy Group:** 138 total patients, of which 57 achieved a pathological complete response (pCR). Samples include 124 baseline, 106 on-treatment, and 106 post-treatment.\n* **Chemotherapy Only Group:** 141 total patients, of which 53 achieved a pCR. Samples include 119 baseline, 101 on-treatment, and 104 post-treatment.\n\n### Dataset Components & Formats\n* **Imaging Mass Cytometry (IMC):** 1,855 high-plex tissue images capturing the in-situ expression of 43 proteins at sub-cellular, single-cell spatial resolution to identify complex spatial patterns and immune cell interactions.\n* **H&E Imaging:** Digitised H&E slides utilized for selecting three 500\u03bcm x 500\u03bcm regions of interest (ROI) per sample.\n* **Clinical Variables:** Timepoint of biopsy, treatment type, adherence to the treatment protocol, and clinical outcome (categorized as residual disease or pathological complete response).\n* **Data File Formats:** Processed data files in .csv or .fst formats (including single-cell protein expression levels, cell-cell interactions, and named epithelial/TME clusters) and raw image data in .tiff format (comprising full stack TIFFs with 46 layers, single cell masks, epithelial masks, single cell nuclear masks, and vessel masks).\n\n### Data Access Governance\n* **Repository Availability:** Data is available for direct download via Zenodo, accompanied by an interpretation guidance document.\n* **Licensing:** Regulated by a data sharing agreement with Cancer Research Horizons (CRH) on a non-exclusive basis solely for approved purposes.\n* **Review Process:** Applications from academic or commercial organizations are reviewed by a Data Access Committee containing patients and the researchers responsible for data generation.\n* **IP & Deletion Terms:** Any intellectual property generated is owned by the applicant company, and all transferred data must be deleted upon the completion of the project.",
+            "inPipeline": "Available"
+        },
+        "otherDataTypes": [
+            {
+                "title": "Imaging Mass Cytometry (IMC)",
+                "description": "1,855 high-plex tissue images detailing in-situ expression of 43 proteins at sub-cellular resolution.",
+                "format": "not given"
+            },
+            {
+                "title": "Digitised H&E Slides",
+                "description": "Digitised images of FFPE tumour tissue samples across three treatment timepoints.",
+                "format": "not given"
+            }
+        ],
+        "accessibility": {
+            "access": {
+                "dataController": "Cancer Research Horizons.",
+                "accessService": "Data Access Committee review, followed by direct download from Zenodo.",
+                "accessRights": "not given"
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Findings",
+                "measuredValue": 279,
+                "disambiguatingDescription": "Patients with high-risk or locally advanced TNBC.",
+                "observationDate": "1000-01-01",
+                "measuredProperty": "Total Patients"
+            },
+            {
+                "observedNode": "Findings",
+                "measuredValue": 660,
+                "disambiguatingDescription": "Combined baseline, on-treatment, and post-treatment tumour samples.",
+                "observationDate": "1000-01-01",
+                "measuredProperty": "Total FFPE Samples"
+            },
+            {
+                "observedNode": "Findings",
+                "measuredValue": 1855,
+                "disambiguatingDescription": "High-plex tissue images generated using a 43-plex antibody panel.",
+                "observationDate": "1000-01-01",
+                "measuredProperty": "IMC Tissue Images"
+            }
+        ],
+        "icons": [],
+        "issued": "2026-09-01T16:06:18Z",
+        "modified": "2026-09-01T16:06:18Z",
+        "revisions": [],
+        "identifier": "DS-096E0CB7"
+    },
+    "draft_metadata_blob": null,
+    "active": true,
+    "status": "ACTIVE",
+    "user_id": 1,
+    "team_id": 2,
+    "created_at": "2026-06-23T16:39:54.237928",
+    "updated_at": "2026-08-03T15:09:01.300347"
+}

@@ -1,0 +1,240 @@
+{
+    "id": 16,
+    "datasetid": "cruk-study-0005",
+    "metadata_blob": {
+        "identifier": "cruk-study-0005",
+        "version": "1.0.0",
+        "revisions": [
+            {
+                "version": "1.0.0"
+            }
+        ],
+        "issued": "2026-08-05T15:05:57.770Z",
+        "modified": "2026-08-05T15:05:57.770Z",
+        "summary": {
+            "title": "UKCTOCS",
+            "abstract": "UK Collaborative Trial of Ovarian Cancer Screening.",
+            "populationSize": 1533,
+            "contactPoint": "info@universitycollegelondon.ac.uk",
+            "dataCustodian": {
+                "identifier": "https://ror.org/0382554",
+                "name": "University College London",
+                "contactPoint": "admin@universitycollegelondon.ac.uk"
+            },
+            "leadResearcher": "Prof. Usha Menon",
+            "leadResearchInstitute": "University College London"
+        },
+        "accessibility": {
+            "access": {
+                "accessRights": "Access requests must be submitted to the University College London Data Access Committee. Approvals take approximately 4 weeks."
+            }
+        },
+        "demographicFrequency": {
+            "ethnicity": [
+                {
+                    "bin": "White - English, Welsh, Scottish, Northern Irish or British",
+                    "count": 922
+                },
+                {
+                    "bin": "Asian or Asian British - Indian",
+                    "count": 464
+                },
+                {
+                    "bin": "Black or Black British - African",
+                    "count": 85
+                }
+            ]
+        },
+        "structuralMetadata": [
+            {
+                "name": "PATIENTS",
+                "description": "Contains patient demographic and diagnostic data.",
+                "columns": [
+                    {
+                        "name": "patient_id",
+                        "dataType": "string",
+                        "description": "Unique patient identifier"
+                    },
+                    {
+                        "name": "diagnosis_date",
+                        "dataType": "date",
+                        "description": "Date of primary diagnosis"
+                    },
+                    {
+                        "name": "stage",
+                        "dataType": "string",
+                        "description": "Cancer stage at diagnosis"
+                    }
+                ]
+            },
+            {
+                "name": "TREATMENTS",
+                "description": "Contains medication and therapy records.",
+                "columns": [
+                    {
+                        "name": "treatment_id",
+                        "dataType": "string",
+                        "description": "Unique treatment identifier"
+                    },
+                    {
+                        "name": "drug_name",
+                        "dataType": "string",
+                        "description": "Name of the administered drug"
+                    },
+                    {
+                        "name": "dosage",
+                        "dataType": "number",
+                        "description": "Dosage amount in mg"
+                    }
+                ]
+            }
+        ],
+        "otherDataTypes": [
+            {
+                "title": "Pathology Slides",
+                "description": "High-resolution digital pathology slide images.",
+                "format": "TIFF"
+            },
+            {
+                "title": "Genomic Sequences",
+                "description": "Whole exome sequencing data files.",
+                "format": "BAM"
+            }
+        ],
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 1533,
+                "observationDate": "2026-08-05T15:05:57.770Z",
+                "measuredProperty": "Count"
+            },
+            {
+                "observedNode": "Events",
+                "measuredValue": 6132,
+                "observationDate": "2026-08-05T15:05:57.770Z",
+                "measuredProperty": "Treatment Events"
+            }
+        ]
+    },
+    "draft_metadata_blob": {
+        "identifier": "cruk-study-0005",
+        "version": "1.0.0",
+        "revisions": [
+            {
+                "version": "1.0.0"
+            }
+        ],
+        "issued": "2026-08-05T15:05:57.770Z",
+        "modified": "2026-08-05T15:05:57.770Z",
+        "summary": {
+            "title": "UKCTOCS",
+            "abstract": "UK Collaborative Trial of Ovarian Cancer Screening.",
+            "populationSize": 1533,
+            "contactPoint": "info@universitycollegelondon.ac.uk",
+            "dataCustodian": {
+                "identifier": "https://ror.org/0382554",
+                "name": "University College London",
+                "contactPoint": "admin@universitycollegelondon.ac.uk"
+            },
+            "leadResearcher": "Prof. Usha Menon",
+            "leadResearchInstitute": "University College London"
+        },
+        "accessibility": {
+            "access": {
+                "accessRights": "Access requests must be submitted to the University College London Data Access Committee. Approvals take approximately 4 weeks."
+            }
+        },
+        "demographicFrequency": {
+            "ethnicity": [
+                {
+                    "bin": "White - English, Welsh, Scottish, Northern Irish or British",
+                    "count": 922
+                },
+                {
+                    "bin": "Asian or Asian British - Indian",
+                    "count": 464
+                },
+                {
+                    "bin": "Black or Black British - African",
+                    "count": 85
+                }
+            ]
+        },
+        "structuralMetadata": [
+            {
+                "name": "PATIENTS",
+                "description": "Contains patient demographic and diagnostic data.",
+                "columns": [
+                    {
+                        "name": "patient_id",
+                        "dataType": "string",
+                        "description": "Unique patient identifier"
+                    },
+                    {
+                        "name": "diagnosis_date",
+                        "dataType": "date",
+                        "description": "Date of primary diagnosis"
+                    },
+                    {
+                        "name": "stage",
+                        "dataType": "string",
+                        "description": "Cancer stage at diagnosis"
+                    }
+                ]
+            },
+            {
+                "name": "TREATMENTS",
+                "description": "Contains medication and therapy records.",
+                "columns": [
+                    {
+                        "name": "treatment_id",
+                        "dataType": "string",
+                        "description": "Unique treatment identifier"
+                    },
+                    {
+                        "name": "drug_name",
+                        "dataType": "string",
+                        "description": "Name of the administered drug"
+                    },
+                    {
+                        "name": "dosage",
+                        "dataType": "number",
+                        "description": "Dosage amount in mg"
+                    }
+                ]
+            }
+        ],
+        "otherDataTypes": [
+            {
+                "title": "Pathology Slides",
+                "description": "High-resolution digital pathology slide images.",
+                "format": "TIFF"
+            },
+            {
+                "title": "Genomic Sequences",
+                "description": "Whole exome sequencing data files.",
+                "format": "BAM"
+            }
+        ],
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 1533,
+                "observationDate": "2026-08-05T15:05:57.770Z",
+                "measuredProperty": "Count"
+            },
+            {
+                "observedNode": "Events",
+                "measuredValue": 6132,
+                "observationDate": "2026-08-05T15:05:57.770Z",
+                "measuredProperty": "Treatment Events"
+            }
+        ]
+    },
+    "active": true,
+    "status": "ACTIVE",
+    "user_id": 1,
+    "team_id": 6,
+    "created_at": "2026-08-05T15:06:55.262635",
+    "updated_at": "2026-08-05T15:06:55.262646"
+}

@@ -1,0 +1,30 @@
+{
+    "id": 62,
+    "datasetid": "DS-B13D084F",
+    "metadata_blob": {
+        "summary": {
+            "title": "New dataset",
+            "leadResearcher": "Prof Brown",
+            "leadResearchInstitute": "University of Edinburgh",
+            "contactPoint": "woollersarah@gmail.com",
+            "dataCustodian": {
+                "name": "CRUK DataCustodian",
+                "identifier": "054225q67",
+                "contactPoint": "not given"
+            }
+        },
+        "icons": [],
+        "issued": "2026-09-01T16:06:31Z",
+        "modified": "2026-09-01T16:06:31Z",
+        "revisions": [],
+        "version": "1.0.0",
+        "identifier": "DS-B13D084F"
+    },
+    "draft_metadata_blob": null,
+    "active": true,
+    "status": "ACTIVE",
+    "user_id": 1,
+    "team_id": null,
+    "created_at": "2026-08-11T19:19:56.887150",
+    "updated_at": "2026-08-11T19:19:56.887151"
+}

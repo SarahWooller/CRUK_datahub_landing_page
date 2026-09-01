@@ -1,0 +1,152 @@
+{
+    "id": 22,
+    "datasetid": "cruk-study-0011",
+    "metadata_blob": {
+        "identifier": "cruk-study-0011",
+        "version": "1.0.0",
+        "revisions": [
+            {
+                "version": "1.0.0"
+            }
+        ],
+        "issued": "2026-08-05T15:05:57.771Z",
+        "modified": "2026-08-05T15:05:57.771Z",
+        "summary": {
+            "title": "AML19",
+            "abstract": "Trial for older patients with Acute Myeloid Leukaemia.",
+            "populationSize": 2918,
+            "contactPoint": "info@cardiffuniversity.ac.uk",
+            "dataCustodian": {
+                "identifier": "https://ror.org/0344784",
+                "name": "Cardiff University",
+                "contactPoint": "admin@cardiffuniversity.ac.uk"
+            },
+            "leadResearcher": "Prof. Alan Burnett",
+            "leadResearchInstitute": "Cardiff University"
+        },
+        "accessibility": {
+            "access": {
+                "accessRights": "Access requests must be submitted to the Cardiff University Data Access Committee. Approvals take approximately 4 weeks."
+            }
+        },
+        "demographicFrequency": {
+            "ethnicity": [
+                {
+                    "bin": "White - English, Welsh, Scottish, Northern Irish or British",
+                    "count": 1501
+                },
+                {
+                    "bin": "Asian or Asian British - Indian",
+                    "count": 472
+                },
+                {
+                    "bin": "Black or Black British - African",
+                    "count": 80
+                }
+            ]
+        },
+        "otherDataTypes": [
+            {
+                "title": "Pathology Slides",
+                "description": "High-resolution digital pathology slide images.",
+                "format": "TIFF"
+            },
+            {
+                "title": "Genomic Sequences",
+                "description": "Whole exome sequencing data files.",
+                "format": "BAM"
+            }
+        ],
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 2918,
+                "observationDate": "2026-08-05T15:05:57.771Z",
+                "measuredProperty": "Count"
+            },
+            {
+                "observedNode": "Events",
+                "measuredValue": 14590,
+                "observationDate": "2026-08-05T15:05:57.771Z",
+                "measuredProperty": "Treatment Events"
+            }
+        ]
+    },
+    "draft_metadata_blob": {
+        "identifier": "cruk-study-0011",
+        "version": "1.0.0",
+        "revisions": [
+            {
+                "version": "1.0.0"
+            }
+        ],
+        "issued": "2026-08-05T15:05:57.771Z",
+        "modified": "2026-08-05T15:05:57.771Z",
+        "summary": {
+            "title": "AML19",
+            "abstract": "Trial for older patients with Acute Myeloid Leukaemia.",
+            "populationSize": 2918,
+            "contactPoint": "info@cardiffuniversity.ac.uk",
+            "dataCustodian": {
+                "identifier": "https://ror.org/0344784",
+                "name": "Cardiff University",
+                "contactPoint": "admin@cardiffuniversity.ac.uk"
+            },
+            "leadResearcher": "Prof. Alan Burnett",
+            "leadResearchInstitute": "Cardiff University"
+        },
+        "accessibility": {
+            "access": {
+                "accessRights": "Access requests must be submitted to the Cardiff University Data Access Committee. Approvals take approximately 4 weeks."
+            }
+        },
+        "demographicFrequency": {
+            "ethnicity": [
+                {
+                    "bin": "White - English, Welsh, Scottish, Northern Irish or British",
+                    "count": 1501
+                },
+                {
+                    "bin": "Asian or Asian British - Indian",
+                    "count": 472
+                },
+                {
+                    "bin": "Black or Black British - African",
+                    "count": 80
+                }
+            ]
+        },
+        "otherDataTypes": [
+            {
+                "title": "Pathology Slides",
+                "description": "High-resolution digital pathology slide images.",
+                "format": "TIFF"
+            },
+            {
+                "title": "Genomic Sequences",
+                "description": "Whole exome sequencing data files.",
+                "format": "BAM"
+            }
+        ],
+        "observations": [
+            {
+                "observedNode": "Persons",
+                "measuredValue": 2918,
+                "observationDate": "2026-08-05T15:05:57.771Z",
+                "measuredProperty": "Count"
+            },
+            {
+                "observedNode": "Events",
+                "measuredValue": 14590,
+                "observationDate": "2026-08-05T15:05:57.771Z",
+                "measuredProperty": "Treatment Events"
+            }
+        ]
+    },
+    "active": true,
+    "status": "ACTIVE",
+    "user_id": 1,
+    "team_id": 13,
+    "created_at": "2026-08-05T15:06:55.262635",
+    "updated_at": "2026-08-05T15:06:55.262646"
+}

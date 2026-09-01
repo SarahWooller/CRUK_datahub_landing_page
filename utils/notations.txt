@@ -1,0 +1,498 @@
+================================================================================
+CRUK DUMMY DATA REMEDIATION NOTATIONS REPORT
+Input Directory:  dummy_data
+Output Directory: cleaned_dummy_data
+================================================================================
+
+📄 File: dataset_00.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 1] Removed 'datasetid' from metadata_blob
+  ✓ [Rule 2] Removed 'accessibility.usage'
+  ✓ [Rule 3] Formatted publicationAboutDataset DOIs: ['10.1016/S1470-2045(14)70105-6', '10.1016/S0140-6736(07)61087-3']
+  ✓ [Rule 4] Set default '1000-01-01' on 5 observationDate(s)
+  ✓ [Rule 10] Moved non-standard observedNode text to measuredProperty on 1 observation(s) -> set node to 'Findings'
+  ✓ [Rule 14] Set default 'not given' on 1 observations.measuredProperty field(s)
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 6] Set default 'issued' timestamp: 2026-09-01T16:06:18Z
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:18Z
+  ✓ [Rule 8] Set 'revisions' default to [] (empty array)
+  ✓ [Rule 9] Set dataCustodian.identifier: '052gg0110' (via ROR API lookup for 'Oxford University')
+  ✓ [Rule 11] Removed 1 item(s) from otherDataTypes missing required 'title'
+  ✓ [Rule 11] Set default 'not given' on 2 otherDataTypes[].format field(s)
+  ➜ Saved to: dataset_00.json
+
+📄 File: dataset_01.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 1] Removed 'datasetid' from metadata_blob
+  ✓ [Rule 2] Removed 'accessibility.usage'
+  ✓ [Rule 4] Set default '1000-01-01' on 3 observationDate(s)
+  ✓ [Rule 10] Moved non-standard observedNode text to measuredProperty on 3 observation(s) -> set node to 'Findings'
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 6] Set default 'issued' timestamp: 2026-09-01T16:06:18Z
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:18Z
+  ✓ [Rule 8] Set 'revisions' default to [] (empty array)
+  ✓ [Rule 9] Set dataCustodian.identifier: '02twrxy18' (via ROR API lookup for 'Cancer Research Horizons')
+  ✓ [Rule 11] Set default 'not given' on 2 otherDataTypes[].format field(s)
+  ✓ [Rule 13] Set default 'not given' for accessibility.access.accessRights
+  ➜ Saved to: dataset_01.json
+
+📄 File: dataset_02.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 2] Removed 'accessibility.usage'
+  ✓ [Rule 4] Set default '1000-01-01' on 5 observationDate(s)
+  ✓ [Rule 10] Moved non-standard observedNode text to measuredProperty on 5 observation(s) -> set node to 'Findings'
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 6] Set default 'issued' timestamp: 2026-09-01T16:06:19Z
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:19Z
+  ✓ [Rule 8] Set 'revisions' default to [] (empty array)
+  ✓ [Rule 9] Set dataCustodian.identifier: '03v9efr22' (via ROR API lookup for 'Christie NHS Foundation Trust')
+  ✓ [Rule 12] Set default 'not given' for dataCustodian.contactPoint
+  ✓ [Rule 11] Set default 'not given' on 1 otherDataTypes[].format field(s)
+  ✓ [Rule 13] Set default 'not given' for accessibility.access.accessRights
+  ➜ Saved to: dataset_02.json
+
+📄 File: dataset_03.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 1] Removed 'datasetid' from metadata_blob
+  ✓ [Rule 2] Removed 'accessibility.usage'
+  ✓ [Rule 4] Set default '1000-01-01' on 4 observationDate(s)
+  ✓ [Rule 10] Moved non-standard observedNode text to measuredProperty on 4 observation(s) -> set node to 'Findings'
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 6] Set default 'issued' timestamp: 2026-09-01T16:06:19Z
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:19Z
+  ✓ [Rule 8] Set 'revisions' default to [] (empty array)
+  ✓ [Rule 9] Set dataCustodian.identifier: '02twrxy18' (via ROR API lookup for 'Cancer Research Horizons')
+  ✓ [Rule 12] Set default 'not given' for dataCustodian.contactPoint
+  ✓ [Rule 11] Set default 'not given' on 4 otherDataTypes[].format field(s)
+  ✓ [Rule 13] Set default 'not given' for accessibility.access.accessRights
+  ➜ Saved to: dataset_03.json
+
+📄 File: dataset_04.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 1] Removed 'datasetid' from metadata_blob
+  ✓ [Rule 2] Removed 'accessibility.usage'
+  ✓ [Rule 4] Set default '1000-01-01' on 4 observationDate(s)
+  ✓ [Rule 10] Moved non-standard observedNode text to measuredProperty on 4 observation(s) -> set node to 'Findings'
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 6] Set default 'issued' timestamp: 2026-09-01T16:06:19Z
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:19Z
+  ✓ [Rule 8] Set 'revisions' default to [] (empty array)
+  ✓ [Rule 9] Set dataCustodian.identifier: '02twrxy18' (via ROR API lookup for 'Cancer Research Horizons')
+  ✓ [Rule 12] Set default 'not given' for dataCustodian.contactPoint
+  ✓ [Rule 11] Set default 'not given' on 3 otherDataTypes[].format field(s)
+  ✓ [Rule 13] Set default 'not given' for accessibility.access.accessRights
+  ➜ Saved to: dataset_04.json
+
+📄 File: dataset_05.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 6] Set default 'issued' timestamp: 2026-09-01T16:06:19Z
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:19Z
+  ✓ [Rule 8] Set 'revisions' default to [] (empty array)
+  ✓ [Rule 9] Set dataCustodian.identifier: '052gg0110' (via ROR API lookup for 'Oxford University')
+  ✓ [Rule 12] Set default 'not given' for dataCustodian.contactPoint
+  ✓ [Rule 11] Set default 'not given' on 4 otherDataTypes[].format field(s)
+  ➜ Saved to: dataset_05.json
+
+📄 File: dataset_06.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 1] Removed 'datasetid' from metadata_blob
+  ✓ [Rule 2] Removed 'accessibility.usage'
+  ✓ [Rule 4] Set default '1000-01-01' on 4 observationDate(s)
+  ✓ [Rule 10] Moved non-standard observedNode text to measuredProperty on 4 observation(s) -> set node to 'Findings'
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 6] Set default 'issued' timestamp: 2026-09-01T16:06:19Z
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:19Z
+  ✓ [Rule 8] Set 'revisions' default to [] (empty array)
+  ✓ [Rule 9] Set dataCustodian.identifier: '02twrxy18' (via ROR API lookup for 'Cancer Research Horizons')
+  ✓ [Rule 12] Set default 'not given' for dataCustodian.contactPoint
+  ✓ [Rule 11] Set default 'not given' on 4 otherDataTypes[].format field(s)
+  ✓ [Rule 13] Set default 'not given' for accessibility.access.accessRights
+  ➜ Saved to: dataset_06.json
+
+📄 File: dataset_07.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 1] Removed 'datasetid' from metadata_blob
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 6] Set default 'issued' timestamp: 2026-09-01T16:06:19Z
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:19Z
+  ✓ [Rule 8] Set 'revisions' default to [] (empty array)
+  ✓ [Rule 9] Set dataCustodian.identifier: '02twrxy18' (via ROR API lookup for 'Cancer Research Horizons')
+  ✓ [Rule 12] Set default 'not given' for dataCustodian.contactPoint
+  ✓ [Rule 11] Removed 1 item(s) from otherDataTypes missing required 'title'
+  ➜ Saved to: dataset_07.json
+
+📄 File: dataset_08.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 6] Set default 'issued' timestamp: 2026-09-01T16:06:19Z
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:19Z
+  ✓ [Rule 8] Set 'revisions' default to [] (empty array)
+  ✓ [Rule 9] Set dataCustodian.identifier: '054225q67' (via ROR API lookup for 'CRUK DataCustodian')
+  ✓ [Rule 12] Set default 'not given' for dataCustodian.contactPoint
+  ➜ Saved to: dataset_08.json
+
+📄 File: dataset_09.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:19Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '04tnbqb63' (via ROR API lookup for 'The Francis Crick Institute')
+  ➜ Saved to: dataset_09.json
+
+📄 File: dataset_10.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:19Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '02w7x5c08' (via ROR API lookup for 'Royal Surrey County Hospital')
+  ➜ Saved to: dataset_10.json
+
+📄 File: dataset_11.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:19Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '02jx3x895' (via ROR API lookup for 'University College London')
+  ➜ Saved to: dataset_11.json
+
+📄 File: dataset_12.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:19Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '0220mzb33' (via ROR API lookup for 'King's College London')
+  ➜ Saved to: dataset_12.json
+
+📄 File: dataset_13.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:20Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '02jx3x895' (via ROR API lookup for 'University College London')
+  ➜ Saved to: dataset_13.json
+
+📄 File: dataset_14.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:20Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '001mm6w73' (via ROR API lookup for 'MRC Clinical Trials Unit')
+  ➜ Saved to: dataset_14.json
+
+📄 File: dataset_15.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:20Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '01ee9ar58' (via ROR API lookup for 'University of Nottingham')
+  ➜ Saved to: dataset_15.json
+
+📄 File: dataset_16.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:20Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '03angcq70' (via ROR API lookup for 'University of Birmingham')
+  ➜ Saved to: dataset_16.json
+
+📄 File: dataset_17.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:21Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '052gg0110' (via ROR API lookup for 'University of Oxford')
+  ➜ Saved to: dataset_17.json
+
+📄 File: dataset_18.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:21Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '04xs57h96' (via ROR API lookup for 'University of Liverpool')
+  ➜ Saved to: dataset_18.json
+
+📄 File: dataset_19.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:21Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '03kk7td41' (via ROR API lookup for 'Cardiff University')
+  ➜ Saved to: dataset_19.json
+
+📄 File: dataset_20.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:22Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '052gg0110' (via ROR API lookup for 'University of Oxford')
+  ➜ Saved to: dataset_20.json
+
+📄 File: dataset_21.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:22Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '00dpztj76' (via ROR API lookup for 'Institute of Cancer Research')
+  ➜ Saved to: dataset_21.json
+
+📄 File: dataset_22.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:22Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '013meh722' (via ROR API lookup for 'University of Cambridge')
+  ➜ Saved to: dataset_22.json
+
+📄 File: dataset_23.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:23Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '03kk7td41' (via ROR API lookup for 'Cardiff University')
+  ➜ Saved to: dataset_23.json
+
+📄 File: dataset_24.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:23Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '03kk7td41' (via ROR API lookup for 'Cardiff University')
+  ➜ Saved to: dataset_24.json
+
+📄 File: dataset_25.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:23Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '00v4dac24' (via ROR API lookup for 'Leeds Teaching Hospitals')
+  ➜ Saved to: dataset_25.json
+
+📄 File: dataset_26.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:23Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '034vb5t35' (via ROR API lookup for 'Royal Marsden Hospital')
+  ➜ Saved to: dataset_26.json
+
+📄 File: dataset_27.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:23Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '01xf75524' (via ROR API lookup for 'Moffitt Cancer Center')
+  ➜ Saved to: dataset_27.json
+
+📄 File: dataset_28.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:23Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '05rfnt234' (via ROR API lookup for 'Gustave Roussy')
+  ➜ Saved to: dataset_28.json
+
+📄 File: dataset_29.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:24Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '05vzafd60' (via ROR API lookup for 'Georgetown University')
+  ➜ Saved to: dataset_29.json
+
+📄 File: dataset_30.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:24Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '03qntg908' (via ROR API lookup for 'Sunnybrook Health Sciences Centre')
+  ➜ Saved to: dataset_30.json
+
+📄 File: dataset_31.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:24Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '02bmcqd02' (via ROR API lookup for 'Stephenson Cancer Center')
+  ➜ Saved to: dataset_31.json
+
+📄 File: dataset_32.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:24Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '049c9q337' (via ROR API lookup for 'MD Anderson Cancer Center')
+  ➜ Saved to: dataset_32.json
+
+📄 File: dataset_33.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:24Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '00dpztj76' (via ROR API lookup for 'Institute of Cancer Research')
+  ➜ Saved to: dataset_33.json
+
+📄 File: dataset_34.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:24Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '02b7n7v15' (via ROR API lookup for 'UCSF')
+  ➜ Saved to: dataset_34.json
+
+📄 File: dataset_35.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:24Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '02t771148' (via ROR API lookup for 'National Cancer Institute')
+  ➜ Saved to: dataset_35.json
+
+📄 File: dataset_36.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:25Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '00d3km654' (via ROR API lookup for 'ECOG-ACRIN')
+  ➜ Saved to: dataset_36.json
+
+📄 File: dataset_37.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:25Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '03j7sze86' (via ROR API lookup for 'Yale Cancer Center')
+  ➜ Saved to: dataset_37.json
+
+📄 File: dataset_38.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:25Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '044ntvm43' (via ROR API lookup for 'Montefiore Medical Center')
+  ➜ Saved to: dataset_38.json
+
+📄 File: dataset_39.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:25Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '02gars961' (via ROR API lookup for 'Winship Cancer Institute')
+  ➜ Saved to: dataset_39.json
+
+📄 File: dataset_40.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:25Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '007rd1x46' (via ROR API lookup for 'Champalimaud Clinical Centre')
+  ➜ Saved to: dataset_40.json
+
+📄 File: dataset_41.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:26Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '02a8bt934' (via ROR API lookup for 'Peter MacCallum Cancer Centre')
+  ➜ Saved to: dataset_41.json
+
+📄 File: dataset_42.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:26Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '04tty5b50' (via ROR API lookup for 'Institute of Oncology Southern Switzerland')
+  ➜ Saved to: dataset_42.json
+
+📄 File: dataset_43.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:26Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '041wfjw90' (via ROR API lookup for 'LungenClinic Grosshansdorf')
+  ➜ Saved to: dataset_43.json
+
+📄 File: dataset_44.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:26Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '02yrq0923' (via ROR API lookup for 'Memorial Sloan Kettering Cancer Center')
+  ➜ Saved to: dataset_44.json
+
+📄 File: dataset_45.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:27Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '00gqase94' (via ROR API lookup for 'AdventHealth Cancer Institute')
+  ➜ Saved to: dataset_45.json
+
+📄 File: dataset_46.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:27Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '02nkdxk79' (via ROR API lookup for 'Virginia Commonwealth University')
+  ➜ Saved to: dataset_46.json
+
+📄 File: dataset_47.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:27Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '02yrq0923' (via ROR API lookup for 'Memorial Sloan Kettering Cancer Center')
+  ➜ Saved to: dataset_47.json
+
+📄 File: dataset_48.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:27Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '01cmnjq37' (via ROR API lookup for 'Centre Léon Bérard')
+  ➜ Saved to: dataset_48.json
+
+📄 File: dataset_49.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:28Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '00yphhr71' (via ROR API lookup for 'Institut de Cancérologie de Lorraine')
+  ➜ Saved to: dataset_49.json
+
+📄 File: dataset_50.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:29Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '020rzx487' (via ROR API lookup for 'Sheba Medical Center')
+  ➜ Saved to: dataset_50.json
+
+📄 File: dataset_51.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:29Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '05rfnt234' (via ROR API lookup for 'Gustave Roussy')
+  ➜ Saved to: dataset_51.json
+
+📄 File: dataset_52.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:29Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '02jzgtq86' (via ROR API lookup for 'Dana-Farber Cancer Institute')
+  ➜ Saved to: dataset_52.json
+
+📄 File: dataset_53.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:29Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '002pd6e78' (via ROR API lookup for 'Massachusetts General Hospital')
+  ➜ Saved to: dataset_53.json
+
+📄 File: dataset_54.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:29Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '00m6w7z96' (via ROR API lookup for 'Northwestern University')
+  ➜ Saved to: dataset_54.json
+
+📄 File: dataset_55.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:30Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '05rfnt234' (via ROR API lookup for 'Gustave Roussy')
+  ➜ Saved to: dataset_55.json
+
+📄 File: dataset_56.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:30Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '03sfybe47' (via ROR API lookup for 'BC Cancer Agency')
+  ➜ Saved to: dataset_56.json
+
+📄 File: dataset_57.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:30Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '04vt65461' (via ROR API lookup for 'Duke Cancer Institute')
+  ➜ Saved to: dataset_57.json
+
+📄 File: dataset_58.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:30Z
+  ✓ [Rule 9] Set dataCustodian.identifier: '02bfwt286' (via ROR API lookup for 'Monash University')
+  ➜ Saved to: dataset_58.json
+
+📄 File: dataset_59.json
+--------------------------------------------------------------------------------
+  ✓ [Rule 5] Enforced schema string min/max length bounds across all string fields
+  ✓ [Rule 6] Set default 'issued' timestamp: 2026-09-01T16:06:31Z
+  ✓ [Rule 7] Updated 'modified' timestamp: 2026-09-01T16:06:31Z
+  ✓ [Rule 8] Set 'revisions' default to [] (empty array)
+  ✓ [Rule 9] Set dataCustodian.identifier: '054225q67' (via ROR API lookup for 'CRUK DataCustodian')
+  ✓ [Rule 12] Set default 'not given' for dataCustodian.contactPoint
+  ➜ Saved to: dataset_59.json
+
+================================================================================
+REMEDIATION COMPLETE: Processed 60 files.
+Cleaned datasets saved in: /Users/skw24/CRUK/website/CRUK_datahub_landing_page/utils/cleaned_dummy_data
+================================================================================

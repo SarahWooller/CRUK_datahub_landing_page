@@ -1,0 +1,72 @@
+{
+    "id": 8,
+    "datasetid": "DS-FF66DC6C",
+    "metadata_blob": {
+        "version": "1.0.0",
+        "summary": {
+            "title": "Effect of Metformin on Breast Cancer metabolism (NCT01266486)",
+            "abstract": "A clinical pharmacodynamic window study investigating the transcriptomic and metabolic effects of metformin on 41 women with untreated primary breast cancer. The dataset includes paired pre- and post-treatment RNASeq transcriptomic profiling, broad metabolomics, and 18-FDG PET-CT imaging to assess metabolic reprogramming.",
+            "dataCustodian": {
+                "name": "Oxford University",
+                "description": "Academic institute",
+                "identifier": "052gg0110",
+                "contactPoint": "not given"
+            },
+            "leadResearcher": "Simon Lord",
+            "leadResearchInstitute": "Oxford University",
+            "populationSize": 41,
+            "keywords": [
+                "Metformin",
+                "Breast Cancer",
+                "Metabolomics",
+                "RNASeq",
+                "PET-CT",
+                "18-FDG",
+                "Pharmacodynamic"
+            ]
+        },
+        "documentation": {
+            "description": "The METFORMIN trial (NCT01266486) is a clinical pharmacodynamic window study evaluating the metabolic effects of metformin on 41 women with untreated, in situ primary breast cancer. The dataset provides comprehensive pre- and post-treatment profiling, integrating RNASeq transcriptomics, broad metabolomics, and 18-FDG PET-CT imaging to explore mitochondrial metabolic reprogramming and nutrient utilization limits.\n\n### Study Design & Recruitment\n*   **Setting:** Patients were recruited from breast cancer clinics across three UK centres: Oxford, Luton, and Dundee.\n*   **Timeline:** Recruitment occurred over a 30-month period between May 2011 and November 2013.\n*   **Intervention:** Metformin (Glucophage XR) was administered once daily in escalating doses for a minimum of 13 days and a maximum of 21 days (500mg for days 1\u20133, 1000mg for days 4\u20136, and 1500mg thereafter).\n*   **Biopsy Protocol:** Core biopsies were taken under ultrasound guidance from the periphery of the primary tumour the day before commencing metformin, snap-frozen in liquid nitrogen within 1 minute, and stored at -80\u00b0C.\n\n### Patient & Tumour Characteristics\n*   **Demographics:** The median age at study entry was 49 years (range 27\u201367), with a median body mass index of 28.1 (range 19.6\u201345.3).\n*   **ER/HER2 Status:** The cohort included 32 ER positive, 9 ER negative, 8 HER2 positive, 33 HER2 negative, and 8 triple negative patients.\n*   **Tumour Details:** Tumour types consisted of 32 ductal carcinomas, 7 lobular carcinomas, and 1 mixed.\n*   **Tumour Grade & Size:** Tumours were classified as Grade 1 (2 patients), Grade 2 (24 patients), and Grade 3 (15 patients), with a median tumour size on MRI of 49mm.\n\n### Sample Availability & Data Types\n*   **PET-CT Scans:** 36 paired 18-FDG PET-CT scans are available for analysis.\n*   **Metabolomics:** 29 paired tumour samples provided sufficient material for broad metabolomics analysis and lipid profiling.\n*   **RNASeq:** 36 paired tumour samples underwent Next-generation sequencing of 'Poly (A) targeted' mRNA, with the fold change of normalised expression level estimated using Cuffdiff 2.2.1.\n*   **Immunohistochemistry:** Staining for p-AMPK and pAKT was evaluated by two accredited pathologists to generate an H-score of immunoreactivity based on intensity and percentage of positive cells.\n\n### Eligibility Criteria\n*   **Inclusion:** Women >18 years with histology-proven in situ primary breast cancer \u22652 cm, scheduled to commence neoadjuvant chemotherapy in 3 weeks, possessing an ECOG performance status of 0\u20131, and fasting/random serum glucose less than 7.0 mmol/L.\n*   **Exclusion:** Patients with a history of Type 1 or Type 2 diabetes, metformin treatment in the past year, or prior treatment for breast cancer (including radiotherapy, major surgery, or chemotherapy within four weeks) were excluded.\n\n### Data Quality Control\n*   Data quality was verified using Rosner's generalized extreme Studentized deviate test alongside graphical presentations.",
+            "inPipeline": "Available"
+        },
+        "otherDataTypes": [
+            {
+                "title": "Metabolomics",
+                "description": "Pre- and post-intervention broad metabolomics and lipid profiling measuring specific tumor and patient characteristics including glucose, cholesterol, lactate, insulin, and multiple mitochondrial metabolites.",
+                "format": "not given"
+            },
+            {
+                "title": "RNASeq",
+                "description": "Next-generation sequencing of 'Poly (A) targeted' mRNA from clinical biopsy samples.",
+                "format": "not given"
+            },
+            {
+                "title": "PET-CT Imaging",
+                "description": "18-FDG dynamic and static PET-CT acquisitions focusing on primary breast cancer and lymph nodes.",
+                "format": "not given"
+            },
+            {
+                "title": "Immunohistochemistry",
+                "description": "Staining profiles for p-AMPK and pAKT.",
+                "format": "not given"
+            }
+        ],
+        "provenance": {
+            "temporal": {
+                "startDate": "2011-05-01",
+                "endDate": "2013-11-30"
+            }
+        },
+        "issued": "2026-09-01T16:06:19Z",
+        "modified": "2026-09-01T16:06:19Z",
+        "revisions": [],
+        "identifier": "DS-FF66DC6C"
+    },
+    "draft_metadata_blob": null,
+    "active": false,
+    "status": "DRAFT",
+    "user_id": 1,
+    "team_id": 1,
+    "created_at": "2026-06-23T16:39:54.264419",
+    "updated_at": "2026-06-23T16:39:54.264419"
+}

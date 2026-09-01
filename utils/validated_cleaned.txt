@@ -1,0 +1,593 @@
+================================================================================
+CRUK SCHEMA VALIDATION REPORT: utils/cleaned_dummy_data
+Schema Version File: CRUKv.1.0.0.json
+================================================================================
+
+📄 File: dataset_00.json (4 Issues Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     observations[4]
+      Detail:   'measuredValue' is a required property
+
+  [2] 🚫 MISSING REQUIRED PROPERTY
+      Path:     datasetFilters[0]
+      Detail:   'description' is a required property
+
+  [3] 🚫 MISSING REQUIRED PROPERTY
+      Path:     projectGrants[0]
+      Detail:   'grantNumber' is a required property
+
+  [4] 🚫 MISSING REQUIRED PROPERTY
+      Path:     otherDataTypes[2]
+      Detail:   'description' is a required property
+
+
+📄 File: dataset_02.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] 🔤 INVALID ENUM VALUE
+      Path:     documentation.inPipeline
+      Expected: One of ['Available', 'Not available']
+      Found:    "Available from August 2025"
+
+  [2] 🚫 MISSING REQUIRED PROPERTY
+      Path:     provenance.temporal
+      Detail:   'timeLag' is a required property
+
+
+📄 File: dataset_04.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] 🔤 INVALID ENUM VALUE
+      Path:     documentation.inPipeline
+      Expected: One of ['Available', 'Not available']
+      Found:    "Available by end of November 2025"
+
+  [2] 🔤 INVALID ENUM VALUE
+      Path:     provenance.temporal.publishingFrequency
+      Expected: One of ['Static', 'Irregular', 'Continuous', 'Biennial', 'Annual', 'Biannual', 'Quarterly', 'Bimonthly', 'Monthly', 'Biweekly', 'Weekly', 'Twice a week', 'Daily', 'Other', None]
+      Found:    "Ongoing"
+
+
+📄 File: dataset_05.json (4 Issues Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     summary
+      Detail:   'contactPoint' is a required property
+
+  [2] 🚫 MISSING REQUIRED PROPERTY
+      Path:     provenance.temporal
+      Detail:   'publishingFrequency' is a required property
+
+  [3] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'accessibility' is a required property
+
+  [4] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_06.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🔤 INVALID ENUM VALUE
+      Path:     provenance.temporal.timeLag
+      Expected: One of ['Less than 1 week', '1-2 weeks', '2-4 weeks', '1-2 months', '2-6 months', 'More than 6 months', 'Variable', 'Not applicable', 'Other']
+      Found:    "Follow-up survival data up to 2018"
+
+
+📄 File: dataset_07.json (4 Issues Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     coverage
+      Detail:   'spatial' is a required property
+
+  [2] ❌ FORMAT / TYPE MISMATCH
+      Path:     enrichmentAndLinkage.publicationUsingDataset[1]
+      Expected: Rule 'pattern' matching "^10.\\d{4,9}/[-._;()/:a-zA-Z0-9]+$"
+      Found:    "https://pubmed.ncbi.nlm.nih.gov/35053131/"
+
+  [3] 🚫 MISSING REQUIRED PROPERTY
+      Path:     datasetFilters[0]
+      Detail:   'description' is a required property
+
+  [4] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_08.json (5 Issues Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     summary
+      Detail:   'abstract' is a required property
+
+  [2] 🚫 MISSING REQUIRED PROPERTY
+      Path:     summary
+      Detail:   'populationSize' is a required property
+
+  [3] 🚫 MISSING REQUIRED PROPERTY
+      Path:     summary
+      Detail:   'contactPoint' is a required property
+
+  [4] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'accessibility' is a required property
+
+  [5] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_09.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / TYPE MISMATCH
+      Path:     structuralMetadata
+      Expected: Rule 'type' matching "object"
+      Found:    [{"name": "PATIENTS", "description": "Contains patient demographic ...
+
+  [2] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+
+📄 File: dataset_10.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / TYPE MISMATCH
+      Path:     structuralMetadata
+      Expected: Rule 'type' matching "object"
+      Found:    [{"name": "PATIENTS", "description": "Contains patient demographic ...
+
+  [2] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+
+📄 File: dataset_11.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / TYPE MISMATCH
+      Path:     structuralMetadata
+      Expected: Rule 'type' matching "object"
+      Found:    [{"name": "PATIENTS", "description": "Contains patient demographic ...
+
+  [2] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+
+📄 File: dataset_12.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / TYPE MISMATCH
+      Path:     structuralMetadata
+      Expected: Rule 'type' matching "object"
+      Found:    [{"name": "PATIENTS", "description": "Contains patient demographic ...
+
+  [2] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+
+📄 File: dataset_13.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / TYPE MISMATCH
+      Path:     structuralMetadata
+      Expected: Rule 'type' matching "object"
+      Found:    [{"name": "PATIENTS", "description": "Contains patient demographic ...
+
+  [2] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+
+📄 File: dataset_14.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / TYPE MISMATCH
+      Path:     structuralMetadata
+      Expected: Rule 'type' matching "object"
+      Found:    [{"name": "PATIENTS", "description": "Contains patient demographic ...
+
+  [2] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+
+📄 File: dataset_15.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / TYPE MISMATCH
+      Path:     structuralMetadata
+      Expected: Rule 'type' matching "object"
+      Found:    [{"name": "PATIENTS", "description": "Contains patient demographic ...
+
+  [2] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+
+📄 File: dataset_16.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / TYPE MISMATCH
+      Path:     structuralMetadata
+      Expected: Rule 'type' matching "object"
+      Found:    [{"name": "PATIENTS", "description": "Contains patient demographic ...
+
+  [2] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+
+📄 File: dataset_17.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / TYPE MISMATCH
+      Path:     structuralMetadata
+      Expected: Rule 'type' matching "object"
+      Found:    [{"name": "PATIENTS", "description": "Contains patient demographic ...
+
+  [2] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+
+📄 File: dataset_18.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / TYPE MISMATCH
+      Path:     structuralMetadata
+      Expected: Rule 'type' matching "object"
+      Found:    [{"name": "PATIENTS", "description": "Contains patient demographic ...
+
+  [2] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+
+📄 File: dataset_19.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+
+📄 File: dataset_20.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+
+📄 File: dataset_21.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+
+📄 File: dataset_22.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+
+📄 File: dataset_23.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+
+📄 File: dataset_24.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+
+📄 File: dataset_25.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+
+📄 File: dataset_26.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+
+📄 File: dataset_27.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+
+📄 File: dataset_28.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+
+📄 File: dataset_29.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+  [2] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_30.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+  [2] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_31.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+  [2] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_32.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+  [2] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_33.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] 🔤 INVALID ENUM VALUE
+      Path:     demographicFrequency.ethnicity[0]bin
+      Expected: One of ['White - British', 'White - Irish', 'White - Any other White background', 'Mixed - White and Black Caribbean', 'Mixed - White and Black African', 'Mixed - White and Asian', 'Mixed - Any other mixed background', 'Asian or Asian British - Indian', 'Asian or Asian British - Pakistani', 'Asian or Asian British - Bangladeshi', 'Asian or Asian British - Any other Asian background', 'Black or Black British - Caribbean', 'Black or Black British - African', 'Black or Black British - Any other Black background', 'Other Ethnic Groups - Chinese', 'Other Ethnic Groups - Any other ethnic group', 'Not stated', 'Not known']
+      Found:    "White - English, Welsh, Scottish, Northern Irish or British"
+
+  [2] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_34.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_35.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_36.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_37.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_38.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_39.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_40.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_41.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_42.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_43.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_44.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_45.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_46.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_47.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_48.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_49.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_50.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_51.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_52.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_53.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_54.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_55.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_56.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_57.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_58.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_59.json (4 Issues Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     summary
+      Detail:   'abstract' is a required property
+
+  [2] 🚫 MISSING REQUIRED PROPERTY
+      Path:     summary
+      Detail:   'populationSize' is a required property
+
+  [3] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'accessibility' is a required property
+
+  [4] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+================================================================================
+SUMMARY TOTALS
+--------------------------------------------------------------------------------
+Files Checked:            60
+Files with Issues:        58
+Total Issues Identified:  91
+  - Format/Type Mismatches: 11
+  - Unexpected Terms:       0
+  - Invalid Enum Values:    29
+  - Missing Required:       51
+================================================================================

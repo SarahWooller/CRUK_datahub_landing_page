@@ -1,0 +1,94 @@
+{
+    "id": 5,
+    "datasetid": "DS-8494492F",
+    "metadata_blob": {
+        "version": "1.0.0",
+        "summary": {
+            "title": "NSCLC Real-World Dataset",
+            "abstract": "Anonymised real-world clinical dataset (N=774, growing by ~150/year) from the Christie NHS Foundation Trust tracking advanced/metastatic NSCLC patients on 1st-line immune checkpoint inhibitors since 2018. Documents a 70% mortality rate and 517-day median survival. Integrates comprehensive baseline characteristics, tissue biomarker gene panels, longitudinal blood test results, PROMs, and 4,384 linked longitudinal CT scans.",
+            "dataCustodian": {
+                "name": "Christie NHS Foundation Trust",
+                "description": "Manchester, UK"
+            },
+            "leadResearchInstitute": "Christie NHS Foundation Trust",
+            "contactPoint": "joseph.day@cancer.org.uk",
+            "populationSize": 774,
+            "keywords": [
+                "NSCLC",
+                "metastatic",
+                "immune checkpoint inhibitors",
+                "CT imaging",
+                "PROMs",
+                "Atezolizumab",
+                "Pembrolizumab",
+                "Real-World Data"
+            ]
+        },
+        "documentation": {
+            "description": "The NSCLC Real-World Dataset is a comprehensive, longitudinal database from the Christie NHS Foundation Trust containing anonymised clinical records and over 4,300 linked CT imaging scans for patients with advanced or metastatic non-small cell lung cancer treated with first-line immune checkpoint inhibitors. It currently tracks 774 active patients, expanding by approximately 150 patients annually, and integrates granular data ranging from routine blood results and PROMs to tissue biomarker gene panels to support advanced research and clinical trial optimization.\n\n### Dataset Overview & Core Metrics\n- **Geography:** Christie NHS Foundation Trust, Manchester, UK\n- **Timeline:** Routine clinical practice tracking since 2018\n- **Cohort Volume:** 774 active patients, expanding by approximately 150 patients per year\n- **Clinical Profile:** Advanced or metastatic non-small cell lung cancer (NSCLC) patients undergoing 1st line immune checkpoint inhibitor therapy (anti PD-L1/PD-1), administered either as a single agent or paired with chemotherapy\n- **Survival Benchmarks:** 70% mortality rate with a median survival tracking at 517 days\n\n### Granular Patient Cohort & Regimen Breakdown\n| Regimen | Female | Male | Total Pts |\n| :--- | :---: | :---: | :---: |\n| Atezolizumab Single Agent | 33 | 34 | 67 |\n| Atezolizumab, Bevacizumab, Carboplatin and Paclitaxel | 9 | 2 | 11 |\n| Pembrolizumab Single Agent | 150 | 154 | 304 |\n| Pembrolizumab, Carboplatin and Paclitaxel | 34 | 71 | 105 |\n| Pembrolizumab, Pemetrexed and Carboplatin | 150 | 143 | 293 |\n| **Total** | **370** | **404** | **774** |\n\n### Age & Sex Distribution Profile\n- **Female Patients (370 Total):** 0-50y: 17 | 51-60y: 70 | 61-70y: 105 | 71-80y: 143 | 81+y: 35\n- **Male Patients (404 Total):** 0-50y: 25 | 51-60y: 48 | 61-70y: 119 | 71-80y: 177 | 81+y: 35\n\n### Curated Data Categories & Scope\n1. **CT Imaging Data:** Access to longitudinal imaging records comprising 528 baseline diagnostic CT scans (covering 48% of patients) and 3,856 longitudinal follow-up CT scans (covering 74% of patients) for a total library of 4,384 scans\n2. **Baseline Patient Characteristics:** Comorbidity burden indices, historical smoking metrics, pulmonary function diagnostics, clinical frailty markers, and relevant historical diagnoses\n3. **Tumour Staging & Histology:** Confirmed tissue diagnosis classifications, rigorous tumour staging records, detailed metastatic presence tracking, and tumour histology parameters\n4. **Clinical Biomarkers:** Structured tissue biomarker gene panels covering ALK, BRAF, EGFR, KRAS, and ROS1 mutations\n5. **Blood Results:** Fully longitudinal and routine blood test datasets captured along the patient journey\n6. **Treatment History:** Step-by-step documentation covering chemotherapy, radiotherapy, biological therapy, and surgical interventions\n7. **Clinical Outcomes:** Hard endpoints including tracked patient survival, documented toxicity presence, and validated disease progression or recurrence events\n8. **PROMs (Patient-Reported Outcome Measures):** Longitudinal quality-of-life parameters, localized symptoms, pain indexing, and mobility tracking. Includes standardized EQ-5D query panels showing an overall compliance rate of approximately 60%\n\n### Potential Strategic Use Cases\n- Stratification of patient cohorts by analyzing cross-interactions between baseline metrics, treatment outcomes, and therapeutic safety signatures\n- Paired analysis of clinical histories alongside longitudinal CT imaging to map predictive or prognostic biomarkers for lung cancer immunotherapy\n- Training machine learning algorithms and artificial intelligence tools to reveal novel imaging biomarkers and design automated clinical decision-support infrastructure\n- Deployment as a validated synthetic control arm for clinical trial protocols requiring an active comparison dataset against standard-of-care NHS immunotherapy regimens\n- Healthcare resource utilization modeling and clinical trial design optimization\n\n### Data Access Governance & Applying Guidelines\n- **System Availability:** Fully accessible from August 2025, with formal application reviews starting July 2025\n- **Review Authority:** Applications are subject to review by a dedicated Data Access Committee containing patients and clinicians\n- **Licensing Terms:** Distributed via Cancer Research Horizons (CRH) on a non-exclusive basis solely for specified, approved validation tasks\n- **IP Ownership:** Any standalone intellectual property generated from dataset utilization is fully owned by the applying commercial entity, unless explicitly structured as a joint collaboration with CRH or the Christie NHS Trust\n- **Data Custody Restrictions:** Data is transferred directly to approved organizations but must be completely deleted upon formal completion of the specified research project\n- **Prerequisites for Application:** Submissions require explicit size/type requests, granular methodological descriptions, and documentation outlining the organization's technical security measures",
+            "inPipeline": "Available from August 2025"
+        },
+        "otherDataTypes": [
+            {
+                "title": "CT Imaging Scans",
+                "description": "Baseline diagnostic and longitudinal follow-up CT scans paired with clinical data records"
+            }
+        ],
+        "provenance": {
+            "temporal": {
+                "startDate": "2018-01-01",
+                "publishingFrequency": "Irregular"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseRequirements": [
+                    "Subject to a formal data sharing agreement with Cancer Research Horizons",
+                    "Offered strictly on a non-exclusive basis for approved research purposes only",
+                    "Mandatory data deletion required upon completion of the approved project scope"
+                ],
+                "resourceCreator": [
+                    "Christie NHS Foundation Trust"
+                ]
+            },
+            "access": {
+                "dataController": "Cancer Research Horizons",
+                "accessService": "Data Access Committee Review"
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Total Patient Cohort",
+                "measuredValue": 774,
+                "disambiguatingDescription": "Total diagnosed advanced/metastatic NSCLC patients tracked since 2018"
+            },
+            {
+                "observedNode": "Baseline CT Scans",
+                "measuredValue": 528,
+                "disambiguatingDescription": "Baseline diagnostic CT scans captured across 378 unique patients"
+            },
+            {
+                "observedNode": "Follow-up CT Scans",
+                "measuredValue": 3856,
+                "disambiguatingDescription": "Longitudinal follow-up CT scans captured across 580 unique patients"
+            },
+            {
+                "observedNode": "Total Combined CT Scans",
+                "measuredValue": 4384,
+                "disambiguatingDescription": "Total imaging scan library size"
+            },
+            {
+                "observedNode": "Median Survival Duration",
+                "measuredValue": 517,
+                "disambiguatingDescription": "Median survival tracking metric measured in days"
+            }
+        ]
+    },
+    "draft_metadata_blob": null,
+    "active": false,
+    "status": "DRAFT",
+    "user_id": 1,
+    "team_id": 3,
+    "created_at": "2026-06-23T16:39:54.251272",
+    "updated_at": "2026-06-23T16:39:54.251273"
+}

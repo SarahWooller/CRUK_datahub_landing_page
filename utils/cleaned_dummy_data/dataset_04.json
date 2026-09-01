@@ -1,0 +1,104 @@
+{
+    "id": 7,
+    "datasetid": "DS-D7A40745",
+    "metadata_blob": {
+        "version": "1.0.0",
+        "summary": {
+            "title": "HUNTER HCC Database & Biobank",
+            "abstract": "A national multi-site observational trial database and biobank comprising 1,080 hepatocellular carcinoma patients and 280 controls with liver disease or other cancers. Expected to be fully available by November 2025, the dataset links longitudinal clinical data with multi-omic profiles, digitised H&E images, and a comprehensive physical repository of blood, tissue, and primary cell lines.",
+            "dataCustodian": {
+                "name": "Cancer Research Horizons",
+                "description": "Cancer Research Horizons is a wholly owned subsidiary of Cancer Research UK, acting as its translational arm to advance bold research innovations.\n\nWe operate at the interface between research and industry to accelerate the translation of innovative science into treatments and diagnostics for patients around the world.",
+                "identifier": "02twrxy18",
+                "contactPoint": "not given"
+            },
+            "contactPoint": "Neesha.dhall@cancer.org.uk",
+            "populationSize": 1360,
+            "keywords": [
+                "Hepatocellular carcinoma",
+                "HCC",
+                "Liver disease",
+                "Biobank",
+                "Multi-omics",
+                "Longitudinal data",
+                "Real-World Data"
+            ]
+        },
+        "documentation": {
+            "description": "The HUNTER HCC Database & Biobank is an observational, multi-site UK clinical repository containing longitudinal data and multi-omic profiles for 1,080 hepatocellular carcinoma patients across all stages, alongside 280 control subjects. Expected to be fully available by November 2025, it pairs detailed clinical tracking with a vast physical biobank of blood, tissue, and primary cell lines to support advanced oncological research.\n\n### Clinical and Demographic Overview\n* **Indication:** Hepatocellular carcinoma (HCC) across all stages.\n* **Cohort Size:** 1,080 HCC patients and 280 controls with liver disease or other cancers.\n* **Geography:** Recruited from the national HUNTER multi-site trial in the UK.\n* **Treatments:** Patients received NHS standard-of-care, including TACE (302 patients), Atezolizumab + Bevacizumab (212 patients), Ablation (201 patients), SIRT (108 patients), Sorafenib (56 patients), and Liver transplant (11 patients).\n\n### Curated Clinical Data Volumes\n* **Baseline Data:** Includes medical history (7,046 data points), behavioural data (5,884 data points), body measurements (5,311 data points), person data (3,826 data points), and blood tests (12,592 data points).\n* **Longitudinal Follow-up:** Data is collected until death or at least 5 years post-inclusion. Features follow-up scans (2,681 data points), response outcomes (1,019 data points), treatments (1,013 data points), deaths (235 data points), and adverse events (180 data points).\n\n### Linked Multi-Omic & Image Data\n* **Histopathology:** Digitised H&E images are available for 324 patients, totalling 880 images.\n* **Genomics:** Global screening array (GSA) from whole blood is available for 922 patients.\n* **Proteomics (Serum):** O-Link Assay of 146 proteins for 190 patients on specific medical therapies, alongside ELISA data for IGF-1/IL-8 (600 patients) and C4 binding protein/lactoferrin (145 patients, 65 controls).\n* **Transcriptomics:** Bulk RNA-seq from PBMC is available for 120 patients (60 on Atezolizumab+Bevacizumab, and 60 on TACE).\n* **Radiology:** CT and MRI scans for 885 patients are expected but not yet collected.\n\n### HUNTER Biobank Samples\n| Sample Type | Quantity | Patients Profiled | Time Point |\n| :--- | :--- | :--- | :--- |\n| Whole Blood | ~700 samples | 381 patients | Baseline & follow-up |\n| Baseline DNA (Whole Blood) | ~800 samples | ~800 patients | Baseline & follow-up |\n| Serum | ~13,000 samples (10 aliquots/patient) | 887 patients | Baseline & follow-up |\n| PBMC RNA | ~1,300 PAXGene, ~70 purified | 809 PAXGene, ~70 purified | Baseline & follow-up |\n| PAXGene ctDNA | ~4,250 isolated plasma | 905 patients | Baseline & follow-up |\n| Isolated Lymphocytes / Neutrophils | ~1,500 lymphocytes, ~800 neutrophils | 488 lymphocytes, 486 neutrophils | Baseline & follow-up |\n| FFPE Tissues | ~900 blocks | ~300 patients | Baseline |\n| Flash Frozen Tissues | ~70 samples | ~30 patients | Baseline |\n| Primary Cell Lines | 17 cell lines | 17 patients | Baseline |\n\n### Data Access & Licensing\n* **Availability:** The database is expected to be available by the end of November 2025.\n* **Commercial Rights:** Cancer Research Horizons (CRH) is currently negotiating exclusive rights to the database and biorepository.\n* **Licensing Terms:** Data access is offered on a non-exclusive basis solely for approved purposes. Licences typically run for a 3-year term.\n* **IP Ownership:** Any intellectual property generated is owned by the applicant company unless there is a collaborative contribution from Newcastle or CRH.\n* **Data Integration:** Profiling data generated from the use of samples is expected to be integrated back into the HUNTER Database.\n* **Application Process:** Companies must submit a data access request to CRH outlining the proposed study, data types needed, and potential patient benefit. Applications are subsequently reviewed by the HUNTER Steering Committee.",
+            "inPipeline": "Available by end of November 2025"
+        },
+        "otherDataTypes": [
+            {
+                "title": "Biobank Samples",
+                "description": "Physical repository containing whole blood, serum, PAXGene ctDNA, isolated lymphocytes, FFPE blocks, flash-frozen tissue, and primary cell lines.",
+                "format": "not given"
+            },
+            {
+                "title": "Histopathology Images",
+                "description": "Digitised H&E images representing baseline and follow-up states.",
+                "format": "not given"
+            },
+            {
+                "title": "Multi-Omics Profiles",
+                "description": "Global screening array genomics, bulk RNA-seq transcriptomics, and O-link/ELISA proteomics data.",
+                "format": "not given"
+            }
+        ],
+        "provenance": {
+            "temporal": {
+                "publishingFrequency": "Ongoing",
+                "distributionReleaseDate": "2025-11-30"
+            }
+        },
+        "accessibility": {
+            "access": {
+                "dataController": "Cancer Research Horizons.",
+                "accessService": "Data access requests are reviewed by the HUNTER Steering Committee.",
+                "accessRights": "not given"
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Findings",
+                "measuredValue": 1080,
+                "disambiguatingDescription": "Hepatocellular carcinoma patients across all stages.",
+                "observationDate": "1000-01-01",
+                "measuredProperty": "Total Patients"
+            },
+            {
+                "observedNode": "Findings",
+                "measuredValue": 280,
+                "disambiguatingDescription": "Control subjects presenting with liver disease or other cancers.",
+                "observationDate": "1000-01-01",
+                "measuredProperty": "Total Controls"
+            },
+            {
+                "observedNode": "Findings",
+                "measuredValue": 12592,
+                "disambiguatingDescription": "Baseline and longitudinal blood test data points.",
+                "observationDate": "1000-01-01",
+                "measuredProperty": "Blood Test Records"
+            },
+            {
+                "observedNode": "Findings",
+                "measuredValue": 13000,
+                "disambiguatingDescription": "Serum samples representing approximately 10 aliquots per patient per visit.",
+                "observationDate": "1000-01-01",
+                "measuredProperty": "Biobank Serum Aliquots"
+            }
+        ],
+        "icons": [],
+        "issued": "2026-09-01T16:06:19Z",
+        "modified": "2026-09-01T16:06:19Z",
+        "revisions": [],
+        "identifier": "DS-D7A40745"
+    },
+    "draft_metadata_blob": null,
+    "active": true,
+    "status": "ACTIVE",
+    "user_id": 1,
+    "team_id": 2,
+    "created_at": "2026-06-23T16:39:54.259764",
+    "updated_at": "2026-08-17T13:11:58.511338"
+}

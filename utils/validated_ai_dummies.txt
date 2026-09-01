@@ -1,0 +1,460 @@
+================================================================================
+CRUK SCHEMA VALIDATION REPORT: src/utils/ai_dummies
+Schema Version File: CRUKv.1.0.0.json
+================================================================================
+
+📄 File: dataset_0001.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     structuralMetadata
+      Expected: Schema definition rule for structuralMetadata ([{'name': 'PATIENTS', 'description': 'Contains patient demographic and diagnostic data.', 'columns': [{'name': 'patient_id', 'dataType': 'string', 'description': 'Unique patient identifier'}, {'name': 'diagnosis_date', 'dataType': 'date', 'description': 'Date of primary diagnosis'}, {'name': 'stage', 'dataType': 'string', 'description': 'Cancer stage at diagnosis'}]}, {'name': 'TREATMENTS', 'description': 'Contains medication and therapy records.', 'columns': [{'name': 'treatment_id', 'dataType': 'string', 'description': 'Unique treatment identifier'}, {'name': 'drug_name', 'dataType': 'string', 'description': 'Name of the administered drug'}, {'name': 'dosage', 'dataType': 'number', 'description': 'Dosage amount in mg'}]}] is not of type 'object'; [{'name': 'PATIENTS', 'description': 'Contains patient demographic and diagnostic data.', 'columns': [{'name': 'patient_id', 'dataType': 'string', 'description': 'Unique patient identifier'}, {'name': 'diagnosis_date', 'dataType': 'date', 'description': 'Date of primary diagnosis'}, {'name': 'stage', 'dataType': 'string', 'description': 'Cancer stage at diagnosis'}]}, {'name': 'TREATMENTS', 'description': 'Contains medication and therapy records.', 'columns': [{'name': 'treatment_id', 'dataType': 'string', 'description': 'Unique treatment identifier'}, {'name': 'drug_name', 'dataType': 'string', 'description': 'Name of the administered drug'}, {'name': 'dosage', 'dataType': 'number', 'description': 'Dosage amount in mg'}]}] is not of type 'null')
+      Found:    [{"name": "PATIENTS", "description": "Contains patient demographic ...
+
+  [2] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 711}, {'bin': 'Asian or Asian British - Indian', 'count': 484}, {'bin': 'Black or Black British - African', 'count': 140}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 711}, {'bin': 'Asian or Asian British - Indian', 'count': 484}, {'bin': 'Black or Black British - African', 'count': 140}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+
+📄 File: dataset_0002.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     structuralMetadata
+      Expected: Schema definition rule for structuralMetadata ([{'name': 'PATIENTS', 'description': 'Contains patient demographic and diagnostic data.', 'columns': [{'name': 'patient_id', 'dataType': 'string', 'description': 'Unique patient identifier'}, {'name': 'diagnosis_date', 'dataType': 'date', 'description': 'Date of primary diagnosis'}, {'name': 'stage', 'dataType': 'string', 'description': 'Cancer stage at diagnosis'}]}, {'name': 'TREATMENTS', 'description': 'Contains medication and therapy records.', 'columns': [{'name': 'treatment_id', 'dataType': 'string', 'description': 'Unique treatment identifier'}, {'name': 'drug_name', 'dataType': 'string', 'description': 'Name of the administered drug'}, {'name': 'dosage', 'dataType': 'number', 'description': 'Dosage amount in mg'}]}] is not of type 'object'; [{'name': 'PATIENTS', 'description': 'Contains patient demographic and diagnostic data.', 'columns': [{'name': 'patient_id', 'dataType': 'string', 'description': 'Unique patient identifier'}, {'name': 'diagnosis_date', 'dataType': 'date', 'description': 'Date of primary diagnosis'}, {'name': 'stage', 'dataType': 'string', 'description': 'Cancer stage at diagnosis'}]}, {'name': 'TREATMENTS', 'description': 'Contains medication and therapy records.', 'columns': [{'name': 'treatment_id', 'dataType': 'string', 'description': 'Unique treatment identifier'}, {'name': 'drug_name', 'dataType': 'string', 'description': 'Name of the administered drug'}, {'name': 'dosage', 'dataType': 'number', 'description': 'Dosage amount in mg'}]}] is not of type 'null')
+      Found:    [{"name": "PATIENTS", "description": "Contains patient demographic ...
+
+  [2] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1565}, {'bin': 'Asian or Asian British - Indian', 'count': 293}, {'bin': 'Black or Black British - African', 'count': 110}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1565}, {'bin': 'Asian or Asian British - Indian', 'count': 293}, {'bin': 'Black or Black British - African', 'count': 110}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+
+📄 File: dataset_0003.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     structuralMetadata
+      Expected: Schema definition rule for structuralMetadata ([{'name': 'PATIENTS', 'description': 'Contains patient demographic and diagnostic data.', 'columns': [{'name': 'patient_id', 'dataType': 'string', 'description': 'Unique patient identifier'}, {'name': 'diagnosis_date', 'dataType': 'date', 'description': 'Date of primary diagnosis'}, {'name': 'stage', 'dataType': 'string', 'description': 'Cancer stage at diagnosis'}]}, {'name': 'TREATMENTS', 'description': 'Contains medication and therapy records.', 'columns': [{'name': 'treatment_id', 'dataType': 'string', 'description': 'Unique treatment identifier'}, {'name': 'drug_name', 'dataType': 'string', 'description': 'Name of the administered drug'}, {'name': 'dosage', 'dataType': 'number', 'description': 'Dosage amount in mg'}]}] is not of type 'object'; [{'name': 'PATIENTS', 'description': 'Contains patient demographic and diagnostic data.', 'columns': [{'name': 'patient_id', 'dataType': 'string', 'description': 'Unique patient identifier'}, {'name': 'diagnosis_date', 'dataType': 'date', 'description': 'Date of primary diagnosis'}, {'name': 'stage', 'dataType': 'string', 'description': 'Cancer stage at diagnosis'}]}, {'name': 'TREATMENTS', 'description': 'Contains medication and therapy records.', 'columns': [{'name': 'treatment_id', 'dataType': 'string', 'description': 'Unique treatment identifier'}, {'name': 'drug_name', 'dataType': 'string', 'description': 'Name of the administered drug'}, {'name': 'dosage', 'dataType': 'number', 'description': 'Dosage amount in mg'}]}] is not of type 'null')
+      Found:    [{"name": "PATIENTS", "description": "Contains patient demographic ...
+
+  [2] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1671}, {'bin': 'Asian or Asian British - Indian', 'count': 347}, {'bin': 'Black or Black British - African', 'count': 94}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1671}, {'bin': 'Asian or Asian British - Indian', 'count': 347}, {'bin': 'Black or Black British - African', 'count': 94}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+
+📄 File: dataset_0004.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     structuralMetadata
+      Expected: Schema definition rule for structuralMetadata ([{'name': 'PATIENTS', 'description': 'Contains patient demographic and diagnostic data.', 'columns': [{'name': 'patient_id', 'dataType': 'string', 'description': 'Unique patient identifier'}, {'name': 'diagnosis_date', 'dataType': 'date', 'description': 'Date of primary diagnosis'}, {'name': 'stage', 'dataType': 'string', 'description': 'Cancer stage at diagnosis'}]}, {'name': 'TREATMENTS', 'description': 'Contains medication and therapy records.', 'columns': [{'name': 'treatment_id', 'dataType': 'string', 'description': 'Unique treatment identifier'}, {'name': 'drug_name', 'dataType': 'string', 'description': 'Name of the administered drug'}, {'name': 'dosage', 'dataType': 'number', 'description': 'Dosage amount in mg'}]}] is not of type 'object'; [{'name': 'PATIENTS', 'description': 'Contains patient demographic and diagnostic data.', 'columns': [{'name': 'patient_id', 'dataType': 'string', 'description': 'Unique patient identifier'}, {'name': 'diagnosis_date', 'dataType': 'date', 'description': 'Date of primary diagnosis'}, {'name': 'stage', 'dataType': 'string', 'description': 'Cancer stage at diagnosis'}]}, {'name': 'TREATMENTS', 'description': 'Contains medication and therapy records.', 'columns': [{'name': 'treatment_id', 'dataType': 'string', 'description': 'Unique treatment identifier'}, {'name': 'drug_name', 'dataType': 'string', 'description': 'Name of the administered drug'}, {'name': 'dosage', 'dataType': 'number', 'description': 'Dosage amount in mg'}]}] is not of type 'null')
+      Found:    [{"name": "PATIENTS", "description": "Contains patient demographic ...
+
+  [2] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 905}, {'bin': 'Asian or Asian British - Indian', 'count': 142}, {'bin': 'Black or Black British - African', 'count': 173}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 905}, {'bin': 'Asian or Asian British - Indian', 'count': 142}, {'bin': 'Black or Black British - African', 'count': 173}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+
+📄 File: dataset_0005.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     structuralMetadata
+      Expected: Schema definition rule for structuralMetadata ([{'name': 'PATIENTS', 'description': 'Contains patient demographic and diagnostic data.', 'columns': [{'name': 'patient_id', 'dataType': 'string', 'description': 'Unique patient identifier'}, {'name': 'diagnosis_date', 'dataType': 'date', 'description': 'Date of primary diagnosis'}, {'name': 'stage', 'dataType': 'string', 'description': 'Cancer stage at diagnosis'}]}, {'name': 'TREATMENTS', 'description': 'Contains medication and therapy records.', 'columns': [{'name': 'treatment_id', 'dataType': 'string', 'description': 'Unique treatment identifier'}, {'name': 'drug_name', 'dataType': 'string', 'description': 'Name of the administered drug'}, {'name': 'dosage', 'dataType': 'number', 'description': 'Dosage amount in mg'}]}] is not of type 'object'; [{'name': 'PATIENTS', 'description': 'Contains patient demographic and diagnostic data.', 'columns': [{'name': 'patient_id', 'dataType': 'string', 'description': 'Unique patient identifier'}, {'name': 'diagnosis_date', 'dataType': 'date', 'description': 'Date of primary diagnosis'}, {'name': 'stage', 'dataType': 'string', 'description': 'Cancer stage at diagnosis'}]}, {'name': 'TREATMENTS', 'description': 'Contains medication and therapy records.', 'columns': [{'name': 'treatment_id', 'dataType': 'string', 'description': 'Unique treatment identifier'}, {'name': 'drug_name', 'dataType': 'string', 'description': 'Name of the administered drug'}, {'name': 'dosage', 'dataType': 'number', 'description': 'Dosage amount in mg'}]}] is not of type 'null')
+      Found:    [{"name": "PATIENTS", "description": "Contains patient demographic ...
+
+  [2] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 922}, {'bin': 'Asian or Asian British - Indian', 'count': 464}, {'bin': 'Black or Black British - African', 'count': 85}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 922}, {'bin': 'Asian or Asian British - Indian', 'count': 464}, {'bin': 'Black or Black British - African', 'count': 85}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+
+📄 File: dataset_0006.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     structuralMetadata
+      Expected: Schema definition rule for structuralMetadata ([{'name': 'PATIENTS', 'description': 'Contains patient demographic and diagnostic data.', 'columns': [{'name': 'patient_id', 'dataType': 'string', 'description': 'Unique patient identifier'}, {'name': 'diagnosis_date', 'dataType': 'date', 'description': 'Date of primary diagnosis'}, {'name': 'stage', 'dataType': 'string', 'description': 'Cancer stage at diagnosis'}]}, {'name': 'TREATMENTS', 'description': 'Contains medication and therapy records.', 'columns': [{'name': 'treatment_id', 'dataType': 'string', 'description': 'Unique treatment identifier'}, {'name': 'drug_name', 'dataType': 'string', 'description': 'Name of the administered drug'}, {'name': 'dosage', 'dataType': 'number', 'description': 'Dosage amount in mg'}]}] is not of type 'object'; [{'name': 'PATIENTS', 'description': 'Contains patient demographic and diagnostic data.', 'columns': [{'name': 'patient_id', 'dataType': 'string', 'description': 'Unique patient identifier'}, {'name': 'diagnosis_date', 'dataType': 'date', 'description': 'Date of primary diagnosis'}, {'name': 'stage', 'dataType': 'string', 'description': 'Cancer stage at diagnosis'}]}, {'name': 'TREATMENTS', 'description': 'Contains medication and therapy records.', 'columns': [{'name': 'treatment_id', 'dataType': 'string', 'description': 'Unique treatment identifier'}, {'name': 'drug_name', 'dataType': 'string', 'description': 'Name of the administered drug'}, {'name': 'dosage', 'dataType': 'number', 'description': 'Dosage amount in mg'}]}] is not of type 'null')
+      Found:    [{"name": "PATIENTS", "description": "Contains patient demographic ...
+
+  [2] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 187}, {'bin': 'Asian or Asian British - Indian', 'count': 280}, {'bin': 'Black or Black British - African', 'count': 12}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 187}, {'bin': 'Asian or Asian British - Indian', 'count': 280}, {'bin': 'Black or Black British - African', 'count': 12}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+
+📄 File: dataset_0007.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     structuralMetadata
+      Expected: Schema definition rule for structuralMetadata ([{'name': 'PATIENTS', 'description': 'Contains patient demographic and diagnostic data.', 'columns': [{'name': 'patient_id', 'dataType': 'string', 'description': 'Unique patient identifier'}, {'name': 'diagnosis_date', 'dataType': 'date', 'description': 'Date of primary diagnosis'}, {'name': 'stage', 'dataType': 'string', 'description': 'Cancer stage at diagnosis'}]}, {'name': 'TREATMENTS', 'description': 'Contains medication and therapy records.', 'columns': [{'name': 'treatment_id', 'dataType': 'string', 'description': 'Unique treatment identifier'}, {'name': 'drug_name', 'dataType': 'string', 'description': 'Name of the administered drug'}, {'name': 'dosage', 'dataType': 'number', 'description': 'Dosage amount in mg'}]}] is not of type 'object'; [{'name': 'PATIENTS', 'description': 'Contains patient demographic and diagnostic data.', 'columns': [{'name': 'patient_id', 'dataType': 'string', 'description': 'Unique patient identifier'}, {'name': 'diagnosis_date', 'dataType': 'date', 'description': 'Date of primary diagnosis'}, {'name': 'stage', 'dataType': 'string', 'description': 'Cancer stage at diagnosis'}]}, {'name': 'TREATMENTS', 'description': 'Contains medication and therapy records.', 'columns': [{'name': 'treatment_id', 'dataType': 'string', 'description': 'Unique treatment identifier'}, {'name': 'drug_name', 'dataType': 'string', 'description': 'Name of the administered drug'}, {'name': 'dosage', 'dataType': 'number', 'description': 'Dosage amount in mg'}]}] is not of type 'null')
+      Found:    [{"name": "PATIENTS", "description": "Contains patient demographic ...
+
+  [2] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1812}, {'bin': 'Asian or Asian British - Indian', 'count': 40}, {'bin': 'Black or Black British - African', 'count': 137}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1812}, {'bin': 'Asian or Asian British - Indian', 'count': 40}, {'bin': 'Black or Black British - African', 'count': 137}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+
+📄 File: dataset_0008.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     structuralMetadata
+      Expected: Schema definition rule for structuralMetadata ([{'name': 'PATIENTS', 'description': 'Contains patient demographic and diagnostic data.', 'columns': [{'name': 'patient_id', 'dataType': 'string', 'description': 'Unique patient identifier'}, {'name': 'diagnosis_date', 'dataType': 'date', 'description': 'Date of primary diagnosis'}, {'name': 'stage', 'dataType': 'string', 'description': 'Cancer stage at diagnosis'}]}, {'name': 'TREATMENTS', 'description': 'Contains medication and therapy records.', 'columns': [{'name': 'treatment_id', 'dataType': 'string', 'description': 'Unique treatment identifier'}, {'name': 'drug_name', 'dataType': 'string', 'description': 'Name of the administered drug'}, {'name': 'dosage', 'dataType': 'number', 'description': 'Dosage amount in mg'}]}] is not of type 'object'; [{'name': 'PATIENTS', 'description': 'Contains patient demographic and diagnostic data.', 'columns': [{'name': 'patient_id', 'dataType': 'string', 'description': 'Unique patient identifier'}, {'name': 'diagnosis_date', 'dataType': 'date', 'description': 'Date of primary diagnosis'}, {'name': 'stage', 'dataType': 'string', 'description': 'Cancer stage at diagnosis'}]}, {'name': 'TREATMENTS', 'description': 'Contains medication and therapy records.', 'columns': [{'name': 'treatment_id', 'dataType': 'string', 'description': 'Unique treatment identifier'}, {'name': 'drug_name', 'dataType': 'string', 'description': 'Name of the administered drug'}, {'name': 'dosage', 'dataType': 'number', 'description': 'Dosage amount in mg'}]}] is not of type 'null')
+      Found:    [{"name": "PATIENTS", "description": "Contains patient demographic ...
+
+  [2] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1138}, {'bin': 'Asian or Asian British - Indian', 'count': 3}, {'bin': 'Black or Black British - African', 'count': 35}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1138}, {'bin': 'Asian or Asian British - Indian', 'count': 3}, {'bin': 'Black or Black British - African', 'count': 35}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+
+📄 File: dataset_0009.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     structuralMetadata
+      Expected: Schema definition rule for structuralMetadata ([{'name': 'PATIENTS', 'description': 'Contains patient demographic and diagnostic data.', 'columns': [{'name': 'patient_id', 'dataType': 'string', 'description': 'Unique patient identifier'}, {'name': 'diagnosis_date', 'dataType': 'date', 'description': 'Date of primary diagnosis'}, {'name': 'stage', 'dataType': 'string', 'description': 'Cancer stage at diagnosis'}]}, {'name': 'TREATMENTS', 'description': 'Contains medication and therapy records.', 'columns': [{'name': 'treatment_id', 'dataType': 'string', 'description': 'Unique treatment identifier'}, {'name': 'drug_name', 'dataType': 'string', 'description': 'Name of the administered drug'}, {'name': 'dosage', 'dataType': 'number', 'description': 'Dosage amount in mg'}]}] is not of type 'object'; [{'name': 'PATIENTS', 'description': 'Contains patient demographic and diagnostic data.', 'columns': [{'name': 'patient_id', 'dataType': 'string', 'description': 'Unique patient identifier'}, {'name': 'diagnosis_date', 'dataType': 'date', 'description': 'Date of primary diagnosis'}, {'name': 'stage', 'dataType': 'string', 'description': 'Cancer stage at diagnosis'}]}, {'name': 'TREATMENTS', 'description': 'Contains medication and therapy records.', 'columns': [{'name': 'treatment_id', 'dataType': 'string', 'description': 'Unique treatment identifier'}, {'name': 'drug_name', 'dataType': 'string', 'description': 'Name of the administered drug'}, {'name': 'dosage', 'dataType': 'number', 'description': 'Dosage amount in mg'}]}] is not of type 'null')
+      Found:    [{"name": "PATIENTS", "description": "Contains patient demographic ...
+
+  [2] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1302}, {'bin': 'Asian or Asian British - Indian', 'count': 26}, {'bin': 'Black or Black British - African', 'count': 154}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1302}, {'bin': 'Asian or Asian British - Indian', 'count': 26}, {'bin': 'Black or Black British - African', 'count': 154}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+
+📄 File: dataset_0010.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     structuralMetadata
+      Expected: Schema definition rule for structuralMetadata ([{'name': 'PATIENTS', 'description': 'Contains patient demographic and diagnostic data.', 'columns': [{'name': 'patient_id', 'dataType': 'string', 'description': 'Unique patient identifier'}, {'name': 'diagnosis_date', 'dataType': 'date', 'description': 'Date of primary diagnosis'}, {'name': 'stage', 'dataType': 'string', 'description': 'Cancer stage at diagnosis'}]}, {'name': 'TREATMENTS', 'description': 'Contains medication and therapy records.', 'columns': [{'name': 'treatment_id', 'dataType': 'string', 'description': 'Unique treatment identifier'}, {'name': 'drug_name', 'dataType': 'string', 'description': 'Name of the administered drug'}, {'name': 'dosage', 'dataType': 'number', 'description': 'Dosage amount in mg'}]}] is not of type 'object'; [{'name': 'PATIENTS', 'description': 'Contains patient demographic and diagnostic data.', 'columns': [{'name': 'patient_id', 'dataType': 'string', 'description': 'Unique patient identifier'}, {'name': 'diagnosis_date', 'dataType': 'date', 'description': 'Date of primary diagnosis'}, {'name': 'stage', 'dataType': 'string', 'description': 'Cancer stage at diagnosis'}]}, {'name': 'TREATMENTS', 'description': 'Contains medication and therapy records.', 'columns': [{'name': 'treatment_id', 'dataType': 'string', 'description': 'Unique treatment identifier'}, {'name': 'drug_name', 'dataType': 'string', 'description': 'Name of the administered drug'}, {'name': 'dosage', 'dataType': 'number', 'description': 'Dosage amount in mg'}]}] is not of type 'null')
+      Found:    [{"name": "PATIENTS", "description": "Contains patient demographic ...
+
+  [2] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 489}, {'bin': 'Asian or Asian British - Indian', 'count': 188}, {'bin': 'Black or Black British - African', 'count': 9}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 489}, {'bin': 'Asian or Asian British - Indian', 'count': 188}, {'bin': 'Black or Black British - African', 'count': 9}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+
+📄 File: dataset_0011.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1501}, {'bin': 'Asian or Asian British - Indian', 'count': 472}, {'bin': 'Black or Black British - African', 'count': 80}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1501}, {'bin': 'Asian or Asian British - Indian', 'count': 472}, {'bin': 'Black or Black British - African', 'count': 80}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+
+📄 File: dataset_0012.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1337}, {'bin': 'Asian or Asian British - Indian', 'count': 241}, {'bin': 'Black or Black British - African', 'count': 97}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1337}, {'bin': 'Asian or Asian British - Indian', 'count': 241}, {'bin': 'Black or Black British - African', 'count': 97}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+
+📄 File: dataset_0013.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1931}, {'bin': 'Asian or Asian British - Indian', 'count': 14}, {'bin': 'Black or Black British - African', 'count': 12}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1931}, {'bin': 'Asian or Asian British - Indian', 'count': 14}, {'bin': 'Black or Black British - African', 'count': 12}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+
+📄 File: dataset_0014.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1263}, {'bin': 'Asian or Asian British - Indian', 'count': 173}, {'bin': 'Black or Black British - African', 'count': 2}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1263}, {'bin': 'Asian or Asian British - Indian', 'count': 173}, {'bin': 'Black or Black British - African', 'count': 2}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+
+📄 File: dataset_0015.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1746}, {'bin': 'Asian or Asian British - Indian', 'count': 78}, {'bin': 'Black or Black British - African', 'count': 112}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1746}, {'bin': 'Asian or Asian British - Indian', 'count': 78}, {'bin': 'Black or Black British - African', 'count': 112}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+
+📄 File: dataset_0016.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1148}, {'bin': 'Asian or Asian British - Indian', 'count': 182}, {'bin': 'Black or Black British - African', 'count': 142}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1148}, {'bin': 'Asian or Asian British - Indian', 'count': 182}, {'bin': 'Black or Black British - African', 'count': 142}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+
+📄 File: dataset_0017.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1092}, {'bin': 'Asian or Asian British - Indian', 'count': 278}, {'bin': 'Black or Black British - African', 'count': 115}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1092}, {'bin': 'Asian or Asian British - Indian', 'count': 278}, {'bin': 'Black or Black British - African', 'count': 115}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+
+📄 File: dataset_0018.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1567}, {'bin': 'Asian or Asian British - Indian', 'count': 34}, {'bin': 'Black or Black British - African', 'count': 144}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1567}, {'bin': 'Asian or Asian British - Indian', 'count': 34}, {'bin': 'Black or Black British - African', 'count': 144}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+
+📄 File: dataset_0019.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1681}, {'bin': 'Asian or Asian British - Indian', 'count': 126}, {'bin': 'Black or Black British - African', 'count': 191}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1681}, {'bin': 'Asian or Asian British - Indian', 'count': 126}, {'bin': 'Black or Black British - African', 'count': 191}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+
+📄 File: dataset_0020.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1615}, {'bin': 'Asian or Asian British - Indian', 'count': 272}, {'bin': 'Black or Black British - African', 'count': 26}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1615}, {'bin': 'Asian or Asian British - Indian', 'count': 272}, {'bin': 'Black or Black British - African', 'count': 26}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+
+📄 File: dataset_0021.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1554}, {'bin': 'Asian or Asian British - Indian', 'count': 420}, {'bin': 'Black or Black British - African', 'count': 151}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1554}, {'bin': 'Asian or Asian British - Indian', 'count': 420}, {'bin': 'Black or Black British - African', 'count': 151}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+  [2] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0022.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1315}, {'bin': 'Asian or Asian British - Indian', 'count': 255}, {'bin': 'Black or Black British - African', 'count': 193}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1315}, {'bin': 'Asian or Asian British - Indian', 'count': 255}, {'bin': 'Black or Black British - African', 'count': 193}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+  [2] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0023.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 873}, {'bin': 'Asian or Asian British - Indian', 'count': 317}, {'bin': 'Black or Black British - African', 'count': 187}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 873}, {'bin': 'Asian or Asian British - Indian', 'count': 317}, {'bin': 'Black or Black British - African', 'count': 187}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+  [2] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0024.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1532}, {'bin': 'Asian or Asian British - Indian', 'count': 41}, {'bin': 'Black or Black British - African', 'count': 74}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1532}, {'bin': 'Asian or Asian British - Indian', 'count': 41}, {'bin': 'Black or Black British - African', 'count': 74}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+  [2] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0025.json (2 Issues Found)
+--------------------------------------------------------------------------------
+  [1] ❌ FORMAT / VALUE MISMATCH (anyOf)
+      Path:     demographicFrequency
+      Expected: Schema definition rule for demographicFrequency ([{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1512}, {'bin': 'Asian or Asian British - Indian', 'count': 23}, {'bin': 'Black or Black British - African', 'count': 10}] is not valid under any of the given schemas; {'ethnicity': [{'bin': 'White - English, Welsh, Scottish, Northern Irish or British', 'count': 1512}, {'bin': 'Asian or Asian British - Indian', 'count': 23}, {'bin': 'Black or Black British - African', 'count': 10}]} is not of type 'null')
+      Found:    {"ethnicity": [{"bin": "White - English, Welsh, Scottish, Northern ...
+
+  [2] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0026.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0027.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0028.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0029.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0030.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0031.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0032.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0033.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0034.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0035.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0036.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0037.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0038.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0039.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0040.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0041.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0042.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0043.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0044.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0045.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0046.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0047.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0048.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0049.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+
+📄 File: dataset_0050.json (1 Issue Found)
+--------------------------------------------------------------------------------
+  [1] 🚫 MISSING REQUIRED PROPERTY
+      Path:     (root)
+      Detail:   'observations' is a required property
+
+================================================================================
+SUMMARY TOTALS
+--------------------------------------------------------------------------------
+Files Checked:            50
+Files with Issues:        50
+Total Issues Identified:  65
+  - Format/Type Mismatches: 35
+  - Unexpected Terms:       0
+  - Invalid Enum Values:    0
+  - Missing Required:       30
+================================================================================

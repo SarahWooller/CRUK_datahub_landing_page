@@ -1,0 +1,101 @@
+{
+    "id": 9,
+    "datasetid": "DS-45936411",
+    "metadata_blob": {
+        "version": "1.0.0",
+        "summary": {
+            "title": "BCPP Database",
+            "abstract": "The BCPP database is a large epidemiological prospective cohort study dataset encompassing 1,284 newly diagnosed bladder cancer patients and 252 non-bladder cancer controls from the UK. The database integrates comprehensive baseline clinical and lifestyle data, over five years of median follow-up, and multi-omic profiling\u2014including genomics, transcriptomics, proteomics, and digital pathology\u2014derived from pre-treatment tumour, blood, and urine samples.",
+            "dataCustodian": {
+                "name": "Cancer Research Horizons",
+                "description": "Exclusive commercial rights holder"
+            },
+            "contactPoint": "joseph.day@cancer.org.uk",
+            "populationSize": 1536,
+            "keywords": [
+                "Bladder Cancer",
+                "NMIBC",
+                "MIBC",
+                "Multi-omics",
+                "Genomics",
+                "Transcriptomics",
+                "Proteomics",
+                "Digital Pathology"
+            ]
+        },
+        "documentation": {
+            "description": "The Bladder Cancer Prognosis Program (BCPP) database is a comprehensive, clinically linked multi-omic resource comprising 1,284 newly diagnosed bladder cancer patients and 252 non-bladder cancer controls from the UK. It integrates extensive baseline demographic and lifestyle records with over five years of median follow-up data, paired with high-quality genomic, transcriptomic, proteomic, and histopathological profiles derived from pre-treatment tumour, blood, and urine samples.\n\n### Clinical and Demographic Overview\n* **Indication:** Bladder cancer ranging from early to advanced stages.\n* **Geography:** United Kingdom.\n* **Patient Cohort:** 1,284 bladder cancer patients (1,009 NMIBC, 275 MIBC) and 252 non-bladder cancer patients, totalling 1,536 patient records.\n* **Sex Distribution:** Approximately 78% Male, 22% Female.\n* **Tumour Grades:** Grade 1 (277), Grade 2 (379), Grade 3 (604), Unknown (24).\n* **Tumour Stages:** pTa (657), pTis (14), pT1 (330), pT2+ (275).\n* **Treatments Tracked:** TURBT, Cystectomy, Re-resection, BCG, Intravesical Chemotherapy (single/course), Systemic Chemotherapy, and Radiotherapy.\n\n### Curated Clinical Data Scope\n* **Baseline Data:** Age at enrolment/diagnosis, gender, TNM stage, tumour grade, size of largest tumour, number of primary tumours, smoking status, medical history, dietary intake, and family history.\n* **Treatment Data:** Records include BCG administration (start date, doses), intravesical chemotherapy regimens, and TURBT.\n* **Follow-up Data:** Median follow-up exceeds 5 years. Documents time to recurrence in bladder, progression to MIBC, mortality status, and survival data up to 2018.\n\n### Multi-Omic Profiling & Sample Analytics\n**Genomics:**\n* Targeted DNAseq (23 commonest BC mutations) via Illumina Novaseq (FASTQ) on 956 tumour and 346 urine samples.\n* Whole exome sequencing (DNAseq) on 101 normal samples via Illumina NextSeq 1000 (FASTQ).\n* Genome-wide CNVs via Affymetrix OncoScan (.tsv) on 214 tumour and 8 urine samples.\n* HPV 16/18 and BKV/JCV genomic DNA via qPCR (.csv) on 685 tumour samples.\n* Genome-wide germline SNPs via Illumina Infinium OmniExpress-24 array on 780 blood samples.\n\n**Transcriptomics (Tumour Samples):**\n* Whole transcriptome short-read RNAseq via Illumina NextSeq 1000 (FASTQ) on 89 samples.\n* Targeted long-read RNAseq (20 cancer genes) via PacBio Sequel II (.xlsx) on 64 samples.\n* Paired long-read and short-read RNAseq via Oxford Nanopore (FASTQ) on 12 samples.\n\n**Proteomics & Biomarkers:**\n* MALDI-TOF-MS via Bruker Ultraflextreme (.csv) on 878 urine samples.\n* Midkine ELISA on 572 urine samples.\n* HAI-1/EpCAM/EGFR ELISAs on 961-990 urine samples.\n* Olink Oncology, Inflammation, Neurology, CVS II & III panels on 90 serum samples.\n\n**Epigenetics & Digital Pathology (Tumour Samples):**\n* Genome-wide methylation via Illumina 450k BeadChip array (IDAT) on 93 samples.\n* Immunohistochemistry (IL-17A, PD-L1, PD-L2, B7H4) on 95-153 samples.\n* ~900 digitised H&E-stained tissue microarrays (Aperio) plus IHC for FGFR3, EGFR, pRB, TP53, Ki-67, VEGF, CK20 on 993 samples (includes unstained controls).\n\n### Data Access & Licensing\n* **Commercial Rights:** Cancer Research Horizons holds exclusive commercial rights to the database.\n* **Licensing Terms:** Access is non-exclusive, solely for approved purposes, and typically granted via 3-year time-limited licences.\n* **IP Ownership:** Any intellectual property generated is owned by the applicant company unless established as a collaboration with CRH.\n* **Access Mechanism:** Data transfer is managed securely using Globus. Applications require a detailed study proposal specifying data subsets and patient benefit, subject to review by the BCPP Data Access Committee.",
+            "inPipeline": "Available"
+        },
+        "otherDataTypes": [
+            {
+                "title": "Genomics",
+                "description": "Targeted DNAseq, whole exome sequencing, genome-wide CNVs, viral DNA qPCR, and genome-wide germline SNPs."
+            },
+            {
+                "title": "Transcriptomics",
+                "description": "Short-read, targeted long-read, and paired long/short-read transcriptome sequencing."
+            },
+            {
+                "title": "Proteomics",
+                "description": "MALDI-TOF-MS profiles, diverse ELISA assays, and broad Olink serum panels."
+            },
+            {
+                "title": "Histopathology and Epigenetics",
+                "description": "Digitised H&E tissue microarrays, extensive IHC biomarker staining, and Illumina 450k array methylation data."
+            }
+        ],
+        "provenance": {
+            "temporal": {
+                "timeLag": "Follow-up survival data up to 2018"
+            }
+        },
+        "accessibility": {
+            "usage": {
+                "dataUseRequirements": [
+                    "Subject to a licence agreement with Cancer Research Horizons.",
+                    "Data access is offered on a non-exclusive basis and solely for the approved purpose.",
+                    "Licences are time-limited, typically for a 3-year term."
+                ],
+                "resourceCreator": [
+                    "Bladder Cancer Prognosis Program (BCPP) / Cancer Research Horizons."
+                ]
+            },
+            "access": {
+                "dataController": "Cancer Research Horizons.",
+                "accessService": "Data transfer managed via Globus following approval by the BCPP Data Access Committee."
+            }
+        },
+        "observations": [
+            {
+                "observedNode": "Total Patient Records",
+                "measuredValue": 1536,
+                "disambiguatingDescription": "Combined cohort of newly diagnosed bladder cancer patients and non-bladder cancer controls."
+            },
+            {
+                "observedNode": "NMIBC Patients",
+                "measuredValue": 1009,
+                "disambiguatingDescription": "Patients diagnosed with non-muscle invasive bladder cancer."
+            },
+            {
+                "observedNode": "MIBC Patients",
+                "measuredValue": 275,
+                "disambiguatingDescription": "Patients diagnosed with muscle invasive bladder cancer."
+            },
+            {
+                "observedNode": "Digitised TMA Images",
+                "measuredValue": 900,
+                "disambiguatingDescription": "Approximate count of digitised H&E-stained tissue microarray images with IHC."
+            }
+        ],
+        "datasetid": 9,
+        "icons": []
+    },
+    "draft_metadata_blob": null,
+    "active": true,
+    "status": "ACTIVE",
+    "user_id": 1,
+    "team_id": 2,
+    "created_at": "2026-06-23T16:39:54.268429",
+    "updated_at": "2026-08-17T13:31:46.050166"
+}

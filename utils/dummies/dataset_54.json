@@ -1,0 +1,68 @@
+{
+    "id": 57,
+    "datasetid": "cruk-study-0046",
+    "metadata_blob": {
+        "identifier": "cruk-study-0046",
+        "version": "1.0.0",
+        "revisions": [
+            {
+                "version": "1.0.0"
+            }
+        ],
+        "issued": "2026-08-05T15:05:57.773Z",
+        "modified": "2026-08-05T15:05:57.773Z",
+        "summary": {
+            "title": "PROSPER",
+            "abstract": "Enzalutamide in nonmetastatic castration-resistant prostate cancer.",
+            "populationSize": 2811,
+            "contactPoint": "info@northwesternuniversity.ac.uk",
+            "dataCustodian": {
+                "identifier": "https://ror.org/0833085",
+                "name": "Northwestern University",
+                "contactPoint": "admin@northwesternuniversity.ac.uk"
+            },
+            "leadResearcher": "Dr. Maha Hussain",
+            "leadResearchInstitute": "Northwestern University"
+        },
+        "accessibility": {
+            "access": {
+                "accessRights": "Access requests must be submitted to the Northwestern University Data Access Committee. Approvals take approximately 4 weeks."
+            }
+        }
+    },
+    "draft_metadata_blob": {
+        "identifier": "cruk-study-0046",
+        "version": "1.0.0",
+        "revisions": [
+            {
+                "version": "1.0.0"
+            }
+        ],
+        "issued": "2026-08-05T15:05:57.773Z",
+        "modified": "2026-08-05T15:05:57.773Z",
+        "summary": {
+            "title": "PROSPER",
+            "abstract": "Enzalutamide in nonmetastatic castration-resistant prostate cancer.",
+            "populationSize": 2811,
+            "contactPoint": "info@northwesternuniversity.ac.uk",
+            "dataCustodian": {
+                "identifier": "https://ror.org/0833085",
+                "name": "Northwestern University",
+                "contactPoint": "admin@northwesternuniversity.ac.uk"
+            },
+            "leadResearcher": "Dr. Maha Hussain",
+            "leadResearchInstitute": "Northwestern University"
+        },
+        "accessibility": {
+            "access": {
+                "accessRights": "Access requests must be submitted to the Northwestern University Data Access Committee. Approvals take approximately 4 weeks."
+            }
+        }
+    },
+    "active": true,
+    "status": "ACTIVE",
+    "user_id": 1,
+    "team_id": 42,
+    "created_at": "2026-08-05T15:06:55.262635",
+    "updated_at": "2026-08-05T15:06:55.262646"
+}

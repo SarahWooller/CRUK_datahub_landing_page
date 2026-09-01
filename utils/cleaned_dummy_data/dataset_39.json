@@ -1,0 +1,68 @@
+{
+    "id": 42,
+    "datasetid": "cruk-study-0031",
+    "metadata_blob": {
+        "identifier": "cruk-study-0031",
+        "version": "1.0.0",
+        "revisions": [
+            {
+                "version": "1.0.0"
+            }
+        ],
+        "issued": "2026-08-05T15:05:57.772Z",
+        "modified": "2026-09-01T16:06:25Z",
+        "summary": {
+            "title": "RxPONDER",
+            "abstract": "Rx for Positive Node, Endocrine Responsive Breast Cancer.",
+            "populationSize": 3659,
+            "contactPoint": "info@winshipcancerinstitute.ac.uk",
+            "dataCustodian": {
+                "identifier": "02gars961",
+                "name": "Winship Cancer Institute",
+                "contactPoint": "admin@winshipcancerinstitute.ac.uk"
+            },
+            "leadResearcher": "Dr. Kevin Kalinsky",
+            "leadResearchInstitute": "Winship Cancer Institute"
+        },
+        "accessibility": {
+            "access": {
+                "accessRights": "Access requests must be submitted to the Winship Cancer Institute Data Access Committee. Approvals take approximately 4 weeks."
+            }
+        }
+    },
+    "draft_metadata_blob": {
+        "identifier": "cruk-study-0031",
+        "version": "1.0.0",
+        "revisions": [
+            {
+                "version": "1.0.0"
+            }
+        ],
+        "issued": "2026-08-05T15:05:57.772Z",
+        "modified": "2026-08-05T15:05:57.772Z",
+        "summary": {
+            "title": "RxPONDER",
+            "abstract": "Rx for Positive Node, Endocrine Responsive Breast Cancer.",
+            "populationSize": 3659,
+            "contactPoint": "info@winshipcancerinstitute.ac.uk",
+            "dataCustodian": {
+                "identifier": "https://ror.org/0263892",
+                "name": "Winship Cancer Institute",
+                "contactPoint": "admin@winshipcancerinstitute.ac.uk"
+            },
+            "leadResearcher": "Dr. Kevin Kalinsky",
+            "leadResearchInstitute": "Winship Cancer Institute"
+        },
+        "accessibility": {
+            "access": {
+                "accessRights": "Access requests must be submitted to the Winship Cancer Institute Data Access Committee. Approvals take approximately 4 weeks."
+            }
+        }
+    },
+    "active": true,
+    "status": "ACTIVE",
+    "user_id": 1,
+    "team_id": 29,
+    "created_at": "2026-08-05T15:06:55.262635",
+    "updated_at": "2026-08-05T15:06:55.262646"
+}
