@@ -25,14 +25,15 @@ This array acts as an Abstract Syntax Tree (AST) representing the user's logic.
   - Parent nodes are automatically resolved and included as required.
 - **Tokens**: The output is an array of objects like `[{ type: 'bracket', value: '(' }, { type: 'filter', id: '0_0_2_1', label: 'Lung' }, { type: 'operator', value: 'AND' }, ...]`.
 
-## 4. The Advanced Logic Builder (`FilterLogicBuilder.jsx`)
+## 4. The Advanced Logic Builder (`FilterApp.jsx`)
 
-To keep the UI clean, the interactive token builder is hidden by default. Most users will rely on the auto-generated logic.
-If a user toggles the Advanced Logic Builder:
+To keep the UI clean, the interactive token builder is available when filters are selected. Most users will rely on the auto-generated logic.
+If a user interacts with the Logic Builder:
 - The logic tokens are rendered into an interactive UI where users can visually manipulate the logic.
 - Filters, brackets, and operators all have `✕` buttons so users can manually prune the logic.
-- Operators (`AND`/`OR`) are interactive buttons. Clicking them toggles their value instantly.
-- If a user manually edits the tokens, the application displays a `(Custom Logic Active)` badge and stops auto-generating logic until the user clicks the "Reset to Auto Logic" button.
+- Operators (`AND`/`OR`) are interactive buttons. Clicking the operator text toggles its value instantly between `AND` and `OR`.
+- **Bracket Pair Creation**: Users can click terms or operators in the sequence to highlight a range, then click the **`Bracket`** button directly to the right of the reset controls to safely insert a matching `(` and `)` pair around the selected expression.
+- If a user manually edits the tokens, the application enters custom logic mode and stops auto-generating logic until the user clicks the **"Reset to Auto Logic"** button.
 
 ## 5. Safe Evaluation (`filterLogic.js`)
 

@@ -158,12 +158,14 @@ const FilterLogicBuilder = ({
     logicError
 }) => {
     const [focusedIndex, setFocusedIndex] = React.useState(null);
+    const [selectedTokenIndices, setSelectedTokenIndices] = React.useState([]);
 
     const handleReset = useCallback(() => {
         const filters = Array.from(selectedFilters);
         const autoTokens = calculateLogicTokens(filters);
         setLogicTokens(autoTokens);
         setIsMessageManuallyEdited(false);
+        setSelectedTokenIndices([]);
     }, [selectedFilters, setLogicTokens, setIsMessageManuallyEdited]);
 
     if (!selectedFilters || selectedFilters.size === 0) {
@@ -184,16 +186,37 @@ const FilterLogicBuilder = ({
         newTokens.splice(index, 1);
         setLogicTokens(newTokens);
         setIsMessageManuallyEdited(true);
+        setSelectedTokenIndices([]);
         if (focusedIndex === index) setFocusedIndex(null);
     };
 
+    const toggleTokenSelection = (index) => {
+        setSelectedTokenIndices(prev =>
+            prev.includes(index) ? prev.filter(i => i !== index) : [...prev, index].sort((a, b) => a - b)
+        );
+    };
+
+    const handleWrapSelectedInBrackets = () => {
+        if (selectedTokenIndices.length === 0) return;
+        const minIdx = Math.min(...selectedTokenIndices);
+        const maxIdx = Math.max(...selectedTokenIndices);
+
+        const newTokens = [...logicTokens];
+        newTokens.splice(maxIdx + 1, 0, { type: 'bracket', value: ')', keyId: `b_close_${Date.now()}_${Math.random()}` });
+        newTokens.splice(minIdx, 0, { type: 'bracket', value: '(', keyId: `b_open_${Date.now()}_${Math.random()}` });
+
+        setLogicTokens(newTokens);
+        setIsMessageManuallyEdited(true);
+        setSelectedTokenIndices([]);
+    };
+
     const handleKeyDown = (e, index, token) => {
-        if (token.type === 'operator' && (e.key === 'Enter' || e.key === ' ')) {
-            e.preventDefault();
-            toggleOperator(index);
-        } else if ((e.key === 'Backspace' || e.key === 'Delete')) {
+        if ((e.metaKey && e.key === 'Enter') || e.key === 'Backspace' || e.key === 'Delete') {
             e.preventDefault();
             removeToken(index);
+        } else if (token.type === 'operator' && (e.key === 'Enter' || e.key === ' ')) {
+            e.preventDefault();
+            toggleOperator(index);
         } else if (e.key === 'ArrowRight') {
             e.preventDefault();
             const nextEl = document.getElementById(`token-${index + 1}`);
@@ -207,7 +230,7 @@ const FilterLogicBuilder = ({
 
     return (
         <div className="p-1 mt-2 border-t border-gray-200">
-            <div className="flex items-center space-x-3 mb-2">
+            <div className="flex flex-wrap items-center space-x-3 gap-y-2 mb-2">
                 {isMessageManuallyEdited && (
                     <button
                         type="button"
@@ -217,8 +240,26 @@ const FilterLogicBuilder = ({
                         Reset to Auto Logic
                     </button>
                 )}
+                {selectedTokenIndices.length > 0 && (
+                    <div className="flex items-center space-x-2">
+                        <button
+                            type="button"
+                            onClick={handleWrapSelectedInBrackets}
+                            className="text-xs text-white bg-emerald-600 hover:bg-emerald-700 transition duration-150 font-bold py-1.5 px-4 rounded shadow-md whitespace-nowrap"
+                        >
+                            Bracket
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setSelectedTokenIndices([])}
+                            className="text-xs text-gray-600 hover:text-gray-900 underline font-medium"
+                        >
+                            Clear Selection
+                        </button>
+                    </div>
+                )}
                 <p className="text-sm text-gray-700 font-semibold">
-                    Default logic shown below. Click to toggle AND/OR.
+                    Default logic shown below. You can toggle AND/OR or bracket groups by clicking the filters to be bracketed and then pressing the Bracket Button that appears.
                 </p>
             </div>
 
@@ -228,66 +269,92 @@ const FilterLogicBuilder = ({
                 aria-label="Filter Logic Builder"
             >
                 {logicTokens && logicTokens.map((token, idx) => {
+                    const isSelected = selectedTokenIndices.includes(idx);
                     if (token.type === 'filter') {
                         return (
-                            <button
+                            <div
                                 key={token.keyId || idx}
                                 id={`token-${idx}`}
-                                type="button"
-                                className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded border border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                                tabIndex={0}
+                                role="group"
+                                aria-label={`Filter token: ${token.label}. Press Backspace, Delete, or Cmd+Enter to remove.`}
+                                className={`inline-flex items-center px-2 py-1 text-xs rounded border transition-all cursor-pointer ${
+                                    isSelected 
+                                        ? 'bg-emerald-100 text-emerald-900 border-emerald-400 ring-2 ring-emerald-500 font-bold'
+                                        : 'bg-blue-100 text-blue-800 border-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                                }`}
                                 onKeyDown={(e) => handleKeyDown(e, idx, token)}
                                 onFocus={() => setFocusedIndex(idx)}
-                                onClick={() => document.getElementById(`token-${idx}`).focus()}
-                                aria-label={`Filter: ${token.label}`}
+                                onClick={() => toggleTokenSelection(idx)}
                             >
-                                {token.label}
-                                <span 
-                                    className="ml-2 text-blue-400 hover:text-blue-600 font-bold"
+                                <span className="mr-1">{token.label}</span>
+                                <button 
+                                    type="button"
+                                    className="ml-1 text-blue-400 hover:text-blue-700 font-bold p-0.5 rounded"
                                     onClick={(e) => { e.stopPropagation(); removeToken(idx); }}
-                                    aria-hidden="true"
-                                >✕</span>
-                            </button>
+                                    aria-label={`Remove filter ${token.label}`}
+                                >✕</button>
+                            </div>
                         );
                     } else if (token.type === 'operator') {
                         return (
-                            <button
+                            <div
                                 key={token.keyId || idx}
                                 id={`token-${idx}`}
-                                type="button"
-                                className={`flex items-center px-2 py-1 text-xs font-bold rounded focus:outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer ${
+                                tabIndex={0}
+                                role="group"
+                                aria-label={`Operator token: ${token.value}. Press Enter to toggle AND/OR, or Backspace/Delete/Cmd+Enter to remove.`}
+                                className={`inline-flex items-center px-2 py-1 text-xs font-bold rounded cursor-pointer transition-all ${
+                                    isSelected ? 'ring-2 ring-emerald-500 border-emerald-400' : 'focus:outline-none focus:ring-2 focus:ring-orange-500'
+                                } ${
                                     token.value === 'AND' ? 'bg-orange-100 text-orange-800 border-orange-200' : 'bg-red-100 text-red-800 border-red-200'
                                 }`}
                                 onFocus={() => setFocusedIndex(idx)}
                                 onKeyDown={(e) => handleKeyDown(e, idx, token)}
-                                onClick={() => toggleOperator(idx)}
-                                aria-label={`Operator: ${token.value}. Press Enter to toggle.`}
+                                onClick={() => toggleTokenSelection(idx)}
                             >
-                                {token.value}
-                                <span 
+                                <button 
+                                    type="button"
+                                    className="hover:underline font-bold"
+                                    onClick={(e) => { e.stopPropagation(); toggleOperator(idx); }}
+                                    title="Click text to toggle AND/OR"
+                                    aria-label={`Toggle operator ${token.value}`}
+                                >
+                                    {token.value}
+                                </button>
+                                <button 
+                                    type="button"
                                     className={`ml-2 font-bold ${token.value === 'AND' ? 'text-orange-400 hover:text-orange-600' : 'text-red-400 hover:text-red-600'}`}
                                     onClick={(e) => { e.stopPropagation(); removeToken(idx); }}
-                                    aria-hidden="true"
-                                >✕</span>
-                            </button>
+                                    aria-label={`Remove operator ${token.value}`}
+                                >✕</button>
+                            </div>
                         );
                     } else if (token.type === 'bracket') {
                         return (
-                            <button
+                            <div
                                 key={token.keyId || idx}
                                 id={`token-${idx}`}
-                                type="button"
-                                className="flex items-center px-2 py-1 text-gray-700 text-sm font-bold bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 cursor-pointer"
+                                tabIndex={0}
+                                role="group"
+                                aria-label={`Bracket token: ${token.value}. Press Backspace, Delete, or Cmd+Enter to remove.`}
+                                className={`inline-flex items-center px-2 py-1 text-sm font-bold rounded border cursor-pointer transition-all ${
+                                    isSelected 
+                                        ? 'bg-emerald-100 text-emerald-900 border-emerald-400 ring-2 ring-emerald-500'
+                                        : 'bg-white text-gray-700 border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500'
+                                }`}
                                 onKeyDown={(e) => handleKeyDown(e, idx, token)}
-                                onClick={() => document.getElementById(`token-${idx}`).focus()}
-                                aria-label={`Bracket: ${token.value}`}
+                                onFocus={() => setFocusedIndex(idx)}
+                                onClick={() => toggleTokenSelection(idx)}
                             >
-                                {token.value}
-                                <span 
-                                    className="ml-2 text-gray-400 hover:text-gray-600 font-bold"
+                                <span className="mr-1">{token.value}</span>
+                                <button 
+                                    type="button"
+                                    className="ml-1 text-gray-400 hover:text-gray-600 font-bold"
                                     onClick={(e) => { e.stopPropagation(); removeToken(idx); }}
-                                    aria-hidden="true"
-                                >✕</span>
-                            </button>
+                                    aria-label={`Remove bracket ${token.value}`}
+                                >✕</button>
+                            </div>
                         );
                     }
                     return null;
