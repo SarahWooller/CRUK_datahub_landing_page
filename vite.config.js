@@ -43,6 +43,7 @@ export default defineConfig({
         upload_tool: resolve(__dirname, 'src/upload_tool.html'),
         tool: resolve(__dirname, 'src/tool.html'),
         tools: resolve(__dirname, 'src/tools.html'),
+        schema_doc: resolve(__dirname, 'src/schema_doc.html'),
       },
     },
   },

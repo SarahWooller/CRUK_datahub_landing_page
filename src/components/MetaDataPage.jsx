@@ -974,7 +974,7 @@ export const DatasetDetailsContent = ({ data, isPreview = false, onSectionClick,
                                                     {item.title}
                                                 </td>
                                                 <td className="p-3 text-right">
-                                                    {item.format && (
+                                                    {item.format && item.format.trim().toLowerCase() !== 'not given' && item.format.trim().toLowerCase() !== 'n/a' && (
                                                         <span className="text-xs bg-blue-50 text-blue-700 border border-blue-100 px-2 py-1 rounded font-mono">
                                                             {item.format}
                                                         </span>
@@ -1052,8 +1052,12 @@ export const DatasetDetailsContent = ({ data, isPreview = false, onSectionClick,
                             <div key={idx} className="bg-white p-4 rounded-lg shadow-sm border-l-4 border-blue-400">
                                 <div className="text-2xl font-bold text-gray-800 mb-1">{obs.measuredValue?.toLocaleString()}</div>
                                 <div className="text-sm font-semibold text-gray-600">{obs.observedNode}</div>
-                                <div className="text-xs text-gray-400 mt-2">{obs.measuredProperty}</div>
-                                {obs.observationDate && <div className="text-xs text-gray-400 mt-1 italic">Date: {obs.observationDate}</div>}
+                                {obs.measuredProperty && obs.measuredProperty.trim().toLowerCase() !== 'not given' && obs.measuredProperty.trim().toLowerCase() !== 'n/a' && (
+                                    <div className="text-xs text-gray-400 mt-2">{obs.measuredProperty}</div>
+                                )}
+                                {obs.observationDate && !obs.observationDate.startsWith('1000-01-01') && (
+                                    <div className="text-xs text-gray-400 mt-1 italic">Date: {obs.observationDate}</div>
+                                )}
                             </div>
                         ))}
                     </div>

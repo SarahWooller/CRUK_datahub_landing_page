@@ -180,15 +180,25 @@ export const Header = () => {
                     )}
 
                     {!userName ? (
-                        <li>
-                            <a 
-                                href="#" 
-                                onClick={(e) => { e.preventDefault(); setIsDataCustodiansModalOpen(true); }}
-                                className="nav-link-main font-bold text-yellow-300"
-                            >
-                                Data Custodians
-                            </a>
-                        </li>
+                        <>
+                            <li>
+                                <a 
+                                    href="#" 
+                                    onClick={(e) => { e.preventDefault(); setIsDataCustodiansModalOpen(true); }}
+                                    className="nav-link-main font-bold text-yellow-300"
+                                >
+                                    Data Custodians
+                                </a>
+                            </li>
+                            <li>
+                                <a 
+                                    href="./schema_doc.html" 
+                                    className="nav-link-main font-bold text-yellow-300"
+                                >
+                                    Schema Docs
+                                </a>
+                            </li>
+                        </>
                     ) : (
                         <li 
                             className="relative"

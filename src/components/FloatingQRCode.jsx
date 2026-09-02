@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Rnd } from 'react-rnd';
 import feedbackQrCode from './feedback.png';
 
 const FloatingQRCode = () => {
@@ -12,69 +11,51 @@ const FloatingQRCode = () => {
 
   if (!mounted || typeof window === 'undefined') return null;
 
-  const initialSize = window.innerWidth * 0.1;
-  const rightMargin = 20;
-  const initialX = window.innerWidth - initialSize - rightMargin;
-
   const widget = (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100vw',
-      height: '100vh',
-      pointerEvents: 'none',
-      zIndex: 99999
-    }}>
-      <Rnd
-        default={{
-          x: initialX,
-          y: 20,
-          width: initialSize,
-          height: initialSize,
-        }}
-        style={{
-          pointerEvents: 'auto'
-        }}
-        minWidth={50}
-        lockAspectRatio={true}
-        cancel="a" // Prevents the drag action when clicking the link
+    <div
+      style={{
+        position: 'fixed',
+        bottom: '24px',
+        right: '24px',
+        width: '85px',
+        height: '100px',
+        zIndex: 99999,
+        pointerEvents: 'auto',
+        backgroundColor: '#ffffff',
+        padding: '6px',
+        borderRadius: '12px',
+        boxShadow: '0 4px 14px rgba(0, 0, 0, 0.18)',
+        border: '1px solid #e2e8f0',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justify: 'center'
+      }}
+    >
+      <a
+        href="https://bit.ly/43uTQOM"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
       >
-        <div style={{
-          width: '100%',
-          height: '100%',
-          userSelect: 'none'
-        }}>
-          <svg
-            viewBox="0 0 100 120"
-            style={{ width: '100%', height: '100%', display: 'block' }}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <image
-              href={feedbackQrCode}
-              x="0"
-              y="0"
-              width="100"
-              height="100"
-            />
-            {/* The anchor tag wraps the text element */}
-            <a href="https://bit.ly/43uTQOM" target="_blank" rel="noopener noreferrer">
-              <text
-                x="50"
-                y="115"
-                textAnchor="middle"
-                fontSize="10"
-                fontFamily="sans-serif"
-                fill="#0000EE" // Standard link blue
-                textDecoration="underline"
-                cursor="pointer" // Changes the cursor to a hand on hover
-              >
-                Feedback bit.ly/43uTQOM
-              </text>
-            </a>
-          </svg>
-        </div>
-      </Rnd>
+        <img
+          src={feedbackQrCode}
+          alt="Feedback QR Code"
+          style={{ width: '70px', height: '70px', display: 'block', borderRadius: '4px' }}
+        />
+        <span
+          style={{
+            fontSize: '9px',
+            fontFamily: 'sans-serif',
+            color: '#00468C',
+            fontWeight: 'bold',
+            marginTop: '2px',
+            textAlign: 'center'
+          }}
+        >
+          Feedback
+        </span>
+      </a>
     </div>
   );
 

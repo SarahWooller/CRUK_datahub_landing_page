@@ -575,7 +575,10 @@ const FieldRenderer = ({
             }
         }
 
-        const enumValues = definition.enum || prop.enum;
+        let enumValues = definition.enum || prop.enum;
+        if (propKey === 'observedNode' || path.includes('observedNode')) {
+            enumValues = ['Persons', 'Events', 'Findings'];
+        }
         // Explicitly check for array type in both resolved and original prop
         const isArray = prop.type === 'array' || definition.type === 'array';
 
@@ -814,6 +817,9 @@ const FieldRenderer = ({
         let val = e.target.value;
         if (inputType === 'checkbox') val = e.target.checked;
         if (inputType === 'number') val = e.target.value === '' ? null : Number(e.target.value);
+        if (isDoiField && typeof val === 'string') {
+            val = val.replace(/^(https?:\/\/(dx\.)?doi\.org\/|doi:)/i, '').trim();
+        }
         onChange(path, val);
     };
 
@@ -833,6 +839,15 @@ const FieldRenderer = ({
     };
 
     const fieldId = `field-${path.join('-')}`;
+    const minLen = prop.minLength || fieldDef?.minLength;
+    const maxLen = prop.maxLength || fieldDef?.maxLength;
+    const isStringVal = typeof currentValue === 'string';
+    const strLength = isStringVal ? currentValue.length : 0;
+    const isDoiField = propKey.toLowerCase().includes('doi') || (prop.title && prop.title.toLowerCase().includes('doi')) || path.some(p => typeof p === 'string' && p.toLowerCase().includes('doi'));
+    const isDoiValid = isDoiField && isStringVal && strLength > 0 ? /^10\.\d{4,9}\/[-._;()/:a-zA-Z0-9]+$/.test(currentValue.trim()) : true;
+
+    const isVersionField = propKey === 'version' || path[path.length - 1] === 'version';
+    const isVersionValid = isVersionField && isStringVal && strLength > 0 ? /^\d+\.\d+\.\d+$/.test(currentValue.trim()) : true;
 
     return (
         <div className={`bg-white p-4 rounded-lg shadow-sm border border-gray-100 mb-4 ${level > 0 ? 'ml-0' : ''}`}>
@@ -884,7 +899,9 @@ const FieldRenderer = ({
                 <textarea
                     id={fieldId}
                     ref={textareaRef}
-                    className="w-full p-2 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500 overflow-hidden resize-none"
+                    className={`w-full p-2 border rounded focus:ring-indigo-500 focus:border-indigo-500 overflow-hidden resize-none ${
+                        (maxLen && strLength > maxLen) || (minLen && strLength > 0 && strLength < minLen) ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                    }`}
                     placeholder={placeholder}
                     rows={rows}
                     onFocus={handleFocus}
@@ -931,12 +948,40 @@ const FieldRenderer = ({
                 <input
                     id={fieldId}
                     type={inputType}
-                    className="w-full p-2 border border-gray-300 rounded focus:ring-indigo-500 focus:border-indigo-500"
+                    className={`w-full p-2 border rounded focus:ring-indigo-500 focus:border-indigo-500 ${
+                        (maxLen && strLength > maxLen) || (minLen && strLength > 0 && strLength < minLen) || (isDoiField && strLength > 0 && !isDoiValid) || (isVersionField && strLength > 0 && !isVersionValid) ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                    }`}
                     placeholder={placeholder}
                     onFocus={handleFocus}
                     value={currentValue || ''}
                     onChange={handleChange}
                 />
+            )}
+
+            {isStringVal && (minLen || maxLen || isDoiField || isVersionField) && (
+                <div className="mt-1 flex justify-between items-center text-xs">
+                    {isDoiField && strLength > 0 && (
+                        <span className={isDoiValid ? "text-green-600 font-semibold" : "text-red-600 font-semibold"}>
+                            {isDoiValid ? "✓ Valid DOI format (10.xxxx/yyyy)" : "⚠️ DOI must match pattern 10.xxxx/yyyy"}
+                        </span>
+                    )}
+                    {isVersionField && strLength > 0 && (
+                        <span className={isVersionValid ? "text-green-600 font-semibold" : "text-red-600 font-semibold"}>
+                            {isVersionValid ? "✓ Valid Version format (3 numbers separated by period, e.g. 1.0.0)" : "⚠️ Version must be 3 numbers separated by a period (e.g. 1.0.0)"}
+                        </span>
+                    )}
+                    {(minLen || maxLen) && (
+                        <span className={`ml-auto ${
+                            (maxLen && strLength > maxLen) || (minLen && strLength > 0 && strLength < minLen)
+                                ? "text-red-600 font-bold"
+                                : "text-gray-400"
+                        }`}>
+                            {strLength} {maxLen ? `/ ${maxLen}` : ''} chars
+                            {maxLen && strLength > maxLen && ` (Exceeded by ${strLength - maxLen})`}
+                            {minLen && strLength > 0 && strLength < minLen && ` (Minimum ${minLen} required)`}
+                        </span>
+                    )}
+                </div>
             )}
         </div>
     );

@@ -178,7 +178,7 @@ const UploadTopBar = ({ formData, schema, prefixIconMapping, pageType, onDeleteS
         return {
             team_id: parseInt(localStorage.getItem('activeTeamId')),
             pid: data.pid || "",
-            version: data.version || "1.0",
+            version: data.version || "1.0.0",
             projectGrantName: data.projectGrantName || "",
             leadResearcher: data.leadResearcher || "",
             leadResearchInstitute: data.leadResearchInstitute || "",

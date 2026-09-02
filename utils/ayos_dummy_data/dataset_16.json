@@ -1,0 +1,189 @@
+{
+    "identifier": "087654b3-2c0a-4b32-9c2e-1234567890bb",
+    "gwdmVersion": "2.1",
+    "metadata": {
+        "required": {
+            "gatewayId": "087654b3-2c0a-4b32-9c2e-1234567890bb",
+            "gatewayPid": "087654b3-2c0a-4b32-9c2e-1234567890bb",
+            "issued": "2018-01-01T00:00:00Z",
+            "modified": "2024-06-01T00:00:00Z",
+            "version": "1.0.0",
+            "revisions": [
+                {
+                    "version": "1.0.0",
+                    "url": "https://srn.org/datasets/087654b3-2c0a-4b32-9c2e-1234567890bb"
+                }
+            ]
+        },
+        "summary": {
+            "abstract": "Registry data evaluating the spatial organization of the immune microenvironment in undifferentiated pleomorphic sarcomas.",
+            "contactPoint": "data@srn.org",
+            "keywords": "Sarcoma;,;Cancer;,;Spatial;,;Transcriptomics;,;Microenvironment",
+            "controlledKeywords": null,
+            "datasetType": null,
+            "datasetSubType": null,
+            "populationSize": 450,
+            "description": "Other data types:\n- H&E Whole Slide Images (application/svs): Digitized tissue sections",
+            "doiName": "10.2001/data.05",
+            "shortTitle": "Soft Tissue Sarcoma Spatial Transcriptomics Cohort",
+            "title": "Soft Tissue Sarcoma Spatial Transcriptomics Cohort",
+            "leadResearcher": "Dr. R. Patel",
+            "leadResearchInstitute": "Institute of Bone and Soft Tissue",
+            "datasetAliases": null,
+            "publisher": {
+                "name": "Sarcoma Research Network",
+                "gatewayId": "https://ror.org/05sarcoma",
+                "rorId": null
+            },
+            "inPipeline": null,
+            "funders": null
+        },
+        "coverage": {
+            "typicalAgeRange": null,
+            "spatial": null,
+            "pathway": null,
+            "followUp": null,
+            "datasetCompleteness": null
+        },
+        "provenance": {
+            "origin": null,
+            "temporal": {
+                "timeLag": "Other",
+                "accrualPeriodicity": null,
+                "startDate": null,
+                "endDate": null,
+                "distributionReleaseDate": null
+            }
+        },
+        "accessibility": {
+            "access": {
+                "deliveryLeadTime": "Other",
+                "jurisdiction": "GB-ENG",
+                "dataController": "Sarcoma Research Network",
+                "dataProcessor": "Sarcoma Research Network",
+                "accessRights": "https://www.srn.org/terms",
+                "accessService": "https://www.srn.org/data-access",
+                "accessRequestCost": "Varies",
+                "accessServiceCategory": null
+            },
+            "usage": {
+                "dataUseLimitation": "General research use",
+                "dataUseRequirement": "Return to database or resource",
+                "resourceCreator": {
+                    "name": "Sarcoma Research Network",
+                    "gatewayId": null,
+                    "rorId": null
+                }
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingSchemes": "OTHER",
+                "conformsTo": "OTHER",
+                "languages": "en",
+                "formats": "CSV;,;JSON"
+            }
+        },
+        "linkage": {
+            "isGeneratedUsing": null,
+            "dataUses": null,
+            "isReferenceIn": null,
+            "datasetLinkage": null,
+            "associatedMedia": null,
+            "tools": null,
+            "investigations": null,
+            "syntheticDataWebLink": null,
+            "publicationAboutDataset": null,
+            "publicationUsingDataset": null
+        },
+        "observations": [
+            {
+                "observedNode": "Findings",
+                "measuredValue": 1350,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count",
+                "disambiguatingDescription": null
+            }
+        ],
+        "tissuesSampleCollection": [],
+        "demographicFrequency": null,
+        "omics": null,
+        "datasetFilters": [
+            {
+                "id": "0_0_0_8",
+                "label": "C49 Connective, subcutaneous and other soft tissues",
+                "category": "icdOTopography",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_1_16_1",
+                "label": "8800/3 Sarcoma, NOS",
+                "category": "880 Soft tissue tumors and sarcomas, NOS",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_4",
+                "label": "not for profit organisation use only",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": " Limited to not-for-profit organizations.(DUO_0000045)"
+            },
+            {
+                "id": "0_2_4_4_1_2",
+                "label": "Other",
+                "category": "Source",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_4_1",
+                "label": "Phase 1",
+                "category": "Clinical Trial",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_3_0",
+                "label": "Medication",
+                "category": "Treatments",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_0_1",
+                "label": "State",
+                "category": "Biobank Samples",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_2_0",
+                "label": "Patient-Reported Outcomes",
+                "category": "Longitudinal Follow up",
+                "primaryGroup": "data-type",
+                "description": ""
+            }
+        ],
+        "projectGrants": [
+            {
+                "pid": "16_000",
+                "projectGrantName": "Spatial Architecture of Sarcomas",
+                "leadResearcher": "Dr. R. Patel",
+                "leadResearchInstitute": "Institute of Bone and Soft Tissue",
+                "grantNumber": "SUK-555",
+                "projectGrantStartDate": "2019-01-01",
+                "projectGrantEndDate": "2024-12-31",
+                "projectGrantScope": "Spatial transcriptomics data and survival outcomes"
+            }
+        ],
+        "icons": [
+            "Pathology",
+            "Transcriptomics"
+        ],
+        "erd": {
+            "image": "https://github.com/srn/schema.png",
+            "description": null
+        },
+        "structuralMetadata": null
+    }
+}

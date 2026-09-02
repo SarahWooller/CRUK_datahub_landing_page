@@ -1,0 +1,189 @@
+{
+    "identifier": "087654b3-2c0a-4b32-9c2e-1234567890bd",
+    "gwdmVersion": "2.1",
+    "metadata": {
+        "required": {
+            "gatewayId": "087654b3-2c0a-4b32-9c2e-1234567890bd",
+            "gatewayPid": "087654b3-2c0a-4b32-9c2e-1234567890bd",
+            "issued": "2018-01-01T00:00:00Z",
+            "modified": "2024-06-01T00:00:00Z",
+            "version": "1.0.0",
+            "revisions": [
+                {
+                    "version": "1.0.0",
+                    "url": "https://pstn.org/datasets/087654b3-2c0a-4b32-9c2e-1234567890bd"
+                }
+            ]
+        },
+        "summary": {
+            "abstract": "Registry data correlating MYCN amplification status with tumor differentiation and response to retinoid therapy in high-risk pediatric neuroblastoma.",
+            "contactPoint": "data@pstn.org",
+            "keywords": "Neuroblastoma;,;Pediatric;,;Cancer;,;MYCN;,;Retinoids",
+            "controlledKeywords": null,
+            "datasetType": null,
+            "datasetSubType": null,
+            "populationSize": 850,
+            "description": "Other data types:\n- MIBG Scans (application/dicom): Functional imaging for metastatic spread",
+            "doiName": "10.2001/data.07",
+            "shortTitle": "Neuroblastoma MYCN Amplification and Differentiation Cohort",
+            "title": "Neuroblastoma MYCN Amplification and Differentiation Cohort",
+            "leadResearcher": "Dr. K. Jones",
+            "leadResearchInstitute": "Children's Hospital Oncology",
+            "datasetAliases": null,
+            "publisher": {
+                "name": "Pediatric Solid Tumor Network",
+                "gatewayId": "https://ror.org/07neuro",
+                "rorId": null
+            },
+            "inPipeline": null,
+            "funders": null
+        },
+        "coverage": {
+            "typicalAgeRange": null,
+            "spatial": null,
+            "pathway": null,
+            "followUp": null,
+            "datasetCompleteness": null
+        },
+        "provenance": {
+            "origin": null,
+            "temporal": {
+                "timeLag": "Other",
+                "accrualPeriodicity": null,
+                "startDate": null,
+                "endDate": null,
+                "distributionReleaseDate": null
+            }
+        },
+        "accessibility": {
+            "access": {
+                "deliveryLeadTime": "Other",
+                "jurisdiction": "GB-ENG",
+                "dataController": "Pediatric Solid Tumor Network",
+                "dataProcessor": "Pediatric Solid Tumor Network",
+                "accessRights": "https://www.pstn.org/terms",
+                "accessService": "https://www.pstn.org/data-access",
+                "accessRequestCost": "Varies",
+                "accessServiceCategory": null
+            },
+            "usage": {
+                "dataUseLimitation": "General research use",
+                "dataUseRequirement": "Return to database or resource",
+                "resourceCreator": {
+                    "name": "Pediatric Solid Tumor Network",
+                    "gatewayId": null,
+                    "rorId": null
+                }
+            },
+            "formatAndStandards": {
+                "vocabularyEncodingSchemes": "OTHER",
+                "conformsTo": "OTHER",
+                "languages": "en",
+                "formats": "CSV;,;JSON"
+            }
+        },
+        "linkage": {
+            "isGeneratedUsing": null,
+            "dataUses": null,
+            "isReferenceIn": null,
+            "datasetLinkage": null,
+            "associatedMedia": null,
+            "tools": null,
+            "investigations": null,
+            "syntheticDataWebLink": null,
+            "publicationAboutDataset": null,
+            "publicationUsingDataset": null
+        },
+        "observations": [
+            {
+                "observedNode": "Findings",
+                "measuredValue": 1700,
+                "observationDate": "2023-12-31",
+                "measuredProperty": "Count",
+                "disambiguatingDescription": null
+            }
+        ],
+        "tissuesSampleCollection": [],
+        "demographicFrequency": null,
+        "omics": null,
+        "datasetFilters": [
+            {
+                "id": "0_0_0_6",
+                "label": "C47 Peripheral nerves and autonomic nervous system",
+                "category": "icdOTopography",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_0_1_36_5",
+                "label": "9500/3 Neuroblastoma, NOS",
+                "category": "949-952 Neuroepitheliomatous neoplasms",
+                "primaryGroup": "cancer-type",
+                "description": ""
+            },
+            {
+                "id": "0_1_4",
+                "label": "not for profit organisation use only",
+                "category": "accessType",
+                "primaryGroup": "access-type",
+                "description": " Limited to not-for-profit organizations.(DUO_0000045)"
+            },
+            {
+                "id": "0_2_3_4_2",
+                "label": "Phase 2",
+                "category": "Clinical Trial",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_1_4",
+                "label": "Kidney function tests",
+                "category": "Biopsy Reports and Lab Results",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_2_0",
+                "label": "Organism",
+                "category": "Model Organism",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_3_4_1",
+                "label": "Phase 1",
+                "category": "Clinical Trial",
+                "primaryGroup": "data-type",
+                "description": ""
+            },
+            {
+                "id": "0_2_2_1_3",
+                "label": "Syngeneic",
+                "category": "Organism preparation",
+                "primaryGroup": "data-type",
+                "description": ""
+            }
+        ],
+        "projectGrants": [
+            {
+                "pid": "18_000",
+                "projectGrantName": "Targeting MYCN in Neuroblastoma",
+                "leadResearcher": "Dr. K. Jones",
+                "leadResearchInstitute": "Children's Hospital Oncology",
+                "grantNumber": "CCRF-777",
+                "projectGrantStartDate": "2019-01-01",
+                "projectGrantEndDate": "2024-12-31",
+                "projectGrantScope": "FISH results, histology, and therapy logs"
+            }
+        ],
+        "icons": [
+            "Pediatrics",
+            "Genetics"
+        ],
+        "erd": {
+            "image": "https://github.com/pstn/schema.png",
+            "description": null
+        },
+        "structuralMetadata": null
+    }
+}
